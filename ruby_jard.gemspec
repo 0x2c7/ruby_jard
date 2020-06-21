@@ -26,4 +26,8 @@ Gem::Specification.new do |spec|
   spec.bindir        = "bin"
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+
+  spec.add_runtime_dependency 'rack', '>= 2.0.0'
+  spec.add_runtime_dependency 'pry', '~> 0.13.1'
+  spec.add_runtime_dependency 'byebug', '~> 11.1.0'
 end
