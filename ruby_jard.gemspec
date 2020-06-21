@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency 'rack', '>= 2.0.0'
+  spec.add_runtime_dependency 'thor', '>= 1.0.1'
   spec.add_runtime_dependency 'pry', '~> 0.13.1'
   spec.add_runtime_dependency 'byebug', '~> 11.1.0'
 end
