@@ -27,8 +27,12 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_runtime_dependency 'tty-screen', '>= 0.8.0'
+  spec.add_runtime_dependency 'tty-cursor', '>= 0.7.1'
+  spec.add_runtime_dependency 'tty-box', '>= 0.5.0'
+
   spec.add_runtime_dependency 'rack', '>= 2.0.0'
   spec.add_runtime_dependency 'thor', '>= 1.0.1'
-  spec.add_runtime_dependency 'pry', '~> 0.13.1'
+  spec.add_runtime_dependency 'pry', '~> 0.13.0'
   spec.add_runtime_dependency 'byebug', '~> 11.1.0'
 end
