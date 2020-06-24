@@ -16,21 +16,6 @@ module RubyJard
     fill_height: false,
     children: [
       LayoutTemplate.new(
-        height_ratio: 20,
-        min_height: 3,
-        fill_width: true,
-        children: [
-          LayoutTemplate.new(
-            screen: :stacktraces,
-            width_ratio: 60
-          ),
-          LayoutTemplate.new(
-            screen: :threads,
-            width_ratio: 40
-          )
-        ]
-      ),
-      LayoutTemplate.new(
         height_ratio: 50,
         min_height: 7,
         fill_width: true,
@@ -66,12 +51,26 @@ module RubyJard
         ]
       ),
       LayoutTemplate.new(
+        height_ratio: 20,
+        min_height: 3,
+        fill_width: true,
+        children: [
+          LayoutTemplate.new(
+            screen: :stacktraces,
+            width_ratio: 60
+          ),
+          LayoutTemplate.new(
+            screen: :threads,
+            width_ratio: 40
+          )
+        ]
+      ),
+      LayoutTemplate.new(
         height: 2,
         screen: :menu
       )
     ]
   )
-
 
   DEFAULT_LAYOUT_TEMPLATES = [
     WideLayoutTemplate
