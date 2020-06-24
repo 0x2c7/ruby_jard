@@ -1,4 +1,5 @@
 require 'pry'
+require 'coderay'
 require 'byebug/core'
 require 'byebug/attacher'
 require 'tty-cursor'

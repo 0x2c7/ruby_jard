@@ -2,6 +2,8 @@
 
 require 'ruby_jard/decorators/text_decorator'
 require 'ruby_jard/decorators/path_decorator'
+require 'ruby_jard/decorators/loc_decorator'
+require 'ruby_jard/decorators/source_decorator'
 require 'ruby_jard/screen'
 require 'ruby_jard/screens'
 require 'ruby_jard/screens/breakpoints_screen'

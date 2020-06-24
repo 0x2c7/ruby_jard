@@ -77,7 +77,7 @@ module RubyJard
           .with_highlight(frame_pos == frame_id)
           .text(object_label, :green)
           .text(' in ', :white)
-          .text(decorate_method_label(location, is_class_method), :green)
+          .text(decorate_method_label(location, is_class_method), :yellow)
       end
 
       def analyze_object(object, klass)

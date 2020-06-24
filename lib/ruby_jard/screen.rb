@@ -10,7 +10,7 @@ module RubyJard
       @layout = layout
       @row = row
       @col = col
-      @color = Pastel.new
+      @color_decorator = Pastel.new
     end
 
     def draw(_row, _col, _size)
@@ -18,11 +18,23 @@ module RubyJard
     end
 
     def decorate_text
-      RubyJard::Decorators::TextDecorator.new(@color)
+      # TODO: this interface is ugly as fuck
+      RubyJard::Decorators::TextDecorator.new(@color_decorator)
     end
 
     def decorate_path(location)
+      # TODO: this interface is ugly as fuck
       RubyJard::Decorators::PathDecorator.new(location)
+    end
+
+    def decorate_source(file, lineno, window)
+      # TODO: this interface is ugly as fuck
+      RubyJard::Decorators::SourceDecorator.new(file, lineno, window)
+    end
+
+    def decorate_loc(loc)
+      # TODO: this interface is ugly as fuck
+      RubyJard::Decorators::LocDecorator.new(@color_decorator, loc)
     end
 
     private
