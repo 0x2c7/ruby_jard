@@ -53,10 +53,9 @@ module RubyJard
         'Custom promt for Pry'
       ) do |context, _nesting, pry_instance, sep|
         format(
-          '%<name>s(%<context>s)%<separator>s ',
+          '%<name>s >> ',
           in_count: pry_instance.input_ring.count,
           name: :jard,
-          context: Pry.view_clip(context),
           separator: sep
         )
       end
