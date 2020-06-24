@@ -21,15 +21,18 @@ module RubyJard
 
       private
 
+      def data_size
+        @layout.height - 2
+      end
+
       def frame_styles
         default_frame_styles.merge(
           top: @row, left: @col, width: @layout.width, height: @layout.height,
-          title: { top_left: " Stack trace (#{frames_count})" }
+          title: { top_left: " Stack trace (#{frames_count}) " }
         )
       end
 
       def decorate_frames
-        data_size = @layout.height - 1
         return [] if data_size.zero?
 
         window_start = frame_pos / data_size * data_size
