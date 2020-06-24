@@ -66,7 +66,7 @@ module RubyJard
         ]
       ),
       LayoutTemplate.new(
-        height: 1,
+        height: 2,
         screen: :menu
       )
     ]
