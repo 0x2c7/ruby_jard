@@ -37,18 +37,24 @@ module RubyJard
 
         decorated_source.codes.map.with_index do |loc, index|
           lineno = decorated_source.window_start + index
-          lineno_color = current_line == lineno ? :green : :white
-          mark = current_line == lineno ? '→' : ' '
-
           decorated_loc = decorate_loc(loc)
 
-          decorate_text
-            .with_highlight(current_line == lineno)
-            .text(mark)
-            .text(' ')
-            .text(lineno.to_s.ljust(lineno_padding), lineno_color)
-            .text(' ')
-            .text(decorated_loc.loc)
+          if current_line == lineno
+            decorate_text
+              .with_highlight(true)
+              .text('→ ')
+              .text(lineno.to_s.ljust(lineno_padding), :green)
+              .text(' ')
+              .text(decorated_loc.loc)
+              .text(inline_variables(decorated_loc.tokens))
+          else
+            decorate_text
+              .with_highlight(false)
+              .text('  ')
+              .text(lineno.to_s.ljust(lineno_padding), :white)
+              .text(' ')
+              .text(decorated_loc.loc)
+          end
         end
       end
 
@@ -58,12 +64,61 @@ module RubyJard
         "#{current_file}:#{current_line}"
       end
 
+      def current_binding
+        RubyJard.current_session.frame._binding
+      end
+
+      def current_frame_scope
+        RubyJard.current_session.backtrace[RubyJard.current_session.frame.pos][1]
+      end
+
       def current_file
         RubyJard.current_session.frame.file
       end
 
       def current_line
         RubyJard.current_session.frame.line
+      end
+
+      def inline_variables(tokens)
+        variables = {}
+        local_variables = current_binding.local_variables
+        instance_variables = current_frame_scope.instance_variables
+
+        tokens.each_slice(2).each do |token, kind|
+          token = token.to_sym
+
+          if kind == :ident && local_variables.include?(token)
+            var = current_binding.local_variable_get(token)
+          elsif kind == :instance_variable && instance_variables.include?(token)
+            var = current_frame_scope.instance_variable_get(token)
+          else
+            next
+          end
+
+          next if variables.key?(token)
+
+          var_inspect = var.inspect
+          # TODO: dynamic fill the rest of the line instead
+          variables[token] = var_inspect if var_inspect.length < 30
+        end
+
+        return '' if variables.empty?
+
+        variables_text = decorate_text.with_highlight(false).text('   #→ ', :white)
+        variables.to_a.each_with_index do |(var_name, var_inspect), index|
+          variables_text
+            .with_highlight(false)
+            .text(var_name.to_s, :white)
+            .text('=', :white)
+            .text(var_inspect, :white)
+
+          if index != variables.length - 1
+            variables_text.with_highlight(false).text(', ')
+          end
+        end
+
+        variables_text
       end
     end
   end
