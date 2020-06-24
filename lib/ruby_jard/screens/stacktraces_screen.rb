@@ -22,7 +22,7 @@ module RubyJard
       private
 
       def data_size
-        @layout.height - 2
+        @layout.height - 1
       end
 
       def frame_styles
@@ -67,9 +67,7 @@ module RubyJard
         decorate_text
           .with_highlight(frame_pos == frame_id)
           .text(frame_pos == frame_id ? '→ ' : '  ', :white)
-          .text('[', :white)
           .text(frame_id.to_s.ljust(window_end.to_s.length), frame_pos == frame_id ? :green : :white)
-          .text(']', :white)
       end
 
       def decorate_location_label(frame_id, location, object, klass)

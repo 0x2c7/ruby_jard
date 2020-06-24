@@ -19,10 +19,10 @@ module RubyJard
         @lineno = location.lineno
         @type = TYPE_UNKNOWN
 
-        process_path
+        decorate
       end
 
-      def process_path
+      def decorate
         if path.start_with?(Dir.pwd)
           @type = TYPE_PWD
           @path = @path[Dir.pwd.length..-1]
