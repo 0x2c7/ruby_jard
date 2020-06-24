@@ -11,8 +11,11 @@ module RubyJard
           @output.print TTY::Cursor.move_to(@col + 1, @row + index + 1)
           @output.print left.content
 
-          @output.print TTY::Cursor.move_to(@col + @layout.width - right.length - 1, @row + index + 1)
-          @output.print right.content
+          if @col + left.length < @col + @layout.width - right.length - 1
+            # TODO: handle reducable components in case of smaller screen
+            @output.print TTY::Cursor.move_to(@col + @layout.width - right.length - 1, @row + index + 1)
+            @output.print right.content
+          end
         end
       end
 
@@ -30,7 +33,7 @@ module RubyJard
         return [] if data_size.zero?
 
         window_start = frame_pos / data_size * data_size
-        window_end = window_start + data_size
+        window_end = [frames_count, window_start + data_size].min
 
         frames[window_start..window_end]
           .map
@@ -44,11 +47,13 @@ module RubyJard
         object = line[1]
         klass = line[2]
 
-        [
-          decorate_frame_id(frame_id, window_start, window_end) + ' ' +
-            decorate_location_label(frame_id, location, object, klass),
-          decorate_location_path(frame_id, location)
-        ]
+        left =
+          decorate_frame_id(frame_id, window_start, window_end) +
+          ' ' +
+          decorate_location_label(frame_id, location, object, klass)
+        right = decorate_location_path(frame_id, location)
+
+        [left, right]
       end
 
       def reset
@@ -106,6 +111,9 @@ module RubyJard
             .with_highlight(frame_pos == frame_id)
             .text('in ', :white)
             .text(decorated_path.gem, :white)
+            .text(' (', :white)
+            .text(decorated_path.gem_version, :white)
+            .text(')', :white)
         else
           decorate_text
             .with_highlight(frame_pos == frame_id)

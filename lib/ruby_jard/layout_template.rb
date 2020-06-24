@@ -22,11 +22,11 @@ module RubyJard
         children: [
           LayoutTemplate.new(
             screen: :stacktraces,
-            width_ratio: 50
+            width_ratio: 60
           ),
           LayoutTemplate.new(
             screen: :threads,
-            width_ratio: 50
+            width_ratio: 40
           )
         ]
       ),
@@ -37,10 +37,10 @@ module RubyJard
         children: [
           LayoutTemplate.new(
             screen: :source,
-            width_ratio: 50
+            width_ratio: 60
           ),
           LayoutTemplate.new(
-            width_ratio: 50,
+            width_ratio: 40,
             fill_height: true,
             children: [
               LayoutTemplate.new(
@@ -71,6 +71,7 @@ module RubyJard
       )
     ]
   )
+
 
   DEFAULT_LAYOUT_TEMPLATES = [
     WideLayoutTemplate

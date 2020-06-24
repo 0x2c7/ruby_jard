@@ -3,16 +3,18 @@
 module RubyJard
   module Decorators
     class PathDecorator
+      GEM_PATTERN = /(.*)\-(\d+\.\d+[\.\d]*[\.\d]*[\-\.\w]*)/i.freeze
       PATH_TYPES = [
         TYPE_UNKNOWN = :unknown,
         TYPE_PWD = :pwd,
         TYPE_GEM = :gem
       ].freeze
 
-      attr_reader :path, :lineno, :gem
+      attr_reader :path, :lineno, :gem, :gem_version
 
       def initialize(location)
         @gem = nil
+        @gem_version = nil
         @path = location.path
         @lineno = location.lineno
         @type = TYPE_UNKNOWN
@@ -33,6 +35,12 @@ module RubyJard
             stripped_path = @path[gem_path.length..-1]
             stripped_path = stripped_path[1..-1] if stripped_path.start_with?('/')
             @gem = stripped_path.split('/').first
+
+            if match = GEM_PATTERN.match(@gem)
+              @gem = match[1]
+              @gem_version = match[2]
+            end
+
             break
           end
         end
