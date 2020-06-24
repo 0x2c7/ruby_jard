@@ -42,8 +42,8 @@ module RubyJard
 
       def generate_left_menu
         [
-          decorate_text.with_highlight(true).text('Debug console (F8)', :green),
-          decorate_text.text('Program output (F9)', :white)
+          decorate_text.with_highlight(true).text('Debug console (F5)', :green),
+          decorate_text.text('Program output (F6)', :white)
         ]
       end
 
