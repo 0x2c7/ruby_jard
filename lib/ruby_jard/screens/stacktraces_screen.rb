@@ -6,7 +6,7 @@ module RubyJard
       def draw
         @output.print TTY::Box.frame(**frame_styles)
 
-        decorate_stacktraces.each_with_index do |frame_texts, index|
+        decorate_frames.each_with_index do |frame_texts, index|
           left, right = frame_texts
           @output.print TTY::Cursor.move_to(@col + 1, @row + index + 1)
           @output.print left.content
@@ -21,31 +21,33 @@ module RubyJard
       def frame_styles
         default_frame_styles.merge(
           top: @row, left: @col, width: @layout.width, height: @layout.height,
-          title: { top_left: ' Stack trace ' }
+          title: { top_left: " Stack trace (#{frames_count})" }
         )
       end
 
-      def decorate_stacktraces
-        @session
-          .backtrace
-          .first(@layout.height - 2)
+      def decorate_frames
+        data_size = @layout.height - 1
+        return [] if data_size.zero?
+
+        window_start = frame_pos / data_size * data_size
+        window_end = window_start + data_size
+
+        frames[window_start..window_end]
           .map
-          .with_index do |frame, frame_id|
-            decorate_frame(frame, frame_id)
+          .with_index do |frame, frame_index|
+            decorate_frame(frame, window_start + frame_index, window_start, window_end)
           end
       end
 
-      def decorate_frame(line, frame_id)
-        path = line[0].path
-        lineno = line[0].lineno
-
+      def decorate_frame(line, frame_id, window_start, window_end)
         location = line[0]
         object = line[1]
         klass = line[2]
 
         [
-          decorate_frame_id(frame_id) + ' ' + decorate_location(frame_id, location, object, klass),
-          decorate_path(frame_id, path, lineno)
+          decorate_frame_id(frame_id, window_start, window_end) + ' ' +
+            decorate_location_label(frame_id, location, object, klass),
+          decorate_location_path(frame_id, location)
         ]
       end
 
@@ -53,38 +55,38 @@ module RubyJard
         @color = Pastel.new
       end
 
-      def decorate_frame_id(frame_id)
-        padding = @session.backtrace.length.to_s.length
-        decorate
-          .with_highlight(current_frame?(frame_id))
-          .text(current_frame?(frame_id) ? '→ ' : '  ', :white)
+      def decorate_frame_id(frame_id, window_start, window_end)
+        decorate_text
+          .with_highlight(frame_pos == frame_id)
+          .text(frame_pos == frame_id ? '→ ' : '  ', :white)
           .text('[', :white)
-          .text(frame_id.to_s.ljust(padding), current_frame?(frame_id) ? :green : :white)
+          .text(frame_id.to_s.ljust(window_end.to_s.length), frame_pos == frame_id ? :green : :white)
           .text(']', :white)
       end
 
-      def decorate_location(frame_id, location, object, klass)
-        klass_label, method_label =
-          if klass.nil? || object.class == klass
-            if object.is_a?(Class)
-              [object.name, decorate_method_label(location, true)]
-            else
-              [object.class.name, decorate_method_label(location, false)]
-            end
-          else
-            if klass.singleton_class?
-              # No easy way to get the original class of a singleton class
-              [object.name, decorate_method_label(location, true)]
-            else
-              [klass.name, decorate_method_label(location, false)]
-            end
-          end
+      def decorate_location_label(frame_id, location, object, klass)
+        object_label, is_class_method = analyze_object(object, klass)
 
-        decorate
-          .with_highlight(current_frame?(frame_id))
-          .text(klass_label, :green)
+        decorate_text
+          .with_highlight(frame_pos == frame_id)
+          .text(object_label, :green)
           .text(' in ', :white)
-          .text(method_label, :green)
+          .text(decorate_method_label(location, is_class_method), :green)
+      end
+
+      def analyze_object(object, klass)
+        if klass.nil? || object.class == klass
+          if object.is_a?(Class)
+            [object.name, true]
+          else
+            [object.class.name, false]
+          end
+        elsif klass.singleton_class?
+          # No easy way to get the original class of a singleton class
+          [object.name, true]
+        else
+          [klass.name, false]
+        end
       end
 
       def decorate_method_label(location, is_class_method)
@@ -96,55 +98,38 @@ module RubyJard
         end
       end
 
-      def decorate_path(frame_id, path, lineno)
-        if path.start_with?(Dir.pwd)
-          path = path[Dir.pwd.length..-1]
-          decorate
-            .with_highlight(current_frame?(frame_id))
-            .text('at ', :white)
-            .text(path, :white)
-            .text(':', :white)
-            .text(lineno.to_s, :white)
-        else
-          path = pretify_gem_path(path)
-          decorate
-            .with_highlight(current_frame?(frame_id))
+      def decorate_location_path(frame_id, location)
+        decorated_path = decorate_path(location)
+
+        if decorated_path.gem?
+          decorate_text
+            .with_highlight(frame_pos == frame_id)
             .text('in ', :white)
-            .text(path, :white)
-        end
-      end
-
-      def current_frame?(frame_id)
-        if @session.frame.nil?
-          frame_id.zero?
+            .text(decorated_path.gem, :white)
         else
-          frame_id == @session.frame.pos.to_i
+          decorate_text
+            .with_highlight(frame_pos == frame_id)
+            .text('at ', :white)
+            .text(decorated_path.path, :white)
+            .text(':', :white)
+            .text(decorated_path.lineno, :white)
         end
       end
 
-      def pretify_gem_path(path)
-        reducable_paths = []
-        if defined?(Gem)
-          Gem.path.each do |gem_path|
-            reducable_paths << File.join(gem_path, 'gems')
-            reducable_paths << gem_path
-          end
+      def frame_pos
+        if @session.frame.nil?
+          0
+        else
+          @session.frame.pos.to_i
         end
-        if defined?(Bundler)
-          bundle_path = Bundler.bundle_path.to_s
-          reducable_paths << File.join(bundle_path, 'gems')
-          reducable_paths << bundle_path
-        end
+      end
 
-        reducable_paths.each do |rp|
-          next unless path.start_with?(rp)
+      def frames_count
+        @session.backtrace.length
+      end
 
-          path = path[rp.length..-1]
-          path = path[1..-1] if path.start_with?('/')
-
-          return path.split('/').first
-        end
-        path
+      def frames
+        @session.backtrace
       end
     end
   end

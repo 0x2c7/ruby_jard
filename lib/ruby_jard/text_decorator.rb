@@ -13,6 +13,7 @@ module RubyJard
       end
 
       def text(sentence, *styles)
+        sentence = sentence.to_s
         @length += sentence.length
 
         @content +=

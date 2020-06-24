@@ -17,8 +17,12 @@ module RubyJard
       raise NotImplementedError, "#{self.class} must implement #draw method"
     end
 
-    def decorate
+    def decorate_text
       RubyJard::Decorators::TextDecorator.new(@color)
+    end
+
+    def decorate_path(location)
+      RubyJard::Decorators::PathDecorator.new(location)
     end
 
     private
