@@ -137,14 +137,13 @@ module RubyJard
 
         def text_token(text, kind)
           color = @color_scopes.last[kind]
+          text.gsub!("\n", '')
           if color
             color = color[:self] if color.is_a? Hash
             @out << @color_decorator.decorate(text, *color)
-            # @out << " [#{text} - #{kind} (#{compose_color(color)})]"
           else
             @out << @color_decorator.decorate(text, :clear)
           end
-          a = 1
         end
 
         def begin_group(kind)
@@ -160,7 +159,6 @@ module RubyJard
         end
 
         def end_line(kind)
-          @out << (@line_filler ||= "\t" * 100)
           end_group(kind)
         end
 
