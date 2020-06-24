@@ -13,6 +13,8 @@ module RubyJard
       end
 
       def text(sentence, *styles)
+        return self + sentence if sentence.is_a?(TextDecorator)
+
         sentence = sentence.to_s
         @length += sentence.length
 
