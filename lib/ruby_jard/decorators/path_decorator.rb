@@ -12,11 +12,11 @@ module RubyJard
 
       attr_reader :path, :lineno, :gem, :gem_version
 
-      def initialize(location)
+      def initialize(path, lineno)
         @gem = nil
         @gem_version = nil
-        @path = location.path
-        @lineno = location.lineno
+        @path = path
+        @lineno = lineno
         @type = TYPE_UNKNOWN
 
         decorate
@@ -32,14 +32,18 @@ module RubyJard
             next unless path.start_with?(gem_path)
 
             @type = TYPE_GEM
-            stripped_path = @path[gem_path.length..-1]
-            stripped_path = stripped_path[1..-1] if stripped_path.start_with?('/')
-            @gem = stripped_path.split('/').first
+            @path = @path[gem_path.length..-1]
+            @path = @path[1..-1] if @path.start_with?('/')
+
+            splitted_path = @path.split('/')
+            @gem = splitted_path.first
 
             if match = GEM_PATTERN.match(@gem)
               @gem = match[1]
               @gem_version = match[2]
             end
+
+            @path = splitted_path.last
 
             break
           end

@@ -22,9 +22,9 @@ module RubyJard
       RubyJard::Decorators::TextDecorator.new(@color_decorator)
     end
 
-    def decorate_path(location)
+    def decorate_path(path, lineno)
       # TODO: this interface is ugly as fuck
-      RubyJard::Decorators::PathDecorator.new(location)
+      RubyJard::Decorators::PathDecorator.new(path, lineno)
     end
 
     def decorate_source(file, lineno, window)
