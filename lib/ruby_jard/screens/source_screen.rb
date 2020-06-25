@@ -40,7 +40,7 @@ module RubyJard
 
         decorated_source.codes.map.with_index do |loc, index|
           lineno = decorated_source.window_start + index
-          decorated_loc = decorate_loc(loc)
+          decorated_loc = decorate_loc(loc, current_line == lineno)
 
           if current_line == lineno
             decorate_text

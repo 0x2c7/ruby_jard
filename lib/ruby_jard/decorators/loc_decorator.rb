@@ -3,10 +3,12 @@ module RubyJard
     class LocDecorator
       attr_reader :loc, :tokens
 
-      def initialize(color_decorator, loc)
+      def initialize(color_decorator, loc, highlighted)
         @loc = loc
+        @highlighted = highlighted
         @encoder = JardLocEncoder.new(
-          color_decorator: color_decorator
+          color_decorator: color_decorator,
+          highlighted: highlighted
         )
 
         decorate
@@ -131,6 +133,7 @@ module RubyJard
           @opened = []
           @color_scopes = [TOKEN_COLORS]
           @color_decorator = options[:color_decorator]
+          @highlighted = options[:highlighted]
         end
 
         public
@@ -140,9 +143,9 @@ module RubyJard
           text.gsub!("\n", '')
           if color
             color = color[:self] if color.is_a? Hash
-            @out << @color_decorator.decorate(text, *color)
+            @out << @color_decorator.decorate(text, *compose_color(color))
           else
-            @out << @color_decorator.decorate(text, :clear)
+            @out << @color_decorator.decorate(text, *compose_color([]))
           end
         end
 
@@ -174,6 +177,14 @@ module RubyJard
             end
           else
             @color_scopes << @color_scopes.last
+          end
+        end
+
+        def compose_color(color)
+          if @highlighted
+            [:clear] + color
+          else
+            [:dim] + color
           end
         end
       end

@@ -32,9 +32,9 @@ module RubyJard
       RubyJard::Decorators::SourceDecorator.new(file, lineno, window)
     end
 
-    def decorate_loc(loc)
+    def decorate_loc(loc, highlighted)
       # TODO: this interface is ugly as fuck
-      RubyJard::Decorators::LocDecorator.new(@color_decorator, loc)
+      RubyJard::Decorators::LocDecorator.new(@color_decorator, loc, highlighted)
     end
 
     private
