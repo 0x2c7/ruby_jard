@@ -112,18 +112,18 @@ module RubyJard
         if decorated_path.gem?
           decorate_text
             .with_highlight(frame_pos == frame_id)
-            .text('in ', :white)
-            .text(decorated_path.gem, :white)
-            .text(' (', :white)
-            .text(decorated_path.gem_version, :white)
-            .text(')', :white)
+            .text('in ', :bright_white)
+            .text(decorated_path.gem, :bright_white)
+            .text(' (', :bright_white)
+            .text(decorated_path.gem_version, :bright_white)
+            .text(')', :bright_white)
         else
           decorate_text
             .with_highlight(frame_pos == frame_id)
-            .text('at ', :white)
-            .text(decorated_path.path, :white)
-            .text(':', :white)
-            .text(decorated_path.lineno, :white)
+            .text('at ', :bright_white)
+            .text(decorated_path.path, :bright_white)
+            .text(':', :bright_white)
+            .text(decorated_path.lineno, :bright_white)
         end
       end
 
