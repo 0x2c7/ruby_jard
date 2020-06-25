@@ -6,6 +6,13 @@ module RubyJard
       def draw
         @output.print TTY::Box.frame(**frame_styles)
 
+
+        @output.print TTY::Cursor.move_to(@col + 1, @row)
+        @output.print decorate_text
+          .with_highlight(true)
+          .text(" Stack trace (#{frames_count}) ", :bright_cyan)
+          .content
+
         decorate_frames.each_with_index do |frame_texts, index|
           left, right = frame_texts
           @output.print TTY::Cursor.move_to(@col + 1, @row + index + 1)
@@ -27,8 +34,7 @@ module RubyJard
 
       def frame_styles
         default_frame_styles.merge(
-          top: @row, left: @col, width: @layout.width, height: @layout.height,
-          title: { top_left: " Stack trace (#{frames_count}) " }
+          top: @row, left: @col, width: @layout.width, height: @layout.height
         )
       end
 
@@ -71,41 +77,38 @@ module RubyJard
       end
 
       def decorate_location_label(frame_id, location, object, klass)
-        object_label, is_class_method = analyze_object(object, klass)
-
         decorate_text
           .with_highlight(frame_pos == frame_id)
-          .text(object_label, :green)
+          .text(decorate_object_label(object, klass), :green)
           .text(' in ', :white)
-          .text(decorate_method_label(location, is_class_method), :yellow)
+          .text(decorate_method_label(location), :yellow)
       end
 
-      def analyze_object(object, klass)
+      def decorate_object_label(object, klass)
         if klass.nil? || object.class == klass
           if object.is_a?(Class)
-            [object.name, true]
+            object.name
           else
-            [object.class.name, false]
+            object.class.name
           end
         elsif klass.singleton_class?
           # No easy way to get the original class of a singleton class
-          [object.name, true]
+          object.name
         else
-          [klass.name, false]
+          klass.name
         end
       end
 
-      def decorate_method_label(location, is_class_method)
-        method_label = "#{is_class_method ? '.' : '#'}#{location.base_label}"
+      def decorate_method_label(location)
         if location.label != location.base_label
-          "#{method_label} (#{location.label.split(' ').first})"
+          "#{location.base_label} (#{location.label.split(' ').first})"
         else
-          method_label
+          location.base_label
         end
       end
 
       def decorate_location_path(frame_id, location)
-        decorated_path = decorate_path(location)
+        decorated_path = decorate_path(location.absolute_path, location.lineno)
 
         if decorated_path.gem?
           decorate_text

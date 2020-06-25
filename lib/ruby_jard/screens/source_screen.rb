@@ -4,17 +4,20 @@ module RubyJard
   module Screens
     class SourceScreen < RubyJard::Screen
       def draw
-        frame = TTY::Box.frame(
+        @output.print TTY::Box.frame(
           **default_frame_styles.merge(
             top: @row, left: @col, width: @layout.width, height: @layout.height,
-            title: {
-              top_left: ' Source ',
-              top_right: file_path
-            }
           )
         )
 
-        @output.print frame
+        @output.print TTY::Cursor.move_to(@col + 1, @row)
+        @output.print decorate_text
+          .with_highlight(true)
+          .text(' Source', :bright_cyan)
+          .text(' (', :bright_cyan)
+          .text(file_path, :bright_cyan)
+          .text(') ', :bright_cyan)
+          .content
 
         decorate_codes.each_with_index do |decorated_loc, index|
           @output.print TTY::Cursor.move_to(@col + 1, @row + 1 + index)
@@ -61,7 +64,12 @@ module RubyJard
       def file_path
         return '' if RubyJard.current_session.frame.nil?
 
-        "#{current_file}:#{current_line}"
+        decorated_path = decorate_path(current_file, current_line)
+        if decorated_path.gem?
+          "#{decorated_path.gem}: #{decorated_path.path}:#{decorated_path.lineno}"
+        else
+          "#{decorated_path.path}:#{decorated_path.lineno}"
+        end
       end
 
       def current_binding
