@@ -41,7 +41,7 @@ module RubyJard
         variables_hash = {}
 
         current_frame.args.map do |(_kind, variable)|
-          next if variables_hash[variable]
+          next if variables_hash[variable] || variable.nil?
 
           variables << [:arg, variable, current_binding.local_variable_get(variable)]
           variables_hash[variable] = true
