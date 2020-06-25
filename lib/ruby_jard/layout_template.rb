@@ -29,23 +29,23 @@ module RubyJard
             fill_height: true,
             children: [
               LayoutTemplate.new(
-                screen: :breakpoints,
-                width_ratio: 100,
-                height_ratio: 33,
-                min_height: 3
-              ),
-              LayoutTemplate.new(
                 screen: :variables,
                 width_ratio: 100,
-                height_ratio: 33,
-                min_height: 3
-              ),
-              LayoutTemplate.new(
-                screen: :expressions,
-                width_ratio: 100,
-                height_ratio: 33,
+                height_ratio: 100,
                 min_height: 3
               )
+              # LayoutTemplate.new(
+              #   screen: :breakpoints,
+              #   width_ratio: 100,
+              #   height_ratio: 25,
+              #   min_height: 3
+              # ),
+              # LayoutTemplate.new(
+              #   screen: :expressions,
+              #   width_ratio: 100,
+              #   height_ratio: 25,
+              #   min_height: 3
+              # )
             ]
           )
         ]
