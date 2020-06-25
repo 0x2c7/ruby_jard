@@ -122,7 +122,7 @@ module RubyJard
             .text(var_inspect, :white)
 
           if index != variables.length - 1
-            variables_text.with_highlight(false).text(', ')
+            variables_text.with_highlight(false).text(', ', :white)
           end
         end
 
