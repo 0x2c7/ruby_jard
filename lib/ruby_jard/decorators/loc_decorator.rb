@@ -24,16 +24,16 @@ module RubyJard
         TOKEN_COLORS = {
           debug: [:white, :on_blue],
           annotation: [:blue],
-          attribute_name: [:yellow],
-          attribute_value: [:yellow],
+          attribute_name: [:blue],
+          attribute_value: [:blue],
           binary: {
-            self: [:yellow],
-            char: [:yellow],
-            delimiter: [:yellow]
+            self: [:blue],
+            char: [:blue],
+            delimiter: [:blue]
           },
           char: {
-            self: [:yellow],
-            delimiter: [:yellow]
+            self: [:blue],
+            delimiter: [:blue]
           },
           class: [:underline, :green],
           class_variable: [:green],
@@ -44,33 +44,33 @@ module RubyJard
             delimiter: [:white]
           },
           constant: [:underline, :green],
-          decorator: [:yellow],
-          definition: [:yellow],
-          directive: [:yellow],
-          docstring: [:yellow],
+          decorator: [:blue],
+          definition: [:blue],
+          directive: [:blue],
+          docstring: [:blue],
           doctype: [:blue],
           done: [:blue],
-          entity: [:yellow],
+          entity: [:blue],
           error: [:white, :on_red],
-          exception: [:yellow],
-          float: [:yellow],
+          exception: [:blue],
+          float: [:blue],
           function: [:green],
           method: [:green],
           global_variable: [:green],
           hex: [:blue],
           id: [:blue],
-          include: [:yellow],
-          integer: [:yellow],
+          include: [:blue],
+          integer: [:blue],
           imaginary: [:blue],
-          important: [:yellow],
+          important: [:blue],
           key: {
-            self: [:yellow],
-            char: [:yellow],
-            delimiter: [:yellow]
+            self: [:blue],
+            char: [:blue],
+            delimiter: [:blue]
           },
-          label: [:yellow],
-          local_variable: [:yellow],
-          namespace: [:yellow],
+          label: [:blue],
+          local_variable: [:blue],
+          namespace: [:blue],
           octal: [:blue],
           predefined: [:blue],
           predefined_constant: [:blue],
@@ -78,29 +78,29 @@ module RubyJard
           preprocessor: [:blue],
           pseudo_class: [:blue],
           regexp: {
-            self: [:yellow],
-            delimiter: [:yellow],
-            modifier: [:yellow],
-            char: [:yellow]
+            self: [:blue],
+            delimiter: [:blue],
+            modifier: [:blue],
+            char: [:blue]
           },
           reserved: [:blue],
           keyword: [:blue],
           shell: {
-            self: [:yellow],
-            char: [:yellow],
-            delimiter: [:yellow],
-            escape: [:yellow]
+            self: [:blue],
+            char: [:blue],
+            delimiter: [:blue],
+            escape: [:blue]
           },
           string: {
-            self: [:yellow],
-            modifier: [:yellow],
-            char: [:yellow],
-            delimiter: [:yellow],
-            escape: [:yellow]
+            self: [:blue],
+            modifier: [:blue],
+            char: [:blue],
+            delimiter: [:blue],
+            escape: [:blue]
           },
           symbol: {
-            self: [:yellow],
-            delimiter: [:yellow]
+            self: [:blue],
+            delimiter: [:blue]
           },
           tag: [:green],
           type: [:blue],
@@ -113,7 +113,7 @@ module RubyJard
           },
           delete: {
             self: [:on_red],
-            delete: [:yellow, :on_red],
+            delete: [:blue, :on_red],
             eyecatcher: [:italic]
           },
           change: {
