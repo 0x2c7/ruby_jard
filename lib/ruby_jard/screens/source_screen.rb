@@ -10,13 +10,13 @@ module RubyJard
           )
         )
 
-        @output.print TTY::Cursor.move_to(@col + 1, @row)
+        @output.print TTY::Cursor.move_to(@col + 2, @row)
         @output.print decorate_text
           .with_highlight(true)
-          .text(' Source', :bright_cyan)
-          .text(' (', :bright_cyan)
-          .text(file_path, :bright_cyan)
-          .text(') ', :bright_cyan)
+          .text(' Source', :bright_yellow)
+          .text(' (', :bright_yellow)
+          .text(file_path, :bright_yellow)
+          .text(') ', :bright_yellow)
           .content
 
         decorate_codes.each_with_index do |decorated_loc, index|
@@ -46,7 +46,7 @@ module RubyJard
             decorate_text
               .with_highlight(true)
               .text('→ ')
-              .text(lineno.to_s.ljust(lineno_padding), :green)
+              .text(lineno.to_s.ljust(lineno_padding), :bright_yellow)
               .text(' ')
               .text(decorated_loc.loc)
               .text(inline_variables(decorated_loc.tokens))

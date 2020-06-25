@@ -42,16 +42,14 @@ module RubyJard
     def default_frame_styles
       {
         style: {
-          border: {
-            fg: :dim
-          }
+          fg: :white
         },
         border: {
           bottom_left: false,
           bottom_right: false,
-          right: false,
           bottom: false,
-          left: false
+          left: false,
+          right: false
         }
       }
     end

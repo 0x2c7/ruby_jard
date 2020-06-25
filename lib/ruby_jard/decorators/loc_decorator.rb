@@ -35,15 +35,15 @@ module RubyJard
             self: [:yellow],
             delimiter: [:yellow]
           },
-          class: [:green],
-          class_variable: [:blue],
+          class: [:underline, :green],
+          class_variable: [:green],
           color: [:green],
           comment: {
             self: [:white],
             char: [:white],
             delimiter: [:white]
           },
-          constant: [:green],
+          constant: [:underline, :green],
           decorator: [:yellow],
           definition: [:yellow],
           directive: [:yellow],
@@ -55,7 +55,7 @@ module RubyJard
           exception: [:yellow],
           float: [:yellow],
           function: [:green],
-          method: [:yellow],
+          method: [:green],
           global_variable: [:green],
           hex: [:blue],
           id: [:blue],

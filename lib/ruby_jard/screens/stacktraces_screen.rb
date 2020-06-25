@@ -6,11 +6,10 @@ module RubyJard
       def draw
         @output.print TTY::Box.frame(**frame_styles)
 
-
-        @output.print TTY::Cursor.move_to(@col + 1, @row)
+        @output.print TTY::Cursor.move_to(@col + 2, @row)
         @output.print decorate_text
           .with_highlight(true)
-          .text(" Stack trace (#{frames_count}) ", :bright_cyan)
+          .text(" Stack trace (#{frames_count}) ", :bright_yellow)
           .content
 
         decorate_frames.each_with_index do |frame_texts, index|
@@ -73,7 +72,7 @@ module RubyJard
         decorate_text
           .with_highlight(frame_pos == frame_id)
           .text(frame_pos == frame_id ? '→ ' : '  ', :white)
-          .text(frame_id.to_s.ljust(window_end.to_s.length), frame_pos == frame_id ? :green : :white)
+          .text(frame_id.to_s.ljust(window_end.to_s.length), frame_pos == frame_id ? :bright_yellow : :white)
       end
 
       def decorate_location_label(frame_id, location, object, klass)
@@ -81,7 +80,7 @@ module RubyJard
           .with_highlight(frame_pos == frame_id)
           .text(decorate_object_label(object, klass), :green)
           .text(' in ', :white)
-          .text(decorate_method_label(location), :yellow)
+          .text(decorate_method_label(location), :green)
       end
 
       def decorate_object_label(object, klass)
