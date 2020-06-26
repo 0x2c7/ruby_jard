@@ -20,7 +20,7 @@ module RubyJard
       KIND_COLORS = {
         KIND_ARG => :bright_white,
         KIND_LOC => :bright_white,
-        KIND_INS => :yellow,
+        KIND_INS => :blue,
         KIND_CON => :green
       }.freeze
 
