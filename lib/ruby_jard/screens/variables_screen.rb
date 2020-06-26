@@ -109,7 +109,7 @@ module RubyJard
           .text(decoreated_kind(kind))
           .text(' ')
           .with_highlight(true)
-          .text(name.to_s, :bright_white)
+          .text(name.to_s, kind_color(kind))
           .text(addition_data(value), :white)
           .text(' = ')
         inspect_texts = inspect_value(text, value)
@@ -160,12 +160,13 @@ module RubyJard
       end
 
       def decoreated_kind(kind)
-        kind_color = KIND_COLORS[kind]
-        kind_color||= :white
-
         decorate_text
           .with_highlight(false)
-          .text(kind.to_s, kind_color)
+          .text(kind.to_s, kind_color(kind))
+      end
+
+      def kind_color(kind)
+        KIND_COLORS[kind] || :white
       end
 
       def sort_variables(variables)
