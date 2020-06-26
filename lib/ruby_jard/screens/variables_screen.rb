@@ -16,13 +16,17 @@ module RubyJard
           .text('Variables ', :bright_yellow)
           .content
 
-        decorated_variables.each_with_index do |variable, index|
+        decorated_variables.first(data_size).each_with_index do |variable, index|
           @output.print TTY::Cursor.move_to(@col + 1, @row + index + 1)
           @output.print variable.content
         end
       end
 
       private
+
+      def data_size
+        @layout.height - 2
+      end
 
       def current_binding
         RubyJard.current_session.frame._binding
@@ -66,7 +70,7 @@ module RubyJard
 
         variables.map do |kind, name, value|
           decorated_variable(kind, name, value)
-        end
+        end.flatten
       end
 
       def decorated_variable(kind, name, value)
@@ -76,17 +80,52 @@ module RubyJard
           .text(' ')
           .with_highlight(true)
           .text(name.to_s, :bright_white)
+          .text(addition_data(value), :white)
           .with_highlight(false)
           .text(' = ')
-        text.text(decorated_value(text, value), :white)
+        inspect_texts = inspect_value(text, value)
+        text.text(inspect_texts.first, :white)
+
+        # TODO: Fix this ugly code
+        [text] +
+        inspect_texts[1..-1].map do |line|
+          decorate_text
+            .text('    ')
+            .text(line, :white)
+        end
       end
 
-      def decorated_value(text, value)
-        length = @layout.width - 2 - text.length
+      def addition_data(value)
+        if value.is_a?(Array)
+          " (size: #{value.length})"
+        elsif value.is_a?(String) && value.length > 20
+          " (size: #{value.length})"
+        else
+          ''
+        end
+      end
+
+      def inspect_value(text, value)
+        # Split the lines, add padding to align with kind
+        length = @layout.width - 6
         value_inspect = value.inspect.to_s
-        value_inspect = value.to_s if value_inspect.length > length
-        value_inspect = value_inspect.first(length - 1) + '»' if value_inspect.length > length
-        value_inspect
+
+        start_pos = 0
+        end_pos = @layout.width - 2 - text.length
+
+        texts = []
+        3.times do |index|
+          texts << value_inspect[start_pos..end_pos]
+          start_pos = end_pos + 1
+          end_pos += length
+          break if end_pos >= value_inspect.length
+        end
+
+        if end_pos < value_inspect.length
+          texts.last[texts.last.length - 6..texts.last.length - 1] = ' [...]'
+        end
+
+        texts
       end
 
       def decoreated_kind(kind)
