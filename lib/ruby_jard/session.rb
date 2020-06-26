@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-require 'forwardable'
-
 module RubyJard
   class Session
     attr_reader :screen_manager, :backtrace, :frame
@@ -18,9 +16,6 @@ module RubyJard
 
     def start
       return if started?
-
-      setup_pry
-      setup_byebug
 
       @server.start
       @screen_manager.start
@@ -43,31 +38,6 @@ module RubyJard
       @backtrace = Byebug.current_context.backtrace
       @frame = Byebug.current_context.frame
       @screen_manager.refresh
-    end
-
-    private
-
-    def setup_pry
-      Pry::Prompt.add(
-        :jard,
-        'Custom promt for Pry'
-      ) do |context, _nesting, pry_instance, sep|
-        format(
-          '%<name>s >> ',
-          in_count: pry_instance.input_ring.count,
-          name: :jard,
-          separator: sep
-        )
-      end
-      Pry.config.prompt = Pry::Prompt[:jard]
-      Pry.config.hooks = Pry::Hooks.new
-    end
-
-    def setup_byebug
-      Byebug::Setting[:autolist] = false
-      Byebug::Setting[:autoirb] = false
-      Byebug::Setting[:autopry] = false
-      Byebug::Context.processor = RubyJard::ReplProcessor
     end
   end
 end

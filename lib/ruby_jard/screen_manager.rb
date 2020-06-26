@@ -96,7 +96,7 @@ module RubyJard
     end
 
     def pick_template(width, height)
-      DEFAULT_LAYOUT_TEMPLATES.each do |template|
+      RubyJard::DEFAULT_LAYOUT_TEMPLATES.each do |template|
         matched = true
         matched &&= (
           template.min_width.nil? ||
@@ -108,7 +108,7 @@ module RubyJard
         )
         return template if matched
       end
-      DEFAULT_LAYOUT_TEMPLATES.first
+      RubyJard::DEFAULT_LAYOUT_TEMPLATES.first
     end
   end
 end
