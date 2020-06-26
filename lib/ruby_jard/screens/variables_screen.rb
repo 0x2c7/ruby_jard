@@ -112,17 +112,18 @@ module RubyJard
           .text(name.to_s, kind_color(kind))
           .text(addition_data(value), :white)
           .text(' = ')
+          .with_highlight(false)
         inspect_texts = inspect_value(text, value)
-        text.text(inspect_texts.first, :white)
+        text.text(inspect_texts.first, :bright_white)
 
 
         # TODO: Fix this ugly code
         [text] +
         inspect_texts[1..-1].map do |line|
           decorate_text
-            .with_highlight(true)
+            .with_highlight(false)
             .text('    ')
-            .text(line, :white)
+            .text(line, :bright_white)
         end
       end
 
@@ -162,7 +163,7 @@ module RubyJard
       def decoreated_kind(kind)
         decorate_text
           .with_highlight(false)
-          .text(kind.to_s, kind_color(kind))
+          .text(kind.to_s, :white)
       end
 
       def kind_color(kind)
