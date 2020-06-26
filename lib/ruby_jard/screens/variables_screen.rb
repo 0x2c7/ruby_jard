@@ -5,7 +5,7 @@ module RubyJard
     class VariablesScreen < RubyJard::Screen
       def draw
         @output.print TTY::Box.frame(
-          default_frame_styles.merge(
+          **default_frame_styles.merge(
             top: @row, left: @col, width: @layout.width, height: @layout.height
           )
         )
@@ -37,6 +37,8 @@ module RubyJard
       end
 
       def decorated_variables
+        return [] if current_frame.nil?
+
         variables = []
         variables_hash = {}
 
