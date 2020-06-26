@@ -6,19 +6,22 @@ module RubyJard
       KINDS = [
         KIND_ARG = :arg,
         KIND_LOC = :loc,
-        KIND_INS = :ins
+        KIND_INS = :ins,
+        KIND_CON = :con
       ].freeze
 
       KIND_PRIORITIES = {
         KIND_ARG => 1,
         KIND_LOC => 2,
-        KIND_INS => 3
+        KIND_INS => 3,
+        KIND_CON => 4
       }.freeze
 
       KIND_COLORS = {
-        KIND_ARG => :yellow,
-        KIND_LOC => :green,
-        KIND_INS => :blue
+        KIND_ARG => :bright_white,
+        KIND_LOC => :bright_white,
+        KIND_INS => :yellow,
+        KIND_CON => :green
       }.freeze
 
       def draw
@@ -43,7 +46,7 @@ module RubyJard
       private
 
       def data_size
-        @layout.height - 2
+        @layout.height - 1
       end
 
       def current_binding
@@ -58,10 +61,14 @@ module RubyJard
         RubyJard.current_session.backtrace[RubyJard.current_session.frame.pos][1]
       end
 
+      def current_frame_scope_class
+        RubyJard.current_session.backtrace[RubyJard.current_session.frame.pos][2]
+      end
+
       def decorated_variables
         return [] if current_frame.nil?
 
-        variables = fetch_local_variables + fetch_instance_variables
+        variables = fetch_local_variables + fetch_instance_variables + fetch_constants
 
         sort_variables(variables).map do |kind, name, value|
           decorated_variable(kind, name, value)
@@ -97,6 +104,18 @@ module RubyJard
         current_frame_scope.instance_variables.map do |variable|
           begin
             [KIND_INS, variable, current_frame_scope.instance_variable_get(variable)]
+          rescue NameError
+            nil
+          end
+        end.compact
+      end
+
+      def fetch_constants
+        # Filter out truly constants (CONSTANT convention) only
+        constants = current_frame_scope_class.constants.select { |v| v.to_s.upcase == v.to_s }
+        constants.map do |variable|
+          begin
+            [KIND_CON, variable, current_frame_scope_class.const_get(variable)]
           rescue NameError
             nil
           end
