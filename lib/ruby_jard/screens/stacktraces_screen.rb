@@ -41,7 +41,7 @@ module RubyJard
         return [] if data_size.zero?
 
         window_start = frame_pos / data_size * data_size
-        window_end = [frames_count, window_start + data_size].min
+        window_end = [frames_count, window_start + data_size - 1].min
 
         frames[window_start..window_end]
           .map
