@@ -48,7 +48,7 @@ module RubyJard
           bottom_left: false,
           bottom_right: false,
           bottom: false,
-          left: false,
+          left: :line,
           right: false
         }
       }

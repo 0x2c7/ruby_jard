@@ -19,7 +19,7 @@ module RubyJard
 
           if @col + left.length < @col + @layout.width - right.length - 1
             # TODO: handle reducable components in case of smaller screen
-            @output.print TTY::Cursor.move_to(@col + @layout.width - right.length - 1, @row + index + 1)
+            @output.print TTY::Cursor.move_to(@col + @layout.width - right.length, @row + index + 1)
             @output.print right.content
           end
         end
