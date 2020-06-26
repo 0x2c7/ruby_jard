@@ -69,9 +69,18 @@ module RubyJard
       end
 
       def fetch_local_variables
-        # Exclude args
+        variables = current_binding.local_variables
+        # Special treatment for args
         arg_variables = current_frame.args.map(&:last)
-        sort_variables(current_binding.local_variables).map do |variable|
+        # Exclude Pry's sticky locals
+        pry_sticky_locals =
+          if variables.include?(:pry_instance)
+            current_binding.local_variable_get(:pry_instance).sticky_locals.keys
+          else
+            []
+          end
+        variables -= pry_sticky_locals
+        variables.map do |variable|
           begin
             if arg_variables.include?(variable)
               [KIND_ARG, variable, current_binding.local_variable_get(variable)]
@@ -85,7 +94,7 @@ module RubyJard
       end
 
       def fetch_instance_variables
-        sort_variables(current_frame_scope.instance_variables).map do |variable|
+        current_frame_scope.instance_variables.map do |variable|
           begin
             [KIND_INS, variable, current_frame_scope.instance_variable_get(variable)]
           rescue NameError
@@ -102,22 +111,23 @@ module RubyJard
           .with_highlight(true)
           .text(name.to_s, :bright_white)
           .text(addition_data(value), :white)
-          .with_highlight(false)
           .text(' = ')
         inspect_texts = inspect_value(text, value)
         text.text(inspect_texts.first, :white)
+
 
         # TODO: Fix this ugly code
         [text] +
         inspect_texts[1..-1].map do |line|
           decorate_text
+            .with_highlight(true)
             .text('    ')
             .text(line, :white)
         end
       end
 
       def addition_data(value)
-        if value.is_a?(Array)
+        if value.is_a?(Array) && !value.empty?
           " (size: #{value.length})"
         elsif value.is_a?(String) && value.length > 20
           " (size: #{value.length})"
