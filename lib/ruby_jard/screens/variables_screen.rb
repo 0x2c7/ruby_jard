@@ -3,6 +3,24 @@
 module RubyJard
   module Screens
     class VariablesScreen < RubyJard::Screen
+      KINDS = [
+        KIND_ARG = :arg,
+        KIND_LOC = :loc,
+        KIND_INS = :ins
+      ].freeze
+
+      KIND_PRIORITIES = {
+        KIND_ARG => 1,
+        KIND_LOC => 2,
+        KIND_INS => 3
+      }.freeze
+
+      KIND_COLORS = {
+        KIND_ARG => :yellow,
+        KIND_LOC => :green,
+        KIND_INS => :blue
+      }.freeze
+
       def draw
         @output.print TTY::Box.frame(
           **default_frame_styles.merge(
@@ -43,34 +61,37 @@ module RubyJard
       def decorated_variables
         return [] if current_frame.nil?
 
-        variables = []
-        variables_hash = {}
+        variables = fetch_local_variables + fetch_instance_variables
 
-        current_frame.args.map do |arg|
-          variable = arg.last
-          next if variables_hash[variable] || variable.nil?
-
-          variables << [:arg, variable, current_binding.local_variable_get(variable)]
-          variables_hash[variable] = true
-        end
-
-        sort_variables(current_binding.local_variables).map do |variable|
-          next if variables_hash[variable]
-
-          variables << [:loc, variable, current_binding.local_variable_get(variable)]
-          variables_hash[variable] = true
-        end
-
-        sort_variables(current_frame_scope.instance_variables).map do |variable|
-          next if variables_hash[variable]
-
-          variables << [:ins, variable, current_frame_scope.instance_variable_get(variable)]
-          variables_hash[variable] = true
-        end
-
-        variables.map do |kind, name, value|
+        sort_variables(variables).map do |kind, name, value|
           decorated_variable(kind, name, value)
         end.flatten
+      end
+
+      def fetch_local_variables
+        # Exclude args
+        arg_variables = current_frame.args.map(&:last)
+        sort_variables(current_binding.local_variables).map do |variable|
+          begin
+            if arg_variables.include?(variable)
+              [KIND_ARG, variable, current_binding.local_variable_get(variable)]
+            else
+              [KIND_LOC, variable, current_binding.local_variable_get(variable)]
+            end
+          rescue NameError
+            nil
+          end
+        end.compact
+      end
+
+      def fetch_instance_variables
+        sort_variables(current_frame_scope.instance_variables).map do |variable|
+          begin
+            [KIND_INS, variable, current_frame_scope.instance_variable_get(variable)]
+          rescue NameError
+            nil
+          end
+        end.compact
       end
 
       def decorated_variable(kind, name, value)
@@ -129,15 +150,8 @@ module RubyJard
       end
 
       def decoreated_kind(kind)
-        kind_color =
-          case kind
-          when :arg
-            :yellow
-          when :loc
-            :green
-          else
-            :white
-          end
+        kind_color = KIND_COLORS[kind]
+        kind_color||= :white
 
         decorate_text
           .with_highlight(false)
@@ -145,8 +159,25 @@ module RubyJard
       end
 
       def sort_variables(variables)
+        # Sort by kind
+        # Sort by "internal" character so that internal variable is pushed down
+        # Sort by name
         variables.sort do |a, b|
-          a.to_s <=> b.to_s
+          if KIND_PRIORITIES[a[0]] != KIND_PRIORITIES[b[0]]
+            KIND_PRIORITIES[a[0]] <=> KIND_PRIORITIES[b[0]]
+          else
+            a_name = a[1].to_s.gsub(/^@/, '')
+            b_name = b[1].to_s.gsub(/^@/, '')
+            if a_name[0] == '_' && b_name[0] == '_'
+              a_name.to_s <=> b_name.to_s
+            elsif a_name[0] == '_'
+              1
+            elsif b_name[0] == '_'
+              -1
+            else
+              a_name.to_s <=> b_name.to_s
+            end
+          end
         end
       end
     end
