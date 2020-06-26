@@ -52,3 +52,10 @@ Byebug::Setting[:autolist] = false
 Byebug::Setting[:autoirb] = false
 Byebug::Setting[:autopry] = false
 Byebug::Context.processor = RubyJard::ReplProcessor
+Byebug::Context.ignored_files = Byebug::Context.all_files + Dir.glob(
+  File.join(
+    File.expand_path(__dir__, '../lib'),
+    '**',
+    '*.rb'
+  )
+)
