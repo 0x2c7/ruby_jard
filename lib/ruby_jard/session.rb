@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 module RubyJard
   class Session
-    attr_reader :screen_manager, :backtrace, :frame
+    attr_reader :screen_manager, :backtrace, :frame, :contexts, :current_context
 
     def initialize(options = {})
       @options = options
 
       @backtrace = []
       @frame = nil
+      @contexts = []
 
       @started = false
       @screen_manager = RubyJard::ScreenManager.new(session: self)
@@ -37,6 +38,8 @@ module RubyJard
     def refresh
       @backtrace = Byebug.current_context.backtrace
       @frame = Byebug.current_context.frame
+      @contexts = Byebug.contexts
+      @current_context = Byebug.current_context
       @screen_manager.refresh
     end
   end
