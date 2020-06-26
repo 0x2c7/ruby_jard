@@ -112,10 +112,19 @@ module RubyJard
 
       def fetch_constants
         # Filter out truly constants (CONSTANT convention) only
-        constants = current_frame_scope_class.constants.select { |v| v.to_s.upcase == v.to_s }
+        constant_source =
+          if current_frame_scope_class.singleton_class?
+            current_frame_scope
+          else
+            current_frame_scope_class
+          end
+
+        return [] unless constant_source.respond_to?(:constants)
+
+        constants = constant_source.constants.select { |v| v.to_s.upcase == v.to_s }
         constants.map do |variable|
           begin
-            [KIND_CON, variable, current_frame_scope_class.const_get(variable)]
+            [KIND_CON, variable, constant_source.const_get(variable)]
           rescue NameError
             nil
           end
