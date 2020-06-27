@@ -43,7 +43,7 @@ module RubyJard
         window_start = frame_pos / data_size * data_size
         window_end = [frames_count, window_start + data_size - 1].min
 
-        frames[window_start..window_end]
+        backtrace[window_start..window_end]
           .map
           .with_index do |frame, frame_index|
             decorate_frame(frame, window_start + frame_index, window_start, window_end)
@@ -78,6 +78,7 @@ module RubyJard
       def decorate_location_label(frame_id, location, object, klass)
         decorate_text
           .with_highlight(frame_pos == frame_id)
+          .text(backtrace[frame_id].last.nil? ? '[c] ' : '', :green)
           .text(decorate_object_label(object, klass), :green)
           .text(' in ', :white)
           .text(decorate_method_label(location), :green)
@@ -139,7 +140,7 @@ module RubyJard
         @session.backtrace.length
       end
 
-      def frames
+      def backtrace
         @session.backtrace
       end
     end
