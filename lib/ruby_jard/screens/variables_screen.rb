@@ -3,22 +3,42 @@
 module RubyJard
   module Screens
     class VariablesScreen < RubyJard::Screen
+      TYPE_SYMBOLS = {
+        # Intertal classes for those values may differ between Ruby versions
+        # For example: Bignum is renamed to Integer
+        # So, it's safer to use discrete value's class as the key for this mapping.
+        true.class => :bool,
+        false.class => :bool,
+        1.class => :int,
+        1.1.class => :flt,
+        1.to_r.class => :rat, # Rational: (1/1)
+        1.to_c.class => :com, # Complex: (1+0i)
+        nil.class => :nil,
+        ''.class => :str,
+        :sym.class => :sym,
+        [].class => :arr,
+        {}.class => :hash,
+        //.class => :reg,
+        Class => :cls # Sorry, I lied, Class will never change
+      }
+      TYPE_SYMBOL_PADDING = TYPE_SYMBOLS.map { |_, s| s.to_s.length }.max + 1
+      DEFAULT_TYPE_SYMBOL = :var
+
+      INSPECTION_ELLIPSIS = ' [...]'
+
       KINDS = [
-        KIND_ARG = :arg,
         KIND_LOC = :loc,
         KIND_INS = :ins,
         KIND_CON = :con
       ].freeze
 
       KIND_PRIORITIES = {
-        KIND_ARG => 1,
-        KIND_LOC => 2,
-        KIND_INS => 3,
-        KIND_CON => 4
+        KIND_LOC => 1,
+        KIND_INS => 2,
+        KIND_CON => 3
       }.freeze
 
       KIND_COLORS = {
-        KIND_ARG => :bright_white,
         KIND_LOC => :bright_white,
         KIND_INS => :blue,
         KIND_CON => :green
@@ -77,8 +97,6 @@ module RubyJard
 
       def fetch_local_variables
         variables = current_binding.local_variables
-        # Special treatment for args
-        arg_variables = current_frame.args.map(&:last)
         # Exclude Pry's sticky locals
         pry_sticky_locals =
           if variables.include?(:pry_instance)
@@ -89,11 +107,7 @@ module RubyJard
         variables -= pry_sticky_locals
         variables.map do |variable|
           begin
-            if arg_variables.include?(variable)
-              [KIND_ARG, variable, current_binding.local_variable_get(variable)]
-            else
-              [KIND_LOC, variable, current_binding.local_variable_get(variable)]
-            end
+            [KIND_LOC, variable, current_binding.local_variable_get(variable)]
           rescue NameError
             nil
           end
@@ -134,8 +148,7 @@ module RubyJard
       def decorated_variable(kind, name, value)
         text =
           decorate_text
-          .text(decoreated_kind(kind))
-          .text(' ')
+          .text(decorated_type(value))
           .with_highlight(true)
           .text(name.to_s, kind_color(kind))
           .text(addition_data(value), :white)
@@ -150,7 +163,7 @@ module RubyJard
         inspect_texts[1..-1].map do |line|
           decorate_text
             .with_highlight(false)
-            .text('    ')
+            .text(' ' * TYPE_SYMBOL_PADDING)
             .text(line, :bright_white)
         end
       end
@@ -167,7 +180,7 @@ module RubyJard
 
       def inspect_value(text, value)
         # Split the lines, add padding to align with kind
-        length = @layout.width - 6
+        length = @layout.width - TYPE_SYMBOL_PADDING - 1
         value_inspect = value.inspect.to_s
 
         start_pos = 0
@@ -176,22 +189,24 @@ module RubyJard
         texts = []
         3.times do |index|
           texts << value_inspect[start_pos..end_pos]
+          break if end_pos >= value_inspect.length
+
           start_pos = end_pos + 1
           end_pos += length
-          break if end_pos >= value_inspect.length
         end
 
         if end_pos < value_inspect.length
-          texts.last[texts.last.length - 6..texts.last.length - 1] = ' [...]'
+          texts.last[texts.last.length - INSPECTION_ELLIPSIS.length - 1..texts.last.length - 1] = INSPECTION_ELLIPSIS
         end
 
         texts
       end
 
-      def decoreated_kind(kind)
+      def decorated_type(value)
+        type_name = TYPE_SYMBOLS[value.class] || DEFAULT_TYPE_SYMBOL
         decorate_text
           .with_highlight(false)
-          .text(kind.to_s, :white)
+          .text(type_name.to_s.ljust(TYPE_SYMBOL_PADDING), :yellow)
       end
 
       def kind_color(kind)
