@@ -2,6 +2,24 @@
 
 module RubyJard
   class ReplProcessor < Byebug::CommandProcessor
+    PRY_EXCLUDED_COMMANDS = [
+      'pry-backtrace', # Redundant method for normal user
+      'watch',         # Conflict with byebug and jard watch
+      'whereami',      # Jard already provides similar. Keeping this command makes conflicted experience
+      'edit',          # Sorry, but a file should not be editted while debugging, as it made breakpoints shifted
+      'play',          # What if the played files or methods include jard again?
+      'stat',          # Included in jard UI
+      'backtrace',     # Re-implemented later
+      'break',         # Re-implemented later
+      'exit',          # Conflicted with continue
+      'exit-all',      # Conflicted with continue
+      'exit-program',  # We already have `exit` native command
+      '!pry',          # No need to complicate things
+      'jump-to',       # No need to complicate things
+      'nesting',       # No need to complicate things
+      'switch-to',     # No need to complicate things
+      'disable-pry'    # No need to complicate things
+    ].freeze
     def initialize(context, interface = LocalInterface.new)
       super(context, interface)
     end
@@ -27,7 +45,12 @@ module RubyJard
       flow = catch(:control_flow) do
         return_value = allowing_other_threads do
           if @pry.nil?
-            @pry = Pry.start(frame._binding)
+            @pry = Pry.start(
+              frame._binding,
+              prompt: Pry::Prompt[:jard],
+              quiet: true,
+              commands: pry_command_set
+            )
           else
             @pry.repl(frame._binding)
           end
@@ -70,6 +93,15 @@ module RubyJard
 
     def handle_continue_command(_pry_instance, _options)
       # Do nothing
+    end
+
+    def pry_command_set
+      set = Pry::CommandSet.new
+      set.import_from(
+        Pry.config.commands,
+        *(Pry.config.commands.list_commands - PRY_EXCLUDED_COMMANDS)
+      )
+      set
     end
   end
 end

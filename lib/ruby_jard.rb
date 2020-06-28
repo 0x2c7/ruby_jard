@@ -45,9 +45,6 @@ Pry::Prompt.add(
     separator: sep
   )
 end
-Pry.config.prompt = Pry::Prompt[:jard]
-Pry.config.hooks = Pry::Hooks.new
-
 Byebug::Setting[:autolist] = false
 Byebug::Setting[:autoirb] = false
 Byebug::Setting[:autopry] = false
