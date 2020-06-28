@@ -47,7 +47,7 @@ module RubyJard
           if @pry.nil?
             @pry = Pry.start(
               frame._binding,
-              prompt: Pry::Prompt[:jard],
+              prompt: pry_jard_prompt,
               quiet: true,
               commands: pry_command_set
             )
@@ -96,12 +96,30 @@ module RubyJard
     end
 
     def pry_command_set
-      set = Pry::CommandSet.new
-      set.import_from(
-        Pry.config.commands,
-        *(Pry.config.commands.list_commands - PRY_EXCLUDED_COMMANDS)
-      )
-      set
+      @pry_command_set ||=
+        begin
+          set = Pry::CommandSet.new
+          set.import_from(
+            Pry.config.commands,
+            *(Pry.config.commands.list_commands - PRY_EXCLUDED_COMMANDS)
+          )
+          set
+        end
+    end
+
+    def pry_jard_prompt
+      @pry_jard_prompt ||=
+        Pry::Prompt.new(
+          :jard,
+          'Custom pry promt for Jard', [
+            proc do |_context, _nesting, _pry_instance|
+              'jard >> '
+            end,
+            proc do |_context, _nesting, _pry_instance|
+              'jard *> '
+            end
+          ]
+        )
     end
   end
 end

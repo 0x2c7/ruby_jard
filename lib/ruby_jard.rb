@@ -34,17 +34,7 @@ module Kernel
     RubyJard.current_session.attach
   end
 end
-Pry::Prompt.add(
-  :jard,
-  'Custom promt for Pry'
-) do |context, _nesting, pry_instance, sep|
-  format(
-    '%<name>s >> ',
-    in_count: pry_instance.input_ring.count,
-    name: :jard,
-    separator: sep
-  )
-end
+
 Byebug::Setting[:autolist] = false
 Byebug::Setting[:autoirb] = false
 Byebug::Setting[:autopry] = false
