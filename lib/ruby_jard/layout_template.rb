@@ -73,7 +73,7 @@ module RubyJard
         fill_width: true,
         children: [
           LayoutTemplate.new(
-            screen: :stacktraces,
+            screen: :backtrace,
             width_ratio: 60
           ),
           LayoutTemplate.new(

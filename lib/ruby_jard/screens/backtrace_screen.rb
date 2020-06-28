@@ -2,14 +2,14 @@
 
 module RubyJard
   module Screens
-    class StacktracesScreen < RubyJard::Screen
+    class BacktraceScreen < RubyJard::Screen
       def draw
         @output.print TTY::Box.frame(**frame_styles)
 
         @output.print TTY::Cursor.move_to(@col + 2, @row)
         @output.print decorate_text
           .with_highlight(true)
-          .text(" Stack trace (#{frames_count}) ", :bright_yellow)
+          .text(" Backtrace (#{frames_count}) ", :bright_yellow)
           .content
 
         decorate_frames.each_with_index do |frame_texts, index|
@@ -147,4 +147,4 @@ module RubyJard
   end
 end
 
-RubyJard::Screens.add_screen(:stacktraces, RubyJard::Screens::StacktracesScreen)
+RubyJard::Screens.add_screen(:backtrace, RubyJard::Screens::BacktraceScreen)
