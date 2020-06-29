@@ -17,11 +17,11 @@ module RubyJard
           @output.print TTY::Cursor.move_to(@col + 1, @row + index + 1)
           @output.print left.content
 
-          if @col + left.length < @col + @layout.width - right.length - 1
-            # TODO: handle reducable components in case of smaller screen
-            @output.print TTY::Cursor.move_to(@col + @layout.width - right.length, @row + index + 1)
-            @output.print right.content
-          end
+          next unless @col + left.length < @col + @layout.width - right.length - 1
+
+          # TODO: handle reducable components in case of smaller screen
+          @output.print TTY::Cursor.move_to(@col + @layout.width - right.length, @row + index + 1)
+          @output.print right.content
         end
       end
 
@@ -68,7 +68,7 @@ module RubyJard
         @color = Pastel.new
       end
 
-      def decorate_frame_id(frame_id, window_start, window_end)
+      def decorate_frame_id(frame_id, _window_start, window_end)
         decorate_text
           .with_highlight(frame_pos == frame_id)
           .text(frame_pos == frame_id ? '→ ' : '  ', :white)

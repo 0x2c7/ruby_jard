@@ -19,7 +19,7 @@ module RubyJard
         {}.class => :hash,
         //.class => :reg,
         Class => :cls # Sorry, I lied, Class will never change
-      }
+      }.freeze
       TYPE_SYMBOL_PADDING = TYPE_SYMBOLS.map { |_, s| s.to_s.length }.max + 1
       DEFAULT_TYPE_SYMBOL = :var
 
@@ -105,28 +105,24 @@ module RubyJard
           end
         variables -= pry_sticky_locals
         variables.map do |variable|
-          begin
-            [KIND_LOC, variable, current_binding.local_variable_get(variable)]
-          rescue NameError
-            nil
-          end
+          [KIND_LOC, variable, current_binding.local_variable_get(variable)]
+        rescue NameError
+          nil
         end.compact
       end
 
       def fetch_instance_variables
         current_frame_scope.instance_variables.map do |variable|
-          begin
-            [KIND_INS, variable, current_frame_scope.instance_variable_get(variable)]
-          rescue NameError
-            nil
-          end
+          [KIND_INS, variable, current_frame_scope.instance_variable_get(variable)]
+        rescue NameError
+          nil
         end.compact
       end
 
       def fetch_constants
         # Filter out truly constants (CONSTANT convention) only
         constant_source =
-          if current_frame_scope_class && current_frame_scope_class.singleton_class?
+          if current_frame_scope_class&.singleton_class?
             current_frame_scope
           else
             current_frame_scope_class
@@ -136,11 +132,9 @@ module RubyJard
 
         constants = constant_source.constants.select { |v| v.to_s.upcase == v.to_s }
         constants.map do |variable|
-          begin
-            [KIND_CON, variable, constant_source.const_get(variable)]
-          rescue NameError
-            nil
-          end
+          [KIND_CON, variable, constant_source.const_get(variable)]
+        rescue NameError
+          nil
         end.compact
       end
 
@@ -156,15 +150,14 @@ module RubyJard
         inspect_texts = inspect_value(text, value)
         text.text(inspect_texts.first, :bright_white)
 
-
         # TODO: Fix this ugly code
         [text] +
-        inspect_texts[1..-1].map do |line|
-          decorate_text
-            .with_highlight(false)
-            .text(' ' * TYPE_SYMBOL_PADDING)
-            .text(line, :bright_white)
-        end
+          inspect_texts[1..-1].map do |line|
+            decorate_text
+          .with_highlight(false)
+          .text(' ' * TYPE_SYMBOL_PADDING)
+          .text(line, :bright_white)
+          end
       end
 
       def addition_data(value)
@@ -186,7 +179,7 @@ module RubyJard
         end_pos = @layout.width - 2 - text.length
 
         texts = []
-        3.times do |index|
+        3.times do |_index|
           texts << value_inspect[start_pos..end_pos]
           break if end_pos >= value_inspect.length
 

@@ -6,7 +6,7 @@ module RubyJard
       def draw
         @output.print TTY::Box.frame(
           **default_frame_styles.merge(
-            top: @row, left: @col, width: @layout.width, height: @layout.height,
+            top: @row, left: @col, width: @layout.width, height: @layout.height
           )
         )
 
@@ -121,9 +121,7 @@ module RubyJard
             .text('=', :white)
             .text(var_inspect, :white)
 
-          if index != variables.length - 1
-            variables_text.with_highlight(false).text(', ', :white)
-          end
+          variables_text.with_highlight(false).text(', ', :white) if index != variables.length - 1
         end
 
         variables_text
