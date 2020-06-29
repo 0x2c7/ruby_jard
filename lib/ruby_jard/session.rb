@@ -1,5 +1,15 @@
 # frozen_string_literal: true
+
 module RubyJard
+  ##
+  # Centralized flow control and data storage to feed into screens. Each
+  # process supposes to have only one instance of this class.
+  # TODO: If attachment event happens after any threads are created, race
+  # condition may happen. Should use a mutex to wrap around.
+  # TODO: This class is created to store data, but byebug data structures are
+  # leaked, and accessible from outside and this doesn't work if screens stay in
+  # other processes. Therefore, an internal, jard-specific data mapping should
+  # be built.
   class Session
     attr_reader :screen_manager, :backtrace, :frame, :contexts, :current_context
 
@@ -12,13 +22,11 @@ module RubyJard
 
       @started = false
       @screen_manager = RubyJard::ScreenManager.new(session: self)
-      @server = RubyJard::Server.new(options)
     end
 
     def start
       return if started?
 
-      @server.start
       @screen_manager.start
 
       @started = true

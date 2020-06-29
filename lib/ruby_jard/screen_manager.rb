@@ -17,6 +17,9 @@ require 'ruby_jard/layout_template'
 require 'ruby_jard/layout'
 
 module RubyJard
+  ##
+  # This class acts as a coordinator, in which it combines the data and screen
+  # layout template, triggers each screen to draw on the terminal.
   class ScreenManager
     attr_reader :output
 
@@ -56,40 +59,44 @@ module RubyJard
       @output.print TTY::Cursor.move_to(col, row)
 
       if layout.screen.nil?
-        children_row = row
-        children_col = col
-        drawing_width = 0
-        max_height = 0
-        layout.children.each do |child|
-          draw(child, children_row, children_col)
-
-          drawing_width += child.width
-          max_height = child.height if max_height < child.height
-          # Overflow. Spawn new line
-          if drawing_width >= layout.width
-            children_row += max_height
-            children_col = col
-            drawing_width = 0
-            max_height = 0
-          else
-            children_col += child.width
-          end
-        end
-
-        @output.print TTY::Cursor.move_to(0, children_row + 1)
+        draw_children(layout, row, col)
       else
         screen = fetch_screen(layout.screen)
-        unless screen.nil?
-          screen.new(
-            output: @output,
-            session: @session,
-            layout: layout,
-            row: row,
-            col: col
-          ).draw
-        end
+        screen&.new(
+          output: @output,
+          session: @session,
+          layout: layout,
+          row: row,
+          col: col
+        )&.draw
       end
     end
+
+    # rubocop:disable Metrics/AbcSize
+    def draw_children(layout, row, col)
+      children_row = row
+      children_col = col
+      drawing_width = 0
+      max_height = 0
+      layout.children.each do |child|
+        draw(child, children_row, children_col)
+
+        drawing_width += child.width
+        max_height = child.height if max_height < child.height
+        # Overflow. Break to next line
+        if drawing_width >= layout.width
+          children_row += max_height
+          children_col = col
+          drawing_width = 0
+          max_height = 0
+        else
+          children_col += child.width
+        end
+      end
+
+      @output.print TTY::Cursor.move_to(0, children_row + 1)
+    end
+    # rubocop:enable Metrics/AbcSize
 
     def fetch_screen(name)
       RubyJard::Screens[name]

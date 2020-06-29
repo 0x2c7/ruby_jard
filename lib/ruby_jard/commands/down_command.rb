@@ -2,16 +2,20 @@
 
 module RubyJard
   module Commands
+    # Command used to explore stacktrace.
+    # Data attached in the throw:
+    # * command: constant symbol (:down)
+    # * pry: current context pry instance
     class DownCommand < Pry::ClassCommand
-      group "RubyJard"
-      description "Down into the execution of the current line"
+      group 'RubyJard'
+      description 'Explore the frames bellow the current stopped line in the backtrace'
 
-      match "down"
+      match 'down'
 
       banner <<-BANNER
       Usage: down
 
-      Down into the execution of the current line
+      Explore the frames bellow the current stopped line in the backtrace.
 
       Examples:
         down

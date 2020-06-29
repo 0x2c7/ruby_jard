@@ -2,11 +2,15 @@
 
 module RubyJard
   module Commands
+    # Command used to Step into the execution of the current line.
+    # Data attached in the throw:
+    # * command: constant symbol (:step)
+    # * pry: current context pry instance
     class StepCommand < Pry::ClassCommand
-      group "RubyJard"
-      description "Step into the execution of the current line"
+      group 'RubyJard'
+      description 'Step into the execution of the current line'
 
-      match "step"
+      match 'step'
 
       banner <<-BANNER
         Usage: step

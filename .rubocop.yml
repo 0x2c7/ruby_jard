@@ -1,0 +1,13 @@
+Style/SymbolArray:
+  Enabled: false
+Metrics/MethodLength:
+  Max: 20
+Metrics/PerceivedComplexity:
+  Max: 15
+Metrics/ParameterLists:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+AllCops:
+  TargetRubyVersion: 2.5
+

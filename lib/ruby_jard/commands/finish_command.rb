@@ -2,16 +2,20 @@
 
 module RubyJard
   module Commands
+    # Command used to finish up the current frame.
+    # Data attached in the throw:
+    # * command: constant symbol (:finish)
+    # * pry: current context pry instance
     class FinishCommand < Pry::ClassCommand
-      group "RubyJard"
-      description "Finish into the execution of the current line"
+      group 'RubyJard'
+      description 'Finish the execution of the current frame.'
 
-      match "finish"
+      match 'finish'
 
       banner <<-BANNER
       Usage: finish
 
-      Finish into the execution of the current line
+      Finish the execution of the current frame.
 
       Examples:
         finish

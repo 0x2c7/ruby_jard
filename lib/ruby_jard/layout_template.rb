@@ -1,4 +1,10 @@
+# frozen_string_literal: true
+
 module RubyJard
+  ##
+  # Template of a layout. Templates are hierarchy. Each template includes the
+  # sizing configuration, including absolute values, min, max, or ratio
+  # relative to its parant.
   class LayoutTemplate
     attr_reader :screen, :height_ratio, :width_ratio,
                 :min_width, :min_height,

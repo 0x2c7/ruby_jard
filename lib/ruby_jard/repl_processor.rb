@@ -1,7 +1,17 @@
 # frozen_string_literal: true
 
 module RubyJard
+  ##
+  # Byebug allows customizing processor with a series of hooks (https://github.com/deivid-rodriguez/byebug/blob/e1fb8209d56922f7bafd128af84e61568b6cd6a7/lib/byebug/processors/command_processor.rb)
+  #
+  # This class is a bridge between Pry and Byebug. It is inherited from
+  # Byebug::CommandProcessor, the processor is triggered. It starts draw the
+  # UI, starts a new pry session, listen for control-flow events threw from
+  # pry commands (lib/commands/*), and triggers Byebug debugger if needed.
+  #
   class ReplProcessor < Byebug::CommandProcessor
+    # Some commands overlaps with Jard, Ruby, and even cause confusion for
+    # users. It's better ignore or re-implement those commands.
     PRY_EXCLUDED_COMMANDS = [
       'pry-backtrace', # Redundant method for normal user
       'watch',         # Conflict with byebug and jard watch
@@ -20,6 +30,7 @@ module RubyJard
       'switch-to',     # No need to complicate things
       'disable-pry'    # No need to complicate things
     ].freeze
+
     def initialize(context, interface = LocalInterface.new)
       super(context, interface)
     end
@@ -44,16 +55,7 @@ module RubyJard
 
       flow = catch(:control_flow) do
         return_value = allowing_other_threads do
-          if @pry.nil?
-            @pry = Pry.start(
-              frame._binding,
-              prompt: pry_jard_prompt,
-              quiet: true,
-              commands: pry_command_set
-            )
-          else
-            @pry.repl(frame._binding)
-          end
+          start_pry_session
         end
         {}
       end
@@ -65,6 +67,19 @@ module RubyJard
       end
 
       return_value
+    end
+
+    def start_pry_session
+      if @pry.nil?
+        @pry = Pry.start(
+          frame._binding,
+          prompt: pry_jard_prompt,
+          quiet: true,
+          commands: pry_command_set
+        )
+      else
+        @pry.repl(frame._binding)
+      end
     end
 
     def handle_next_command(_pry_instance, _options)

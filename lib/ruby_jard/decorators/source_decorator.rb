@@ -2,6 +2,9 @@
 
 module RubyJard
   module Decorators
+    ##
+    # Decorator to decorate a file of source code
+    # It loads a window of source code that centers the current line position.
     class SourceDecorator
       attr_reader :codes, :window_start, :window_end
 

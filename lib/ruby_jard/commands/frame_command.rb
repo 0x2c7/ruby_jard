@@ -2,23 +2,32 @@
 
 module RubyJard
   module Commands
+    # Command used to explore stacktrace.
+    # Data attached in the throw:
+    # * command: constant symbol (:frame)
+    # * pry: current context pry instance
+    # * frame (optional): frame id of the destination frame
     class FrameCommand < Pry::ClassCommand
-      group "RubyJard"
-      description "Frame program execution."
+      group 'RubyJard'
+      description 'Explore to any frame of current stacktrace.'
 
-      match "frame"
+      match 'frame'
 
       banner <<-BANNER
       Usage: frame
 
-      Frame program execution. The program will stop at the next breakpoint, or run until it finishes
+      Explore to any frame of current stacktrace.
 
       Examples:
-        frame [TIMES]
+        frame [FRAME_ID]
       BANNER
 
       def process
-        throw :control_flow, command: :frame, pry: pry_instance, options: {frame: args.first}
+        throw :control_flow,
+              command: :frame,
+              pry: pry_instance,
+              # TODO: Remove redundant options
+              options: { frame: args.first }
       end
     end
   end

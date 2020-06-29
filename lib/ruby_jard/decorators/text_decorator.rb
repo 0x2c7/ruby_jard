@@ -2,6 +2,10 @@
 
 module RubyJard
   module Decorators
+    ##
+    # Decorate text colos and styles. It acts as a wrapper for Pastel gem
+    # TODO: the current color handling sucks. This should be migrated to a
+    # color scheme system instead.
     class TextDecorator
       attr_reader :length, :content
 

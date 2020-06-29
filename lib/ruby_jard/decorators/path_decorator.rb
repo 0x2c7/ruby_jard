@@ -2,6 +2,11 @@
 
 module RubyJard
   module Decorators
+    ##
+    # Simplify and generate labels to indicate the location of a path.
+    # If it's from gem, strip Gem paths, or Bundler paths to expose relative
+    # location of the file.
+    # If it's from the current working dir, strip the working dir.
     class PathDecorator
       GEM_PATTERN = /(.*)\-(\d+\.\d+[\.\d]*[\.\d]*[\-\.\w]*)/i.freeze
       PATH_TYPES = [
@@ -26,28 +31,11 @@ module RubyJard
         if path.start_with?(Dir.pwd)
           @type = TYPE_PWD
           @path = @path[Dir.pwd.length..-1]
-          @path = @path[1..-1] if @path.start_with?('/')
         else
-          gem_paths.each do |gem_path|
-            next unless path.start_with?(gem_path)
-
-            @type = TYPE_GEM
-            @path = @path[gem_path.length..-1]
-            @path = @path[1..-1] if @path.start_with?('/')
-
-            splitted_path = @path.split('/')
-            @gem = splitted_path.first
-
-            if match = GEM_PATTERN.match(@gem)
-              @gem = match[1]
-              @gem_version = match[2]
-            end
-
-            @path = splitted_path.last
-
-            break
-          end
+          decorate_gem_path
         end
+
+        @path = @path[1..-1] if @path.start_with?('/')
       end
 
       def gem?
@@ -55,6 +43,24 @@ module RubyJard
       end
 
       private
+
+      def decorate_gem_path
+        gem_paths.each do |gem_path|
+          next unless path.start_with?(gem_path)
+
+          @type = TYPE_GEM
+          splitted_path = @path[gem_path.length..-1].split('/')
+          @path = splitted_path[1..-1].join('/')
+          @gem = splitted_path.first
+          match = GEM_PATTERN.match(@gem)
+          if match
+            @gem = match[1]
+            @gem_version = match[2]
+          end
+
+          break
+        end
+      end
 
       def gem_paths
         paths = []

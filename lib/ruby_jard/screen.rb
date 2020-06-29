@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module RubyJard
+  ##
+  # A screen is a unit of information drawing on the terminal. Each screen is
+  # generated based on input layout specifiation, screen data, and top-left
+  # corner cordination.
   class Screen
     attr_reader :output
 

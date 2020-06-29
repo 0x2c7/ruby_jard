@@ -2,16 +2,20 @@
 
 module RubyJard
   module Commands
+    # Command used to explore stacktrace.
+    # Data attached in the throw:
+    # * command: constant symbol (:up)
+    # * pry: current context pry instance
     class UpCommand < Pry::ClassCommand
-      group "RubyJard"
-      description "Up into the execution of the current line"
+      group 'RubyJard'
+      description 'Explore the frames above the current stopped line in the backtrace'
 
-      match "up"
+      match 'up'
 
       banner <<-BANNER
       Usage: up
 
-      Up into the execution of the current line
+      Explore the frames above the current stopped line in the backtrace.
 
       Examples:
         up

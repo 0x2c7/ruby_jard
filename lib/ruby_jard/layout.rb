@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module RubyJard
+  ##
+  # Layout calculator based on screen resolution to decide the height, width,
+  # visibility, data size of each children screen.
+  # TODO: Right now, the sizes are fixed regardless of current screen data size.
   class Layout
     def self.generate(**args)
       layout = new(**args)
@@ -90,4 +94,6 @@ module RubyJard
       end
 
       width
-    end end end
+    end
+  end
+end

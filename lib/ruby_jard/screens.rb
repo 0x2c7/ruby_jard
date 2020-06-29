@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module RubyJard
+  ##
+  # Screen registry. The screens call add_screen right after they are declared.
   module Screens
     class << self
       def screen_registry

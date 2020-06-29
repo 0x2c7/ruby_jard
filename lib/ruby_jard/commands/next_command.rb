@@ -2,16 +2,20 @@
 
 module RubyJard
   module Commands
+    # Command used to continue program execution to the next line.
+    # Data attached in the throw:
+    # * command: constant symbol (:next)
+    # * pry: current context pry instance
     class NextCommand < Pry::ClassCommand
-      group "RubyJard"
-      description "Next into the execution of the current line"
+      group 'RubyJard'
+      description 'Next into the execution of the current line'
 
-      match "next"
+      match 'next'
 
       banner <<-BANNER
       Usage: next
 
-      Next into the execution of the current line
+      Continue program execution to the next line. If the current frame reaches the end, it continue the next line of upper frame.
 
       Examples:
         next

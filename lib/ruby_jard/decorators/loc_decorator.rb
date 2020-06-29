@@ -1,5 +1,11 @@
+# frozen_string_literal: true
+
 module RubyJard
   module Decorators
+    ##
+    # Decorate a line of code fetched from the source file.
+    # The line is tokenized, and feed into JardEncoder to append color (with
+    # Pastel).
     class LocDecorator
       attr_reader :loc, :tokens
 
@@ -169,15 +175,16 @@ module RubyJard
 
         def open_token(kind)
           color = @color_scopes.last[kind]
-          if color
-            if color.is_a?(Hash)
-              @color_scopes << color
+          @color_scopes <<
+            if color
+              if color.is_a?(Hash)
+                color
+              else
+                @color_scopes.last
+              end
             else
               @color_scopes << @color_scopes.last
             end
-          else
-            @color_scopes << @color_scopes.last
-          end
         end
 
         def compose_color(color)
