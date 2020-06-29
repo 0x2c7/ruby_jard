@@ -12,6 +12,7 @@ require 'ruby_jard/commands/down_command'
 require 'ruby_jard/commands/next_command'
 require 'ruby_jard/commands/step_command'
 require 'ruby_jard/commands/finish_command'
+require 'ruby_jard/commands/frame_command'
 
 require 'ruby_jard/repl_processor'
 require 'ruby_jard/server'

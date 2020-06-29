@@ -88,7 +88,10 @@ module RubyJard
     end
 
     def handle_finish_command(_pry_instance, _options)
-      context.step_out(1)
+      RubyJard.current_session.disable
+      context.step_out(2, true)
+      Byebug::NextCommand.new(self, 'next').execute
+      RubyJard.current_session.enable
     end
 
     def handle_continue_command(_pry_instance, _options)
