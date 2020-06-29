@@ -13,7 +13,6 @@ module RubyJard
         1.1.class => :flt,
         1.to_r.class => :rat, # Rational: (1/1)
         1.to_c.class => :com, # Complex: (1+0i)
-        nil.class => :nil,
         ''.class => :str,
         :sym.class => :sym,
         [].class => :arr,
@@ -39,7 +38,7 @@ module RubyJard
       }.freeze
 
       KIND_COLORS = {
-        KIND_LOC => :bright_white,
+        KIND_LOC => :yellow,
         KIND_INS => :blue,
         KIND_CON => :green
       }.freeze
@@ -127,7 +126,7 @@ module RubyJard
       def fetch_constants
         # Filter out truly constants (CONSTANT convention) only
         constant_source =
-          if current_frame_scope_class.singleton_class?
+          if current_frame_scope_class && current_frame_scope_class.singleton_class?
             current_frame_scope
           else
             current_frame_scope_class
@@ -206,7 +205,7 @@ module RubyJard
         type_name = TYPE_SYMBOLS[value.class] || DEFAULT_TYPE_SYMBOL
         decorate_text
           .with_highlight(false)
-          .text(type_name.to_s.ljust(TYPE_SYMBOL_PADDING), :yellow)
+          .text(type_name.to_s.ljust(TYPE_SYMBOL_PADDING), :white)
       end
 
       def kind_color(kind)
