@@ -1,23 +1,23 @@
 # RubyJard
 
-Jard stands for Just Another Ruby Debugger. It implements a layer of UI wrapping around byebug, aims to provide a unified experience when debug Ruby source code. Ruby Jard supports the following major features at the moment:
+Jard stands for Just Another Ruby Debugger. It implements a layer of UI wrapping around byebug, aims to provide a unified experience when debugging Ruby source code. Ruby Jard supports the following major features at the moment:
 
-* Default Terminal UI, in which the layout and display are responsive to support different screen size.
-* Highlighted source code screen.
-* Stacktrace visulization and navigation.
-* Auto explore and display variables in the current context.
-* Multi-thread exploration and debugging.
+- Default Terminal UI, in which the layout and display are responsive to support different screen sizes.
+- Highlighted source code screen.
+- Stacktrace visualization and navigation.
+- Auto explore and display variables in the current context.
+- Multi-thread exploration and debugging.
 
 In the roadmap:
-* Dynamic breakpoints.
-* Watch expressions.
-* Support different screen sizes.
-* Minimal layout configuration.
-* Fully layout configuration with Tmux .
-* Integrate with Vim .
-* Integrate with Visual Studio Code .
-* Encrypted remote debugging .
-* Some handful debug tools and data visulization.
+- Dynamic breakpoints.
+- Watch expressions.
+- Support different screen sizes.
+- Minimal layout configuration.
+- Fully layout configuration with Tmux.
+- Integrate with Vim.
+- Integrate with Visual Studio Code.
+- Encrypted remote debugging.
+- Some handful debug tools and data visualization.
 
 Ruby Jard's core is Byebug, an awesome de factor debugger for Ruby. Therefore, Ruby Jard supports most of Byebug's functionalities.
 
@@ -51,19 +51,19 @@ end
 ![Guide UI](./docs/guide-ui.png)
 
 The main page of the debugging UI includes 4 screens:
-- Source: Show the current file, surrounding source code of executing line.
-- Stacktrace: Show the current thread's stacktrace. You can use `up`, `down`, `frame` to navigate through the stacktrace.
-- Variables: Show all the variables in the current context, including local variables, instance variables and constants.
+- Source: Show the current file, surrounding the source code of the executing line.
+- Stacktrace: Show the current thread's stack trace. You can use `up`, `down`, `frame` to navigate through the stack trace.
+- Variables: Show all the variables in the current context, including local variables, instance variables, and constants.
 - Threads: Show all the threads of the process. This screen is valuable in case you are debugging a multi-threaded program.
 
 At this alpha state, Ruby Jard support some basic commands:
 - `next`: continue the execution to the next line.
 - `step`: continue the execution, do deep into the implementation of methods in the current line.
-- `continue`: continue the execution. The program gonna stops at the next break point.
-- `finish`: Finish the execution of current frame, and go back.
-- `up`: explore the stacktrace, jump to the upper frame of current program
-- `down`: explore the stacktrace, jump to the lower frame of current program
-- `frame`: explore the stacktrace, jump to a precise frame in the stacktrace.
+- `continue`: continue the execution. The program gonna stops at the next breakpoint.
+- `finish`: Finish the execution of the current frame, and go back.
+- `up`: explore the stack trace, jump to the upper frame of the current program
+- `down`: explore the stack trace, jump to the lower frame of the current program
+- `frame`: explore the stack trace, jump to a precise frame in the stack trace.
 
 ## Contributing
 
