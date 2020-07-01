@@ -183,7 +183,7 @@ module RubyJard
                 @color_scopes.last
               end
             else
-              @color_scopes << @color_scopes.last
+              @color_scopes.last
             end
         end
 
