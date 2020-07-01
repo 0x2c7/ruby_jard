@@ -2,10 +2,11 @@
 
 module RubyJard
   module Screens
+    ##
+    # Backtrace screen implements the content to display current thread's backtrace to the user.
     class BacktraceScreen < RubyJard::Screen
       def draw
         @output.print TTY::Box.frame(**frame_styles)
-
         @output.print TTY::Cursor.move_to(@col + 2, @row)
         @output.print decorate_text
           .with_highlight(true)
@@ -17,10 +18,10 @@ module RubyJard
           @output.print TTY::Cursor.move_to(@col + 1, @row + index + 1)
           @output.print left.content
 
-          next unless @col + left.length < @col + @layout.width - right.length - 1
+          next unless @col + left.length < @col + @width - right.length - 1
 
           # TODO: handle reducable components in case of smaller screen
-          @output.print TTY::Cursor.move_to(@col + @layout.width - right.length, @row + index + 1)
+          @output.print TTY::Cursor.move_to(@col + @width - right.length, @row + index + 1)
           @output.print right.content
         end
       end
@@ -28,12 +29,12 @@ module RubyJard
       private
 
       def data_size
-        @layout.height - 1
+        @height - 1
       end
 
       def frame_styles
         default_frame_styles.merge(
-          top: @row, left: @col, width: @layout.width, height: @layout.height
+          top: @row, left: @col, width: @width, height: @height
         )
       end
 

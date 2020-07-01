@@ -46,7 +46,7 @@ module RubyJard
       def draw
         @output.print TTY::Box.frame(
           **default_frame_styles.merge(
-            top: @row, left: @col, width: @layout.width, height: @layout.height
+            top: @row, left: @col, width: @width, height: @height
           )
         )
 
@@ -65,7 +65,7 @@ module RubyJard
       private
 
       def data_size
-        @layout.height - 1
+        @height - 1
       end
 
       def current_binding
@@ -172,11 +172,11 @@ module RubyJard
 
       def inspect_value(text, value)
         # Split the lines, add padding to align with kind
-        length = @layout.width - TYPE_SYMBOL_PADDING - 1
+        length = @width - TYPE_SYMBOL_PADDING - 1
         value_inspect = value.inspect.to_s
 
         start_pos = 0
-        end_pos = @layout.width - 2 - text.length
+        end_pos = @width - 2 - text.length
 
         texts = []
         3.times do |_index|

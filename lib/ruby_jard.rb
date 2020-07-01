@@ -46,6 +46,10 @@ require 'ruby_jard/version'
 module RubyJard
   class Error < StandardError; end
 
+  DEFAULT_LAYOUT_TEMPLATES = [
+    RubyJard::Layouts::WideLayout
+  ].freeze
+
   def self.current_session
     @current_session ||= RubyJard::Session.new
   end

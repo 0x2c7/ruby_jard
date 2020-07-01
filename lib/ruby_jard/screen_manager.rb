@@ -4,6 +4,7 @@ require 'ruby_jard/decorators/text_decorator'
 require 'ruby_jard/decorators/path_decorator'
 require 'ruby_jard/decorators/loc_decorator'
 require 'ruby_jard/decorators/source_decorator'
+
 require 'ruby_jard/screen'
 require 'ruby_jard/screens'
 require 'ruby_jard/screens/breakpoints_screen'
@@ -13,7 +14,15 @@ require 'ruby_jard/screens/backtrace_screen'
 require 'ruby_jard/screens/threads_screen'
 require 'ruby_jard/screens/variables_screen'
 require 'ruby_jard/screens/menu_screen'
-require 'ruby_jard/layout_template'
+
+require 'ruby_jard/templates/layout_template'
+require 'ruby_jard/templates/screen_template'
+require 'ruby_jard/templates/row_template'
+require 'ruby_jard/templates/column_template'
+require 'ruby_jard/templates/span_template'
+require 'ruby_jard/templates/space_template'
+
+require 'ruby_jard/layouts/wide_layout'
 require 'ruby_jard/layout'
 
 module RubyJard
@@ -37,10 +46,15 @@ module RubyJard
       clear_screen
       width = TTY::Screen.width
       height = TTY::Screen.height
-      template = pick_template(width, height)
-      layout = RubyJard::Layout.generate(template: template, width: width, height: height)
+      layout = pick_layout(width, height)
+      screens = RubyJard::Layout.calculate(
+        layout: layout,
+        width: width, height: height,
+        row: 0, col: 0
+      )
+
       begin
-        draw(layout, 0, 0)
+        draw_screens(screens)
       rescue StandardError => e
         clear_screen
         @output.puts e
@@ -50,59 +64,35 @@ module RubyJard
 
     private
 
+    def draw_screens(screens)
+      screens.each do |screen_template, width, height, row, col|
+        # puts screen_template, screen_template.screen, width, height, row, col
+        screen = fetch_screen(screen_template.screen)
+        screen&.new(
+          output: @output,
+          session: @session,
+          screen_template: screen_template,
+          width: width,
+          height: height,
+          row: row,
+          col: col
+        )&.draw
+      end
+
+      cursor_row = screens.map { |_, _, height, row, _| row + height }.max
+      @output.puts TTY::Cursor.move_to(0, cursor_row)
+    end
+
     def clear_screen
       @output.print TTY::Cursor.clear_screen
       @output.print TTY::Cursor.move_to(0, 0)
     end
 
-    def draw(layout, row, col)
-      @output.print TTY::Cursor.move_to(col, row)
-
-      if layout.screen.nil?
-        draw_children(layout, row, col)
-      else
-        screen = fetch_screen(layout.screen)
-        screen&.new(
-          output: @output,
-          session: @session,
-          layout: layout,
-          row: row,
-          col: col
-        )&.draw
-      end
-    end
-
-    # rubocop:disable Metrics/AbcSize
-    def draw_children(layout, row, col)
-      children_row = row
-      children_col = col
-      drawing_width = 0
-      max_height = 0
-      layout.children.each do |child|
-        draw(child, children_row, children_col)
-
-        drawing_width += child.width
-        max_height = child.height if max_height < child.height
-        # Overflow. Break to next line
-        if drawing_width >= layout.width
-          children_row += max_height
-          children_col = col
-          drawing_width = 0
-          max_height = 0
-        else
-          children_col += child.width
-        end
-      end
-
-      @output.print TTY::Cursor.move_to(0, children_row + 1)
-    end
-    # rubocop:enable Metrics/AbcSize
-
     def fetch_screen(name)
       RubyJard::Screens[name]
     end
 
-    def pick_template(width, height)
+    def pick_layout(width, height)
       RubyJard::DEFAULT_LAYOUT_TEMPLATES.each do |template|
         matched = true
         matched &&= (

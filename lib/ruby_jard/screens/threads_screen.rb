@@ -6,7 +6,7 @@ module RubyJard
       def draw
         @output.print TTY::Box.frame(
           **default_frame_styles.merge(
-            top: @row, left: @col, width: @layout.width, height: @layout.height
+            top: @row, left: @col, width: @width, height: @height
           )
         )
 
@@ -27,7 +27,7 @@ module RubyJard
       private
 
       def data_size
-        @layout.height - 1
+        @height - 1
       end
 
       def decorate_threads

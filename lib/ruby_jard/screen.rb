@@ -8,10 +8,12 @@ module RubyJard
   class Screen
     attr_reader :output
 
-    def initialize(layout:, output:, session:, row:, col:)
+    def initialize(screen_template:, output:, session:, width:, height:, row:, col:)
       @output = output
       @session = session
-      @layout = layout
+      @screen_template = screen_template
+      @width = width
+      @height = height
       @row = row
       @col = col
       @color_decorator = Pastel.new

@@ -7,7 +7,7 @@ module RubyJard
         @output.print TTY::Cursor.move_to(@col, @row)
         frame = TTY::Box.frame(
           **default_frame_styles.merge(
-            top: @row, left: @col, width: @layout.width, height: @layout.height,
+            top: @row, left: @col, width: @width, height: @height,
             border: {
               left: false,
               top: :line,
@@ -32,7 +32,7 @@ module RubyJard
         margin = 0
         right_menu = generate_right_menu
         right_menu.reverse.each do |item|
-          @output.print TTY::Cursor.move_to(@col + @layout.width - margin - item.length - 1, @row + 1)
+          @output.print TTY::Cursor.move_to(@col + @width - margin - item.length - 1, @row + 1)
           @output.print item.content
           margin += item.length + 3
         end

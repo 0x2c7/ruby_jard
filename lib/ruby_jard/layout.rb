@@ -1,99 +1,114 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/CyclomaticComplexity
 module RubyJard
   ##
   # Layout calculator based on screen resolution to decide the height, width,
   # visibility, data size of each children screen.
   # TODO: Right now, the sizes are fixed regardless of current screen data size.
   class Layout
-    def self.generate(**args)
-      layout = new(**args)
-      layout.generate
-      layout
+    def self.calculate(**args)
+      new(**args).calculate
     end
 
-    attr_accessor :width, :height, :screen, :children
-
-    def initialize(template:, width: 0, height: 0)
-      @template = template
+    def initialize(layout:, width: 0, height: 0, row: 0, col: 0)
+      @layout = layout
       @width = width
       @height = height
-      @screen = nil
-      @children = []
+      @row = row
+      @col = col
     end
 
-    def generate
-      if @template.screen.nil? && !@template.children.empty?
-        generate_childen
-      else
-        # Ignore children if a layout is a screen
-        @screen = @template.screen
-      end
-
-      self
+    def calculate
+      screens = []
+      calculate_layout(screens, @layout, @width, @height, @row, @col)
+      screens
     end
 
     private
 
-    def generate_childen
-      total_height = 0
-      total_width = 0
+    def calculate_layout(screens, layout, width, height, row, col)
+      if layout.is_a?(RubyJard::Templates::ScreenTemplate)
+        screens << [layout, width, height, row, col]
+      else
+        total_height = 0
+        total_width = 0
+        overflow_width = 0
+        child_row = row
+        child_col = col
+        max_height = 0
 
-      @children = @template.children.map.with_index do |child_template, index|
-        child = RubyJard::Layout.new(
-          template: child_template,
-          height: calculate_child_height(child_template, index, total_height),
-          width: calculate_child_width(child_template, index, total_width)
-        )
-        child.generate
+        layout.children.each_with_index do |child_layout, index|
+          child_height = calculate_child_height(child_layout, layout, height, index, total_height)
+          child_width = calculate_child_width(child_layout, layout, width, index, total_width)
 
-        total_width += child.width
-        total_height += child.height
+          calculate_layout(screens, child_layout, child_width, child_height, child_row, child_col)
 
-        child
+          overflow_width += child_width
+          max_height = child_height if max_height < child_height
+          # Overflow. Break to next line
+          if overflow_width >= width
+            child_row += max_height
+            child_col = col
+            overflow_width = 0
+            max_height = 0
+          else
+            child_col += child_width
+          end
+
+          total_width += child_width
+          total_height += child_height
+        end
       end
     end
 
-    def calculate_child_height(child_template, index, total_height)
+    def calculate_child_height(child_layout, parent_layout, parent_height, index, total_height)
       height =
-        if !child_template.height.nil?
-          child_template.height
-        elsif child_template.height_ratio.nil?
-          @height
+        if !child_layout.height.nil?
+          child_layout.height
+        elsif child_layout.height_ratio.nil?
+          parent_height
         else
-          @height * child_template.height_ratio / 100
+          parent_height * child_layout.height_ratio / 100
         end
 
-      unless child_template.min_height.nil?
-        height = child_template.min_height if height < child_template.min_height
+      unless child_layout.min_height.nil?
+        height = child_layout.min_height if height < child_layout.min_height
       end
 
-      if @template.fill_height && index == @template.children.length - 1
-        height = @height - total_height if height < (@height - total_height)
+      if parent_layout.fill_height && index == parent_layout.children.length - 1
+        height = parent_height - total_height if height < (parent_height - total_height)
       end
 
       height
     end
 
-    def calculate_child_width(child_template, index, total_width)
+    def calculate_child_width(child_layout, parent_layout, parent_width, index, total_width)
       width =
-        if !child_template.width.nil?
-          child_template.width
-        elsif child_template.width_ratio.nil?
-          @width
+        if !child_layout.width.nil?
+          child_layout.width
+        elsif child_layout.width_ratio.nil?
+          parent_width
         else
-          @width * child_template.width_ratio / 100
+          parent_width * child_layout.width_ratio / 100
         end
 
-      unless child_template.min_width.nil?
-        width = child_template.min_width if width < child_template.min_width
+      unless child_layout.min_width.nil?
+        width = child_layout.min_width if width < child_layout.min_width
       end
 
-      if @template.fill_width && index == @template.children.length - 1
-        width = @width - total_width if width < (@width - total_width)
+      if parent_layout.fill_width && index == parent_layout.children.length - 1
+        width = parent_width - total_width if width < (parent_width - total_width)
       end
 
       width
     end
   end
 end
+
+# rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/CyclomaticComplexity
+
