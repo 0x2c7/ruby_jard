@@ -49,7 +49,10 @@ module RubyJard
           next unless path.start_with?(gem_path)
 
           @type = TYPE_GEM
-          splitted_path = @path[gem_path.length..-1].split('/')
+          splitted_path =
+            @path[gem_path.length..-1]
+            .split('/')
+            .reject(&:empty?)
           @path = splitted_path[1..-1].join('/')
           @gem = splitted_path.first
           match = GEM_PATTERN.match(@gem)
