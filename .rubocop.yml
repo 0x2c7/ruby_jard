@@ -1,9 +1,17 @@
 Style/SymbolArray:
   Enabled: false
+Style/GuardClause:
+  Enabled: false
+Style/NumericPredicate:
+  Enabled: false
+Style/IfUnlessModifier:
+  Enabled: false
 Metrics/MethodLength:
   Max: 20
 Metrics/PerceivedComplexity:
   Max: 15
+Metrics/AbcSize:
+  Enabled: false
 Metrics/ParameterLists:
   Enabled: false
 Metrics/ClassLength:
