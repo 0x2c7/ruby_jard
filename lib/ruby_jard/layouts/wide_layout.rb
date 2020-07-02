@@ -46,11 +46,11 @@ module RubyJard
                     spans: [
                       RubyJard::Templates::SpanTemplate.new(
                         :mark,
-                        priority: 1
+                        priority: 2
                       ),
                       RubyJard::Templates::SpanTemplate.new(
                         :frame_id,
-                        priority: 1
+                        priority: 2
                       )
                     ]
                   ),
@@ -58,26 +58,21 @@ module RubyJard
                     spans: [
                       RubyJard::Templates::SpanTemplate.new(
                         :klass_label,
-                        priority: 0,
-                        styles: [:green]
+                        priority: 0
                       ),
                       RubyJard::Templates::SpanTemplate.new(
                         :preposition,
                         priority: 0,
-                        styles: [:white],
                         margin_left: 1,
                         margin_right: 1
                       ),
                       RubyJard::Templates::SpanTemplate.new(
                         :method_label,
-                        priority: 0,
-                        styles: [:green]
+                        priority: 0
                       ),
-                      RubyJard::Templates::SpaceTemplate.new,
                       RubyJard::Templates::SpanTemplate.new(
                         :path,
-                        priority: 0,
-                        styles: [:white],
+                        priority: 1,
                         margin_left: 1
                       )
                     ]
