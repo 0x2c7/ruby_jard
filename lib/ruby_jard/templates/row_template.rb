@@ -10,6 +10,12 @@ module RubyJard
       def initialize(columns: [])
         @columns = columns
       end
+
+      def priorities
+        columns.flat_map do |column|
+          column.spans.flat_map(&:priority)
+        end.uniq.compact.sort.reverse
+      end
     end
   end
 end
