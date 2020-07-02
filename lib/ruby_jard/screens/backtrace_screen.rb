@@ -5,136 +5,174 @@ module RubyJard
     ##
     # Backtrace screen implements the content to display current thread's backtrace to the user.
     class BacktraceScreen < RubyJard::Screen
+      def data_size
+        [@height, backtrace.length].min
+      end
+
+      def data_window
+        return [] if data_size.zero?
+
+        backtrace[data_window_start..data_window_end]
+      end
+
+      def data_window_start
+        return 0 if data_size.zero?
+
+        current_frame / data_size * data_size
+      end
+
+      def data_window_end
+        [frames_count, data_window_start + data_size - 1].min
+      end
+
       def draw
-        @output.print TTY::Box.frame(**frame_styles)
-        @output.print TTY::Cursor.move_to(@col + 2, @row)
-        @output.print decorate_text
-          .with_highlight(true)
-          .text(" Backtrace (#{frames_count}) ", :bright_yellow)
-          .content
+        @output.print TTY::Cursor.move_to(@col, @row)
+        draw_box
 
-        decorate_frames.each_with_index do |frame_texts, index|
-          left, right = frame_texts
-          @output.print TTY::Cursor.move_to(@col + 1, @row + index + 1)
-          @output.print left.content
+        adjust_screen_size_to_borders
 
-          next unless @col + left.length < @col + @width - right.length - 1
+        calculate
+        draw_rows
+      end
 
-          # TODO: handle reducable components in case of smaller screen
-          @output.print TTY::Cursor.move_to(@col + @width - right.length, @row + index + 1)
-          @output.print right.content
-        end
+      def span_mark(_data_row, index)
+        [
+          current_frame?(index) ? '→ ' : '  ',
+          [:white, current_frame?(index) ? :bold : nil]
+        ]
+      end
+
+      def span_frame_id(_data_row, index)
+        frame_id = index + data_window_start
+        [
+          frame_id.to_s,
+          [
+            current_frame?(index) ? :bright_yellow : :white,
+            current_frame?(index) ? :bold : nil
+          ]
+        ]
+      end
+
+      def span_klass_label(data_row, index)
+        object = data_row[1]
+        klass = data_row[2]
+        klass_label =
+          if klass.nil? || object.class == klass
+            if object.is_a?(Class)
+              object.name
+            else
+              object.class.name
+            end
+          elsif klass.singleton_class?
+            # No easy way to get the original class of a singleton class
+            object.name
+          else
+            klass.name
+          end
+        c_frame = frame_at(index).last.nil? ? '[c] ' : ''
+        [
+          "#{c_frame}#{klass_label}",
+          [:green, current_frame?(index) ? :bold : nil]
+        ]
+      end
+
+      def span_preposition(_data_row, _index)
+        'in'
+      end
+
+      def span_method_label(data_row, index)
+        location = data_row[0]
+        method_label =
+          if location.label != location.base_label
+            "#{location.base_label} (#{location.label.split(' ').first})"
+          else
+            location.base_label
+          end
+        [method_label, [:green, current_frame?(index) ? :bold : nil]]
+      end
+
+      def span_path(data_row, index)
+        location = data_row[0]
+        decorated_path = decorate_path(location.absolute_path, location.lineno)
+
+        path_label =
+          if decorated_path.gem?
+            "in #{decorated_path.gem} (#{decorated_path.gem_version})"
+          else
+            "at #{decorated_path.path}:#{decorated_path.lineno}"
+          end
+        [path_label, [:white, current_frame?(index) ? :bold : nil]]
       end
 
       private
 
-      def data_size
-        @height - 1
-      end
-
-      def frame_styles
-        default_frame_styles.merge(
+      def draw_box
+        frame_styles = default_frame_styles.merge(
           top: @row, left: @col, width: @width, height: @height
         )
+        @output.print TTY::Box.frame(**frame_styles)
+        @output.print TTY::Cursor.move_to(@col + 1, @row)
+        @output.print decorate_text
+          .with_highlight(true)
+          .text(" Backtrace (#{frames_count}) ", :bright_yellow)
+          .content
       end
 
-      def decorate_frames
-        return [] if data_size.zero?
+      def draw_rows
+        coordinates = {
+          x: @col,
+          y: @row
+        }
+        @rows.each do |row|
+          coordinates[:x] = @col
+          draw_columns(coordinates, row.columns)
+          coordinates[:y] += 1
+        end
+      end
 
-        window_start = frame_pos / data_size * data_size
-        window_end = [frames_count, window_start + data_size - 1].min
+      def draw_columns(coordinates, columns)
+        columns.each do |column|
+          width = 0
+          column_content_width = column.width - column.margin_left - column.margin_right
+          coordinates[:x] += column.margin_left
+          @output.print TTY::Cursor.move_to(coordinates[:x], coordinates[:y])
 
-        backtrace[window_start..window_end]
-          .map
-          .with_index do |frame, frame_index|
-            decorate_frame(frame, window_start + frame_index, window_start, window_end)
+          column.spans.each do |span|
+            line_content = span.content
+
+            until line_content.empty?
+              if width + line_content.length > column_content_width
+                @output.print @color_decorator.decorate(line_content[0..column_content_width - width], *span.styles)
+                line_content = line_content[column_content_width - width + 1..-1]
+                width = 0
+                coordinates[:y] += 1
+
+                @output.print TTY::Cursor.move_to(coordinates[:x], coordinates[:y])
+              else
+                @output.print @color_decorator.decorate(line_content, *span.styles)
+                width += line_content.length
+                break
+              end
+            end
           end
-      end
-
-      def decorate_frame(line, frame_id, window_start, window_end)
-        location = line[0]
-        object = line[1]
-        klass = line[2]
-
-        left =
-          decorate_frame_id(frame_id, window_start, window_end) +
-          ' ' +
-          decorate_location_label(frame_id, location, object, klass)
-        right = decorate_location_path(frame_id, location)
-
-        [left, right]
-      end
-
-      def reset
-        @color = Pastel.new
-      end
-
-      def decorate_frame_id(frame_id, _window_start, window_end)
-        decorate_text
-          .with_highlight(frame_pos == frame_id)
-          .text(frame_pos == frame_id ? '→ ' : '  ', :white)
-          .text(frame_id.to_s.ljust(window_end.to_s.length), frame_pos == frame_id ? :bright_yellow : :white)
-      end
-
-      def decorate_location_label(frame_id, location, object, klass)
-        decorate_text
-          .with_highlight(frame_pos == frame_id)
-          .text(backtrace[frame_id].last.nil? ? '[c] ' : '', :green)
-          .text(decorate_object_label(object, klass), :green)
-          .text(' in ', :white)
-          .text(decorate_method_label(location), :green)
-      end
-
-      def decorate_object_label(object, klass)
-        if klass.nil? || object.class == klass
-          if object.is_a?(Class)
-            object.name
-          else
-            object.class.name
-          end
-        elsif klass.singleton_class?
-          # No easy way to get the original class of a singleton class
-          object.name
-        else
-          klass.name
+          coordinates[:x] += column_content_width + column.margin_right
         end
       end
 
-      def decorate_method_label(location)
-        if location.label != location.base_label
-          "#{location.base_label} (#{location.label.split(' ').first})"
-        else
-          location.base_label
-        end
+      def current_frame?(index)
+        index + data_window_start == current_frame
       end
 
-      def decorate_location_path(frame_id, location)
-        decorated_path = decorate_path(location.absolute_path, location.lineno)
-
-        if decorated_path.gem?
-          decorate_text
-            .with_highlight(frame_pos == frame_id)
-            .text('in ', :bright_white)
-            .text(decorated_path.gem, :bright_white)
-            .text(' (', :bright_white)
-            .text(decorated_path.gem_version, :bright_white)
-            .text(')', :bright_white)
-        else
-          decorate_text
-            .with_highlight(frame_pos == frame_id)
-            .text('at ', :bright_white)
-            .text(decorated_path.path, :bright_white)
-            .text(':', :bright_white)
-            .text(decorated_path.lineno, :bright_white)
-        end
-      end
-
-      def frame_pos
+      def current_frame
         if @session.frame.nil?
           0
         else
           @session.frame.pos.to_i
         end
+      end
+
+      def frame_at(index)
+        backtrace[index + data_window_start]
       end
 
       def frames_count
