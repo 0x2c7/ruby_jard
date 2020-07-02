@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
+require 'ruby_jard/commands/continue_command'
+require 'ruby_jard/commands/up_command'
+require 'ruby_jard/commands/down_command'
+require 'ruby_jard/commands/next_command'
+require 'ruby_jard/commands/step_command'
+require 'ruby_jard/commands/finish_command'
+require 'ruby_jard/commands/frame_command'
+
 module RubyJard
   ##
   # Byebug allows customizing processor with a series of hooks (https://github.com/deivid-rodriguez/byebug/blob/e1fb8209d56922f7bafd128af84e61568b6cd6a7/lib/byebug/processors/command_processor.rb)
