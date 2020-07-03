@@ -32,7 +32,7 @@ module RubyJard
           ]
         ),
         RubyJard::Templates::LayoutTemplate.new(
-          height_ratio: 20,
+          height_ratio: 30,
           min_height: 3,
           fill_width: true,
           children: [
@@ -46,6 +46,7 @@ module RubyJard
                     spans: [
                       RubyJard::Templates::SpanTemplate.new(
                         :mark,
+                        margin_right: 1,
                         priority: 2
                       ),
                       RubyJard::Templates::SpanTemplate.new(
@@ -95,21 +96,25 @@ module RubyJard
                     spans: [
                       RubyJard::Templates::SpanTemplate.new(
                         :mark,
+                        margin_right: 1,
                         priority: 2
                       ),
                       RubyJard::Templates::SpanTemplate.new(
                         :thread_id,
                         priority: 0
-                      ),
-                      RubyJard::Templates::SpanTemplate.new(
-                        :thread_status,
-                        priority: 0,
-                        margin_left: 1
                       )
                     ]
                   ),
                   RubyJard::Templates::ColumnTemplate.new(
                     margin_right: 1,
+                    spans: [
+                      RubyJard::Templates::SpanTemplate.new(
+                        :thread_status,
+                        priority: 0
+                      )
+                    ]
+                  ),
+                  RubyJard::Templates::ColumnTemplate.new(
                     spans: [
                       RubyJard::Templates::SpanTemplate.new(
                         :thread_name,

@@ -45,7 +45,7 @@ module RubyJard
 
       def span_mark(_frame, index)
         [
-          current_frame?(index) ? '→ ' : '  ',
+          current_frame?(index) ? '→' : ' ',
           [:bright_yellow, current_frame?(index) ? :bold : nil]
         ]
       end

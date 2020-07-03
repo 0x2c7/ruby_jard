@@ -31,7 +31,7 @@ module RubyJard
 
       def span_mark(context, _index)
         [
-          current_thread?(context) ? '→ ' : '  ',
+          current_thread?(context) ? '→' : ' ',
           [:bright_yellow, current_thread?(context) ? :bold : nil]
         ]
       end
