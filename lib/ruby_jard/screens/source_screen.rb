@@ -66,6 +66,18 @@ module RubyJard
       def current_line
         RubyJard.current_session.frame.line
       end
+
+      def decorate_path(path, lineno)
+        RubyJard::Decorators::PathDecorator.new(path, lineno)
+      end
+
+      def decorate_source(file, lineno, window)
+        RubyJard::Decorators::SourceDecorator.new(file, lineno, window)
+      end
+
+      def decorate_loc(loc)
+        RubyJard::Decorators::LocDecorator.new(loc)
+      end
     end
   end
 end

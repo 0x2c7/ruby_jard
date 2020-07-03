@@ -130,6 +130,10 @@ module RubyJard
       def backtrace
         @session.backtrace
       end
+
+      def decorate_path(path, lineno)
+        RubyJard::Decorators::PathDecorator.new(path, lineno)
+      end
     end
   end
 end

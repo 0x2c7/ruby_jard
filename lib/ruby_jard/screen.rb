@@ -137,27 +137,5 @@ module RubyJard
 
       span
     end
-
-    def need_to_ommit?(rows)
-      # TODO: Implement the ommision condition here
-      # Idea:
-      # - Ommit if the row height > height limit
-      false
-    end
-
-    def decorate_path(path, lineno)
-      # TODO: this interface is ugly as fuck
-      RubyJard::Decorators::PathDecorator.new(path, lineno)
-    end
-
-    def decorate_source(file, lineno, window)
-      # TODO: this interface is ugly as fuck
-      RubyJard::Decorators::SourceDecorator.new(file, lineno, window)
-    end
-
-    def decorate_loc(loc)
-      # TODO: this interface is ugly as fuck
-      RubyJard::Decorators::LocDecorator.new(loc)
-    end
   end
 end

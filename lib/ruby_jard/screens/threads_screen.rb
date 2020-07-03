@@ -93,6 +93,10 @@ module RubyJard
       def current_thread?(context)
         context.thread == Thread.current
       end
+
+      def decorate_path(path, lineno)
+        RubyJard::Decorators::PathDecorator.new(path, lineno)
+      end
     end
   end
 end
