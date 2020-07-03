@@ -10,13 +10,13 @@ module RubyJard
       end
 
       def data_size
-        [@height, backtrace.length].min
+        [@height, frames_count].min
       end
 
       def data_window
         return [] if data_size.zero?
 
-        backtrace[data_window_start..data_window_end]
+        @data_window ||= backtrace[data_window_start..data_window_end]
       end
 
       def data_window_start
@@ -38,14 +38,14 @@ module RubyJard
         drawer.draw(self, @col, @row)
       end
 
-      def span_mark(_data_row, index)
+      def span_mark(_frame, index)
         [
           current_frame?(index) ? '→ ' : '  ',
-          [:white, current_frame?(index) ? :bold : nil]
+          [:bright_yellow, current_frame?(index) ? :bold : nil]
         ]
       end
 
-      def span_frame_id(_data_row, index)
+      def span_frame_id(_frame, index)
         frame_id = index + data_window_start
         [
           frame_id.to_s,
@@ -56,9 +56,9 @@ module RubyJard
         ]
       end
 
-      def span_klass_label(data_row, index)
-        object = data_row[1]
-        klass = data_row[2]
+      def span_klass_label(frame, index)
+        object = frame[1]
+        klass = frame[2]
         klass_label =
           if klass.nil? || object.class == klass
             if object.is_a?(Class)
@@ -79,12 +79,12 @@ module RubyJard
         ]
       end
 
-      def span_label_preposition(_data_row, index)
+      def span_label_preposition(_frame, index)
         ['in', current_frame?(index) ? [:bright_white] : [:white]]
       end
 
-      def span_method_label(data_row, index)
-        location = data_row[0]
+      def span_method_label(frame, index)
+        location = frame[0]
         method_label =
           if location.label != location.base_label
             "#{location.base_label} (#{location.label.split(' ').first})"
@@ -94,15 +94,15 @@ module RubyJard
         [method_label, [:green, current_frame?(index) ? :bold : nil]]
       end
 
-      def span_path_preposition(data_row, index)
-        location = data_row[0]
+      def span_path_preposition(frame, index)
+        location = frame[0]
         decorated_path = decorate_path(location.absolute_path, location.lineno)
         preposition = decorated_path.gem? ? 'in' : 'at'
         [preposition, current_frame?(index) ? [:bright_white] : [:white]]
       end
 
-      def span_path(data_row, index)
-        location = data_row[0]
+      def span_path(frame, index)
+        location = frame[0]
         decorated_path = decorate_path(location.absolute_path, location.lineno)
 
         path_label =
