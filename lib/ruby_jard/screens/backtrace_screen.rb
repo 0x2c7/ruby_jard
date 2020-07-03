@@ -34,8 +34,13 @@ module RubyJard
 
         calculate
         # TODO: move this out to ScreenManager
-        drawer = RubyJard::ScreenDrawer.new(output: @output)
-        drawer.draw(self, @col, @row)
+        drawer = RubyJard::ScreenDrawer.new(
+          output: @output,
+          screen: self,
+          x: @col,
+          y: @row
+        )
+        drawer.draw
       end
 
       def span_mark(_frame, index)
