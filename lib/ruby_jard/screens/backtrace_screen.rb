@@ -76,8 +76,8 @@ module RubyJard
         ]
       end
 
-      def span_preposition(_data_row, _index)
-        'in'
+      def span_label_preposition(_data_row, index)
+        ['in', current_frame?(index) ? [:bright_white] : [:white]]
       end
 
       def span_method_label(data_row, index)
@@ -91,17 +91,24 @@ module RubyJard
         [method_label, [:green, current_frame?(index) ? :bold : nil]]
       end
 
+      def span_path_preposition(data_row, index)
+        location = data_row[0]
+        decorated_path = decorate_path(location.absolute_path, location.lineno)
+        preposition = decorated_path.gem? ? 'in' : 'at'
+        [preposition, current_frame?(index) ? [:bright_white] : [:white]]
+      end
+
       def span_path(data_row, index)
         location = data_row[0]
         decorated_path = decorate_path(location.absolute_path, location.lineno)
 
         path_label =
           if decorated_path.gem?
-            "in #{decorated_path.gem} (#{decorated_path.gem_version})"
+            "#{decorated_path.gem} (#{decorated_path.gem_version})"
           else
-            "at #{decorated_path.path}:#{decorated_path.lineno}"
+            "#{decorated_path.path}:#{decorated_path.lineno}"
           end
-        [path_label, [:white, current_frame?(index) ? :bold : nil]]
+        [path_label, current_frame?(index) ? [:bold, :bright_white] : [:white]]
       end
 
       private
@@ -142,8 +149,8 @@ module RubyJard
 
             until line_content.empty?
               if width + line_content.length > column_content_width
-                @output.print @color_decorator.decorate(line_content[0..column_content_width - width], *span.styles)
-                line_content = line_content[column_content_width - width + 1..-1]
+                @output.print @color_decorator.decorate(line_content[0..column_content_width - width - 1], *span.styles)
+                line_content = line_content[column_content_width - width..-1]
                 width = 0
                 coordinates[:y] += 1
 

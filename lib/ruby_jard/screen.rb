@@ -38,7 +38,8 @@ module RubyJard
         @rows = data_window.map.with_index do |data_row, index|
           create_row(row_template, priority, data_row, index)
         end
-        calculate_column_widths(row_template, @rows)
+        column_widths = calculate_column_widths(row_template, @rows)
+        fill_column_widths(@rows, column_widths)
 
         break unless need_to_ommit?(@rows)
       end
@@ -70,46 +71,28 @@ module RubyJard
     end
 
     def calculate_column_widths(row_template, rows)
-      oversize_columns = fetch_oversize_columns(row_template, rows)
-      if oversize_columns.empty?
-        fill_fit_column_widths(rows)
-      else
-        fill_oversize_column_widths(row_template, rows, oversize_columns)
-      end
-    end
-
-    def fetch_oversize_columns(row_template, rows)
-      oversize_columns = []
+      column_widths = {}
       ideal_column_width = @width / row_template.columns.length
       row_template.columns.each_with_index do |_column_template, column_index|
+        column_widths[column_index] ||= 0
         rows.each do |row|
           column = row.columns[column_index]
           if column.content_length > ideal_column_width
-            oversize_columns << column_index
+            column_widths[column_index] = nil
             break
+          elsif column.content_length > column_widths[column_index]
+            column_widths[column_index] = column.content_length
           end
         end
       end
-      oversize_columns
+      column_widths
     end
 
-    def fill_fit_column_widths(rows)
-      total_column_width = 0
-      rows.each do |row|
-        row.columns.each_with_index do |column, column_index|
-          if column_index == row.columns.length - 1
-            column.width = @width - total_column_width
-          else
-            column.width = column.content_length
-            total_column_width += column.width
-          end
-        end
+    def fill_column_widths(rows, column_widths)
+      fixed_count = column_widths.length
+      fixed_width = column_widths.values.inject(0) do |sum, col|
+        col.nil? ? sum : sum + col
       end
-    end
-
-    def fill_oversize_column_widths(row_template, rows, oversize_columns)
-      fit_columns = (0..row_template.columns.length - 1).to_a - oversize_columns
-      oversize_column_width = (@width - total_column_width(rows, fit_columns)) / oversize_columns.length
 
       rows.each do |row|
         total_width = 0
@@ -117,22 +100,14 @@ module RubyJard
           column.width =
             if column_index == row.columns.length - 1
               @width - total_width
-            elsif oversize_columns.include?(column_index)
-              oversize_column_width
+            elsif column_widths[column_index].nil?
+              (@width - fixed_width) / fixed_count
             else
-              column.content_length
+              column_widths[column_index]
             end
           total_width += column.width
         end
       end
-    end
-
-    def total_column_width(rows, target_columns)
-      total = 0
-      rows.first.columns.each_with_index do |c, index|
-        total += c.width if target_columns.include?(index)
-      end
-      total
     end
 
     def create_row(row_template, priority, data_row, index)

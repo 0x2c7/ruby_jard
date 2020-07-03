@@ -61,7 +61,7 @@ module RubyJard
                         priority: 0
                       ),
                       RubyJard::Templates::SpanTemplate.new(
-                        :preposition,
+                        :label_preposition,
                         priority: 0,
                         margin_left: 1,
                         margin_right: 1
@@ -71,9 +71,14 @@ module RubyJard
                         priority: 0
                       ),
                       RubyJard::Templates::SpanTemplate.new(
-                        :path,
+                        :path_preposition,
                         priority: 1,
-                        margin_left: 1
+                        margin_left: 1,
+                        margin_right: 1
+                      ),
+                      RubyJard::Templates::SpanTemplate.new(
+                        :path,
+                        priority: 1
                       )
                     ]
                   )
