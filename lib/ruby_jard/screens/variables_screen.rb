@@ -35,9 +35,9 @@ module RubyJard
       }.freeze
 
       KIND_COLORS = {
-        KIND_LOC => :yellow,
-        KIND_INS => :blue,
-        KIND_CON => :green
+        KIND_LOC => [:yellow, :bold],
+        KIND_INS => [:blue, :bold],
+        KIND_CON => [:green, :bold]
       }.freeze
 
       def title
@@ -78,10 +78,7 @@ module RubyJard
       def span_name(data_row, _index)
         [
           data_row[1].to_s,
-          [
-            KIND_COLORS[data_row[0]] || :white,
-            :bold
-          ]
+          KIND_COLORS[data_row[0]] || [:white, :bold]
         ]
       end
 
