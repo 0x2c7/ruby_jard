@@ -5,6 +5,10 @@ module RubyJard
     ##
     # Backtrace screen implements the content to display current thread's backtrace to the user.
     class BacktraceScreen < RubyJard::Screen
+      def title
+        "Backtrace (#{frames_count})"
+      end
+
       def data_size
         [@height, backtrace.length].min
       end
@@ -26,13 +30,12 @@ module RubyJard
       end
 
       def draw
-        @output.print TTY::Cursor.move_to(@col, @row)
-        draw_box
-
         adjust_screen_size_to_borders
 
         calculate
-        draw_rows
+        # TODO: move this out to ScreenManager
+        drawer = RubyJard::ScreenDrawer.new(output: @output)
+        drawer.draw(self, @col, @row)
       end
 
       def span_mark(_data_row, index)
@@ -112,59 +115,6 @@ module RubyJard
       end
 
       private
-
-      def draw_box
-        frame_styles = default_frame_styles.merge(
-          top: @row, left: @col, width: @width, height: @height
-        )
-        @output.print TTY::Box.frame(**frame_styles)
-        @output.print TTY::Cursor.move_to(@col + 1, @row)
-        @output.print decorate_text
-          .with_highlight(true)
-          .text(" Backtrace (#{frames_count}) ", :bright_yellow)
-          .content
-      end
-
-      def draw_rows
-        coordinates = {
-          x: @col,
-          y: @row
-        }
-        @rows.each do |row|
-          coordinates[:x] = @col
-          draw_columns(coordinates, row.columns)
-          coordinates[:y] += 1
-        end
-      end
-
-      def draw_columns(coordinates, columns)
-        columns.each do |column|
-          width = 0
-          column_content_width = column.width - column.margin_left - column.margin_right
-          coordinates[:x] += column.margin_left
-          @output.print TTY::Cursor.move_to(coordinates[:x], coordinates[:y])
-
-          column.spans.each do |span|
-            line_content = span.content
-
-            until line_content.empty?
-              if width + line_content.length > column_content_width
-                @output.print @color_decorator.decorate(line_content[0..column_content_width - width - 1], *span.styles)
-                line_content = line_content[column_content_width - width..-1]
-                width = 0
-                coordinates[:y] += 1
-
-                @output.print TTY::Cursor.move_to(coordinates[:x], coordinates[:y])
-              else
-                @output.print @color_decorator.decorate(line_content, *span.styles)
-                width += line_content.length
-                break
-              end
-            end
-          end
-          coordinates[:x] += column_content_width + column.margin_right
-        end
-      end
 
       def current_frame?(index)
         index + data_window_start == current_frame

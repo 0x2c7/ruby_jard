@@ -6,14 +6,16 @@ module RubyJard
   # generated based on input layout specifiation, screen data, and top-left
   # corner cordination.
   class Screen
-    attr_reader :output
+    attr_reader :output, :rows, :width, :height
 
     def initialize(screen_template:, output:, session:, width:, height:, row:, col:)
-      @output = output
       @session = session
       @screen_template = screen_template
       @width = width
       @height = height
+
+      # TODO: remove these variables after refactoring
+      @output = output
       @row = row
       @col = col
       @color_decorator = Pastel.new

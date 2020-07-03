@@ -6,6 +6,7 @@ require 'ruby_jard/decorators/loc_decorator'
 require 'ruby_jard/decorators/source_decorator'
 
 require 'ruby_jard/screen'
+require 'ruby_jard/screen_drawer'
 require 'ruby_jard/screens'
 require 'ruby_jard/screens/breakpoints_screen'
 require 'ruby_jard/screens/expressions_sreen'
