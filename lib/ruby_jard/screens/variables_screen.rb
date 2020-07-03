@@ -35,9 +35,9 @@ module RubyJard
       }.freeze
 
       KIND_COLORS = {
-        KIND_LOC => [:yellow, :bold],
-        KIND_INS => [:blue, :bold],
-        KIND_CON => [:green, :bold]
+        KIND_LOC => [:blue, :bold],
+        KIND_INS => [:green, :bold],
+        KIND_CON => [:bright_white]
       }.freeze
 
       def title

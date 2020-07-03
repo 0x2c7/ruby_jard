@@ -55,10 +55,10 @@ module RubyJard
               context.thread.backtrace_locations[0]
             end
           location = decorate_path(last_backtrace.path, last_backtrace.lineno)
-          ["#{location.path}:#{location.lineno}", current_thread?(context) ? :bright_white : :white]
+          ["#{location.path}:#{location.lineno}", current_thread?(context) ? [:bright_white, :bold] : :white]
         else
           name = context.thread.name.to_s
-          [name, current_thread?(context) ? :bright_white : :white]
+          [name, current_thread?(context) ? [:bright_white, :bold] : :white]
         end
       end
 
