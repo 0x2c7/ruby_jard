@@ -120,7 +120,7 @@ module RubyJard
       column = Column.new(column_template: column_template)
       column.spans = column_template.spans.map do |span_template|
         create_span(span_template, data_row, index)
-      end
+      end.flatten
       column.content_length =
         column.spans.map(&:content_length).inject(&:+) +
         column.margin_left +
@@ -137,6 +137,11 @@ module RubyJard
         if content.nil?
           span.content = ''
           span.content_length = 0
+        elsif content.is_a?(Array)
+          content.each do |sub_span|
+            sub_span.styles += Array(styles).flatten.compact
+          end
+          return content
         else
           content = ' ' * span_template.margin_left + content if span_template.margin_left
           content += ' ' * span_template.margin_right if span_template.margin_right
@@ -173,9 +178,9 @@ module RubyJard
       RubyJard::Decorators::SourceDecorator.new(file, lineno, window)
     end
 
-    def decorate_loc(loc, highlighted)
+    def decorate_loc(loc)
       # TODO: this interface is ugly as fuck
-      RubyJard::Decorators::LocDecorator.new(@color_decorator, loc, highlighted)
+      RubyJard::Decorators::LocDecorator.new(loc)
     end
   end
 end

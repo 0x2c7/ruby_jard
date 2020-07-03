@@ -15,7 +15,24 @@ module RubyJard
           children: [
             RubyJard::Templates::ScreenTemplate.new(
               screen: :source,
-              width_ratio: 60
+              width_ratio: 60,
+              row_template: RubyJard::Templates::RowTemplate.new(
+                columns: [
+                  RubyJard::Templates::ColumnTemplate.new(
+                    margin_right: 1,
+                    spans: [
+                      RubyJard::Templates::SpanTemplate.new(:mark, margin_right: 1),
+                      RubyJard::Templates::SpanTemplate.new(:lineno)
+                    ]
+                  ),
+                  RubyJard::Templates::ColumnTemplate.new(
+                    margin_right: 1,
+                    spans: [
+                      RubyJard::Templates::SpanTemplate.new(:code)
+                    ]
+                  )
+                ]
+              )
             ),
             RubyJard::Templates::LayoutTemplate.new(
               width_ratio: 40,

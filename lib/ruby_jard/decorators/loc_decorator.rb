@@ -7,26 +7,23 @@ module RubyJard
     # The line is tokenized, and feed into JardEncoder to append color (with
     # Pastel).
     class LocDecorator
-      attr_reader :loc, :tokens
+      attr_reader :spans, :tokens
 
-      def initialize(color_decorator, loc, highlighted)
+      def initialize(loc)
         @loc = loc
-        @highlighted = highlighted
-        @encoder = JardLocEncoder.new(
-          color_decorator: color_decorator,
-          highlighted: highlighted
-        )
+        @encoder = JardLocEncoder.new
 
         decorate
       end
 
       def decorate
         @tokens = CodeRay.scan(@loc, :ruby)
-        @loc = @encoder.encode_tokens(tokens)
+        @spans = @encoder.encode_tokens(tokens)
       end
 
       # A shameless copy from https://github.com/rubychan/coderay/blob/master/lib/coderay/encoders/terminal.rb
       class JardLocEncoder < CodeRay::Encoders::Encoder
+        DEFAULT_COLOR = [:white].freeze
         TOKEN_COLORS = {
           debug: [:white, :on_blue],
           annotation: [:blue],
@@ -138,8 +135,7 @@ module RubyJard
           super
           @opened = []
           @color_scopes = [TOKEN_COLORS]
-          @color_decorator = options[:color_decorator]
-          @highlighted = options[:highlighted]
+          @out = []
         end
 
         public
@@ -147,12 +143,20 @@ module RubyJard
         def text_token(text, kind)
           color = @color_scopes.last[kind]
           text.gsub!("\n", '')
-          if color
-            color = color[:self] if color.is_a? Hash
-            @out << @color_decorator.decorate(text, *compose_color(color))
-          else
-            @out << @color_decorator.decorate(text, *compose_color([]))
-          end
+          styles =
+            if !color
+              DEFAULT_COLOR
+            elsif color.is_a? Hash
+              color[:self]
+            else
+              color
+            end
+          @out << Span.new(
+            span_template: nil,
+            content: text,
+            content_length: text.length,
+            styles: styles
+          )
         end
 
         def begin_group(kind)
@@ -185,14 +189,6 @@ module RubyJard
             else
               @color_scopes.last
             end
-        end
-
-        def compose_color(color)
-          if @highlighted
-            [:clear] + color
-          else
-            [:dim] + color
-          end
         end
       end
     end
