@@ -114,10 +114,6 @@ module RubyJard
                       RubyJard::Templates::SpanTemplate.new(
                         :thread_name,
                         priority: 0
-                      ),
-                      RubyJard::Templates::SpanTemplate.new(
-                        :thread_path,
-                        priority: 0
                       )
                     ]
                   )

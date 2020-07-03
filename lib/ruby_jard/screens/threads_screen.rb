@@ -8,7 +8,7 @@ module RubyJard
       end
 
       def data_size
-        [@height - 1, RubyJard.current_session.contexts.length].min
+        [@height, RubyJard.current_session.contexts.length].min
       end
 
       def data_window
@@ -61,20 +61,19 @@ module RubyJard
       end
 
       def span_thread_name(context, _index)
-        name = context.thread.name.to_s
-        name = "#{name} - " unless name.empty?
-        [name, current_thread?(context) ? :bright_white : :white]
-      end
-
-      def span_thread_path(context, _index)
-        last_backtrace =
-          if context == RubyJard.current_session.current_context
-            context.backtrace[0][0]
-          else
-            context.thread.backtrace_locations[0]
-          end
-        location = decorate_path(last_backtrace.path, last_backtrace.lineno)
-        ["#{location.path}:#{location.lineno}", current_thread?(context) ? :bright_white : :white]
+        if context.thread.name.nil?
+          last_backtrace =
+            if context == RubyJard.current_session.current_context
+              context.backtrace[0][0]
+            else
+              context.thread.backtrace_locations[0]
+            end
+          location = decorate_path(last_backtrace.path, last_backtrace.lineno)
+          ["#{location.path}:#{location.lineno}", current_thread?(context) ? :bright_white : :white]
+        else
+          name = context.thread.name.to_s
+          [name, current_thread?(context) ? :bright_white : :white]
+        end
       end
 
       private
