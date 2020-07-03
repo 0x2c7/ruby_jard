@@ -1,3 +1,5 @@
+Naming/MethodParameterName:
+  Enabled: false
 Style/SymbolArray:
   Enabled: false
 Style/GuardClause:
