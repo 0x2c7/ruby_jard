@@ -46,6 +46,19 @@ module RubyJard
   def self.current_session
     @current_session ||= RubyJard::Session.new
   end
+
+  def self.debug(*info)
+    @debug_info ||= []
+    @debug_info += info
+  end
+
+  def self.debug_info
+    @debug_info ||= []
+  end
+
+  def self.clear_debug
+    @debug_info = []
+  end
 end
 
 ##

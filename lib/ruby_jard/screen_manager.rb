@@ -63,6 +63,7 @@ module RubyJard
         @output.puts e
         @output.puts e.backtrace
       end
+      print_debug_screen
     end
 
     private
@@ -83,7 +84,25 @@ module RubyJard
       end
 
       cursor_row = screens.map { |_, _, height, row, _| row + height }.max
-      @output.puts TTY::Cursor.move_to(0, cursor_row)
+      @output.print TTY::Cursor.move_to(0, cursor_row + 1)
+    end
+
+    def print_debug_screen
+      unless RubyJard.debug_info.empty?
+        debug_frame = TTY::Box.frame(
+          width: TTY::Screen.width,
+          height: RubyJard.debug_info.length + 2,
+          title: {
+            top_left: 'Debug'
+          },
+          style: {
+            fg: :yellow,
+            border: { fg: :yellow }
+          }
+        ) { RubyJard.debug_info.join("\n") }
+        @output.print debug_frame
+      end
+      RubyJard.clear_debug
     end
 
     def clear_screen
