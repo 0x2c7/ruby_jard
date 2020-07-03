@@ -87,7 +87,42 @@ module RubyJard
             ),
             RubyJard::Templates::ScreenTemplate.new(
               screen: :threads,
-              width_ratio: 40
+              width_ratio: 40,
+              row_template: RubyJard::Templates::RowTemplate.new(
+                columns: [
+                  RubyJard::Templates::ColumnTemplate.new(
+                    margin_right: 1,
+                    spans: [
+                      RubyJard::Templates::SpanTemplate.new(
+                        :mark,
+                        priority: 2
+                      ),
+                      RubyJard::Templates::SpanTemplate.new(
+                        :thread_id,
+                        priority: 0
+                      ),
+                      RubyJard::Templates::SpanTemplate.new(
+                        :thread_status,
+                        priority: 0,
+                        margin_left: 1
+                      )
+                    ]
+                  ),
+                  RubyJard::Templates::ColumnTemplate.new(
+                    margin_right: 1,
+                    spans: [
+                      RubyJard::Templates::SpanTemplate.new(
+                        :thread_name,
+                        priority: 0
+                      ),
+                      RubyJard::Templates::SpanTemplate.new(
+                        :thread_path,
+                        priority: 0
+                      )
+                    ]
+                  )
+                ]
+              )
             )
           ]
         ),

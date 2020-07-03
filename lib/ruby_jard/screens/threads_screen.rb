@@ -3,47 +3,76 @@
 module RubyJard
   module Screens
     class ThreadsScreen < RubyJard::Screen
+      def title
+        "Threads (#{RubyJard.current_session.contexts.length})"
+      end
+
+      def data_size
+        [@height - 1, RubyJard.current_session.contexts.length].min
+      end
+
+      def data_window
+        @data_window ||= sort_contexts(RubyJard.current_session.contexts).first(data_size)
+      end
+
       def draw
-        @output.print TTY::Box.frame(
-          **default_frame_styles.merge(
-            top: @row, left: @col, width: @width, height: @height
-          )
-        )
+        adjust_screen_size_to_borders
 
-        decorated_threads = decorate_threads
+        calculate
+        # TODO: move this out to ScreenManager
+        drawer = RubyJard::ScreenDrawer.new(output: @output)
+        drawer.draw(self, @col, @row)
+      end
 
-        @output.print TTY::Cursor.move_to(@col + 1, @row)
-        @output.print decorate_text
-          .with_highlight(true)
-          .text(" Threads (#{RubyJard.current_session.contexts.length}) ", :bright_yellow)
-          .content
+      def span_mark(context, _index)
+        [
+          current_thread?(context) ? '→ ' : '  ',
+          [:bright_yellow, current_thread?(context) ? :bold : nil]
+        ]
+      end
 
-        decorated_threads.each_with_index do |thread, index|
-          @output.print TTY::Cursor.move_to(@col + 1, @row + index + 1)
-          @output.print thread.content
-        end
+      def span_thread_id(context, _index)
+        [
+          context.thread.object_id.to_s,
+          [:green, current_thread?(context) ? :bold : nil]
+        ]
+      end
+
+      def span_thread_status(context, _index)
+        status_color =
+          if context.suspended?
+            :red
+          elsif context.ignored?
+            :white
+          elsif context.thread.status == 'run'
+            :green
+          else
+            :white
+          end
+        [
+          "(#{context.thread.status})",
+          [status_color, current_thread?(context) ? :bold : nil]
+        ]
+      end
+
+      def span_thread_name(context, _index)
+        name = context.thread.name.to_s
+        name = "#{name} - " unless name.empty?
+        [name, current_thread?(context) ? :bright_white : :white]
+      end
+
+      def span_thread_path(context, _index)
+        last_backtrace =
+          if context == RubyJard.current_session.current_context
+            context.backtrace[0][0]
+          else
+            context.thread.backtrace_locations[0]
+          end
+        location = decorate_path(last_backtrace.path, last_backtrace.lineno)
+        ["#{location.path}:#{location.lineno}", current_thread?(context) ? :bright_white : :white]
       end
 
       private
-
-      def data_size
-        @height - 1
-      end
-
-      def decorate_threads
-        contexts = sort_contexts(RubyJard.current_session.contexts)
-        num_padding = contexts.length.to_s.length
-        contexts.first(data_size).map do |context|
-          decorate_text
-            .with_highlight(current_thread?(context))
-            .text(current_thread?(context) ? '→ ' : '  ', :bright_white)
-            .text(context_color(context, "T#{context.thread.object_id}"))
-            .with_highlight(false)
-            .text(" (#{context.thread.status}) ", :white)
-            .with_highlight(current_thread?(context))
-            .text(thread_name(context), :bright_white)
-        end
-      end
 
       def sort_contexts(contexts)
         # Sort: current context first
@@ -73,41 +102,6 @@ module RubyJard
 
       def current_thread?(context)
         context.thread == Thread.current
-      end
-
-      def context_color(context, text)
-        if current_thread?(context)
-          decorate_text
-            .with_highlight(true)
-            .text(text, :bright_yellow)
-        elsif context.suspended?
-          decorate_text
-            .with_highlight(false)
-            .text(text, :red)
-        elsif context.ignored?
-          decorate_text
-            .with_highlight(false)
-            .text(text, :white)
-        else
-          decorate_text
-            .with_highlight(false)
-            .text(text, :bright_white)
-        end
-      end
-
-      def thread_name(context)
-        if context.thread.name.nil?
-          last_backtrace =
-            if context == RubyJard.current_session.current_context
-              context.backtrace[0][0]
-            else
-              context.thread.backtrace_locations[0]
-            end
-          location = decorate_path(last_backtrace.path, last_backtrace.lineno)
-          "#{location.path}:#{location.lineno}"
-        else
-          context.thread.name
-        end
       end
     end
   end
