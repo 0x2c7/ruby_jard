@@ -5,7 +5,7 @@ module RubyJard
     ##
     # Decorate a line of code fetched from the source file.
     # The line is tokenized, and feed into JardEncoder to append color (with
-    # Pastel).
+    # Span).
     class LocDecorator
       attr_reader :spans, :tokens
 

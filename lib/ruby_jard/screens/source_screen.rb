@@ -46,7 +46,7 @@ module RubyJard
 
       def span_code(loc, index)
         lineno = decorated_source.window_start + index
-        [decorate_loc(loc).spans, current_line == lineno ? :bold : nil]
+        [decorate_loc(loc).spans, current_line == lineno ? [:bold, :brighter] : nil]
       end
 
       private

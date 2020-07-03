@@ -10,7 +10,7 @@ module RubyJard
 
     def initialize(output:, screen:, x:, y:)
       @output = output
-      @color_decorator = Pastel.new
+      @color_decorator = RubyJard::Decorators::ColorDecorator.new
       @pos_x = x
       @pos_y = y
       @original_pos_x = x

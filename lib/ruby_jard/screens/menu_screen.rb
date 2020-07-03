@@ -63,7 +63,7 @@ module RubyJard
       end
 
       def color_decorator
-        @color_decorator ||= Pastel.new
+        @color_decorator ||= RubyJard::Decorators::ColorDecorator.new
       end
     end
   end

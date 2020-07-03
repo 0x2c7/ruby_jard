@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'ruby_jard/decorators/color_decorator'
 require 'ruby_jard/decorators/path_decorator'
 require 'ruby_jard/decorators/loc_decorator'
 require 'ruby_jard/decorators/source_decorator'
