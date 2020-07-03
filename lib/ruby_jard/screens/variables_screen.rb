@@ -56,20 +56,6 @@ module RubyJard
         @data_window = sort_variables(variables).first(data_size)
       end
 
-      def draw
-        adjust_screen_size_to_borders
-
-        calculate
-        # TODO: move this out to ScreenManager
-        drawer = RubyJard::ScreenDrawer.new(
-          output: @output,
-          screen: self,
-          x: @col,
-          y: @row
-        )
-        drawer.draw
-      end
-
       def span_type(data_row, _index)
         type_name = TYPE_SYMBOLS[data_row[2].class] || DEFAULT_TYPE_SYMBOL
         [type_name.to_s, :white]

@@ -8,21 +8,26 @@ module RubyJard
   class Screen
     attr_reader :output, :rows, :width, :height
 
-    def initialize(screen_template:, output:, session:, width:, height:, row:, col:)
+    def initialize(screen_template:, session:, width:, height:)
       @session = session
       @screen_template = screen_template
       @width = width
       @height = height
-
-      # TODO: remove these variables after refactoring
-      @output = output
-      @row = row
-      @col = col
-      @color_decorator = Pastel.new
     end
 
-    def draw(_row, _col, _size)
-      raise NotImplementedError, "#{self.class} must implement #draw method"
+    def draw(output, x, y)
+      # TODO: In future, borders are dynamic decided by layout. Right now, each screen has top and left border
+      @width -= 1
+      @height -= 1
+
+      calculate
+      drawer = RubyJard::ScreenDrawer.new(
+        output: output,
+        screen: self,
+        x: x + 1,
+        y: y + 1
+      )
+      drawer.draw
     end
 
     def data_size
@@ -44,29 +49,6 @@ module RubyJard
     end
 
     private
-
-    def adjust_screen_size_to_borders
-      # TODO: In future, borders are dynamic decided by layout. Right now, each screen has top and left border
-      @width -= 1
-      @height -= 1
-      @row += 1
-      @col += 1
-    end
-
-    def default_frame_styles
-      {
-        style: {
-          fg: :white
-        },
-        border: {
-          bottom_left: false,
-          bottom_right: false,
-          bottom: false,
-          left: :line,
-          right: false
-        }
-      }
-    end
 
     def calculate_column_widths(row_template, rows)
       column_widths = {}
@@ -161,11 +143,6 @@ module RubyJard
       # Idea:
       # - Ommit if the row height > height limit
       false
-    end
-
-    def decorate_text
-      # TODO: this interface is ugly as fuck
-      RubyJard::Decorators::TextDecorator.new(@color_decorator)
     end
 
     def decorate_path(path, lineno)

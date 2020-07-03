@@ -52,7 +52,7 @@ module RubyJard
       screens = RubyJard::Layout.calculate(
         layout: layout,
         width: width, height: height,
-        row: 0, col: 0
+        x: 0, y: 0
       )
 
       begin
@@ -68,22 +68,18 @@ module RubyJard
     private
 
     def draw_screens(screens)
-      screens.each do |screen_template, width, height, row, col|
-        # puts screen_template, screen_template.screen, width, height, row, col
+      screens.each do |screen_template, width, height, x, y|
         screen = fetch_screen(screen_template.screen)
         screen&.new(
-          output: @output,
           session: @session,
           screen_template: screen_template,
           width: width,
-          height: height,
-          row: row,
-          col: col
-        )&.draw
+          height: height
+        )&.draw(@output, x, y)
       end
 
-      cursor_row = screens.map { |_, _, height, row, _| row + height }.max
-      @output.print TTY::Cursor.move_to(0, cursor_row + 1)
+      cursor_y = screens.map { |_template, _width, height, _x, y| y + height }.max
+      @output.print TTY::Cursor.move_to(0, cursor_y + 1)
     end
 
     def print_debug_screen

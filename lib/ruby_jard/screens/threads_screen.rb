@@ -15,20 +15,6 @@ module RubyJard
         @data_window ||= sort_contexts(RubyJard.current_session.contexts).first(data_size)
       end
 
-      def draw
-        adjust_screen_size_to_borders
-
-        calculate
-        # TODO: move this out to ScreenManager
-        drawer = RubyJard::ScreenDrawer.new(
-          output: @output,
-          screen: self,
-          x: @col,
-          y: @row
-        )
-        drawer.draw
-      end
-
       def span_mark(context, _index)
         [
           current_thread?(context) ? '→' : ' ',

@@ -28,20 +28,6 @@ module RubyJard
         @decorated_source ||= decorate_source(current_file, current_line, data_size)
       end
 
-      def draw
-        adjust_screen_size_to_borders
-
-        calculate
-        # TODO: move this out to ScreenManager
-        drawer = RubyJard::ScreenDrawer.new(
-          output: @output,
-          screen: self,
-          x: @col,
-          y: @row
-        )
-        drawer.draw
-      end
-
       def span_mark(_loc, index)
         lineno = decorated_source.window_start + index
         [

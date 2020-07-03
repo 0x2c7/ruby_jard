@@ -29,20 +29,6 @@ module RubyJard
         [frames_count, data_window_start + data_size - 1].min
       end
 
-      def draw
-        adjust_screen_size_to_borders
-
-        calculate
-        # TODO: move this out to ScreenManager
-        drawer = RubyJard::ScreenDrawer.new(
-          output: @output,
-          screen: self,
-          x: @col,
-          y: @row
-        )
-        drawer.draw
-      end
-
       def span_mark(_frame, index)
         [
           current_frame?(index) ? '→' : ' ',

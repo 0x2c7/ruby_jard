@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/CyclomaticComplexity
 module RubyJard
@@ -13,49 +12,49 @@ module RubyJard
       new(**args).calculate
     end
 
-    def initialize(layout:, width: 0, height: 0, row: 0, col: 0)
+    def initialize(layout:, width: 0, height: 0, x: 0, y: 0)
       @layout = layout
       @width = width
       @height = height
-      @row = row
-      @col = col
+      @x = x
+      @y = y
     end
 
     def calculate
       screens = []
-      calculate_layout(screens, @layout, @width, @height, @row, @col)
+      calculate_layout(screens, @layout, @width, @height, @x, @y)
       screens
     end
 
     private
 
-    def calculate_layout(screens, layout, width, height, row, col)
+    def calculate_layout(screens, layout, width, height, x, y)
       if layout.is_a?(RubyJard::Templates::ScreenTemplate)
-        screens << [layout, width, height, row, col]
+        screens << [layout, width, height, x, y]
       else
         total_height = 0
         total_width = 0
         overflow_width = 0
-        child_row = row
-        child_col = col
+        child_x = x
+        child_y = y
         max_height = 0
 
         layout.children.each_with_index do |child_layout, index|
           child_height = calculate_child_height(child_layout, layout, height, index, total_height)
           child_width = calculate_child_width(child_layout, layout, width, index, total_width)
 
-          calculate_layout(screens, child_layout, child_width, child_height, child_row, child_col)
+          calculate_layout(screens, child_layout, child_width, child_height, child_x, child_y)
 
           overflow_width += child_width
           max_height = child_height if max_height < child_height
           # Overflow. Break to next line
           if overflow_width >= width
-            child_row += max_height
-            child_col = col
+            child_y += max_height
+            child_x = x
             overflow_width = 0
             max_height = 0
           else
-            child_col += child_width
+            child_x += child_width
           end
 
           total_width += child_width
@@ -108,7 +107,5 @@ module RubyJard
   end
 end
 
-# rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/CyclomaticComplexity
-
