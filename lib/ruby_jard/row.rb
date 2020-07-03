@@ -8,9 +8,8 @@ module RubyJard
 
     def_delegators :@row_template, :line_limit
 
-    def initialize(row_template:, priority:, columns: [])
+    def initialize(row_template:, columns: [])
       @row_template = row_template
-      @priority = priority
       @columns = columns
     end
   end

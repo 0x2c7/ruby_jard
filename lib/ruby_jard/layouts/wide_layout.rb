@@ -63,43 +63,17 @@ module RubyJard
                   RubyJard::Templates::ColumnTemplate.new(
                     margin_right: 1,
                     spans: [
-                      RubyJard::Templates::SpanTemplate.new(
-                        :mark,
-                        margin_right: 1,
-                        priority: 2
-                      ),
-                      RubyJard::Templates::SpanTemplate.new(
-                        :frame_id,
-                        priority: 2
-                      )
+                      RubyJard::Templates::SpanTemplate.new(:mark, margin_right: 1),
+                      RubyJard::Templates::SpanTemplate.new(:frame_id)
                     ]
                   ),
                   RubyJard::Templates::ColumnTemplate.new(
                     spans: [
-                      RubyJard::Templates::SpanTemplate.new(
-                        :klass_label,
-                        priority: 0
-                      ),
-                      RubyJard::Templates::SpanTemplate.new(
-                        :label_preposition,
-                        priority: 0,
-                        margin_left: 1,
-                        margin_right: 1
-                      ),
-                      RubyJard::Templates::SpanTemplate.new(
-                        :method_label,
-                        priority: 0
-                      ),
-                      RubyJard::Templates::SpanTemplate.new(
-                        :path_preposition,
-                        priority: 1,
-                        margin_left: 1,
-                        margin_right: 1
-                      ),
-                      RubyJard::Templates::SpanTemplate.new(
-                        :path,
-                        priority: 1
-                      )
+                      RubyJard::Templates::SpanTemplate.new(:klass_label, margin_right: 1),
+                      RubyJard::Templates::SpanTemplate.new(:label_preposition, margin_right: 1),
+                      RubyJard::Templates::SpanTemplate.new(:method_label, margin_right: 1),
+                      RubyJard::Templates::SpanTemplate.new(:path_preposition, margin_right: 1),
+                      RubyJard::Templates::SpanTemplate.new(:path)
                     ]
                   )
                 ]
@@ -113,32 +87,19 @@ module RubyJard
                   RubyJard::Templates::ColumnTemplate.new(
                     margin_right: 1,
                     spans: [
-                      RubyJard::Templates::SpanTemplate.new(
-                        :mark,
-                        margin_right: 1,
-                        priority: 2
-                      ),
-                      RubyJard::Templates::SpanTemplate.new(
-                        :thread_id,
-                        priority: 0
-                      )
+                      RubyJard::Templates::SpanTemplate.new(:mark, margin_right: 1),
+                      RubyJard::Templates::SpanTemplate.new(:thread_id)
                     ]
                   ),
                   RubyJard::Templates::ColumnTemplate.new(
                     margin_right: 1,
                     spans: [
-                      RubyJard::Templates::SpanTemplate.new(
-                        :thread_status,
-                        priority: 0
-                      )
+                      RubyJard::Templates::SpanTemplate.new(:thread_status)
                     ]
                   ),
                   RubyJard::Templates::ColumnTemplate.new(
                     spans: [
-                      RubyJard::Templates::SpanTemplate.new(
-                        :thread_name,
-                        priority: 0
-                      )
+                      RubyJard::Templates::SpanTemplate.new(:thread_name)
                     ]
                   )
                 ]

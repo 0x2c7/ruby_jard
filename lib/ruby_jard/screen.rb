@@ -36,15 +36,11 @@ module RubyJard
     def calculate
       @rows = []
       row_template = @screen_template.row_template
-      row_template.priorities.each do |priority|
-        @rows = data_window.map.with_index do |data_row, index|
-          create_row(row_template, priority, data_row, index)
-        end
-        column_widths = calculate_column_widths(row_template, @rows)
-        fill_column_widths(@rows, column_widths)
-
-        break unless need_to_ommit?(@rows)
+      @rows = data_window.map.with_index do |data_row, index|
+        create_row(row_template, data_row, index)
       end
+      column_widths = calculate_column_widths(row_template, @rows)
+      fill_column_widths(@rows, column_widths)
     end
 
     private
@@ -112,19 +108,17 @@ module RubyJard
       end
     end
 
-    def create_row(row_template, priority, data_row, index)
-      row = Row.new(row_template: row_template, priority: priority)
+    def create_row(row_template, data_row, index)
+      row = Row.new(row_template: row_template)
       row.columns = row_template.columns.map do |column_template|
-        create_column(column_template, priority, data_row, index)
+        create_column(column_template, data_row, index)
       end
       row
     end
 
-    def create_column(column_template, priority, data_row, index)
+    def create_column(column_template, data_row, index)
       column = Column.new(column_template: column_template)
       column.spans = column_template.spans.map do |span_template|
-        next if span_template.priority > priority
-
         create_span(span_template, data_row, index)
       end
       column.content_length =
