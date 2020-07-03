@@ -143,7 +143,7 @@ module RubyJard
         content = ' ' * span_template.margin_left + content if span_template.margin_left
         content += ' ' * span_template.margin_right if span_template.margin_right
         span.content = content
-        span.styles = styles.to_a.compact
+        span.styles = Array(styles).flatten.compact
         span.content_length = span.content.length
       else
         raise NotImplementedError, "#{self.class} must implement #{span_content_method} method"
