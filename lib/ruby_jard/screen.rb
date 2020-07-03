@@ -140,11 +140,16 @@ module RubyJard
 
       if respond_to?(span_content_method)
         content, styles = send(span_content_method, data_row, index)
-        content = ' ' * span_template.margin_left + content if span_template.margin_left
-        content += ' ' * span_template.margin_right if span_template.margin_right
-        span.content = content
-        span.styles = Array(styles).flatten.compact
-        span.content_length = span.content.length
+        if content.nil?
+          span.content = ''
+          span.content_length = 0
+        else
+          content = ' ' * span_template.margin_left + content if span_template.margin_left
+          content += ' ' * span_template.margin_right if span_template.margin_right
+          span.content = content
+          span.styles = Array(styles).flatten.compact
+          span.content_length = span.content.length
+        end
       else
         raise NotImplementedError, "#{self.class} must implement #{span_content_method} method"
       end

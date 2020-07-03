@@ -5,10 +5,11 @@ module RubyJard
     ##
     # Template for a row. Each screen has only 1 template for row. Each row includes multiple columns.
     class RowTemplate
-      attr_reader :columns
+      attr_reader :columns, :line_limit
 
-      def initialize(columns: [])
+      def initialize(columns: [], line_limit: nil)
         @columns = columns
+        @line_limit = line_limit
       end
 
       def priorities

@@ -6,6 +6,8 @@ module RubyJard
   class ScreenDrawer
     attr_reader :output
 
+    ELLIPSIS = ' [...]'
+
     def initialize(output:, screen:, x:, y:)
       @output = output
       @color_decorator = Pastel.new
@@ -37,13 +39,13 @@ module RubyJard
     def draw_rows
       @original_pos_x = @pos_x
       @screen.rows.each do |row|
-        draw_columns(row.columns)
+        draw_columns(row, row.columns)
         @pos_y += 1
         @pos_x = @original_pos_x
       end
     end
 
-    def draw_columns(columns)
+    def draw_columns(row, columns)
       columns.each do |column|
         width = 0
         column_content_width = column.width - column.margin_left - column.margin_right
@@ -52,6 +54,7 @@ module RubyJard
 
         column.spans.each do |span|
           line_content = span.content
+          lines = 1
 
           until line_content.empty?
             if width + line_content.length > column_content_width
@@ -59,11 +62,16 @@ module RubyJard
                 line_content[0..column_content_width - width - 1],
                 *span.styles
               )
-
               line_content = line_content[column_content_width - width..-1]
               width = 0
-              @pos_y += 1
+              lines += 1
+              if !row.line_limit.nil? && lines > row.line_limit
+                @output.print TTY::Cursor.move_to(@pos_x + column.width - ELLIPSIS.length, @pos_y)
+                protected_print @color_decorator.decorate(ELLIPSIS, *span.styles)
+                break
+              end
 
+              @pos_y += 1
               @output.print TTY::Cursor.move_to(@pos_x, @pos_y)
             else
               protected_print @color_decorator.decorate(line_content, *span.styles)
