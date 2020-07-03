@@ -20,10 +20,7 @@ module RubyJard
         //.class => :reg,
         Class => :cls # Sorry, I lied, Class will never change
       }.freeze
-      TYPE_SYMBOL_PADDING = TYPE_SYMBOLS.map { |_, s| s.to_s.length }.max + 1
       DEFAULT_TYPE_SYMBOL = :var
-
-      INSPECTION_ELLIPSIS = ' [...]'
 
       KINDS = [
         KIND_LOC = :loc,
@@ -43,30 +40,70 @@ module RubyJard
         KIND_CON => :green
       }.freeze
 
+      def title
+        'Variables'
+      end
+
+      def data_size
+        @height
+      end
+
+      def data_window
+        return [] if current_frame.nil?
+        return @data_window if defined?(@data_window)
+
+        variables = fetch_local_variables + fetch_instance_variables + fetch_constants
+        @data_window = sort_variables(variables).first(data_size)
+      end
+
       def draw
-        @output.print TTY::Box.frame(
-          **default_frame_styles.merge(
-            top: @row, left: @col, width: @width, height: @height
-          )
+        adjust_screen_size_to_borders
+
+        calculate
+        # TODO: move this out to ScreenManager
+        drawer = RubyJard::ScreenDrawer.new(
+          output: @output,
+          screen: self,
+          x: @col,
+          y: @row
         )
+        drawer.draw
+      end
 
-        @output.print TTY::Cursor.move_to(@col + 1, @row)
-        @output.print decorate_text
-          .with_highlight(true)
-          .text('Variables ', :bright_yellow)
-          .content
+      def span_type(data_row, _index)
+        type_name = TYPE_SYMBOLS[data_row[2].class] || DEFAULT_TYPE_SYMBOL
+        [type_name.to_s, :white]
+      end
 
-        decorated_variables.first(data_size).each_with_index do |variable, index|
-          @output.print TTY::Cursor.move_to(@col + 1, @row + index + 1)
-          @output.print variable.content
+      def span_name(data_row, _index)
+        [
+          data_row[1].to_s,
+          [
+            KIND_COLORS[data_row[0]] || :white,
+            :bold
+          ]
+        ]
+      end
+
+      def span_indicator(_data_row, _index)
+        ['=', [:bright_white]]
+      end
+
+      def span_size(data_row, _index)
+        value = data_row[2]
+        if value.is_a?(Array) && !value.empty?
+          ["(size: #{value.length})", :white]
+        elsif value.is_a?(String) && value.length > 20
+          ["(size: #{value.length})", :white]
         end
       end
 
-      private
-
-      def data_size
-        @height - 1
+      def span_inspection(data_row, _index)
+        # Hard limit: screen area
+        [data_row[2].inspect[0..@height * @width], :white]
       end
+
+      private
 
       def current_binding
         RubyJard.current_session.frame._binding
@@ -82,16 +119,6 @@ module RubyJard
 
       def current_frame_scope_class
         RubyJard.current_session.backtrace[RubyJard.current_session.frame.pos][2]
-      end
-
-      def decorated_variables
-        return [] if current_frame.nil?
-
-        variables = fetch_local_variables + fetch_instance_variables + fetch_constants
-
-        sort_variables(variables).map do |kind, name, value|
-          decorated_variable(kind, name, value)
-        end.flatten
       end
 
       def fetch_local_variables
@@ -136,73 +163,6 @@ module RubyJard
         rescue NameError
           nil
         end.compact
-      end
-
-      def decorated_variable(kind, name, value)
-        text =
-          decorate_text
-          .text(decorated_type(value))
-          .with_highlight(true)
-          .text(name.to_s, kind_color(kind))
-          .text(addition_data(value), :white)
-          .text(' = ')
-          .with_highlight(false)
-        inspect_texts = inspect_value(text, value)
-        text.text(inspect_texts.first, :bright_white)
-
-        # TODO: Fix this ugly code
-        [text] +
-          inspect_texts[1..-1].map do |line|
-            decorate_text
-          .with_highlight(false)
-          .text(' ' * TYPE_SYMBOL_PADDING)
-          .text(line, :bright_white)
-          end
-      end
-
-      def addition_data(value)
-        if value.is_a?(Array) && !value.empty?
-          " (size: #{value.length})"
-        elsif value.is_a?(String) && value.length > 20
-          " (size: #{value.length})"
-        else
-          ''
-        end
-      end
-
-      def inspect_value(text, value)
-        # Split the lines, add padding to align with kind
-        length = @width - TYPE_SYMBOL_PADDING - 1
-        value_inspect = value.inspect.to_s
-
-        start_pos = 0
-        end_pos = @width - 2 - text.length
-
-        texts = []
-        3.times do |_index|
-          texts << value_inspect[start_pos..end_pos]
-          break if end_pos >= value_inspect.length
-
-          start_pos = end_pos + 1
-          end_pos += length
-        end
-
-        if end_pos < value_inspect.length
-          texts.last[texts.last.length - INSPECTION_ELLIPSIS.length - 1..texts.last.length - 1] = INSPECTION_ELLIPSIS
-        end
-
-        texts
-      end
-
-      def decorated_type(value)
-        type_name = TYPE_SYMBOLS[value.class] || DEFAULT_TYPE_SYMBOL
-        decorate_text
-          .with_highlight(false)
-          .text(type_name.to_s.ljust(TYPE_SYMBOL_PADDING), :white)
-      end
-
-      def kind_color(kind)
-        KIND_COLORS[kind] || :white
       end
 
       def sort_variables(variables)
