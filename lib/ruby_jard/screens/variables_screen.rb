@@ -35,10 +35,17 @@ module RubyJard
       }.freeze
 
       KIND_COLORS = {
-        KIND_LOC => [:bright_white, :bold],
-        KIND_INS => [:blue, :bold],
-        KIND_CON => [:green]
+        KIND_LOC => :bright_white,
+        KIND_INS => :bright_blue,
+        KIND_CON => :green
       }.freeze
+
+      INLINE_TOKEN_KIND_MAPS = {
+        KIND_LOC => :ident,
+        KIND_INS => :instance_variable,
+        KIND_CON => :constant
+      }.freeze
+      INLINE_TOKEN_KINDS = INLINE_TOKEN_KIND_MAPS.values
 
       def title
         'Variables'
@@ -53,18 +60,28 @@ module RubyJard
         return @data_window if defined?(@data_window)
 
         variables = fetch_local_variables + fetch_instance_variables + fetch_constants
+        # Each row is an array of [kind, name, value]
         @data_window = sort_variables(variables).first(data_size)
+      end
+
+      def span_inline(data_row, _index)
+        if inline?(data_row[0], data_row[1])
+          ['→', [:bright_yellow, :bold]]
+        end
       end
 
       def span_type(data_row, _index)
         type_name = TYPE_SYMBOLS[data_row[2].class] || DEFAULT_TYPE_SYMBOL
-        [type_name.to_s, :white]
+        [type_name.to_s, inline?(data_row[0], data_row[1]) ? [:bright_yellow, :bold] : :white]
       end
 
       def span_name(data_row, _index)
         [
           data_row[1].to_s,
-          KIND_COLORS[data_row[0]] || [:white, :bold]
+          [
+            KIND_COLORS[data_row[0]] || :bright_white,
+            inline?(data_row[0], data_row[1]) ? :bold : nil
+          ]
         ]
       end
 
@@ -169,6 +186,32 @@ module RubyJard
             end
           end
         end
+      end
+
+      def inline?(kind, name)
+        tokens = inline_tokens[INLINE_TOKEN_KIND_MAPS[kind]] || []
+        tokens.include?(name)
+      end
+
+      def inline_tokens
+        return @inline_tokens if defined?(@inline_tokens)
+
+        current_file = RubyJard.current_session.frame.file
+        current_line = RubyJard.current_session.frame.line
+        source_decorator = RubyJard::Decorators::SourceDecorator.new(current_file, current_line, 1)
+        loc_decorator = RubyJard::Decorators::LocDecorator.new(
+          source_decorator.codes[current_line - source_decorator.window_start]
+        )
+
+        @inline_tokens = {}
+        loc_decorator.tokens.each_slice(2) do |token, kind|
+          next unless INLINE_TOKEN_KINDS.include?(kind)
+
+          @inline_tokens[kind] ||= []
+          @inline_tokens[kind] << token.to_s.to_sym
+        end
+
+        @inline_tokens
       end
     end
   end

@@ -47,6 +47,11 @@ module RubyJard
                     line_limit: 3,
                     columns: [
                       RubyJard::Templates::ColumnTemplate.new(
+                        spans: [
+                          RubyJard::Templates::SpanTemplate.new(:inline, margin_right: 1)
+                        ]
+                      ),
+                      RubyJard::Templates::ColumnTemplate.new(
                         margin_right: 1,
                         spans: [
                           RubyJard::Templates::SpanTemplate.new(:type)

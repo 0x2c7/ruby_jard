@@ -6,7 +6,7 @@ module RubyJard
       def title
         return 'Source' if RubyJard.current_session.frame.nil?
 
-        decorated_path = decorate_path(current_file, current_line)
+        decorated_path = path_decorator(current_file, current_line)
         if decorated_path.gem?
           "Source (#{decorated_path.gem} - #{decorated_path.path}:#{decorated_path.lineno})"
         else
@@ -21,15 +21,11 @@ module RubyJard
       def data_window
         return [] if RubyJard.current_session.frame.nil?
 
-        @data_window ||= decorated_source.codes
-      end
-
-      def decorated_source
-        @decorated_source ||= decorate_source(current_file, current_line, data_size)
+        @data_window ||= source_decorator.codes
       end
 
       def span_mark(_loc, index)
-        lineno = decorated_source.window_start + index
+        lineno = source_decorator.window_start + index
         [
           current_line == lineno ? '→' : ' ',
           [:bright_yellow, current_line == lineno ? :bold : nil]
@@ -37,7 +33,7 @@ module RubyJard
       end
 
       def span_lineno(_loc, index)
-        lineno = decorated_source.window_start + index
+        lineno = source_decorator.window_start + index
         [
           lineno.to_s,
           current_line == lineno ? [:bold, :bright_yellow] : [:white]
@@ -45,8 +41,8 @@ module RubyJard
       end
 
       def span_code(loc, index)
-        lineno = decorated_source.window_start + index
-        [decorate_loc(loc).spans, current_line == lineno ? [:brighter] : nil]
+        lineno = source_decorator.window_start + index
+        [loc_decorator(loc).spans, current_line == lineno ? [:brighter] : nil]
       end
 
       private
@@ -67,15 +63,15 @@ module RubyJard
         RubyJard.current_session.frame.line
       end
 
-      def decorate_path(path, lineno)
-        RubyJard::Decorators::PathDecorator.new(path, lineno)
+      def path_decorator(path, lineno)
+        @path_decorator ||= RubyJard::Decorators::PathDecorator.new(path, lineno)
       end
 
-      def decorate_source(file, lineno, window)
-        RubyJard::Decorators::SourceDecorator.new(file, lineno, window)
+      def source_decorator
+        @source_decorator ||= RubyJard::Decorators::SourceDecorator.new(current_file, current_line, data_size)
       end
 
-      def decorate_loc(loc)
+      def loc_decorator(loc)
         RubyJard::Decorators::LocDecorator.new(loc)
       end
     end
