@@ -46,7 +46,7 @@ module RubyJard
             char: [:white],
             delimiter: [:white]
           },
-          constant: [:underline, :green],
+          constant: [:green],
           decorator: [:blue],
           definition: [:blue],
           directive: [:blue],
@@ -126,7 +126,8 @@ module RubyJard
           head: {
             self: [:on_red],
             filename: [:white, :on_red]
-          }
+          },
+          instance_variable: [:blue]
         }.freeze
 
         protected
