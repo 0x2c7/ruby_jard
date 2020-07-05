@@ -27,16 +27,16 @@ module RubyJard
 
       def generate_left_menu
         [
-          decorate_text('Debug console (F5)', :bright_yellow)
+          # Fill in later
         ]
       end
 
       def generate_right_menu
         [
-          decorate_text('Step (F7)', :white),
-          decorate_text('Next (F8)', :white),
           decorate_text('Up (F6)', :white),
           decorate_text('Down (Shift+F6)', :white),
+          decorate_text('Step (F7)', :white),
+          decorate_text('Next (F8)', :white),
           decorate_text('Continue (F9)', :white)
         ]
       end
