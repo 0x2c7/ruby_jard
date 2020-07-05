@@ -14,20 +14,28 @@ module RubyJard
       match 'frame'
 
       banner <<-BANNER
-      Usage: frame
+      Usage: frame [FRAME_ID]
 
       Explore to any frame of current stacktrace.
 
       Examples:
-        frame [FRAME_ID]
+        frame 4 # Jump to frame 4 in the backtrace
       BANNER
 
       def process
-        throw :control_flow,
-              command: :frame,
-              pry: pry_instance,
-              # TODO: Remove redundant options
-              options: { frame: args.first }
+        frame = args.first
+        raise Pry::CommandError, 'Frame ID is required' if frame.nil?
+        raise Pry::CommandError, 'Frame ID must be numeric' unless frame =~ /^\d+$/i
+
+        frame = frame.to_i
+        if frame >= RubyJard.current_session.backtrace.length || frame < 0
+          raise Pry::CommandError, "Frame #{frame} does not exist!"
+        else
+          throw :control_flow,
+                command: :frame,
+                pry: pry_instance,
+                frame: args.first
+        end
       end
     end
   end

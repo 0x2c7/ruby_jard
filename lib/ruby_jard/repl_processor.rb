@@ -67,10 +67,11 @@ module RubyJard
         {}
       end
 
-      @pry = flow[:pry]
-      if @pry
-        @pry.binding_stack.clear
-        send("handle_#{flow[:command]}_command", @pry, flow[:options])
+      @pry = flow.delete(:pry)
+      command = flow.delete(:command)
+      if command
+        @pry&.binding_stack&.clear
+        send("handle_#{command}_command", @pry, flow)
       end
 
       return_value
@@ -105,6 +106,12 @@ module RubyJard
 
     def handle_down_command(_pry_instance, _options)
       Byebug::DownCommand.new(self, 'down 1').execute
+
+      process_commands
+    end
+
+    def handle_frame_command(_pry_instance, options)
+      Byebug::FrameCommand.new(self, "frame #{options[:frame]}").execute
 
       process_commands
     end
