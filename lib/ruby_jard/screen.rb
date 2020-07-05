@@ -16,16 +16,12 @@ module RubyJard
     end
 
     def draw(output, x, y)
-      # TODO: In future, borders are dynamic decided by layout. Right now, each screen has top and left border
-      @width -= 1
-      @height -= 1
-
       calculate
       drawer = RubyJard::ScreenDrawer.new(
         output: output,
         screen: self,
-        x: x + 1,
-        y: y + 1
+        x: x,
+        y: y
       )
       drawer.draw
     end

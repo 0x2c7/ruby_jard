@@ -6,6 +6,7 @@ require 'ruby_jard/decorators/loc_decorator'
 require 'ruby_jard/decorators/source_decorator'
 
 require 'ruby_jard/screen'
+require 'ruby_jard/box_drawer'
 require 'ruby_jard/screen_drawer'
 require 'ruby_jard/screens'
 require 'ruby_jard/screens/source_screen'
@@ -55,17 +56,27 @@ module RubyJard
         x: 0, y: 0
       )
 
+      prompt_y = screens.map { |_template, _width, screen_height, _x, y| y + screen_height }.max
       begin
+        draw_box(screens)
+        screens = adjust_screen_contents(screens)
         draw_screens(screens)
       rescue StandardError => e
         clear_screen
-        @output.puts e
-        @output.puts e.backtrace
+        @output.puts e, e.backtrace
       end
+      @output.print TTY::Cursor.move_to(0, prompt_y)
       print_debug_screen
     end
 
     private
+
+    def draw_box(screens)
+      RubyJard::BoxDrawer.new(
+        output: @output,
+        screens: screens
+      ).draw
+    end
 
     def draw_screens(screens)
       screens.each do |screen_template, width, height, x, y|
@@ -77,25 +88,22 @@ module RubyJard
           height: height
         )&.draw(@output, x, y)
       end
+    end
 
-      cursor_y = screens.map { |_template, _width, height, _x, y| y + height }.max
-      @output.print TTY::Cursor.move_to(0, cursor_y + 1)
+    def adjust_screen_contents(screens)
+      # After drawing the box, screen sizes should be updated to reflect content-only area
+      screens.map do |screen_template, width, height, x, y|
+        [screen_template, width - 2, height - 2, x + 1, y + 1]
+      end
     end
 
     def print_debug_screen
       unless RubyJard.debug_info.empty?
-        debug_frame = TTY::Box.frame(
-          width: TTY::Screen.width,
-          height: RubyJard.debug_info.length + 2,
-          title: {
-            top_left: 'Debug'
-          },
-          style: {
-            fg: :yellow,
-            border: { fg: :yellow }
-          }
-        ) { RubyJard.debug_info.join("\n") }
-        @output.print debug_frame
+        @output.puts '--- Debug ---'
+        RubyJard.debug_info.each do |line|
+          @output.puts line
+        end
+        @output.puts '-------------'
       end
       RubyJard.clear_debug
     end

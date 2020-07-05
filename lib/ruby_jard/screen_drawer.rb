@@ -19,20 +19,17 @@ module RubyJard
     end
 
     def draw
-      draw_box
+      draw_title
       draw_rows
     end
 
     private
 
-    def draw_box
-      frame_styles = default_frame_styles.merge(
-        top: @pos_y - 1, left: @pos_x - 1, width: @screen.width + 1, height: @screen.height + 1
-      )
-      @output.print TTY::Box.frame(**frame_styles)
+    def draw_title
+      # TODO: Shouldn't this be in BoxDrawer too?
       @output.print TTY::Cursor.move_to(@pos_x + 1, @pos_y - 1)
       @output.print ' '
-      @output.print @color_decorator.decorate(@screen.title, :bright_yellow)
+      @output.print @color_decorator.decorate(@screen.title, :bright_yellow, :bold)
       @output.print ' '
     end
 

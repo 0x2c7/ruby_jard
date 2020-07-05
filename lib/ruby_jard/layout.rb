@@ -49,16 +49,16 @@ module RubyJard
           max_height = child_height if max_height < child_height
           # Overflow. Break to next line
           if overflow_width >= width
-            child_y += max_height
+            child_y += max_height - 1
             child_x = x
             overflow_width = 0
             max_height = 0
           else
-            child_x += child_width
+            child_x += child_width - 1
           end
 
-          total_width += child_width
-          total_height += child_height
+          total_width += child_width - 1
+          total_height += child_height - 1
         end
       end
     end
