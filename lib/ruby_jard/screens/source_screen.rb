@@ -36,13 +36,13 @@ module RubyJard
         lineno = source_decorator.window_start + index
         [
           lineno.to_s,
-          current_line == lineno ? [:bold, :bright_yellow] : [:white]
+          current_line == lineno ? [:bold, :bright_yellow] : [:dim, :white]
         ]
       end
 
       def span_code(loc, index)
         lineno = source_decorator.window_start + index
-        [loc_decorator(loc).spans, current_line == lineno ? [:brighter] : nil]
+        [loc_decorator(loc).spans, current_line == lineno ? [:brighter] : [:dim]]
       end
 
       private

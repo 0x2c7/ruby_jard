@@ -18,6 +18,7 @@ module RubyJard
         [].class => :arr,
         {}.class => :hash,
         //.class => :reg,
+        (0..0).class => :rng,
         Class => :cls # Sorry, I lied, Class will never change
       }.freeze
       DEFAULT_TYPE_SYMBOL = :var
@@ -35,7 +36,7 @@ module RubyJard
       }.freeze
 
       KIND_COLORS = {
-        KIND_LOC => :bright_white,
+        KIND_LOC => :bright_blue,
         KIND_INS => :bright_blue,
         KIND_CON => :green
       }.freeze
@@ -66,13 +67,15 @@ module RubyJard
 
       def span_inline(data_row, _index)
         if inline?(data_row[0], data_row[1])
-          ['→', [:bright_yellow, :bold]]
+          ['•', [:bright_yellow, :bold]]
+        else
+          [' ']
         end
       end
 
       def span_type(data_row, _index)
         type_name = TYPE_SYMBOLS[data_row[2].class] || DEFAULT_TYPE_SYMBOL
-        [type_name.to_s, inline?(data_row[0], data_row[1]) ? [:bright_yellow, :bold] : :white]
+        [type_name.to_s, :white]
       end
 
       def span_name(data_row, _index)
@@ -92,15 +95,17 @@ module RubyJard
       def span_size(data_row, _index)
         value = data_row[2]
         if value.is_a?(Array) && !value.empty?
-          ["(size: #{value.length})", :white]
+          ["(size:#{value.length})", :white]
         elsif value.is_a?(String) && value.length > 20
-          ["(size: #{value.length})", :white]
+          ["(size:#{value.length})", :white]
+        elsif value.is_a?(Hash) && !value.empty?
+          ["(size:#{value.length})", :white]
         end
       end
 
       def span_inspection(data_row, _index)
         # Hard limit: screen area
-        [data_row[2].inspect[0..@height * @width], :white]
+        [data_row[2].inspect[0..@height * @width], :dim, :white]
       end
 
       private
