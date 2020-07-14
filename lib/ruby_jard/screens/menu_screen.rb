@@ -33,10 +33,9 @@ module RubyJard
 
       def generate_right_menu
         [
-          decorate_text('Up (F6)', :white),
-          decorate_text('Down (Shift+F6)', :white),
           decorate_text('Step (F7)', :white),
-          decorate_text('Next (F8)', :white),
+          decorate_text('Step Out (Shift+F7)', :white),
+          decorate_text('Step Over (F8)', :white),
           decorate_text('Continue (F9)', :white)
         ]
       end
