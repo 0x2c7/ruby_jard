@@ -5,8 +5,6 @@ require 'coderay'
 require 'byebug/core'
 require 'byebug/attacher'
 require 'pastel'
-require 'tty-cursor'
-require 'tty-screen'
 require 'forwardable'
 
 require 'ruby_jard/repl_processor'
