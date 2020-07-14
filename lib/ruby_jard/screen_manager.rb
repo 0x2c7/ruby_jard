@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'ruby_jard/console'
+
 require 'ruby_jard/decorators/color_decorator'
 require 'ruby_jard/decorators/path_decorator'
 require 'ruby_jard/decorators/loc_decorator'
@@ -47,8 +49,7 @@ module RubyJard
 
     def refresh
       clear_screen
-      width = TTY::Screen.width
-      height = TTY::Screen.height
+      width, height = RubyJard::Console.screen_size(@output)
       layout = pick_layout(width, height)
       screens = RubyJard::Layout.calculate(
         layout: layout,
@@ -65,7 +66,7 @@ module RubyJard
         clear_screen
         @output.puts e, e.backtrace
       end
-      @output.print TTY::Cursor.move_to(0, prompt_y)
+      RubyJard::Console.move_to(@output, 0, prompt_y)
       print_debug_screen
     end
 
@@ -109,8 +110,7 @@ module RubyJard
     end
 
     def clear_screen
-      @output.print TTY::Cursor.clear_screen
-      @output.print TTY::Cursor.move_to(0, 0)
+      RubyJard::Console.clear_screen(@output)
     end
 
     def fetch_screen(name)

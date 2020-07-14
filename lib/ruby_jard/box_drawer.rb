@@ -61,16 +61,16 @@ module RubyJard
     def draw_basic_lines
       # Exclude the corners
       @screens.each do |_template, width, height, x, y|
-        @output.print TTY::Cursor.move_to(x + 1, y)
+        RubyJard::Console.move_to(@output, x + 1, y)
         @output.print HORIZONTAL_LINE * (width - 2)
 
-        @output.print TTY::Cursor.move_to(x + 1, y + height - 1)
+        RubyJard::Console.move_to(@output, x + 1, y + height - 1)
         @output.print HORIZONTAL_LINE * (width - 2)
 
         (y + 1..y + height - 2).each do |moving_y|
-          @output.print TTY::Cursor.move_to(x, moving_y)
+          RubyJard::Console.move_to(@output, x, moving_y)
           @output.print VERTICAL_LINE
-          @output.print TTY::Cursor.move_to(x + width - 1, moving_y)
+          RubyJard::Console.move_to(@output, x + width - 1, moving_y)
           @output.print VERTICAL_LINE
         end
       end
@@ -79,7 +79,7 @@ module RubyJard
     def draw_corners(corners)
       corners.each do |x, corners_x|
         corners_x.each do |y, ids|
-          @output.print TTY::Cursor.move_to(x, y)
+          RubyJard::Console.move_to(@output, x, y)
 
           case ids.length
           when 1

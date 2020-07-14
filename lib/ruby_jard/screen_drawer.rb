@@ -27,7 +27,7 @@ module RubyJard
 
     def draw_title
       # TODO: Shouldn't this be in BoxDrawer too?
-      @output.print TTY::Cursor.move_to(@pos_x + 1, @pos_y - 1)
+      RubyJard::Console.move_to(@output, @pos_x + 1, @pos_y - 1)
       @output.print ' '
       @output.print @color_decorator.decorate(@screen.title, :bright_yellow, :bold)
       @output.print ' '
@@ -47,7 +47,7 @@ module RubyJard
         width = 0
         column_content_width = column.width - column.margin_left - column.margin_right
         @pos_x += column.margin_left
-        @output.print TTY::Cursor.move_to(@pos_x, @pos_y)
+        RubyJard::Console.move_to(@output, @pos_x, @pos_y)
 
         column.spans.each do |span|
           line_content = span.content
@@ -63,13 +63,13 @@ module RubyJard
               width = 0
               lines += 1
               if !row.line_limit.nil? && lines > row.line_limit
-                @output.print TTY::Cursor.move_to(@pos_x + column.width - ELLIPSIS.length, @pos_y)
+                RubyJard::Console.move_to(@output, @pos_x + column.width - ELLIPSIS.length, @pos_y)
                 protected_print @color_decorator.decorate(ELLIPSIS, *span.styles)
                 break
               end
 
               @pos_y += 1
-              @output.print TTY::Cursor.move_to(@pos_x, @pos_y)
+              RubyJard::Console.move_to(@output, @pos_x, @pos_y)
             else
               protected_print @color_decorator.decorate(line_content, *span.styles)
               width += line_content.length
