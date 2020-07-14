@@ -6,7 +6,7 @@ module RubyJard
   class ScreenDrawer
     attr_reader :output
 
-    ELLIPSIS = ' [...]'
+    ELLIPSIS = ' »'
 
     def initialize(output:, screen:, x:, y:)
       @output = output
