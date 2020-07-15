@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 require 'pry'
-require 'coderay'
 require 'byebug/core'
 require 'byebug/attacher'
-require 'pastel'
 require 'forwardable'
 
 require 'ruby_jard/control_flow'
