@@ -7,6 +7,7 @@ require 'byebug/attacher'
 require 'pastel'
 require 'forwardable'
 
+require 'ruby_jard/repl_proxy'
 require 'ruby_jard/repl_processor'
 require 'ruby_jard/screen_manager'
 

@@ -1,45 +1,18 @@
 # frozen_string_literal: true
 
-require 'ruby_jard/commands/continue_command'
-require 'ruby_jard/commands/up_command'
-require 'ruby_jard/commands/down_command'
-require 'ruby_jard/commands/next_command'
-require 'ruby_jard/commands/step_command'
-require 'ruby_jard/commands/frame_command'
-
 module RubyJard
   ##
   # Byebug allows customizing processor with a series of hooks (https://github.com/deivid-rodriguez/byebug/blob/e1fb8209d56922f7bafd128af84e61568b6cd6a7/lib/byebug/processors/command_processor.rb)
   #
-  # This class is a bridge between Pry and Byebug. It is inherited from
+  # This class is a bridge between REPL library and Byebug. It is inherited from
   # Byebug::CommandProcessor, the processor is triggered. It starts draw the
-  # UI, starts a new pry session, listen for control-flow events threw from
-  # pry commands (lib/commands/*), and triggers Byebug debugger if needed.
+  # UI, starts a new REPL session, listen for control-flow events threw from
+  # repl, and triggers Byebug debugger if needed.
   #
   class ReplProcessor < Byebug::CommandProcessor
-    # Some commands overlaps with Jard, Ruby, and even cause confusion for
-    # users. It's better ignore or re-implement those commands.
-    PRY_EXCLUDED_COMMANDS = [
-      'pry-backtrace', # Redundant method for normal user
-      'watch',         # Conflict with byebug and jard watch
-      'whereami',      # Jard already provides similar. Keeping this command makes conflicted experience
-      'edit',          # Sorry, but a file should not be editted while debugging, as it made breakpoints shifted
-      'play',          # What if the played files or methods include jard again?
-      'stat',          # Included in jard UI
-      'backtrace',     # Re-implemented later
-      'break',         # Re-implemented later
-      'exit',          # Conflicted with continue
-      'exit-all',      # Conflicted with continue
-      'exit-program',  # We already have `exit` native command
-      '!pry',          # No need to complicate things
-      'jump-to',       # No need to complicate things
-      'nesting',       # No need to complicate things
-      'switch-to',     # No need to complicate things
-      'disable-pry'    # No need to complicate things
-    ].freeze
-
     def initialize(context, interface = LocalInterface.new)
       super(context, interface)
+      @repl_proxy = RubyJard::ReplProxy.new
     end
 
     def at_line
@@ -62,89 +35,45 @@ module RubyJard
 
       flow = catch(:control_flow) do
         return_value = allowing_other_threads do
-          start_pry_session
+          @repl_proxy.repl(frame._binding)
         end
         {}
       end
 
-      @pry = flow.delete(:pry)
       command = flow.delete(:command)
-      if command
-        @pry&.binding_stack&.clear
-        send("handle_#{command}_command", @pry, flow)
-      end
+      send("handle_#{command}_command", flow) if command
 
       return_value
     end
 
-    def start_pry_session
-      if @pry.nil?
-        @pry = Pry.start(
-          frame._binding,
-          prompt: pry_jard_prompt,
-          quiet: true,
-          commands: pry_command_set
-        )
-      else
-        @pry.repl(frame._binding)
-      end
-    end
-
-    def handle_next_command(_pry_instance, _options)
+    def handle_next_command(_options)
       Byebug::NextCommand.new(self, 'next').execute
     end
 
-    def handle_step_command(_pry_instance, _options)
+    def handle_step_command(_options)
       Byebug::StepCommand.new(self, 'step').execute
     end
 
-    def handle_up_command(_pry_instance, _options)
+    def handle_up_command(_options)
       Byebug::UpCommand.new(self, 'up 1').execute
 
       process_commands
     end
 
-    def handle_down_command(_pry_instance, _options)
+    def handle_down_command(_options)
       Byebug::DownCommand.new(self, 'down 1').execute
 
       process_commands
     end
 
-    def handle_frame_command(_pry_instance, options)
+    def handle_frame_command(options)
       Byebug::FrameCommand.new(self, "frame #{options[:frame]}").execute
 
       process_commands
     end
 
-    def handle_continue_command(_pry_instance, _options)
+    def handle_continue_command(_options)
       # Do nothing
-    end
-
-    def pry_command_set
-      @pry_command_set ||=
-        begin
-          set = Pry::CommandSet.new
-          set.import_from(
-            Pry.config.commands,
-            *(Pry.config.commands.list_commands - PRY_EXCLUDED_COMMANDS)
-          )
-          set
-        end
-    end
-
-    def pry_jard_prompt
-      @pry_jard_prompt ||=
-        Pry::Prompt.new(
-          :jard,
-          'Custom pry promt for Jard', [
-            proc do |_context, _nesting, _pry_instance|
-              'jard >> '
-            end,
-            proc do |_context, _nesting, _pry_instance|
-              'jard *> '
-            end
-          ]
-        )
     end
   end
 end
