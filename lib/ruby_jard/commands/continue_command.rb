@@ -3,9 +3,6 @@
 module RubyJard
   module Commands
     # Command used to continue program execution.
-    # Data attached in the throw:
-    # * command: constant symbol (:continue)
-    # * pry: current context pry instance
     class ContinueCommand < Pry::ClassCommand
       group 'RubyJard'
       description 'Continue program execution.'
@@ -22,7 +19,7 @@ module RubyJard
       BANNER
 
       def process
-        throw :control_flow, command: :continue, pry: pry_instance
+        RubyJard::ControlFlow.dispatch(:continue)
       ensure
         Byebug.stop if Byebug.stoppable?
       end

@@ -69,9 +69,8 @@ module RubyJard
       @commands.clear
 
       pry_thread = Thread.new do
-        flow = catch(:control_flow) do
+        flow = RubyJard::ControlFlow.listen do
           @pry.repl(current_binding)
-          {}
         end
         @commands << [CMD_FLOW, flow]
       end
@@ -100,7 +99,7 @@ module RubyJard
     def handle_command(cmd, value)
       case cmd
       when CMD_FLOW
-        throw :control_flow, **value
+        RubyJard::ControlFlow.dispatch(value)
       when CMD_EVALUATE
         loop do
           cmd, value = @commands.deq

@@ -33,15 +33,16 @@ module RubyJard
       RubyJard.current_session.refresh
       return_value = nil
 
-      flow = catch(:control_flow) do
+      flow = RubyJard::ControlFlow.listen do
         return_value = allowing_other_threads do
           @repl_proxy.repl(frame._binding)
         end
-        {}
       end
 
-      command = flow.delete(:command)
-      send("handle_#{command}_command", flow) if command
+      unless flow.nil?
+        command = flow.command
+        send("handle_#{command}_command", flow.arguments)
+      end
 
       return_value
     end
