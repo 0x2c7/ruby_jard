@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'io/console'
+require 'English'
 
 module RubyJard
   # Wrapper for utilities to control screen
@@ -23,6 +24,32 @@ module RubyJard
         return unless output.tty?
 
         output.clear_screen
+      end
+
+      def hide_cursor(output)
+        return unless output.tty?
+
+        output.print tput('civis')
+      end
+
+      def show_cursor(output)
+        return unless output.tty?
+
+        output.print tput('cvvis')
+      end
+
+      def tput(*args)
+        # TODO: Should implement multiple fallbacks here to support different platforms
+
+        command = "tput #{args.join(' ')}"
+        output = `#{command}`
+        if $CHILD_STATUS.success?
+          output
+        else
+          raise Ruby::Error, "Fail to call `#{command}`: #{$CHILD_STATUS}"
+        end
+      rescue StandardError => e
+        raise Ruby::Error, "Fail to call `#{command}`. Error: #{e}"
       end
     end
   end

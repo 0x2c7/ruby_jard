@@ -48,7 +48,9 @@ module RubyJard
     end
 
     def refresh
+      RubyJard::Console.hide_cursor(@output)
       clear_screen
+
       width, height = RubyJard::Console.screen_size(@output)
       layout = pick_layout(width, height)
       screens = RubyJard::Layout.calculate(
@@ -68,6 +70,8 @@ module RubyJard
       end
       RubyJard::Console.move_to(@output, 0, prompt_y)
       print_debug_screen
+
+      RubyJard::Console.show_cursor(@output)
     end
 
     private
