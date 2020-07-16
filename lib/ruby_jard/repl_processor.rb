@@ -12,9 +12,9 @@ module RubyJard
   class ReplProcessor < Byebug::CommandProcessor
     def initialize(context, interface = LocalInterface.new)
       super(context, interface)
-      key_bindings = RubyJard::KeyBindings.new
-      push_navigation_bindings(key_bindings)
-      @repl_proxy = RubyJard::ReplProxy.new(key_bindings: key_bindings)
+      @repl_proxy = RubyJard::ReplProxy.new(
+        key_bindings: RubyJard.global_key_bindings
+      )
     end
 
     def at_line
@@ -80,13 +80,13 @@ module RubyJard
     end
 
     def handle_key_binding_command(options)
-      case options[:action]
-      when :control_flow_next
-        handle_next_command
+      method_name = "handle_#{options[:action]}_command"
+      if respond_to?(method_name, true)
+        send(method_name)
+      else
+        raise RubyJard::Error,
+              "Fail to handle key binding `#{options[:action]}`"
       end
-    end
-
-    def push_navigation_bindings(key_bindings)
     end
   end
 end

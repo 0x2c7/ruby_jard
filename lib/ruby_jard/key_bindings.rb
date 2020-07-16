@@ -7,6 +7,8 @@ module RubyJard
   # As this class is performant-sensitive, a lookup tree is built
   # and updated whenever a new key is added.
   class KeyBindings
+    attr_reader :indexes
+
     def initialize
       @key_bindings = []
       @indexes = {}

@@ -59,10 +59,12 @@ module RubyJard
       CMD_INTERRUPT = :interrupt
     ].freeze
 
-    DEFAULT_KEY_BINDINGS = [
-      KEY_BINDING_ENDLINE   = :end_line,
-      KEY_BINDING_INTERRUPT = :interrupt
-    ].freeze
+    # rubocop:disable Layout/HashAlignment
+    INTERNAL_KEY_BINDINGS = {
+      RubyJard::Keys::END_LINE => (KEY_BINDING_ENDLINE   = :end_line),
+      RubyJard::Keys::CTRL_C   => (KEY_BINDING_INTERRUPT = :interrupt)
+    }.freeze
+    # rubocop:enable Layout/HashAlignment
 
     KEYPRESS_POLLING = 0.1 # 100ms
 
@@ -71,7 +73,9 @@ module RubyJard
       @pry = pry_instance
       @commands = Queue.new
       @key_bindings = key_bindings || RubyJard::KeyBindings.new
-      push_internal_key_bindings
+      INTERNAL_KEY_BINDINGS.each do |sequence, action|
+        @key_bindings.push(sequence, action)
+      end
     end
 
     def read_key
@@ -214,11 +218,6 @@ module RubyJard
       hooks.add_hook(:after_handle_line, :jard_proxy_release_lock) do
         @commands << [CMD_IDLE]
       end
-    end
-
-    def push_internal_key_bindings
-      @key_bindings.push(["\n", "\r\n", "\r"], KEY_BINDING_ENDLINE)
-      @key_bindings.push("\u0003", KEY_BINDING_INTERRUPT)
     end
   end
 end

@@ -6,6 +6,7 @@ require 'byebug/attacher'
 require 'forwardable'
 
 require 'ruby_jard/control_flow'
+require 'ruby_jard/keys'
 require 'ruby_jard/key_binding'
 require 'ruby_jard/key_bindings'
 require 'ruby_jard/repl_proxy'
@@ -58,6 +59,16 @@ module RubyJard
 
   def self.clear_debug
     @debug_info = []
+  end
+
+  def self.global_key_bindings
+    return @global_key_bindings if defined?(@global_key_bindings)
+
+    @global_key_bindings = RubyJard::KeyBindings.new
+    RubyJard::Keys::DEFAULT_KEY_BINDINGS.each do |sequence, action|
+      @global_key_bindings.push(sequence, action)
+    end
+    @global_key_bindings
   end
 end
 
