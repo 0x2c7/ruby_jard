@@ -6,6 +6,8 @@ require 'byebug/attacher'
 require 'forwardable'
 
 require 'ruby_jard/control_flow'
+require 'ruby_jard/key_binding'
+require 'ruby_jard/key_bindings'
 require 'ruby_jard/repl_proxy'
 require 'ruby_jard/repl_processor'
 require 'ruby_jard/screen_manager'
