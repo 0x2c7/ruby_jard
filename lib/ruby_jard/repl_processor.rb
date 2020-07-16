@@ -50,28 +50,36 @@ module RubyJard
     end
 
     def handle_next_command(_options = {})
-      Byebug::NextCommand.new(self, 'next').execute
+      Byebug.current_context.step_over(1, Byebug.current_context.frame.pos)
+      proceed!
     end
 
     def handle_step_command(_options = {})
-      Byebug::StepCommand.new(self, 'step').execute
+      Byebug.current_context.step_into(1, Byebug.current_context.frame.pos)
+      proceed!
     end
 
     def handle_up_command(_options = {})
       Byebug::UpCommand.new(self, 'up 1').execute
 
+    def handle_up_command(_options = {})
+      Byebug.current_context.frame = [
+        Byebug.current_context.frame.pos + 1,
+        Byebug.current_context.backtrace.length - 1
+      ].min
+      proceed!
       process_commands
     end
 
     def handle_down_command(_options = {})
-      Byebug::DownCommand.new(self, 'down 1').execute
-
+      Byebug.current_context.frame = [Byebug.current_context.frame.pos - 1, 0].max
+      proceed!
       process_commands
     end
 
     def handle_frame_command(options)
-      Byebug::FrameCommand.new(self, "frame #{options[:frame]}").execute
-
+      Byebug.current_context.frame = options[:frame]
+      proceed!
       process_commands
     end
 
