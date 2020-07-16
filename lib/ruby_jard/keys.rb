@@ -38,7 +38,7 @@ module RubyJard
     # rubocop:disable Layout/HashAlignment
     DEFAULT_KEY_BINDINGS = {
       F6       => (ACTION_UP       = :up),
-      SHIFT_F6 => (ACTION_UP       = :down),
+      SHIFT_F6 => (ACTION_DOWN     = :down),
       F7       => (ACTION_STEP     = :step),
       SHIFT_F7 => (ACTION_STEP_OUT = :step_out),
       F8       => (ACTION_NEXT     = :next),
