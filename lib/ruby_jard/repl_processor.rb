@@ -83,7 +83,7 @@ module RubyJard
     end
 
     def handle_frame_command(options)
-      Byebug.current_context.frame = options[:frame]
+      Byebug.current_context.frame = options[:frame].to_i
       proceed!
       process_commands
     end
