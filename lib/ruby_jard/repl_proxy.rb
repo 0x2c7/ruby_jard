@@ -56,19 +56,28 @@ module RubyJard
       CMD_FLOW      = :flow,
       CMD_EVALUATE  = :evaluate,
       CMD_IDLE      = :idle,
-      CMD_INTERRUPT = :interrupt,
-      CMD_NEXT = :next
+      CMD_INTERRUPT = :interrupt
     ].freeze
 
-    def initialize
+    DEFAULT_KEY_BINDINGS = [
+      KEY_BINDING_ENDLINE   = :end_line,
+      KEY_BINDING_INTERRUPT = :interrupt
+    ].freeze
+
+    KEYPRESS_POLLING = 0.1 # 100ms
+
+    def initialize(key_bindings = nil)
       @pry_read_stream, @pry_write_stream = IO.pipe
       @pry = pry_instance
       @commands = Queue.new
+      @key_bindings = key_bindings || RubyJard::KeyBindings.new
+      push_internal_key_bindings
     end
 
     def read_key
-      STDIN.getch(min: 0, time: 0.1)
+      STDIN.getch(min: 0, time: KEYPRESS_POLLING)
     end
+
     def repl(current_binding)
       Readline.input = @pry_read_stream
       @commands.clear
@@ -84,8 +93,7 @@ module RubyJard
         break unless pry_thread.alive?
 
         if @commands.empty?
-          key = read_key
-          handle_key(key) unless key.nil?
+          listen_key_press
         else
           cmd, value = @commands.deq
           handle_command(pry_thread, cmd, value)
@@ -95,15 +103,22 @@ module RubyJard
       Readline.input = STDIN
     end
 
-    def handle_key(key)
-      case key
-      when "\n", "\r\n", "\r"
+    def listen_key_press
+      key = @key_bindings.match { read_key }
+      if key.is_a?(RubyJard::KeyBinding)
+        handle_key_binding(key)
+      elsif !key.empty?
         @pry_write_stream.write(key)
+      end
+    end
+
+    def handle_key_binding(key_binding)
+      case key_binding.action
+      when KEY_BINDING_ENDLINE
+        @pry_write_stream.write(key_binding.sequence)
         @commands << [CMD_EVALUATE]
-      when "\u0003"
+      when KEY_BINDING_INTERRUPT
         @commands << [CMD_INTERRUPT]
-      else
-        @pry_write_stream.write(key)
       end
     end
 
@@ -197,6 +212,11 @@ module RubyJard
       hooks.add_hook(:after_handle_line, :jard_proxy_release_lock) do
         @commands << [CMD_IDLE]
       end
+    end
+
+    def push_internal_key_bindings
+      @key_bindings.push(["\n", "\r\n", "\r"], KEY_BINDING_ENDLINE)
+      @key_bindings.push("\u0003", KEY_BINDING_INTERRUPT)
     end
   end
 end
