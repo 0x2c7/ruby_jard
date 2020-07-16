@@ -12,7 +12,10 @@ module RubyJard
       end
 
       def data_window
-        @data_window ||= sort_contexts(RubyJard.current_session.contexts).first(data_size)
+        return @data_window if defined?(@data_window)
+
+        contexts = RubyJard.current_session.contexts.filter { |c| c.thread.alive? }
+        @data_window ||= sort_contexts(contexts).first(data_size)
       end
 
       def span_mark(context, _index)

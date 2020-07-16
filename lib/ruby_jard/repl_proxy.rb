@@ -56,7 +56,8 @@ module RubyJard
       CMD_FLOW      = :flow,
       CMD_EVALUATE  = :evaluate,
       CMD_IDLE      = :idle,
-      CMD_INTERRUPT = :interrupt
+      CMD_INTERRUPT = :interrupt,
+      CMD_NEXT = :next
     ].freeze
 
     def initialize
@@ -65,9 +66,13 @@ module RubyJard
       @commands = Queue.new
     end
 
+    def read_key
+      STDIN.getch(min: 0, time: 0.1)
+    end
     def repl(current_binding)
       Readline.input = @pry_read_stream
       @commands.clear
+      @pry.binding_stack.clear
 
       pry_thread = Thread.new do
         flow = RubyJard::ControlFlow.listen do
@@ -79,7 +84,7 @@ module RubyJard
         break unless pry_thread.alive?
 
         if @commands.empty?
-          key = STDIN.getch(min: 0, time: 0.1)
+          key = read_key
           handle_key(key) unless key.nil?
         else
           cmd, value = @commands.deq
@@ -91,12 +96,14 @@ module RubyJard
     end
 
     def handle_key(key)
-      @pry_write_stream.write(key)
       case key
       when "\n", "\r\n", "\r"
+        @pry_write_stream.write(key)
         @commands << [CMD_EVALUATE]
       when "\u0003"
         @commands << [CMD_INTERRUPT]
+      else
+        @pry_write_stream.write(key)
       end
     end
 
@@ -114,6 +121,9 @@ module RubyJard
         handle_interrupt_command(pry_thread)
       when CMD_IDLE
         # Ignore
+      when CMD_NEXT
+        pry_thread.exit
+        RubyJard::ControlFlow.dispatch(:next)
       end
     end
 
