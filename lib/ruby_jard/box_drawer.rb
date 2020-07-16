@@ -48,29 +48,31 @@ module RubyJard
     def initialize(output:, screens:)
       @output = output
       @screens = screens
+      @color_decorator = RubyJard::Decorators::ColorDecorator.new
     end
 
     def draw
       draw_basic_lines
       corners = calculate_corners
       draw_corners(corners)
+      draw_titles
     end
 
     private
 
     def draw_basic_lines
       # Exclude the corners
-      @screens.each do |_template, width, height, x, y|
-        RubyJard::Console.move_to(@output, x + 1, y)
-        @output.print HORIZONTAL_LINE * (width - 2)
+      @screens.each do |screen|
+        RubyJard::Console.move_to(@output, screen.x + 1, screen.y)
+        @output.print HORIZONTAL_LINE * (screen.width - 2)
 
-        RubyJard::Console.move_to(@output, x + 1, y + height - 1)
-        @output.print HORIZONTAL_LINE * (width - 2)
+        RubyJard::Console.move_to(@output, screen.x + 1, screen.y + screen.height - 1)
+        @output.print HORIZONTAL_LINE * (screen.width - 2)
 
-        (y + 1..y + height - 2).each do |moving_y|
-          RubyJard::Console.move_to(@output, x, moving_y)
+        (screen.y + 1..screen.y + screen.height - 2).each do |moving_y|
+          RubyJard::Console.move_to(@output, screen.x, moving_y)
           @output.print VERTICAL_LINE
-          RubyJard::Console.move_to(@output, x + width - 1, moving_y)
+          RubyJard::Console.move_to(@output, screen.x + screen.width - 1, moving_y)
           @output.print VERTICAL_LINE
         end
       end
@@ -94,13 +96,23 @@ module RubyJard
       end
     end
 
+    def draw_titles
+      @screens.each do |screen|
+        next unless screen.respond_to?(:title)
+        RubyJard::Console.move_to(@output, screen.x + 2, screen.y)
+        @output.print ' '
+        @output.print @color_decorator.decorate(screen.title, :bright_yellow, :bold)
+        @output.print ' '
+      end
+    end
+
     def calculate_corners
       corners = {}
-      @screens.each do |_template, width, height, x, y|
-        mark_corner(corners, x, y, TOP_LEFT)
-        mark_corner(corners, x + width - 1, y, TOP_RIGHT)
-        mark_corner(corners, x + width - 1, y + height - 1, BOTTOM_RIGHT)
-        mark_corner(corners, x, y + height - 1, BOTTOM_LEFT)
+      @screens.each do |screen|
+        mark_corner(corners, screen.x, screen.y, TOP_LEFT)
+        mark_corner(corners, screen.x + screen.width - 1, screen.y, TOP_RIGHT)
+        mark_corner(corners, screen.x + screen.width - 1, screen.y + screen.height - 1, BOTTOM_RIGHT)
+        mark_corner(corners, screen.x, screen.y + screen.height - 1, BOTTOM_LEFT)
       end
       corners
     end

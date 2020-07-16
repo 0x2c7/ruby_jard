@@ -19,21 +19,6 @@ module RubyJard
     end
 
     def draw
-      draw_title
-      draw_rows
-    end
-
-    private
-
-    def draw_title
-      # TODO: Shouldn't this be in BoxDrawer too?
-      RubyJard::Console.move_to(@output, @pos_x + 1, @pos_y - 1)
-      @output.print ' '
-      @output.print @color_decorator.decorate(@screen.title, :bright_yellow, :bold)
-      @output.print ' '
-    end
-
-    def draw_rows
       @original_pos_x = @pos_x
       @screen.rows.each do |row|
         draw_columns(row, row.columns)
@@ -41,6 +26,8 @@ module RubyJard
         @pos_x = @original_pos_x
       end
     end
+
+    private
 
     def draw_columns(row, columns)
       columns.each do |column|

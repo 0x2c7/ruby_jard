@@ -3,13 +3,13 @@
 module RubyJard
   module Screens
     class MenuScreen < RubyJard::Screen
-      def draw(output, x, y)
-        RubyJard::Console.move_to(output, x, y)
+      def draw(output)
+        RubyJard::Console.move_to(output, @x, @y)
 
         margin = 0
         left_menu = generate_left_menu
         left_menu.each do |text, length|
-          RubyJard::Console.move_to(output, x + 1 + margin, y)
+          RubyJard::Console.move_to(output, @x + 1 + margin, @y)
           output.print text
           margin += length + 3
         end
@@ -17,7 +17,7 @@ module RubyJard
         margin = 0
         right_menu = generate_right_menu
         right_menu.reverse.each do |text, length|
-          RubyJard::Console.move_to(output, x + @width - margin - length - 1, y)
+          RubyJard::Console.move_to(output, @x + @width - margin - length - 1, @y)
           output.print text
           margin += length + 3
         end

@@ -53,17 +53,15 @@ module RubyJard
 
       width, height = RubyJard::Console.screen_size(@output)
       layout = pick_layout(width, height)
-      screens = RubyJard::Layout.calculate(
+      screen_layouts = RubyJard::Layout.calculate(
         layout: layout,
         width: width, height: height,
         x: 0, y: 0
       )
 
-      prompt_y = screens.map { |_template, _width, screen_height, _x, y| y + screen_height }.max
+      prompt_y = screen_layouts.map { |_template, _width, screen_height, _x, y| y + screen_height }.max
       begin
-        draw_box(screens)
-        screens = adjust_screen_contents(screens)
-        draw_screens(screens)
+        draw_screens(screen_layouts)
       rescue StandardError => e
         clear_screen
         @output.puts e, e.backtrace
@@ -83,22 +81,30 @@ module RubyJard
       ).draw
     end
 
-    def draw_screens(screens)
-      screens.each do |screen_template, width, height, x, y|
+    def draw_screens(screen_layouts)
+      screens = screen_layouts.map do |screen_template, width, height, x, y|
         screen = fetch_screen(screen_template.screen)
         screen&.new(
           session: @session,
           screen_template: screen_template,
-          width: width,
-          height: height
-        )&.draw(@output, x, y)
+          width: width, height: height,
+          x: x, y: y
+        )
+      end
+      draw_box(screens)
+      adjust_screen_contents(screens)
+      screens.each do |screen|
+        screen.draw(@output)
       end
     end
 
     def adjust_screen_contents(screens)
       # After drawing the box, screen sizes should be updated to reflect content-only area
-      screens.map do |screen_template, width, height, x, y|
-        [screen_template, width - 2, height - 2, x + 1, y + 1]
+      screens.each do |screen|
+        screen.width -= 2
+        screen.height -= 2
+        screen.x += 1
+        screen.y += 1
       end
     end
 
