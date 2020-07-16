@@ -4,6 +4,7 @@ require 'pry'
 require 'byebug/core'
 require 'byebug/attacher'
 require 'forwardable'
+require 'benchmark'
 
 require 'ruby_jard/control_flow'
 require 'ruby_jard/keys'
@@ -46,6 +47,13 @@ module RubyJard
 
   def self.current_session
     @current_session ||= RubyJard::Session.new
+  end
+
+  def self.benchmark(name)
+    return_value = nil
+    time = Benchmark.realtime { return_value = yield }
+    debug("Benchmark `#{name}`: #{time}")
+    return_value
   end
 
   def self.debug(*info)
