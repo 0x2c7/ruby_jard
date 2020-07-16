@@ -59,8 +59,13 @@ module RubyJard
       proceed!
     end
 
-    def handle_up_command(_options = {})
-      Byebug::UpCommand.new(self, 'up 1').execute
+    def handle_step_out_command(_options = {})
+      # TODO: handle c-frame and out of range frames
+      Byebug.current_context.frame = 1
+      proceed!
+      Byebug.current_context.step_over(1, Byebug.current_context.frame.pos)
+      proceed!
+    end
 
     def handle_up_command(_options = {})
       Byebug.current_context.frame = [
