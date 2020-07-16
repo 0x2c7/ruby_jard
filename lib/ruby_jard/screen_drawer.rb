@@ -11,19 +11,19 @@ module RubyJard
     def initialize(output:, screen:, x:, y:)
       @output = output
       @color_decorator = RubyJard::Decorators::ColorDecorator.new
-      @pos_x = x
-      @pos_y = y
-      @original_pos_x = x
-      @original_pos_y = y
+      @x = x
+      @y = y
+      @original_x = x
+      @original_y = y
       @screen = screen
     end
 
     def draw
-      @original_pos_x = @pos_x
+      @original_x = @x
       @screen.rows.each do |row|
         draw_columns(row, row.columns)
-        @pos_y += 1
-        @pos_x = @original_pos_x
+        @y += 1
+        @x = @original_x
       end
     end
 
@@ -33,8 +33,8 @@ module RubyJard
       columns.each do |column|
         width = 0
         column_content_width = column.width - column.margin_left - column.margin_right
-        @pos_x += column.margin_left
-        RubyJard::Console.move_to(@output, @pos_x, @pos_y)
+        @x += column.margin_left
+        RubyJard::Console.move_to(@output, @x, @y)
 
         column.spans.each do |span|
           line_content = span.content
@@ -50,13 +50,13 @@ module RubyJard
               width = 0
               lines += 1
               if !row.line_limit.nil? && lines > row.line_limit
-                RubyJard::Console.move_to(@output, @pos_x + column.width - ELLIPSIS.length, @pos_y)
+                RubyJard::Console.move_to(@output, @x + column.width - ELLIPSIS.length, @y)
                 protected_print @color_decorator.decorate(ELLIPSIS, *span.styles)
                 break
               end
 
-              @pos_y += 1
-              RubyJard::Console.move_to(@output, @pos_x, @pos_y)
+              @y += 1
+              RubyJard::Console.move_to(@output, @x, @y)
             else
               protected_print @color_decorator.decorate(line_content, *span.styles)
               width += line_content.length
@@ -64,13 +64,13 @@ module RubyJard
             end
           end
         end
-        @pos_x += column_content_width + column.margin_right
+        @x += column_content_width + column.margin_right
       end
     end
 
     def protected_print(content)
       # TODO: currently, only row overflow is detected. Definitely should handle column overflow
-      return if @pos_y < @original_pos_y || @pos_y > @original_pos_y + @screen.height - 1
+      return if @y < @original_y || @y > @original_y + @screen.height - 1
 
       @output.print content
     end
