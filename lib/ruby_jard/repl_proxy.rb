@@ -66,7 +66,7 @@ module RubyJard
 
     KEYPRESS_POLLING = 0.1 # 100ms
 
-    def initialize(key_bindings = nil)
+    def initialize(key_bindings: nil)
       @pry_read_stream, @pry_write_stream = IO.pipe
       @pry = pry_instance
       @commands = Queue.new
@@ -119,12 +119,17 @@ module RubyJard
         @commands << [CMD_EVALUATE]
       when KEY_BINDING_INTERRUPT
         @commands << [CMD_INTERRUPT]
+      else
+        @commands << [
+          CMD_FLOW, RubyJard::ControlFlow.new(:key_binding, action: key_binding.action)
+        ]
       end
     end
 
     def handle_command(pry_thread, cmd, value)
       case cmd
       when CMD_FLOW
+        pry_thread.exit if pry_thread.alive?
         RubyJard::ControlFlow.dispatch(value)
       when CMD_EVALUATE
         loop do
@@ -136,9 +141,6 @@ module RubyJard
         handle_interrupt_command(pry_thread)
       when CMD_IDLE
         # Ignore
-      when CMD_NEXT
-        pry_thread.exit
-        RubyJard::ControlFlow.dispatch(:next)
       end
     end
 

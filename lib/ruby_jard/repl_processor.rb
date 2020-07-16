@@ -12,7 +12,9 @@ module RubyJard
   class ReplProcessor < Byebug::CommandProcessor
     def initialize(context, interface = LocalInterface.new)
       super(context, interface)
-      @repl_proxy = RubyJard::ReplProxy.new
+      key_bindings = RubyJard::KeyBindings.new
+      push_navigation_bindings(key_bindings)
+      @repl_proxy = RubyJard::ReplProxy.new(key_bindings: key_bindings)
     end
 
     def at_line
@@ -47,21 +49,21 @@ module RubyJard
       return_value
     end
 
-    def handle_next_command(_options)
+    def handle_next_command(_options = {})
       Byebug::NextCommand.new(self, 'next').execute
     end
 
-    def handle_step_command(_options)
+    def handle_step_command(_options = {})
       Byebug::StepCommand.new(self, 'step').execute
     end
 
-    def handle_up_command(_options)
+    def handle_up_command(_options = {})
       Byebug::UpCommand.new(self, 'up 1').execute
 
       process_commands
     end
 
-    def handle_down_command(_options)
+    def handle_down_command(_options = {})
       Byebug::DownCommand.new(self, 'down 1').execute
 
       process_commands
@@ -73,8 +75,18 @@ module RubyJard
       process_commands
     end
 
-    def handle_continue_command(_options)
+    def handle_continue_command(_options = {})
       # Do nothing
+    end
+
+    def handle_key_binding_command(options)
+      case options[:action]
+      when :control_flow_next
+        handle_next_command
+      end
+    end
+
+    def push_navigation_bindings(key_bindings)
     end
   end
 end
