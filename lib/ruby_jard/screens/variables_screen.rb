@@ -105,7 +105,12 @@ module RubyJard
 
       def span_inspection(data_row, _index)
         # Hard limit: screen area
-        [data_row[2].inspect[0..@height * @width], :dim, :white]
+        inspection = data_row[2].inspect[0..@height * @width]
+        # TODO: This is just a workable. Should write a decorator to inspect objects accurately
+        ["\n", "\r", "\r\n"].each do |esc|
+          inspection.gsub!(esc, esc.inspect)
+        end
+        [inspection, :dim, :white]
       end
 
       private
