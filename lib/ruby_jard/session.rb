@@ -28,6 +28,7 @@ module RubyJard
       return if started?
 
       @screen_manager.start
+      at_exit { @screen_manager.stop }
 
       @started = true
     end

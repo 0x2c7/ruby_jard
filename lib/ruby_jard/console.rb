@@ -7,6 +7,18 @@ module RubyJard
   # Wrapper for utilities to control screen
   class Console
     class << self
+      def start_alternative_terminal(output)
+        return unless output.tty?
+
+        output.print tput('smcup')
+      end
+
+      def stop_alternative_terminal(output)
+        return unless output.tty?
+
+        output.print tput('rmcup')
+      end
+
       def move_to(output, x, y)
         return unless output.tty?
 
@@ -18,6 +30,12 @@ module RubyJard
 
         height, width = output.winsize
         [width, height]
+      end
+
+      def hard_clear_screen(output)
+        return unless output.tty?
+
+        output.print tput('clear')
       end
 
       def clear_screen(output)

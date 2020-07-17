@@ -44,35 +44,41 @@ module RubyJard
     end
 
     def start
-      refresh
+      RubyJard::Console.start_alternative_terminal(@output)
+      RubyJard::Console.hard_clear_screen(@output)
+    end
+
+    def stop
+      RubyJard::Console.stop_alternative_terminal(@output)
+      RubyJard::Console.show_cursor(@output)
     end
 
     def refresh
       RubyJard::Console.hide_cursor(@output)
       clear_screen
-
-      width, height = RubyJard::Console.screen_size(@output)
-      layout = pick_layout(width, height)
-      screen_layouts = RubyJard::Layout.calculate(
-        layout: layout,
-        width: width, height: height,
-        x: 0, y: 0
-      )
-
-      prompt_y = screen_layouts.map { |_template, _width, screen_height, _x, y| y + screen_height }.max
-      begin
-        draw_screens(screen_layouts)
-      rescue StandardError => e
-        clear_screen
-        @output.puts e, e.backtrace
-      end
-      RubyJard::Console.move_to(@output, 0, prompt_y)
-      print_debug_screen
-
+      screen_layouts = calculate_layouts
+      draw_screens(screen_layouts)
+      jump_to_prompt(screen_layouts)
+      draw_debug
+    rescue StandardError => e
+      # You don't want to mess up previous user TTY no matter happens
+      clear_screen
+      draw_error(e)
+    ensure
       RubyJard::Console.show_cursor(@output)
     end
 
     private
+
+    def calculate_layouts
+      width, height = RubyJard::Console.screen_size(@output)
+      layout = pick_layout(width, height)
+      RubyJard::Layout.calculate(
+        layout: layout,
+        width: width, height: height,
+        x: 0, y: 0
+      )
+    end
 
     def draw_box(screens)
       RubyJard::BoxDrawer.new(
@@ -98,17 +104,12 @@ module RubyJard
       end
     end
 
-    def adjust_screen_contents(screens)
-      # After drawing the box, screen sizes should be updated to reflect content-only area
-      screens.each do |screen|
-        screen.width -= 2
-        screen.height -= 2
-        screen.x += 1
-        screen.y += 1
-      end
+    def jump_to_prompt(screen_layouts)
+      prompt_y = screen_layouts.map { |_template, _width, screen_height, _x, y| y + screen_height }.max
+      RubyJard::Console.move_to(@output, 0, prompt_y)
     end
 
-    def print_debug_screen
+    def draw_debug
       unless RubyJard.debug_info.empty?
         @output.puts '--- Debug ---'
         RubyJard.debug_info.each do |line|
@@ -117,6 +118,26 @@ module RubyJard
         @output.puts '-------------'
       end
       RubyJard.clear_debug
+    end
+
+    def draw_error(exception)
+      @output.puts '--- Error ---'
+      @output.puts "Internal error from Jard. I'm sorry to mess up your debugging experience."
+      @output.puts 'It would be great if you can submit an issue in https://github.com/nguyenquangminh0711/ruby_jard/issues'
+      @output.puts ''
+      @output.puts exception
+      @output.puts exception.backtrace
+      @output.puts '-------------'
+    end
+
+    def adjust_screen_contents(screens)
+      # After drawing the box, screen sizes should be updated to reflect content-only area
+      screens.each do |screen|
+        screen.width -= 2
+        screen.height -= 2
+        screen.x += 1
+        screen.y += 1
+      end
     end
 
     def clear_screen
