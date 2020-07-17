@@ -32,7 +32,7 @@ module RubyJard
     private
 
     def process_commands
-      RubyJard.current_session.refresh
+      RubyJard.current_session.update
       return_value = nil
 
       flow = RubyJard::ControlFlow.listen do

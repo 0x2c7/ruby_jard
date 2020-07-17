@@ -56,6 +56,18 @@ module RubyJard
         output.print tput('cvvis')
       end
 
+      def cooked!(output)
+        return unless output.tty?
+
+        output.cooked!
+      end
+
+      def echo!(output)
+        return unless output.tty?
+
+        output.echo = true
+      end
+
       def tput(*args)
         # TODO: Should implement multiple fallbacks here to support different platforms
 

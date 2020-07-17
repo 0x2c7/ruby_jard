@@ -53,7 +53,7 @@ module RubyJard
       RubyJard::Console.show_cursor(@output)
     end
 
-    def refresh
+    def update
       RubyJard::Console.hide_cursor(@output)
       clear_screen
       screen_layouts = calculate_layouts
@@ -61,10 +61,12 @@ module RubyJard
       jump_to_prompt(screen_layouts)
       draw_debug
     rescue StandardError => e
-      # You don't want to mess up previous user TTY no matter happens
       clear_screen
       draw_error(e)
     ensure
+      # You don't want to mess up previous user TTY no matter happens
+      RubyJard::Console.cooked!(@output)
+      RubyJard::Console.echo!(@output)
       RubyJard::Console.show_cursor(@output)
     end
 

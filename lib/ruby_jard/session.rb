@@ -44,12 +44,12 @@ module RubyJard
       Byebug.current_context.step_out(2, false)
     end
 
-    def refresh
+    def update
       @backtrace = Byebug.current_context.backtrace
       @frame = Byebug.current_context.frame
       @contexts = Byebug.contexts
       @current_context = Byebug.current_context
-      @screen_manager.refresh
+      @screen_manager.update
     end
   end
 end
