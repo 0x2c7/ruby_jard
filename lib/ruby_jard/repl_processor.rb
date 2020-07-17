@@ -69,6 +69,7 @@ module RubyJard
     end
 
     def handle_up_command(_options = {})
+      # TODO: handle c-frame and out of range frames
       Byebug.current_context.frame = [
         Byebug.current_context.frame.pos + 1,
         Byebug.current_context.backtrace.length - 1
@@ -78,12 +79,14 @@ module RubyJard
     end
 
     def handle_down_command(_options = {})
+      # TODO: handle c-frame and out of range frames
       Byebug.current_context.frame = [Byebug.current_context.frame.pos - 1, 0].max
       proceed!
       process_commands
     end
 
     def handle_frame_command(options)
+      # TODO: handle c-frame and out of range frames
       Byebug.current_context.frame = options[:frame].to_i
       proceed!
       process_commands
