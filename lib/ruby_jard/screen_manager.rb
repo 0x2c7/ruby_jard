@@ -56,13 +56,14 @@ module RubyJard
     def update
       RubyJard::Console.hide_cursor(@output)
       clear_screen
-      screen_layouts = calculate_layouts
+      width, height = RubyJard::Console.screen_size(@output)
+      screen_layouts = calculate_layouts(width, height)
       draw_screens(screen_layouts)
       jump_to_prompt(screen_layouts)
-      draw_debug
+      draw_debug(width, height)
     rescue StandardError => e
       clear_screen
-      draw_error(e)
+      draw_error(width, height, e)
     ensure
       # You don't want to mess up previous user TTY no matter happens
       RubyJard::Console.cooked!(@output)
@@ -72,8 +73,7 @@ module RubyJard
 
     private
 
-    def calculate_layouts
-      width, height = RubyJard::Console.screen_size(@output)
+    def calculate_layouts(width, height)
       layout = pick_layout(width, height)
       RubyJard::Layout.calculate(
         layout: layout,
@@ -111,10 +111,10 @@ module RubyJard
       RubyJard::Console.move_to(@output, 0, prompt_y)
     end
 
-    def draw_debug
+    def draw_debug(_width, height)
       unless RubyJard.debug_info.empty?
         @output.puts '--- Debug ---'
-        RubyJard.debug_info.each do |line|
+        RubyJard.debug_info.first(height - 2).each do |line|
           @output.puts line
         end
         @output.puts '-------------'
@@ -122,13 +122,13 @@ module RubyJard
       RubyJard.clear_debug
     end
 
-    def draw_error(exception)
+    def draw_error(height, _width, exception)
       @output.puts '--- Error ---'
       @output.puts "Internal error from Jard. I'm sorry to mess up your debugging experience."
       @output.puts 'It would be great if you can submit an issue in https://github.com/nguyenquangminh0711/ruby_jard/issues'
       @output.puts ''
       @output.puts exception
-      @output.puts exception.backtrace
+      @output.puts exception.backtrace.first(height - 5)
       @output.puts '-------------'
     end
 
