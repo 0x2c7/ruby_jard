@@ -11,7 +11,7 @@ module RubyJard
   # other processes. Therefore, an internal, jard-specific data mapping should
   # be built.
   class Session
-    attr_reader :screen_manager, :backtrace, :frame, :contexts, :current_context
+    attr_reader :backtrace, :frame, :contexts, :current_context
 
     def initialize(options = {})
       @options = options
@@ -21,14 +21,10 @@ module RubyJard
       @contexts = []
 
       @started = false
-      @screen_manager = RubyJard::ScreenManager.new(session: self)
     end
 
     def start
       return if started?
-
-      @screen_manager.start
-      at_exit { @screen_manager.stop }
 
       @started = true
     end
@@ -49,7 +45,6 @@ module RubyJard
       @frame = Byebug.current_context.frame
       @contexts = Byebug.contexts
       @current_context = Byebug.current_context
-      @screen_manager.update
     end
   end
 end

@@ -33,6 +33,7 @@ module RubyJard
 
     def process_commands
       RubyJard.current_session.update
+      RubyJard::ScreenManager.update
       return_value = nil
 
       flow = RubyJard::ControlFlow.listen do

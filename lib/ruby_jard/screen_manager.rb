@@ -35,25 +35,71 @@ module RubyJard
   # This class acts as a coordinator, in which it combines the data and screen
   # layout template, triggers each screen to draw on the terminal.
   class ScreenManager
-    attr_reader :output
+    class << self
+      def instance
+        @instance ||= new
+      end
 
-    def initialize(session:, output: STDOUT)
+      def update
+        instance.update
+      end
+    end
+
+    attr_reader :output, :output_storage
+
+    def initialize(output: STDOUT)
       @output = output
-      @session = session
       @screens = {}
+      @started = false
+      @updating = false
+      @output_storage = StringIO.new
     end
 
     def start
+      return if started?
+
       RubyJard::Console.start_alternative_terminal(@output)
       RubyJard::Console.hard_clear_screen(@output)
+
+      def $stdout.write(string)
+        if !ScreenManager.instance.updating? && ScreenManager.instance.started?
+          ScreenManager.instance.output_storage.write(string)
+        end
+        super
+      end
+
+      at_exit { stop }
+      @started = true
+    end
+
+    def started?
+      @started == true
+    end
+
+    def updating?
+      @updating == true
     end
 
     def stop
+      return unless started?
+
+      @started = false
+
       RubyJard::Console.stop_alternative_terminal(@output)
       RubyJard::Console.show_cursor(@output)
+
+      unless @output_storage.string.empty?
+        @output.puts ''
+        @output.write @output_storage.string
+        @output.puts ''
+      end
+      @output_storage.close
     end
 
     def update
+      start unless started?
+      @updating = true
+
       RubyJard::Console.hide_cursor(@output)
       clear_screen
       width, height = RubyJard::Console.screen_size(@output)
@@ -69,6 +115,7 @@ module RubyJard
       RubyJard::Console.cooked!(@output)
       RubyJard::Console.echo!(@output)
       RubyJard::Console.show_cursor(@output)
+      @updating = false
     end
 
     private
@@ -93,7 +140,6 @@ module RubyJard
       screens = screen_layouts.map do |screen_template, width, height, x, y|
         screen = fetch_screen(screen_template.screen)
         screen&.new(
-          session: @session,
           screen_template: screen_template,
           width: width, height: height,
           x: x, y: y
