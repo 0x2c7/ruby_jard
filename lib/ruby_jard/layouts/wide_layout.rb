@@ -26,7 +26,6 @@ module RubyJard
                     ]
                   ),
                   RubyJard::Templates::ColumnTemplate.new(
-                    margin_right: 1,
                     spans: [
                       RubyJard::Templates::SpanTemplate.new(:code)
                     ]

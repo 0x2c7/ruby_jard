@@ -32,35 +32,31 @@ module RubyJard
     def draw_columns(row, columns)
       columns.each do |column|
         width = 0
+        lines = 1
         column_content_width = column.width - column.margin_left - column.margin_right
         @x += column.margin_left
         RubyJard::Console.move_to(@output, @x, @y)
 
         column.spans.each do |span|
           line_content = span.content
-          lines = 1
 
-          until line_content.empty?
-            if width + line_content.length > column_content_width
-              protected_print @color_decorator.decorate(
-                line_content[0..column_content_width - width - 1],
-                *span.styles
-              )
-              line_content = line_content[column_content_width - width..-1]
+          until line_content.nil? || line_content.empty?
+            if column_content_width - width <= 0
               width = 0
               lines += 1
-              if !row.line_limit.nil? && lines > row.line_limit
-                RubyJard::Console.move_to(@output, @x + column.width - ELLIPSIS.length, @y)
-                protected_print @color_decorator.decorate(ELLIPSIS, *span.styles)
-                break
-              end
-
               @y += 1
               RubyJard::Console.move_to(@output, @x, @y)
-            else
-              protected_print @color_decorator.decorate(line_content, *span.styles)
-              width += line_content.length
+            end
+            drawing_content = line_content[0..column_content_width - width - 1]
+            line_content = line_content[column_content_width - width..-1]
+            width += drawing_content.length
+
+            if !row.line_limit.nil? && lines >= row.line_limit && !line_content.nil? && !line_content.empty?
+              drawing_content[drawing_content.length - ELLIPSIS.length..-1] = ELLIPSIS
+              protected_print @color_decorator.decorate(drawing_content, *span.styles)
               break
+            else
+              protected_print @color_decorator.decorate(drawing_content, *span.styles)
             end
           end
         end
