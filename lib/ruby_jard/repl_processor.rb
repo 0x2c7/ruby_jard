@@ -48,6 +48,9 @@ module RubyJard
       end
 
       return_value
+    rescue StandardError => e
+      RubyJard::ScreenManager.draw_error(e)
+      raise
     end
 
     def handle_next_command(_options = {})

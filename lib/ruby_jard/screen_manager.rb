@@ -111,7 +111,7 @@ module RubyJard
       draw_debug(width, height)
     rescue StandardError => e
       clear_screen
-      draw_error(width, height, e)
+      draw_error(e, height)
     ensure
       # You don't want to mess up previous user TTY no matter happens
       RubyJard::Console.cooked!(@output)
@@ -119,6 +119,21 @@ module RubyJard
       RubyJard::Console.show_cursor(@output)
       @updating = false
     end
+
+    def draw_error(exception, height = 0)
+      @output.puts '--- Error ---'
+      @output.puts "Internal error from Jard. I'm sorry to mess up your debugging experience."
+      @output.puts 'It would be great if you can submit an issue in https://github.com/nguyenquangminh0711/ruby_jard/issues'
+      @output.puts ''
+      @output.puts exception
+      if height == 0
+        @output.puts exception.backtrace
+      else
+        @output.puts exception.backtrace.first(height - 5)
+      end
+      @output.puts '-------------'
+    end
+
 
     private
 
@@ -168,16 +183,6 @@ module RubyJard
         @output.puts '-------------'
       end
       RubyJard.clear_debug
-    end
-
-    def draw_error(height, _width, exception)
-      @output.puts '--- Error ---'
-      @output.puts "Internal error from Jard. I'm sorry to mess up your debugging experience."
-      @output.puts 'It would be great if you can submit an issue in https://github.com/nguyenquangminh0711/ruby_jard/issues'
-      @output.puts ''
-      @output.puts exception
-      @output.puts exception.backtrace.first(height - 5)
-      @output.puts '-------------'
     end
 
     def adjust_screen_contents(screens)

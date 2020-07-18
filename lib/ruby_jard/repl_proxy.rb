@@ -89,11 +89,9 @@ module RubyJard
       @pry.binding_stack.clear
 
       pry_thread = Thread.new do
-        flow = RubyJard::ControlFlow.listen do
-          @pry.repl(current_binding)
-        end
-        @commands << [CMD_FLOW, flow]
+        pry_repl(current_binding)
       end
+      pry_thread.report_on_exception = false if pry_thread.respond_to?(:report_on_exception)
       loop do
         break unless pry_thread.alive?
 
@@ -106,6 +104,16 @@ module RubyJard
       end
       pry_thread&.join
       Readline.input = STDIN
+    end
+
+    def pry_repl(current_binding)
+      flow = RubyJard::ControlFlow.listen do
+        @pry.repl(current_binding)
+      end
+      @commands << [CMD_FLOW, flow]
+    rescue StandardError => e
+      RubyJard::ScreenManager.draw_error(e)
+      raise
     end
 
     def listen_key_press
