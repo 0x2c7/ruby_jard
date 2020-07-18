@@ -18,38 +18,42 @@ module RubyJard
     end
 
     def at_line
-      process_commands
+      process_commands_with_lock
     end
 
     def at_return(_)
-      process_commands
+      process_commands_with_lock
     end
 
     def at_end
-      process_commands
+      process_commands_with_lock
     end
 
     private
 
-    def process_commands
+    def process_commands_with_lock
       allowing_other_threads do
         RubyJard.current_session.lock do
-          RubyJard.current_session.update
-          RubyJard::ScreenManager.update
-          return_value = nil
-
-          flow = RubyJard::ControlFlow.listen do
-            return_value = @repl_proxy.repl(frame._binding)
-          end
-
-          unless flow.nil?
-            command = flow.command
-            send("handle_#{command}_command", flow.arguments)
-          end
-
-          return_value
+          process_commands
         end
       end
+    end
+
+    def process_commands
+      RubyJard.current_session.update
+      RubyJard::ScreenManager.update
+      return_value = nil
+
+      flow = RubyJard::ControlFlow.listen do
+        return_value = @repl_proxy.repl(frame._binding)
+      end
+
+      unless flow.nil?
+        command = flow.command
+        send("handle_#{command}_command", flow.arguments)
+      end
+
+      return_value
     rescue StandardError => e
       RubyJard::ScreenManager.draw_error(e)
       raise
