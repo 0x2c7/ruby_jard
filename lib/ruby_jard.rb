@@ -50,15 +50,22 @@ module RubyJard
   end
 
   def self.benchmark(name)
+    @benchmark_depth ||= 0
+    @benchmark_depth += 1
     return_value = nil
     time = Benchmark.realtime { return_value = yield }
-    debug("Benchmark `#{name}`: #{time}")
+    debug("#{' ' * @benchmark_depth}Benchmark `#{name}`: #{time}")
+    @benchmark_depth -= 1
     return_value
   end
 
   def self.debug(*info)
     @debug_info ||= []
+    @debug_file ||= File.open('./jard_debugs.txt', 'a')
     @debug_info += info
+    info.each do |line|
+      @debug_file.puts line
+    end
   end
 
   def self.debug_info
