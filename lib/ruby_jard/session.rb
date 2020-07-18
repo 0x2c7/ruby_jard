@@ -45,7 +45,6 @@ module RubyJard
       @backtrace = Byebug.current_context.backtrace
       @frame = Byebug.current_context.frame
       @contexts = Byebug.contexts
-      @current_context = Byebug.current_context
     end
 
     def lock

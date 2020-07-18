@@ -51,12 +51,7 @@ module RubyJard
 
       def span_thread_name(context, _index)
         if context.thread.name.nil?
-          last_backtrace =
-            if context == RubyJard.current_session.current_context
-              context.backtrace[0][0]
-            else
-              context.thread.backtrace_locations[0]
-            end
+          last_backtrace = context.thread.backtrace_locations[1]
           location = decorate_path(last_backtrace.path, last_backtrace.lineno)
           ["#{location.path}:#{location.lineno}", current_thread?(context) ? [:bright_white, :bold] : :white]
         else
