@@ -86,6 +86,8 @@ module RubyJard
       @started = false
 
       RubyJard::Console.stop_alternative_terminal(@output)
+      RubyJard::Console.cooked!(@output)
+      RubyJard::Console.echo!(@output)
       RubyJard::Console.show_cursor(@output)
 
       unless @output_storage.string.empty?
