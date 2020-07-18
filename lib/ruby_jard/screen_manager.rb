@@ -36,12 +36,12 @@ module RubyJard
   # layout template, triggers each screen to draw on the terminal.
   class ScreenManager
     class << self
+      extend Forwardable
+
+      def_delegators :instance, :update, :draw_error, :started?, :updating?
+
       def instance
         @instance ||= new
-      end
-
-      def update
-        instance.update
       end
     end
 
@@ -62,8 +62,8 @@ module RubyJard
       RubyJard::Console.hard_clear_screen(@output)
 
       def $stdout.write(string)
-        if !ScreenManager.instance.updating? && ScreenManager.instance.started?
-          ScreenManager.instance.output_storage.write(string)
+        if !RubyJard::ScreenManager.updating? && RubyJard::ScreenManager.started?
+          RubyJard::ScreenManager.instance.output_storage.write(string)
         end
         super
       end
