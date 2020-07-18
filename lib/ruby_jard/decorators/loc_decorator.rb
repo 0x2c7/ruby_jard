@@ -11,7 +11,8 @@ module RubyJard
     class LocDecorator
       attr_reader :spans, :tokens
 
-      def initialize(loc)
+      def initialize(file, loc)
+        @file = file
         @loc = loc
         @encoder = JardLocEncoder.new
 
@@ -19,8 +20,21 @@ module RubyJard
       end
 
       def decorate
-        @tokens = CodeRay.scan(@loc, :ruby)
+        @tokens = CodeRay.scan(@loc, extension)
         @spans = @encoder.encode_tokens(tokens)
+      end
+
+      private
+
+      def extension
+        # TODO: A map constant is better
+        if @file =~ /.*\.erb$/
+          :erb
+        elsif @file =~ /.*\.haml$/
+          :haml
+        else
+          :ruby
+        end
       end
 
       # A shameless copy from https://github.com/rubychan/coderay/blob/master/lib/coderay/encoders/terminal.rb

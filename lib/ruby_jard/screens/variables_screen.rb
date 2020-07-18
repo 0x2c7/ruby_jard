@@ -210,6 +210,7 @@ module RubyJard
         current_line = RubyJard.current_session.frame.line
         source_decorator = RubyJard::Decorators::SourceDecorator.new(current_file, current_line, 1)
         loc_decorator = RubyJard::Decorators::LocDecorator.new(
+          current_file,
           source_decorator.codes[current_line - source_decorator.window_start]
         )
 

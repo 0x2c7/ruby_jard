@@ -72,7 +72,7 @@ module RubyJard
       end
 
       def loc_decorator(loc)
-        RubyJard::Decorators::LocDecorator.new(loc)
+        RubyJard::Decorators::LocDecorator.new(current_file, loc)
       end
 
       def source_lineno(index)
