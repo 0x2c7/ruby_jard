@@ -15,7 +15,7 @@ module RubyJard
           children: [
             RubyJard::Templates::ScreenTemplate.new(
               screen: :source,
-              width_ratio: 60,
+              width_ratio: 50,
               row_template: RubyJard::Templates::RowTemplate.new(
                 columns: [
                   RubyJard::Templates::ColumnTemplate.new(
@@ -35,7 +35,7 @@ module RubyJard
               )
             ),
             RubyJard::Templates::LayoutTemplate.new(
-              width_ratio: 40,
+              width_ratio: 50,
               fill_height: true,
               children: [
                 RubyJard::Templates::ScreenTemplate.new(
@@ -79,7 +79,7 @@ module RubyJard
           children: [
             RubyJard::Templates::ScreenTemplate.new(
               screen: :backtrace,
-              width_ratio: 60,
+              width_ratio: 50,
               row_template: RubyJard::Templates::RowTemplate.new(
                 columns: [
                   RubyJard::Templates::ColumnTemplate.new(
@@ -103,7 +103,7 @@ module RubyJard
             ),
             RubyJard::Templates::ScreenTemplate.new(
               screen: :threads,
-              width_ratio: 40,
+              width_ratio: 50,
               row_template: RubyJard::Templates::RowTemplate.new(
                 columns: [
                   RubyJard::Templates::ColumnTemplate.new(
