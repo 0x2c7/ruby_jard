@@ -21,6 +21,7 @@ module RubyJard
       @contexts = []
 
       @started = false
+      @session_lock = Mutex.new
     end
 
     def start
@@ -45,6 +46,16 @@ module RubyJard
       @frame = Byebug.current_context.frame
       @contexts = Byebug.contexts
       @current_context = Byebug.current_context
+    end
+
+    def lock
+      raise RubyJard::Error, 'This method requires a block' unless block_given?
+
+      # TODO: This doesn't solve anything. However, debugging a multi-threaded process is hard.
+      # Let's deal with that later.
+      @session_lock.synchronize do
+        yield
+      end
     end
   end
 end
