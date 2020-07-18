@@ -61,10 +61,11 @@ module RubyJard
 
   def self.debug(*info)
     @debug_info ||= []
-    @debug_file ||= File.open('./jard_debugs.txt', 'a')
     @debug_info += info
-    info.each do |line|
-      @debug_file.puts line
+    File.open('./jard_debugs.txt', 'a') do |f|
+      info.each do |line|
+        f.puts line
+      end
     end
   end
 
