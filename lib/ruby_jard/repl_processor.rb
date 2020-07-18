@@ -32,23 +32,23 @@ module RubyJard
     private
 
     def process_commands
-      RubyJard.current_session.lock do
-        RubyJard.current_session.update
-        RubyJard::ScreenManager.update
-        return_value = nil
+      allowing_other_threads do
+        RubyJard.current_session.lock do
+          RubyJard.current_session.update
+          RubyJard::ScreenManager.update
+          return_value = nil
 
-        flow = RubyJard::ControlFlow.listen do
-          return_value = allowing_other_threads do
-            @repl_proxy.repl(frame._binding)
+          flow = RubyJard::ControlFlow.listen do
+            return_value = @repl_proxy.repl(frame._binding)
           end
-        end
 
-        unless flow.nil?
-          command = flow.command
-          send("handle_#{command}_command", flow.arguments)
-        end
+          unless flow.nil?
+            command = flow.command
+            send("handle_#{command}_command", flow.arguments)
+          end
 
-        return_value
+          return_value
+        end
       end
     rescue StandardError => e
       RubyJard::ScreenManager.draw_error(e)

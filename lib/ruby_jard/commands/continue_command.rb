@@ -20,8 +20,6 @@ module RubyJard
 
       def process
         RubyJard::ControlFlow.dispatch(:continue)
-      ensure
-        Byebug.stop if Byebug.stoppable?
       end
     end
   end
