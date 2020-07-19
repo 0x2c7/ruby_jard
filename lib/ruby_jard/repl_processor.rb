@@ -39,9 +39,11 @@ module RubyJard
       end
     end
 
-    def process_commands
-      RubyJard.current_session.update
-      RubyJard::ScreenManager.update
+    def process_commands(update = true)
+      if update
+        RubyJard.current_session.update
+        RubyJard::ScreenManager.update
+      end
       return_value = nil
 
       flow = RubyJard::ControlFlow.listen do
@@ -78,27 +80,40 @@ module RubyJard
     end
 
     def handle_up_command(_options = {})
-      # TODO: handle c-frame and out of range frames
-      Byebug.current_context.frame = [
+      next_frame = [
         Byebug.current_context.frame.pos + 1,
         Byebug.current_context.backtrace.length - 1
       ].min
+      while Byebug::Frame.new(Byebug.current_context, next_frame).c_frame? &&
+            next_frame < Byebug.current_context.backtrace.length - 1
+        next_frame += 1
+      end
+      Byebug.current_context.frame = next_frame
       proceed!
       process_commands
     end
 
     def handle_down_command(_options = {})
-      # TODO: handle c-frame and out of range frames
-      Byebug.current_context.frame = [Byebug.current_context.frame.pos - 1, 0].max
+      next_frame = [Byebug.current_context.frame.pos - 1, 0].max
+      while Byebug::Frame.new(Byebug.current_context, next_frame).c_frame? &&
+            next_frame > 0
+        next_frame -= 1
+      end
+      Byebug.current_context.frame = next_frame
       proceed!
       process_commands
     end
 
     def handle_frame_command(options)
-      # TODO: handle c-frame and out of range frames
-      Byebug.current_context.frame = options[:frame].to_i
-      proceed!
-      process_commands
+      next_frame = options[:frame].to_i
+      if Byebug::Frame.new(Byebug.current_context, next_frame).c_frame?
+        puts "Error: Frame #{next_frame} is a c-frame. Not able to inspect c layer!"
+        process_commands(false)
+      else
+        Byebug.current_context.frame = next_frame
+        proceed!
+        process_commands(true)
+      end
     end
 
     def handle_continue_command(_options = {})
