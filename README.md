@@ -1,6 +1,4 @@
-# RubyJard
-
-![asciicast](./docs/logo.jpg)
+![Ruby Jard](./docs/logo.jpg)
 
 Jard stands for Just Another Ruby Debugger, aims to provide a better experience while debugging Ruby. Ruby Jard supports the following major features at the moment: 
 
