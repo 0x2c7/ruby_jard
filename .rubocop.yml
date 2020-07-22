@@ -18,6 +18,8 @@ Metrics/ParameterLists:
   Enabled: false
 Metrics/ClassLength:
   Enabled: false
+Layout/HashAlignment:
+  Enabled: false
 AllCops:
   TargetRubyVersion: 2.5
 
