@@ -45,10 +45,10 @@ module RubyJard
       [BOTTOM_RIGHT, BOTTOM_LEFT] => '┴'
     }.freeze
 
-    def initialize(output:, screens:)
+    def initialize(output:, screens:, color_scheme:)
       @output = output
       @screens = screens
-      @color_decorator = RubyJard::Decorators::ColorDecorator.new
+      @color_decorator = RubyJard::Decorators::ColorDecorator.new(color_scheme)
     end
 
     def draw
@@ -64,16 +64,17 @@ module RubyJard
       # Exclude the corners
       @screens.each do |screen|
         RubyJard::Console.move_to(@output, screen.x + 1, screen.y)
-        @output.print HORIZONTAL_LINE * (screen.width - 2)
+        @output.print colorize_border(HORIZONTAL_LINE * (screen.width - 2))
 
         RubyJard::Console.move_to(@output, screen.x + 1, screen.y + screen.height - 1)
-        @output.print HORIZONTAL_LINE * (screen.width - 2)
+        @output.print colorize_border(HORIZONTAL_LINE * (screen.width - 2))
 
         (screen.y + 1..screen.y + screen.height - 2).each do |moving_y|
           RubyJard::Console.move_to(@output, screen.x, moving_y)
-          @output.print VERTICAL_LINE
+          @output.print colorize_border(VERTICAL_LINE)
+
           RubyJard::Console.move_to(@output, screen.x + screen.width - 1, moving_y)
-          @output.print VERTICAL_LINE
+          @output.print colorize_border(VERTICAL_LINE)
         end
       end
     end
@@ -85,12 +86,12 @@ module RubyJard
 
           case ids.length
           when 1
-            @output.print NORMALS_CORNERS[ids.first]
+            @output.print colorize_border(NORMALS_CORNERS[ids.first])
           when 2
             ids = ids.sort
-            @output.print OVERLAPPED_CORNERS[ids]
+            @output.print colorize_border(OVERLAPPED_CORNERS[ids])
           else
-            @output.print CROSS_CORNER
+            @output.print colorize_border(CROSS_CORNER)
           end
         end
       end
@@ -99,10 +100,22 @@ module RubyJard
     def draw_titles
       @screens.each do |screen|
         next unless screen.respond_to?(:title)
-        RubyJard::Console.move_to(@output, screen.x + 2, screen.y)
-        @output.print ' '
-        @output.print @color_decorator.decorate(screen.title, :bright_yellow, :bold)
-        @output.print ' '
+
+        RubyJard::Console.move_to(@output, screen.x + 1, screen.y)
+        total_length = 0
+        title_parts = Array(screen.title)
+        title_parts.each_with_index do |title_part, index|
+          if index == 0
+            @output.print @color_decorator.decorate_element(:screen_title, " #{title_part} ")
+          else
+            @output.print @color_decorator.decorate_element(:screen_title_secondary, " #{title_part} ")
+          end
+          total_length += title_part.length + 2
+        end
+        @output.print @color_decorator.decorate_element(
+          :screen_title_background,
+          ' ' * (screen.width - total_length - 2)
+        )
       end
     end
 
@@ -121,6 +134,10 @@ module RubyJard
       corners[x] ||= {}
       corners[x][y] ||= []
       corners[x][y] << id unless corners[x][y].include?(id)
+    end
+
+    def colorize_border(content)
+      @color_decorator.decorate_element(:screen_border, content)
     end
   end
 end

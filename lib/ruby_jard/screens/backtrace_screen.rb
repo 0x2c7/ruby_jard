@@ -6,7 +6,7 @@ module RubyJard
     # Backtrace screen implements the content to display current thread's backtrace to the user.
     class BacktraceScreen < RubyJard::Screen
       def title
-        "Backtrace (#{frames_count})"
+        ['Backtrace', frames_count.to_s]
       end
 
       def data_size

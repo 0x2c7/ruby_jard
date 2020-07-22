@@ -8,9 +8,9 @@ module RubyJard
 
         decorated_path = path_decorator(current_file, current_line)
         if decorated_path.gem?
-          "Source (#{decorated_path.gem} - #{decorated_path.path}:#{decorated_path.lineno})"
+          ['Source', "#{decorated_path.gem} - #{decorated_path.path}:#{decorated_path.lineno}"]
         else
-          "Source (#{decorated_path.path}:#{decorated_path.lineno})"
+          ['Source', "#{decorated_path.path}:#{decorated_path.lineno}"]
         end
       end
 

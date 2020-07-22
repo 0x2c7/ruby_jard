@@ -6,24 +6,23 @@ module RubyJard
   # generated based on input layout specifiation, screen data, and top-left
   # corner cordination.
   class Screen
-    attr_accessor :output, :rows, :width, :height, :x, :y
+    attr_accessor :output, :rows, :width, :height, :x, :y, :color_scheme
 
-    def initialize(screen_template:, session: nil, width:, height:, x:, y:)
+    def initialize(screen_template:, session: nil, width:, height:, x:, y:, color_scheme:)
       @session = session || RubyJard.current_session
       @screen_template = screen_template
       @width = width
       @height = height
       @x = x
       @y = y
+      @color_scheme = color_scheme
     end
 
     def draw(output)
       calculate
       drawer = RubyJard::ScreenDrawer.new(
         output: output,
-        screen: self,
-        x: @x,
-        y: @y
+        screen: self
       )
       drawer.draw
     end

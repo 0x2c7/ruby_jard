@@ -4,7 +4,7 @@ module RubyJard
   module Screens
     class ThreadsScreen < RubyJard::Screen
       def title
-        "Threads (#{RubyJard.current_session.contexts.length})"
+        ['Threads', RubyJard.current_session.contexts.length.to_s]
       end
 
       def data_size

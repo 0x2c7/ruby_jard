@@ -5,47 +5,32 @@ module RubyJard
     class MenuScreen < RubyJard::Screen
       def draw(output)
         RubyJard::Console.move_to(output, @x, @y)
+        output.print color_decorator.decorate_element(:screen_title_secondary, ' ' * @width)
+
+        RubyJard::Console.move_to(output, @x, @y)
+        output.print color_decorator.decorate_element(:screen_title_highlighted, ' Repl Console ')
+        output.print color_decorator.decorate_element(:screen_title_secondary, ' Program Output ')
 
         margin = 0
-        left_menu = generate_left_menu
-        left_menu.each do |text, length|
-          RubyJard::Console.move_to(output, @x + 1 + margin, @y)
-          output.print text
-          margin += length + 3
-        end
+        right_menu = [
+          'Step (F7)',
+          'Step Out (Shift+F7)',
+          'Next (F8)',
+          'Continue (F9)'
+        ]
 
-        margin = 0
-        right_menu = generate_right_menu
-        right_menu.reverse.each do |text, length|
-          RubyJard::Console.move_to(output, @x + @width - margin - length - 1, @y)
-          output.print text
-          margin += length + 3
+        right_menu.reverse.each do |text|
+          RubyJard::Console.move_to(output, @x + @width - margin - text.length - 1, @y)
+
+          output.print color_decorator.decorate_element(:tip, text)
+          margin += text.length + 3
         end
       end
 
       private
 
-      def generate_left_menu
-        [
-          # Fill in later
-        ]
-      end
-
-      def generate_right_menu
-        [
-          decorate_text('Step (F7)', :white),
-          decorate_text('Step Out (Shift+F7)', :white),
-          decorate_text('Next (F8)', :white),
-          decorate_text('Continue (F9)', :white)
-        ]
-      end
-
-      def decorate_text(str, *styles)
-        [color_decorator.decorate(str, *styles), str.length]
-      end
-
       def color_decorator
-        @color_decorator ||= RubyJard::Decorators::ColorDecorator.new
+        @color_decorator ||= RubyJard::Decorators::ColorDecorator.new(@color_scheme)
       end
     end
   end

@@ -9,9 +9,11 @@ require 'ruby_jard/decorators/source_decorator'
 
 require 'ruby_jard/screen'
 require 'ruby_jard/screens'
+
 require 'ruby_jard/color_scheme'
 require 'ruby_jard/color_schemes'
 require 'ruby_jard/color_schemes/deep_space_color_scheme'
+
 require 'ruby_jard/box_drawer'
 require 'ruby_jard/screen_drawer'
 require 'ruby_jard/screens/source_screen'
@@ -105,12 +107,16 @@ module RubyJard
       start unless started?
       @updating = true
 
-      RubyJard::Console.hide_cursor(@output)
       clear_screen
+      RubyJard::Console.hide_cursor(@output)
       width, height = RubyJard::Console.screen_size(@output)
       screen_layouts = calculate_layouts(width, height)
       draw_screens(screen_layouts)
-      jump_to_prompt(screen_layouts)
+
+      RubyJard::Console.move_to(
+        @output, 0,
+        total_screen_height(screen_layouts) + 1
+      )
       draw_debug(width, height)
     rescue StandardError => e
       clear_screen
@@ -124,6 +130,7 @@ module RubyJard
     end
 
     def draw_error(exception, height = 0)
+      @output.print RubyJard::Decorators::ColorDecorator::CSI_RESET
       @output.puts '--- Error ---'
       @output.puts "Internal error from Jard. I'm sorry to mess up your debugging experience."
       @output.puts 'It would be great if you can submit an issue in https://github.com/nguyenquangminh0711/ruby_jard/issues'
@@ -132,11 +139,10 @@ module RubyJard
       if height == 0
         @output.puts exception.backtrace
       else
-        @output.puts exception.backtrace.first(height - 5)
+        @output.puts exception.backtrace.first(10)
       end
       @output.puts '-------------'
     end
-
 
     private
 
@@ -152,7 +158,8 @@ module RubyJard
     def draw_box(screens)
       RubyJard::BoxDrawer.new(
         output: @output,
-        screens: screens
+        screens: screens,
+        color_scheme: pick_color_scheme
       ).draw
     end
 
@@ -162,6 +169,7 @@ module RubyJard
         screen&.new(
           screen_template: screen_template,
           width: width, height: height,
+          color_scheme: pick_color_scheme,
           x: x, y: y
         )
       end
@@ -172,12 +180,8 @@ module RubyJard
       end
     end
 
-    def jump_to_prompt(screen_layouts)
-      prompt_y = screen_layouts.map { |_template, _width, screen_height, _x, y| y + screen_height }.max
-      RubyJard::Console.move_to(@output, 0, prompt_y)
-    end
-
     def draw_debug(_width, height)
+      @output.print RubyJard::Decorators::ColorDecorator::CSI_RESET
       unless RubyJard.debug_info.empty?
         @output.puts '--- Debug ---'
         RubyJard.debug_info.first(height - 2).each do |line|
@@ -206,6 +210,10 @@ module RubyJard
       RubyJard::Screens[name]
     end
 
+    def total_screen_height(screen_layouts)
+      screen_layouts.map { |_template, _width, screen_height, _x, y| y + screen_height }.max
+    end
+
     def pick_layout(width, height)
       RubyJard::DEFAULT_LAYOUT_TEMPLATES.each do |template|
         matched = true
@@ -220,6 +228,11 @@ module RubyJard
         return template if matched
       end
       RubyJard::DEFAULT_LAYOUT_TEMPLATES.first
+    end
+
+    def pick_color_scheme
+      # TODO: Fallback to a default color scheme if not found
+      RubyJard::ColorSchemes[RubyJard::DEFAULT_COLOR_SCHEME].new
     end
   end
 end

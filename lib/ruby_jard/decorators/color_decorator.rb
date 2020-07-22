@@ -21,8 +21,24 @@ module RubyJard
         :white
       ].freeze
 
-      def initialize
+      HEX_PATTERN_6 = /^#([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})$/.freeze
+      HEX_PATTERN_3 = /^#([A-Fa-f0-9]{1})([A-Fa-f0-9]{1})([A-Fa-f0-9]{1})$/.freeze
+
+      CSI_RESET = "\e[0m"
+      CSI_FOREGROUND_24BIT = "\e[38;2;%d;%d;%dm"
+      CSI_BACKGROUND_24BIT = "\e[48;2;%d;%d;%dm"
+
+      CSI_ITALIC = "\e[3m"
+      CSI_UNDERLINE = "\e[4m"
+
+      STYLES_CSI_MAP = {
+        underline: CSI_UNDERLINE,
+        italic: CSI_ITALIC
+      }.freeze
+
+      def initialize(color_scheme)
         @pastel = Pastel.new
+        @color_scheme = color_scheme
       end
 
       def decorate(text, *styles)
@@ -30,7 +46,35 @@ module RubyJard
         @pastel.decorate(text, *styles)
       end
 
+      # TODO: rename and replace #decorate by this method
+      def decorate_element(element, content)
+        styles = @color_scheme.styles_for(element) || []
+        foreground = translate_color(styles.shift, CSI_FOREGROUND_24BIT)
+        background = translate_color(styles.shift, CSI_BACKGROUND_24BIT)
+        "#{foreground}#{background}#{translate_styles(styles)}#{content}#{CSI_RESET}"
+      end
+
       private
+
+      def translate_color(color, sequence)
+        if matches = HEX_PATTERN_6.match(color.to_s)
+          red = matches[1].to_i(16)
+          green = matches[2].to_i(16)
+          blue = matches[3].to_i(16)
+          sequence % [red, green, blue]
+        elsif matches = HEX_PATTERN_3.match(color.to_s)
+          red = (matches[1] * 2).to_i(16)
+          green = (matches[2] * 2).to_i(16)
+          blue = (matches[3] * 2).to_i(16)
+          sequence % [red, green, blue]
+        else
+          CSI_RESET
+        end
+      end
+
+      def translate_styles(styles = [])
+        styles.map { |key| STYLES_CSI_MAP[key] }.compact.join
+      end
 
       def standardize_styles(styles)
         return [] if styles.include?(:clear)

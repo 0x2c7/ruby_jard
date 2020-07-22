@@ -8,19 +8,27 @@ module RubyJard
 
     ELLIPSIS = ' »'
 
-    def initialize(output:, screen:, x:, y:)
+    def initialize(output:, screen:)
       @output = output
-      @color_decorator = RubyJard::Decorators::ColorDecorator.new
-      @x = x
-      @y = y
-      @original_x = x
-      @original_y = y
-      @screen = screen
+      @color_decorator = RubyJard::Decorators::ColorDecorator.new(screen.color_scheme)
+      @width = screen.width
+      @height = screen.height
+      @x = screen.x
+      @y = screen.y
+      @original_x = screen.x
+      @original_y = screen.y
+      @rows = screen.rows
     end
 
     def draw
+      (@y..@y + @height - 1).each do |y|
+        RubyJard::Console.move_to(@output, @x, y)
+        # RubyJard.debug("x = #{@x}, y = #{y}, width = #{@width}")
+        @output.print @color_decorator.decorate_element(:background, ' ' * @width)
+      end
+
       @original_x = @x
-      @screen.rows.each do |row|
+      @rows.each do |row|
         draw_columns(row, row.columns)
         @y += 1
         @x = @original_x
@@ -66,7 +74,7 @@ module RubyJard
 
     def protected_print(content)
       # TODO: currently, only row overflow is detected. Definitely should handle column overflow
-      return if @y < @original_y || @y > @original_y + @screen.height - 1
+      return if @y < @original_y || @y > @original_y + @height - 1
 
       @output.print content
     end
