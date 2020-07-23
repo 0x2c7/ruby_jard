@@ -33,14 +33,14 @@ module RubyJard
         frame_id = index + data_window_start
         if current_frame?(index)
           [
-            '➠',
+            '•'.rjust(data_window_end.to_s.length),
             {
               element: :backtrace_frame_id_highlighted
             }
           ]
         else
           [
-            frame_id.to_s,
+            frame_id.to_s.rjust(data_window_end.to_s.length),
             {
               element: :backtrace_frame_id
             }

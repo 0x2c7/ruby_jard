@@ -37,7 +37,7 @@ module RubyJard
       def span_lineno(_loc, index)
         lineno = source_lineno(index)
         [
-          lineno.to_s,
+          lineno.to_s.rjust(source_decorator.window_end.to_s.length),
           {
             element: current_line == lineno ? :source_line_mark : :source_lineno
           }
