@@ -30,6 +30,7 @@ require 'ruby_jard/templates/span_template'
 require 'ruby_jard/templates/space_template'
 
 require 'ruby_jard/layouts/wide_layout'
+require 'ruby_jard/layouts/narrow_layout'
 require 'ruby_jard/layout'
 require 'ruby_jard/row'
 require 'ruby_jard/column'

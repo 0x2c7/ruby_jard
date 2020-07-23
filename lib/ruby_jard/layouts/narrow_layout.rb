@@ -2,15 +2,13 @@
 
 module RubyJard
   module Layouts
-    WideLayout = RubyJard::Templates::LayoutTemplate.new(
-      min_width: 120,
+    NarrowLayout = RubyJard::Templates::LayoutTemplate.new(
+      min_width: 60,
       min_height: 10,
-      width_ratio: 50,
-      height_ratio: 80,
       children: [
         RubyJard::Templates::LayoutTemplate.new(
-          height_ratio: 80,
-          width_ratio: 50,
+          height_ratio: 60,
+          width_ratio: 100,
           min_height: 7,
           fill_height: true,
           children: [
@@ -36,6 +34,7 @@ module RubyJard
             ),
             RubyJard::Templates::LayoutTemplate.new(
               height_ratio: 40,
+              width_ratio: 100,
               fill_height: true,
               children: [
                 RubyJard::Templates::ScreenTemplate.new(
@@ -69,64 +68,6 @@ module RubyJard
                   )
                 )
               ]
-            )
-          ]
-        ),
-        RubyJard::Templates::LayoutTemplate.new(
-          width_ratio: 50,
-          height_ratio: 80,
-          fill_height: true,
-          children: [
-            RubyJard::Templates::ScreenTemplate.new(
-              screen: :backtrace,
-              height_ratio: 50,
-              fill_height: true,
-              row_template: RubyJard::Templates::RowTemplate.new(
-                columns: [
-                  RubyJard::Templates::ColumnTemplate.new(
-                    margin_right: 1,
-                    spans: [
-                      RubyJard::Templates::SpanTemplate.new(:frame_id)
-                    ]
-                  ),
-                  RubyJard::Templates::ColumnTemplate.new(
-                    spans: [
-                      RubyJard::Templates::SpanTemplate.new(:klass_label, margin_right: 1),
-                      RubyJard::Templates::SpanTemplate.new(:label_preposition, margin_right: 1),
-                      RubyJard::Templates::SpanTemplate.new(:method_label, margin_right: 1),
-                      RubyJard::Templates::SpanTemplate.new(:path)
-                    ]
-                  )
-                ]
-              )
-            ),
-            RubyJard::Templates::ScreenTemplate.new(
-              screen: :threads,
-              height_ratio: 50,
-              fill_height: true,
-              row_template: RubyJard::Templates::RowTemplate.new(
-                columns: [
-                  RubyJard::Templates::ColumnTemplate.new(
-                    margin_right: 1,
-                    spans: [
-                      RubyJard::Templates::SpanTemplate.new(:mark, margin_right: 1),
-                      RubyJard::Templates::SpanTemplate.new(:thread_id)
-                    ]
-                  ),
-                  RubyJard::Templates::ColumnTemplate.new(
-                    margin_right: 1,
-                    spans: [
-                      RubyJard::Templates::SpanTemplate.new(:thread_status)
-                    ]
-                  ),
-                  RubyJard::Templates::ColumnTemplate.new(
-                    spans: [
-                      RubyJard::Templates::SpanTemplate.new(:thread_name, margin_right: 1),
-                      RubyJard::Templates::SpanTemplate.new(:thread_location)
-                    ]
-                  )
-                ]
-              )
             )
           ]
         ),

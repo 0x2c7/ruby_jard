@@ -43,7 +43,8 @@ module RubyJard
 
   DEFAULT_COLOR_SCHEME = 'deep-space'
   DEFAULT_LAYOUT_TEMPLATES = [
-    RubyJard::Layouts::WideLayout
+    RubyJard::Layouts::WideLayout,
+    RubyJard::Layouts::NarrowLayout
   ].freeze
 
   def self.current_session
