@@ -21,9 +21,9 @@ module RubyJard
     end
 
     def draw
+      # Draw background
       (@y..@y + @height - 1).each do |y|
         RubyJard::Console.move_to(@output, @x, y)
-        # RubyJard.debug("x = #{@x}, y = #{y}, width = #{@width}")
         @output.print @color_decorator.decorate_element(:background, ' ' * @width)
       end
 
@@ -61,10 +61,10 @@ module RubyJard
 
             if !row.line_limit.nil? && lines >= row.line_limit && !line_content.nil? && !line_content.empty?
               drawing_content[drawing_content.length - ELLIPSIS.length..-1] = ELLIPSIS
-              protected_print @color_decorator.decorate(drawing_content, *span.styles)
+              print_with_style(span.styles, drawing_content)
               break
             else
-              protected_print @color_decorator.decorate(drawing_content, *span.styles)
+              print_with_style(span.styles, drawing_content)
             end
           end
         end
@@ -72,11 +72,18 @@ module RubyJard
       end
     end
 
-    def protected_print(content)
+    def print_with_style(styles, drawing_content)
       # TODO: currently, only row overflow is detected. Definitely should handle column overflow
       return if @y < @original_y || @y > @original_y + @height - 1
 
-      @output.print content
+      if styles.is_a?(Hash)
+        @output.print @color_decorator.decorate_element(styles[:element], drawing_content)
+      elsif styles.is_a?(Array)
+        styles = styles.flatten.compact
+        @output.print @color_decorator.decorate(drawing_content, *styles)
+      else
+        @output.print @color_decorator.decorate(drawing_content, styles)
+      end
     end
 
     def default_frame_styles

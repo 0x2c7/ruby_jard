@@ -18,14 +18,21 @@ module RubyJard
       ORANGE = '#b3785d'
       PINK   = '#c47ebd'
 
+      BACKGROUND = GRAY1
       STYLES = {
-        background:               [GRAY5, GRAY1],
-        screen_border:            [GRAY3, GRAY1],
+        background:               [GRAY5, BACKGROUND],
+        screen_border:            [GRAY3, BACKGROUND],
         screen_title:             [GRAY2, BLUE],
         screen_title_highlighted: [GRAY2, ORANGE],
         screen_title_secondary:   [GRAY5, GRAY3],
         screen_title_background:  [GRAY5, GRAY2],
-        control_buttons:          [GRAY4, GRAY1]
+        control_buttons:          [GRAY4, BACKGROUND],
+        thread_id:                [BLUE, BACKGROUND],
+        thread_name:              [GRAY5, BACKGROUND],
+        thread_status_run:        [GREEN, BACKGROUND],
+        thread_status_sleep:      [GRAY4, BACKGROUND],
+        thread_status_other:      [GRAY4, BACKGROUND],
+        thread_location:          [GRAY3, BACKGROUND]
       }.freeze
     end
   end

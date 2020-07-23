@@ -118,14 +118,14 @@ module RubyJard
           span.content_length = 0
         elsif content.is_a?(Array)
           content.each do |sub_span|
-            sub_span.styles += Array(styles).flatten.compact
+            sub_span.styles += styles
           end
           return content
         else
           content = ' ' * span_template.margin_left + content if span_template.margin_left
           content += ' ' * span_template.margin_right if span_template.margin_right
           span.content = content
-          span.styles = Array(styles).flatten.compact
+          span.styles = styles
           span.content_length = span.content.length
         end
       else

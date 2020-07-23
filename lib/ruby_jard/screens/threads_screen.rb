@@ -20,32 +20,28 @@ module RubyJard
 
       def span_mark(context, _index)
         [
-          current_thread?(context) ? '→' : ' ',
-          [:bright_yellow, current_thread?(context) ? :bold : nil]
+          '➠',
+          {
+            element: thread_status_color(context.thread)
+          }
         ]
       end
 
       def span_thread_id(context, _index)
         [
-          context.thread.object_id.to_s,
-          [:green, current_thread?(context) ? :bold : nil]
+          "Thread #{context.thread.object_id}",
+          {
+            element: :thread_id
+          }
         ]
       end
 
       def span_thread_status(context, _index)
-        status_color =
-          if context.suspended?
-            :red
-          elsif context.ignored?
-            :white
-          elsif context.thread.status == 'run'
-            :green
-          else
-            :white
-          end
         [
           "(#{context.thread.status})",
-          [status_color, current_thread?(context) ? :bold : nil]
+          {
+            element: thread_status_color(context.thread)
+          }
         ]
       end
 
@@ -53,10 +49,20 @@ module RubyJard
         if context.thread.name.nil?
           last_backtrace = context.thread.backtrace_locations[1]
           location = decorate_path(last_backtrace.path, last_backtrace.lineno)
-          ["#{location.path}:#{location.lineno}", current_thread?(context) ? [:bright_white, :bold] : :white]
+          # ["#{location.path}:#{location.lineno}", current_thread?(context) ? [:bright_white, :bold] : :white]
+          [
+            'untitled',
+            {
+              element: :thread_name
+            }
+          ]
         else
-          name = context.thread.name.to_s
-          [name, current_thread?(context) ? [:bright_white, :bold] : :white]
+          [
+            context.thread.name,
+            {
+              element: :thread_name
+            }
+          ]
         end
       end
 
@@ -94,6 +100,16 @@ module RubyJard
 
       def decorate_path(path, lineno)
         RubyJard::Decorators::PathDecorator.new(path, lineno)
+      end
+
+      def thread_status_color(thread)
+        if thread.status == 'run'
+          :thread_status_run
+        elsif thread.status == 'sleep'
+          :thread_status_sleep
+        else
+          :thread_status_other
+        end
       end
     end
   end
