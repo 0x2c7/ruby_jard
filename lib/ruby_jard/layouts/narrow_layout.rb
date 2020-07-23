@@ -7,7 +7,7 @@ module RubyJard
       min_height: 10,
       children: [
         RubyJard::Templates::LayoutTemplate.new(
-          height_ratio: 60,
+          height_ratio: 80,
           width_ratio: 100,
           min_height: 7,
           fill_height: true,
@@ -72,7 +72,7 @@ module RubyJard
           ]
         ),
         RubyJard::Templates::ScreenTemplate.new(
-          height: 3,
+          height: 2,
           screen: :menu
         )
       ]

@@ -30,6 +30,15 @@ module RubyJard
 
     def calculate_layout(screens, layout, width, height, x, y)
       if layout.is_a?(RubyJard::Templates::ScreenTemplate)
+        if x != 0
+          width += 1
+          x -= 1
+        end
+
+        if y != 0
+          height += 1
+          y -= 1
+        end
         screens << [layout, width, height, x, y]
       else
         total_height = 0
@@ -49,16 +58,16 @@ module RubyJard
           max_height = child_height if max_height < child_height
           # Overflow. Break to next line
           if overflow_width >= width
-            child_y += max_height - 1
+            child_y += max_height
             child_x = x
             overflow_width = 0
             max_height = 0
           else
-            child_x += child_width - 1
+            child_x += child_width
           end
 
-          total_width += child_width - 1
-          total_height += child_height - 1
+          total_width += child_width
+          total_height += child_height
         end
       end
     end

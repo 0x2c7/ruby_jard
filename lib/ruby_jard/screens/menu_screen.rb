@@ -10,6 +10,8 @@ module RubyJard
         RubyJard::Console.move_to(output, @x, @y)
         output.print color_decorator.decorate_element(:screen_title_highlighted, ' Repl Console ')
 
+        return if @width < 80
+
         margin = 0
         right_menu = [
           'Step (F7)',
