@@ -27,6 +27,22 @@ module RubyJard
     def start
       return if started?
 
+      ##
+      # Globally configure Byebug. Byebug doesn't allow configuration by instance.
+      # So, I have no choice.
+      # TODO: Byebug autoloaded configuration may override those values.
+      Byebug::Setting[:autolist] = false
+      Byebug::Setting[:autoirb] = false
+      Byebug::Setting[:autopry] = false
+      Byebug::Context.processor = RubyJard::ReplProcessor
+      # Exclude all files in Ruby Jard source code from the stacktrace.
+      Byebug::Context.ignored_files = Byebug::Context.all_files + Dir.glob(
+        File.join(
+          File.expand_path(__dir__, '../lib'),
+          '**',
+          '*.rb'
+        )
+      )
       @started = true
     end
 
