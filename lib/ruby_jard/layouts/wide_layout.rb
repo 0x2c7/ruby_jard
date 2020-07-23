@@ -129,7 +129,7 @@ module RubyJard
           ]
         ),
         RubyJard::Templates::ScreenTemplate.new(
-          height: 2,
+          height: 3,
           screen: :menu
         )
       ]

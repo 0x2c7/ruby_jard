@@ -19,13 +19,13 @@ module RubyJard
       PINK   = '#c47ebd'
 
       STYLES = {
-        background:               [nil,   GRAY1],
+        background:               [GRAY5, GRAY1],
         screen_border:            [GRAY3, GRAY1],
         screen_title:             [GRAY2, BLUE],
         screen_title_highlighted: [GRAY2, ORANGE],
         screen_title_secondary:   [GRAY5, GRAY3],
-        screen_title_background:  [nil,   GRAY2],
-        tip:                      [GRAY5, GRAY3]
+        screen_title_background:  [GRAY5, GRAY2],
+        control_buttons:          [GRAY4, GRAY1]
       }.freeze
     end
   end

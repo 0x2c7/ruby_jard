@@ -32,16 +32,16 @@ module RubyJard
         [width, height]
       end
 
-      def hard_clear_screen(output)
+      def clear_screen(output)
         return unless output.tty?
 
         output.print tput('clear')
       end
 
-      def clear_screen(output)
+      def clear_screen_to_end(output)
         return unless output.tty?
 
-        output.clear_screen
+        output.print tput('ed')
       end
 
       def hide_cursor(output)
@@ -68,18 +68,22 @@ module RubyJard
         output.echo = true
       end
 
-      def tput(*args)
-        # TODO: Should implement multiple fallbacks here to support different platforms
+      def cached_tput
+        @cached_tput ||= {}
+      end
 
+      def tput(*args)
         command = "tput #{args.join(' ')}"
+        return cached_tput[command] unless cached_tput[command].nil?
+
         output = `#{command}`
         if $CHILD_STATUS.success?
-          output
+          cached_tput[command] = output
         else
-          raise Ruby::Error, "Fail to call `#{command}`: #{$CHILD_STATUS}"
+          raise RubyJard::Error, "Fail to call `#{command}`: #{$CHILD_STATUS}"
         end
       rescue StandardError => e
-        raise Ruby::Error, "Fail to call `#{command}`. Error: #{e}"
+        raise RubyJard::Error, "Fail to call `#{command}`. Error: #{e}"
       end
     end
   end

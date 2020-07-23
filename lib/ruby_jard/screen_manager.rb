@@ -64,7 +64,7 @@ module RubyJard
       return if started?
 
       RubyJard::Console.start_alternative_terminal(@output)
-      RubyJard::Console.hard_clear_screen(@output)
+      RubyJard::Console.clear_screen(@output)
 
       def $stdout.write(string)
         if !RubyJard::ScreenManager.updating? && RubyJard::ScreenManager.started?
@@ -107,7 +107,6 @@ module RubyJard
       start unless started?
       @updating = true
 
-      clear_screen
       RubyJard::Console.hide_cursor(@output)
       width, height = RubyJard::Console.screen_size(@output)
       screen_layouts = calculate_layouts(width, height)
@@ -115,11 +114,12 @@ module RubyJard
 
       RubyJard::Console.move_to(
         @output, 0,
-        total_screen_height(screen_layouts) + 1
+        total_screen_height(screen_layouts)
       )
+      RubyJard::Console.clear_screen_to_end(@output)
       draw_debug(width, height)
     rescue StandardError => e
-      clear_screen
+      RubyJard::Console.clear_screen(@output)
       draw_error(e, height)
     ensure
       # You don't want to mess up previous user TTY no matter happens
@@ -200,10 +200,6 @@ module RubyJard
         screen.x += 1
         screen.y += 1
       end
-    end
-
-    def clear_screen
-      RubyJard::Console.clear_screen(@output)
     end
 
     def fetch_screen(name)
