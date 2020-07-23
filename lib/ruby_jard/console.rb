@@ -35,13 +35,13 @@ module RubyJard
       def clear_screen(output)
         return unless output.tty?
 
-        output.print tput('clear')
+        output.print "\e[3J"
       end
 
       def clear_screen_to_end(output)
         return unless output.tty?
 
-        output.print tput('ed')
+        output.print "\e[0J"
       end
 
       def hide_cursor(output)
