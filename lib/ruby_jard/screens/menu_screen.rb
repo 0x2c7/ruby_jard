@@ -14,6 +14,8 @@ module RubyJard
 
         margin = 0
         right_menu = [
+          'Up (F6)',
+          'Down (Shift+F6)',
           'Step (F7)',
           'Step Out (Shift+F7)',
           'Next (F8)',
