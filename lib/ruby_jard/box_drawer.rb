@@ -106,13 +106,13 @@ module RubyJard
         title_parts = Array(screen.title)
         title_parts.each_with_index do |title_part, index|
           if index == 0
-            @output.print @color_decorator.decorate_element(:screen_title, " #{title_part} ")
+            @output.print @color_decorator.decorate(:screen_title, " #{title_part} ")
           else
-            @output.print @color_decorator.decorate_element(:screen_title_secondary, " #{title_part} ")
+            @output.print @color_decorator.decorate(:screen_title_secondary, " #{title_part} ")
           end
           total_length += title_part.length + 2
         end
-        @output.print @color_decorator.decorate_element(
+        @output.print @color_decorator.decorate(
           :screen_title_background,
           ' ' * (screen.width - total_length - 2)
         )
@@ -137,7 +137,7 @@ module RubyJard
     end
 
     def colorize_border(content)
-      @color_decorator.decorate_element(:screen_border, content)
+      @color_decorator.decorate(:screen_border, content)
     end
   end
 end

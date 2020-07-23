@@ -5,10 +5,10 @@ module RubyJard
     class MenuScreen < RubyJard::Screen
       def draw(output)
         RubyJard::Console.move_to(output, @x, @y)
-        output.print color_decorator.decorate_element(:background, ' ' * @width)
+        output.print color_decorator.decorate(:background, ' ' * @width)
 
         RubyJard::Console.move_to(output, @x, @y)
-        output.print color_decorator.decorate_element(:screen_title_highlighted, ' Repl Console ')
+        output.print color_decorator.decorate(:screen_title_highlighted, ' Repl Console ')
 
         return if @width < 80
 
@@ -25,7 +25,7 @@ module RubyJard
         right_menu.reverse.each do |text|
           RubyJard::Console.move_to(output, @x + @width - margin - text.length - 1, @y)
 
-          output.print color_decorator.decorate_element(:control_buttons, text)
+          output.print color_decorator.decorate(:control_buttons, text)
           margin += text.length + 3
         end
       end
@@ -40,7 +40,7 @@ module RubyJard
     class MenuScreenNarrow < RubyJard::Screen
       def draw(output)
         RubyJard::Console.move_to(output, @x, @y)
-        output.print color_decorator.decorate_element(:background, ' ' * @width)
+        output.print color_decorator.decorate(:background, ' ' * @width)
 
         RubyJard::Console.move_to(output, @x, @y)
         menu = [
@@ -49,7 +49,7 @@ module RubyJard
           'Next (F8)',
           'Continue (F9)'
         ]
-        output.print color_decorator.decorate_element(:control_buttons, menu.join(' - '))
+        output.print color_decorator.decorate(:control_buttons, menu.join(' - '))
       end
 
       private

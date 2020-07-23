@@ -24,7 +24,7 @@ module RubyJard
       # Draw background
       (@y..@y + @height - 1).each do |y|
         RubyJard::Console.move_to(@output, @x, y)
-        @output.print @color_decorator.decorate_element(:background, ' ' * @width)
+        @output.print @color_decorator.decorate(:background, ' ' * @width)
       end
 
       @original_x = @x
@@ -76,14 +76,7 @@ module RubyJard
       # TODO: currently, only row overflow is detected. Definitely should handle column overflow
       return if @y < @original_y || @y > @original_y + @height - 1
 
-      if styles.is_a?(Hash)
-        @output.print @color_decorator.decorate_element(styles[:element], drawing_content)
-      elsif styles.is_a?(Array)
-        styles = styles.flatten.compact
-        @output.print @color_decorator.decorate(drawing_content, *styles)
-      else
-        @output.print @color_decorator.decorate(drawing_content, styles)
-      end
+      @output.print @color_decorator.decorate(styles[:element], drawing_content)
     end
 
     def default_frame_styles

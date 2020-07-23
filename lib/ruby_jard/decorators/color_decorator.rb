@@ -1,14 +1,9 @@
 # frozen_string_literal: true
 
-require 'pastel'
-
 module RubyJard
   module Decorators
     ##
-    # Manipulate and decorate color for texts. The core is Pastel, which is a library to
-    # inject escape sequences to let the terminal emulator aware of target color. This
-    # class wraps around the core, validates, and standardizes the styles before feeding
-    # styling information to Pastel.
+    # Manipulate and decorate color for texts.
     class ColorDecorator
       COLORS = [
         :black,
@@ -37,17 +32,11 @@ module RubyJard
       }.freeze
 
       def initialize(color_scheme)
-        @pastel = Pastel.new
         @color_scheme = color_scheme
       end
 
-      def decorate(text, *styles)
-        styles = standardize_styles(styles)
-        @pastel.decorate(text, *styles)
-      end
-
       # TODO: rename and replace #decorate by this method
-      def decorate_element(element, content)
+      def decorate(element, content)
         styles = @color_scheme.styles_for(element) || []
         foreground = translate_color(styles.shift, CSI_FOREGROUND_24BIT)
         background = translate_color(styles.shift, CSI_BACKGROUND_24BIT)
