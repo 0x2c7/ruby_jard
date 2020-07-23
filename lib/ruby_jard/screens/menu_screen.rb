@@ -34,7 +34,30 @@ module RubyJard
         @color_decorator ||= RubyJard::Decorators::ColorDecorator.new(@color_scheme)
       end
     end
+
+    class MenuScreenNarrow < RubyJard::Screen
+      def draw(output)
+        RubyJard::Console.move_to(output, @x, @y)
+        output.print color_decorator.decorate_element(:background, ' ' * @width)
+
+        RubyJard::Console.move_to(output, @x, @y)
+        menu = [
+          'Step (F7)',
+          'Step Out (Shift+F7)',
+          'Next (F8)',
+          'Continue (F9)'
+        ]
+        output.print color_decorator.decorate_element(:control_buttons, menu.join(' - '))
+      end
+
+      private
+
+      def color_decorator
+        @color_decorator ||= RubyJard::Decorators::ColorDecorator.new(@color_scheme)
+      end
+    end
   end
 end
 
 RubyJard::Screens.add_screen(:menu, RubyJard::Screens::MenuScreen)
+RubyJard::Screens.add_screen(:menu_narrow, RubyJard::Screens::MenuScreenNarrow)
