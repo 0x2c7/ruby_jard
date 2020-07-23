@@ -35,12 +35,6 @@ module RubyJard
         KIND_CON => 3
       }.freeze
 
-      KIND_COLORS = {
-        KIND_LOC => :bright_blue,
-        KIND_INS => :bright_blue,
-        KIND_CON => :green
-      }.freeze
-
       INLINE_TOKEN_KIND_MAPS = {
         KIND_LOC => :ident,
         KIND_INS => :instance_variable,
@@ -67,39 +61,33 @@ module RubyJard
 
       def span_inline(data_row, _index)
         if inline?(data_row[0], data_row[1])
-          ['•', [:bright_yellow, :bold]]
+          ['•', { element: :variable_mark_inline }]
         else
-          [' ']
+          [' ', { element: :variable_mark }]
         end
-      end
-
-      def span_type(data_row, _index)
-        type_name = TYPE_SYMBOLS[data_row[2].class] || DEFAULT_TYPE_SYMBOL
-        [type_name.to_s, :white]
       end
 
       def span_name(data_row, _index)
         [
           data_row[1].to_s,
-          [
-            KIND_COLORS[data_row[0]] || :bright_white,
-            inline?(data_row[0], data_row[1]) ? :bold : nil
-          ]
+          {
+            element: "variable_#{data_row[0]}".to_sym
+          }
         ]
       end
 
       def span_indicator(_data_row, _index)
-        ['=', [:bright_white]]
+        ['=', { element: :variable_separator }]
       end
 
       def span_size(data_row, _index)
         value = data_row[2]
         if value.is_a?(Array) && !value.empty?
-          ["(size:#{value.length})", :white]
+          ["(len:#{value.length})", { element: :variable_size }]
         elsif value.is_a?(String) && value.length > 20
-          ["(size:#{value.length})", :white]
+          ["(len:#{value.length})", { element: :variable_size }]
         elsif value.is_a?(Hash) && !value.empty?
-          ["(size:#{value.length})", :white]
+          ["(size:#{value.length})", { element: :variable_size }]
         end
       end
 
@@ -110,7 +98,7 @@ module RubyJard
         ["\n", "\r", "\r\n"].each do |esc|
           inspection.gsub!(esc, esc.inspect)
         end
-        [inspection, :dim, :white]
+        [inspection, { element: :variable_inspection }]
       end
 
       private

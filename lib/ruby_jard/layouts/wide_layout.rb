@@ -49,12 +49,6 @@ module RubyJard
                     ]
                   ),
                   RubyJard::Templates::ColumnTemplate.new(
-                    margin_right: 1,
-                    spans: [
-                      RubyJard::Templates::SpanTemplate.new(:type)
-                    ]
-                  ),
-                  RubyJard::Templates::ColumnTemplate.new(
                     spans: [
                       RubyJard::Templates::SpanTemplate.new(:name, margin_right: 1),
                       RubyJard::Templates::SpanTemplate.new(:size, margin_right: 1),

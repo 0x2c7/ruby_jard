@@ -117,9 +117,6 @@ module RubyJard
           span.content = ''
           span.content_length = 0
         elsif content.is_a?(Array)
-          content.each do |sub_span|
-            sub_span.styles += styles
-          end
           return content
         else
           content = ' ' * span_template.margin_left + content if span_template.margin_left

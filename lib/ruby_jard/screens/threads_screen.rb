@@ -20,7 +20,7 @@ module RubyJard
 
       def span_mark(context, _index)
         [
-          '➠',
+          '•',
           {
             element: thread_status_color(context.thread)
           }

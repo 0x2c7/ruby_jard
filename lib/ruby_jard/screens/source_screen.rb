@@ -27,8 +27,10 @@ module RubyJard
       def span_mark(_loc, index)
         lineno = source_lineno(index)
         [
-          current_line == lineno ? '→' : ' ',
-          [:bright_yellow, current_line == lineno ? :bold : nil]
+          current_line == lineno ? '➠' : ' ',
+          {
+            element: :source_line_mark
+          }
         ]
       end
 
@@ -36,13 +38,14 @@ module RubyJard
         lineno = source_lineno(index)
         [
           lineno.to_s,
-          current_line == lineno ? [:bold, :bright_yellow] : [:dim, :white]
+          {
+            element: current_line == lineno ? :source_line_mark : :source_lineno
+          }
         ]
       end
 
-      def span_code(loc, index)
-        lineno = source_lineno(index)
-        [loc_decorator(loc).spans, current_line == lineno ? [:brighter] : [:dim]]
+      def span_code(loc, _index)
+        [loc_decorator(loc).spans]
       end
 
       private

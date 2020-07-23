@@ -39,111 +39,92 @@ module RubyJard
 
       # A shameless copy from https://github.com/rubychan/coderay/blob/master/lib/coderay/encoders/terminal.rb
       class JardLocEncoder < CodeRay::Encoders::Encoder
-        DEFAULT_COLOR = [:white].freeze
-        TOKEN_COLORS = {
-          debug: [:white, :on_blue],
-          annotation: [:blue],
-          attribute_name: [:blue],
-          attribute_value: [:blue],
+        DEFAULT_STYLE = :other
+        TOKEN_STYLES = {
+          annotation: :keyword,
+          attribute_name: :keyword,
+          attribute_value: :keyword,
           binary: {
-            self: [:blue],
-            char: [:blue],
-            delimiter: [:blue]
+            self: :keyword,
+            char: :keyword,
+            delimiter: :keyword
           },
           char: {
-            self: [:blue],
-            delimiter: [:blue]
+            self: :keyword,
+            delimiter: :keyword
           },
-          class: [:underline, :green],
-          class_variable: [:green],
-          color: [:green],
+          class: :constant,
+          class_variable: :constant,
+          color: :constant,
           comment: {
-            self: [:white],
-            char: [:white],
-            delimiter: [:white]
+            self: :comment,
+            char: :comment,
+            delimiter: :comment
           },
-          constant: [:green],
-          decorator: [:blue],
-          definition: [:blue],
-          directive: [:blue],
-          docstring: [:blue],
-          doctype: [:blue],
-          done: [:blue],
-          entity: [:blue],
-          error: [:white, :on_red],
-          exception: [:blue],
-          float: [:blue],
-          function: [:green],
-          method: [:green],
-          global_variable: [:green],
-          hex: [:blue],
-          id: [:blue],
-          include: [:blue],
-          integer: [:blue],
-          imaginary: [:blue],
-          important: [:blue],
+          constant: :constant,
+          decorator: :keyword,
+          definition: :keyword,
+          directive: :keyword,
+          docstring: :keyword,
+          doctype: :keyword,
+          done: :keyword,
+          entity: :keyword,
+          error: :constant,
+          exception: :keyword,
+          float: :keyword,
+          function: :constant,
+          method: :method,
+          global_variable: :constant,
+          hex: :keyword,
+          id: :keyword,
+          include: :keyword,
+          integer: :literal,
+          imaginary: :keyword,
+          important: :keyword,
           key: {
-            self: [:blue],
-            char: [:blue],
-            delimiter: [:blue]
+            self: :literal,
+            char: :literal,
+            delimiter: :literal
           },
-          label: [:blue],
-          local_variable: [:blue],
-          namespace: [:blue],
-          octal: [:blue],
-          predefined: [:blue],
-          predefined_constant: [:blue],
-          predefined_type: [:green],
-          preprocessor: [:blue],
-          pseudo_class: [:blue],
+          label: :literal,
+          local_variable: :keyword,
+          namespace: :keyword,
+          octal: :keyword,
+          predefined: :keyword,
+          predefined_constant: :keyword,
+          predefined_type: :constant,
+          preprocessor: :keyword,
+          pseudo_class: :keyword,
           regexp: {
-            self: [:blue],
-            delimiter: [:blue],
-            modifier: [:blue],
-            char: [:blue]
+            self: :keyword,
+            delimiter: :keyword,
+            modifier: :keyword,
+            char: :keyword
           },
-          reserved: [:blue],
-          keyword: [:blue],
+          reserved: :keyword,
+          keyword: :keyword,
           shell: {
-            self: [:blue],
-            char: [:blue],
-            delimiter: [:blue],
-            escape: [:blue]
+            self: :keyword,
+            char: :keyword,
+            delimiter: :keyword,
+            escape: :keyword
           },
           string: {
-            self: [:blue],
-            modifier: [:blue],
-            char: [:blue],
-            delimiter: [:blue],
-            escape: [:blue]
+            self: :keyword,
+            modifier: :keyword,
+            char: :keyword,
+            delimiter: :keyword,
+            escape: :keyword
           },
           symbol: {
-            self: [:blue],
-            delimiter: [:blue]
+            self: :literal,
+            delimiter: :literal
           },
-          tag: [:green],
-          type: [:blue],
-          value: [:blue],
-          variable: [:blue],
-          insert: {
-            self: [:on_green],
-            insert: [:green, :on_green],
-            eyecatcher: [:italic]
-          },
-          delete: {
-            self: [:on_red],
-            delete: [:blue, :on_red],
-            eyecatcher: [:italic]
-          },
-          change: {
-            self: [:on_blue],
-            change: [:white, :on_blue]
-          },
-          head: {
-            self: [:on_red],
-            filename: [:white, :on_red]
-          },
-          instance_variable: [:blue]
+          tag: :constant,
+          type: :keyword,
+          value: :keyword,
+          variable: :keyword,
+          instance_variable: :instance_variable
         }.freeze
 
         protected
@@ -151,7 +132,7 @@ module RubyJard
         def setup(options)
           super
           @opened = []
-          @color_scopes = [TOKEN_COLORS]
+          @color_scopes = [TOKEN_STYLES]
           @out = []
         end
 
@@ -160,9 +141,9 @@ module RubyJard
         def text_token(text, kind)
           color = @color_scopes.last[kind]
           text.gsub!("\n", '')
-          styles =
+          style =
             if !color
-              DEFAULT_COLOR
+              DEFAULT_STYLE
             elsif color.is_a? Hash
               color[:self]
             else
@@ -170,9 +151,10 @@ module RubyJard
             end
           @out << Span.new(
             span_template: nil,
+            # content: "#{text}(#{kind})",
             content: text,
             content_length: text.length,
-            styles: styles
+            styles: { element: "source_token_#{style}".to_sym }
           )
         end
 
