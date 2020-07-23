@@ -40,7 +40,7 @@ module RubyJard
         backtrace_method_label:         [GRAY5, BACKGROUND],
         variable_mark:                  [GRAY4, BACKGROUND],
         variable_mark_inline:           [GREEN, BACKGROUND],
-        variable_loc:                   [BLUE, BACKGROUND],
+        variable_loc:                   [PURPLE, BACKGROUND],
         variable_ins:                   [PURPLE, BACKGROUND],
         variable_con:                   [ORANGE, BACKGROUND],
         variable_inspection:            [GRAY4, BACKGROUND],
