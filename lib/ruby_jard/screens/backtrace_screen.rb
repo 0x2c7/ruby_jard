@@ -29,22 +29,23 @@ module RubyJard
         [frames_count, data_window_start + data_size - 1].min
       end
 
-      def span_mark(_frame, index)
-        [
-          current_frame?(index) ? '→' : ' ',
-          [:bright_yellow, current_frame?(index) ? :bold : nil]
-        ]
-      end
-
       def span_frame_id(_frame, index)
         frame_id = index + data_window_start
-        [
-          frame_id.to_s,
+        if current_frame?(index)
           [
-            current_frame?(index) ? :bright_yellow : :white,
-            current_frame?(index) ? :bold : nil
+            '➠',
+            {
+              element: :backtrace_frame_id_highlighted
+            }
           ]
-        ]
+        else
+          [
+            frame_id.to_s,
+            {
+              element: :backtrace_frame_id
+            }
+          ]
+        end
       end
 
       def span_klass_label(frame, index)
@@ -66,15 +67,17 @@ module RubyJard
         c_frame = frame_at(index).last.nil? ? '[c] ' : ''
         [
           "#{c_frame}#{klass_label}",
-          [:green, current_frame?(index) ? :bold : nil]
+          {
+            element: :backtrace_class_label
+          }
         ]
       end
 
-      def span_label_preposition(_frame, index)
-        ['in', current_frame?(index) ? [:bright_white] : [:white]]
+      def span_label_preposition(_frame, _index)
+        ['in', { element: :backtrace_location }]
       end
 
-      def span_method_label(frame, index)
+      def span_method_label(frame, _index)
         location = frame[0]
         method_label =
           if location.label != location.base_label
@@ -82,27 +85,30 @@ module RubyJard
           else
             location.base_label
           end
-        [method_label, [:green, current_frame?(index) ? :bold : nil]]
+        [
+          method_label,
+          {
+            element: :backtrace_method_label
+          }
+        ]
       end
 
-      def span_path_preposition(frame, index)
-        location = frame[0]
-        decorated_path = decorate_path(location.absolute_path, location.lineno)
-        preposition = decorated_path.gem? ? 'in' : 'at'
-        [preposition, current_frame?(index) ? [:bright_white] : [:white]]
-      end
-
-      def span_path(frame, index)
+      def span_path(frame, _index)
         location = frame[0]
         decorated_path = decorate_path(location.absolute_path, location.lineno)
 
         path_label =
           if decorated_path.gem?
-            "#{decorated_path.gem} (#{decorated_path.gem_version})"
+            "in #{decorated_path.gem} (#{decorated_path.gem_version})"
           else
-            "#{decorated_path.path}:#{decorated_path.lineno}"
+            "at #{decorated_path.path}:#{decorated_path.lineno}"
           end
-        [path_label, current_frame?(index) ? [:bold, :bright_white] : [:white]]
+        [
+          path_label,
+          {
+            element: :backtrace_location
+          }
+        ]
       end
 
       private

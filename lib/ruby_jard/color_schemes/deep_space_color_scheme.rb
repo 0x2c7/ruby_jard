@@ -32,7 +32,16 @@ module RubyJard
         thread_status_run:        [GREEN, BACKGROUND],
         thread_status_sleep:      [GRAY4, BACKGROUND],
         thread_status_other:      [GRAY4, BACKGROUND],
-        thread_location:          [GRAY4, BACKGROUND]
+        thread_location:          [GRAY4, BACKGROUND],
+        backtrace_frame_id:      [GRAY4, BACKGROUND],
+        backtrace_frame_id_highlighted:      [GREEN, BACKGROUND],
+        backtrace_location:      [GRAY4, BACKGROUND],
+        backtrace_class_label:      [GREEN, BACKGROUND],
+        backtrace_method_label:      [GRAY5, BACKGROUND],
+        variable_mark:      [GREEN, BACKGROUND],
+        variable_local:      [BLUE, BACKGROUND],
+        variable_instance:      [BLUE, BACKGROUND],
+        variable_const:      [BLUE, BACKGROUND]
       }.freeze
     end
   end
