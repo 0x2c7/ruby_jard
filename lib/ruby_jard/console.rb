@@ -53,7 +53,7 @@ module RubyJard
       def show_cursor(output)
         return unless output.tty?
 
-        output.print tput('cvvis')
+        output.print tput('cnorm')
       end
 
       def cooked!(output)
