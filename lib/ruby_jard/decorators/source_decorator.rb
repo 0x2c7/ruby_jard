@@ -25,7 +25,7 @@ module RubyJard
         end
 
         @window_start = @lineno - @window / 2
-        @window_start = 1 if @window_start.negative?
+        @window_start = 1 if @window_start <= 0
         @window_end = @window_start + @window
 
         until file.eof?
