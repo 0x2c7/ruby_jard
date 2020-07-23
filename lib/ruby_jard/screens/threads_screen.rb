@@ -47,9 +47,6 @@ module RubyJard
 
       def span_thread_name(context, _index)
         if context.thread.name.nil?
-          last_backtrace = context.thread.backtrace_locations[1]
-          location = decorate_path(last_backtrace.path, last_backtrace.lineno)
-          # ["#{location.path}:#{location.lineno}", current_thread?(context) ? [:bright_white, :bold] : :white]
           [
             'untitled',
             {
@@ -61,6 +58,31 @@ module RubyJard
             context.thread.name,
             {
               element: :thread_name
+            }
+          ]
+        end
+      end
+
+      def span_thread_location(context, _index)
+        last_backtrace =
+          if current_thread?(context)
+            RubyJard.current_session.backtrace[0].first
+          else
+            context.thread.backtrace_locations[1]
+          end
+        decorated_path = decorate_path(last_backtrace.path, last_backtrace.lineno)
+        if decorated_path.gem?
+          [
+            "in #{decorated_path.gem} (#{decorated_path.gem_version})",
+            {
+              element: :thread_location
+            }
+          ]
+        else
+          [
+            "at #{decorated_path.path}:#{decorated_path.lineno}",
+            {
+              element: :thread_location
             }
           ]
         end

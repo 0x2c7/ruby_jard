@@ -120,7 +120,8 @@ module RubyJard
                   ),
                   RubyJard::Templates::ColumnTemplate.new(
                     spans: [
-                      RubyJard::Templates::SpanTemplate.new(:thread_name)
+                      RubyJard::Templates::SpanTemplate.new(:thread_name, margin_right: 1),
+                      RubyJard::Templates::SpanTemplate.new(:thread_location)
                     ]
                   )
                 ]

@@ -32,7 +32,7 @@ module RubyJard
         thread_status_run:        [GREEN, BACKGROUND],
         thread_status_sleep:      [GRAY4, BACKGROUND],
         thread_status_other:      [GRAY4, BACKGROUND],
-        thread_location:          [GRAY3, BACKGROUND]
+        thread_location:          [GRAY4, BACKGROUND]
       }.freeze
     end
   end
