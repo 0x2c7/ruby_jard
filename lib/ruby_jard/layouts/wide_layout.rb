@@ -5,17 +5,19 @@ module RubyJard
     WideLayout = RubyJard::Templates::LayoutTemplate.new(
       min_width: 120,
       min_height: 10,
-      fill_width: true,
-      fill_height: false,
+      width_ratio: 50,
+      height_ratio: 80,
       children: [
         RubyJard::Templates::LayoutTemplate.new(
-          height_ratio: 50,
+          height_ratio: 80,
+          width_ratio: 50,
           min_height: 7,
           fill_width: true,
+          fill_height: true,
           children: [
             RubyJard::Templates::ScreenTemplate.new(
               screen: :source,
-              width_ratio: 50,
+              height_ratio: 60,
               row_template: RubyJard::Templates::RowTemplate.new(
                 columns: [
                   RubyJard::Templates::ColumnTemplate.new(
@@ -34,7 +36,7 @@ module RubyJard
               )
             ),
             RubyJard::Templates::LayoutTemplate.new(
-              width_ratio: 50,
+              height_ratio: 40,
               fill_height: true,
               children: [
                 RubyJard::Templates::ScreenTemplate.new(
@@ -72,19 +74,19 @@ module RubyJard
           ]
         ),
         RubyJard::Templates::LayoutTemplate.new(
-          height_ratio: 30,
-          min_height: 3,
+          width_ratio: 50,
+          height_ratio: 80,
           fill_width: true,
+          fill_height: true,
           children: [
             RubyJard::Templates::ScreenTemplate.new(
               screen: :backtrace,
-              width_ratio: 50,
+              height_ratio: 50,
               row_template: RubyJard::Templates::RowTemplate.new(
                 columns: [
                   RubyJard::Templates::ColumnTemplate.new(
                     margin_right: 1,
                     spans: [
-                      RubyJard::Templates::SpanTemplate.new(:mark, margin_right: 1),
                       RubyJard::Templates::SpanTemplate.new(:frame_id)
                     ]
                   ),
@@ -93,7 +95,6 @@ module RubyJard
                       RubyJard::Templates::SpanTemplate.new(:klass_label, margin_right: 1),
                       RubyJard::Templates::SpanTemplate.new(:label_preposition, margin_right: 1),
                       RubyJard::Templates::SpanTemplate.new(:method_label, margin_right: 1),
-                      RubyJard::Templates::SpanTemplate.new(:path_preposition, margin_right: 1),
                       RubyJard::Templates::SpanTemplate.new(:path)
                     ]
                   )
@@ -102,7 +103,7 @@ module RubyJard
             ),
             RubyJard::Templates::ScreenTemplate.new(
               screen: :threads,
-              width_ratio: 50,
+              height_ratio: 50,
               row_template: RubyJard::Templates::RowTemplate.new(
                 columns: [
                   RubyJard::Templates::ColumnTemplate.new(
