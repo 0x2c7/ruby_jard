@@ -5,8 +5,9 @@ module RubyJard
     WideLayout = RubyJard::Templates::LayoutTemplate.new(
       min_width: 120,
       min_height: 10,
-      width_ratio: 50,
+      width_ratio: 100,
       height_ratio: 80,
+      fill_width: true,
       children: [
         RubyJard::Templates::LayoutTemplate.new(
           height_ratio: 80,
@@ -34,47 +35,41 @@ module RubyJard
                 ]
               )
             ),
-            RubyJard::Templates::LayoutTemplate.new(
+            RubyJard::Templates::ScreenTemplate.new(
+              screen: :variables,
+              width_ratio: 100,
               height_ratio: 40,
-              fill_height: true,
-              children: [
-                RubyJard::Templates::ScreenTemplate.new(
-                  screen: :variables,
-                  width_ratio: 100,
-                  height_ratio: 100,
-                  min_height: 3,
-                  row_template: RubyJard::Templates::RowTemplate.new(
-                    line_limit: 3,
-                    columns: [
-                      RubyJard::Templates::ColumnTemplate.new(
-                        spans: [
-                          RubyJard::Templates::SpanTemplate.new(:inline, margin_right: 1)
-                        ]
-                      ),
-                      RubyJard::Templates::ColumnTemplate.new(
-                        margin_right: 1,
-                        spans: [
-                          RubyJard::Templates::SpanTemplate.new(:type)
-                        ]
-                      ),
-                      RubyJard::Templates::ColumnTemplate.new(
-                        spans: [
-                          RubyJard::Templates::SpanTemplate.new(:name, margin_right: 1),
-                          RubyJard::Templates::SpanTemplate.new(:size, margin_right: 1),
-                          RubyJard::Templates::SpanTemplate.new(:indicator, margin_right: 1),
-                          RubyJard::Templates::SpanTemplate.new(:inspection)
-                        ]
-                      )
+              min_height: 3,
+              row_template: RubyJard::Templates::RowTemplate.new(
+                line_limit: 3,
+                columns: [
+                  RubyJard::Templates::ColumnTemplate.new(
+                    spans: [
+                      RubyJard::Templates::SpanTemplate.new(:inline, margin_right: 1)
+                    ]
+                  ),
+                  RubyJard::Templates::ColumnTemplate.new(
+                    margin_right: 1,
+                    spans: [
+                      RubyJard::Templates::SpanTemplate.new(:type)
+                    ]
+                  ),
+                  RubyJard::Templates::ColumnTemplate.new(
+                    spans: [
+                      RubyJard::Templates::SpanTemplate.new(:name, margin_right: 1),
+                      RubyJard::Templates::SpanTemplate.new(:size, margin_right: 1),
+                      RubyJard::Templates::SpanTemplate.new(:indicator, margin_right: 1),
+                      RubyJard::Templates::SpanTemplate.new(:inspection)
                     ]
                   )
-                )
-              ]
+                ]
+              )
             )
           ]
         ),
         RubyJard::Templates::LayoutTemplate.new(
-          width_ratio: 50,
           height_ratio: 80,
+          width_ratio: 50,
           fill_height: true,
           children: [
             RubyJard::Templates::ScreenTemplate.new(

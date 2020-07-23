@@ -32,6 +32,7 @@ require 'ruby_jard/templates/space_template'
 require 'ruby_jard/layouts/wide_layout'
 require 'ruby_jard/layouts/narrow_layout'
 require 'ruby_jard/layout'
+require 'ruby_jard/layout_calculator'
 require 'ruby_jard/row'
 require 'ruby_jard/column'
 require 'ruby_jard/span'
@@ -66,6 +67,8 @@ module RubyJard
 
       RubyJard::Console.start_alternative_terminal(@output)
       RubyJard::Console.clear_screen(@output)
+
+      Signal.trap('SIGWINCH') { update }
 
       def $stdout.write(string)
         if !RubyJard::ScreenManager.updating? && RubyJard::ScreenManager.started?
@@ -110,12 +113,12 @@ module RubyJard
 
       RubyJard::Console.hide_cursor(@output)
       width, height = RubyJard::Console.screen_size(@output)
-      screen_layouts = calculate_layouts(width, height)
-      draw_screens(screen_layouts)
+      layouts = calculate_layouts(width, height)
+      draw_screens(layouts)
 
       RubyJard::Console.move_to(
         @output, 0,
-        total_screen_height(screen_layouts)
+        total_screen_height(layouts)
       )
       RubyJard::Console.clear_screen_to_end(@output)
       draw_debug(width, height)
@@ -149,8 +152,8 @@ module RubyJard
 
     def calculate_layouts(width, height)
       layout = pick_layout(width, height)
-      RubyJard::Layout.calculate(
-        layout: layout,
+      RubyJard::LayoutCalculator.calculate(
+        layout_template: layout,
         width: width, height: height,
         x: 0, y: 0
       )
@@ -164,14 +167,13 @@ module RubyJard
       ).draw
     end
 
-    def draw_screens(screen_layouts)
-      screens = screen_layouts.map do |screen_template, width, height, x, y|
-        screen = fetch_screen(screen_template.screen)
+    def draw_screens(layouts)
+      screens = layouts.map do |layout|
+        screen = fetch_screen(layout.template.screen)
         screen&.new(
-          screen_template: screen_template,
-          width: width, height: height,
-          color_scheme: pick_color_scheme,
-          x: x, y: y
+          screen_template: layout.template,
+          layout: layout,
+          color_scheme: pick_color_scheme
         )
       end
       draw_box(screens)
@@ -207,8 +209,8 @@ module RubyJard
       RubyJard::Screens[name]
     end
 
-    def total_screen_height(screen_layouts)
-      screen_layouts.map { |_template, _width, screen_height, _x, y| y + screen_height }.max
+    def total_screen_height(layouts)
+      layouts.map { |layout| layout.y + layout.height }.max
     end
 
     def pick_layout(width, height)

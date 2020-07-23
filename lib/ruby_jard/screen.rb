@@ -8,13 +8,13 @@ module RubyJard
   class Screen
     attr_accessor :output, :rows, :width, :height, :x, :y, :color_scheme
 
-    def initialize(screen_template:, session: nil, width:, height:, x:, y:, color_scheme:)
+    def initialize(screen_template:, session: nil, layout:, color_scheme:)
       @session = session || RubyJard.current_session
       @screen_template = screen_template
-      @width = width
-      @height = height
-      @x = x
-      @y = y
+      @width = layout.width
+      @height = layout.height
+      @x = layout.x
+      @y = layout.y
       @color_scheme = color_scheme
     end
 
