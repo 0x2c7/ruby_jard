@@ -120,7 +120,7 @@ module RubyJard
       # Do nothing
     end
 
-    def handle_key_binding_command(options)
+    def handle_key_binding_command(options = {})
       method_name = "handle_#{options[:action]}_command"
       if respond_to?(method_name, true)
         send(method_name)
@@ -128,6 +128,10 @@ module RubyJard
         raise RubyJard::Error,
               "Fail to handle key binding `#{options[:action]}`"
       end
+    end
+
+    def handle_list_command(_options = {})
+      process_commands
     end
   end
 end
