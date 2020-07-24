@@ -26,3 +26,4 @@ module RubyJard
 end
 
 Pry::Commands.add_command(RubyJard::Commands::StepOutCommand)
+Pry::Commands.alias_command 'so', 'step-out'

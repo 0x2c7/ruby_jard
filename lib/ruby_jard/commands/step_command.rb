@@ -26,3 +26,4 @@ module RubyJard
 end
 
 Pry::Commands.add_command(RubyJard::Commands::StepCommand)
+Pry::Commands.alias_command 's', 'step'
