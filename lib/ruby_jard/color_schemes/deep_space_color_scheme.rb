@@ -43,6 +43,7 @@ module RubyJard
         variable_mark:                  [GRAY4, BACKGROUND],
         variable_mark_inline:           [GREEN, BACKGROUND],
         variable_size:                  [GRAY5, BACKGROUND],
+        variable_inspection:            [GRAY4, BACKGROUND],
         assignment:                     [WHITE, BACKGROUND],
         source_line_mark:               [GREEN, BACKGROUND],
         source_lineno:                  [GRAY4, BACKGROUND],
