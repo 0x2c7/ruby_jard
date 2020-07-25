@@ -4,20 +4,21 @@ module RubyJard
   module ColorSchemes
     class DeepSpaceColorScheme < ColorScheme
       # Shameless copy from https://github.com/tyrannicaltoucan/vim-deep-space/blob/master/colors/deep-space.vim
-      GRAY1  = '#1b202a'
-      GRAY2  = '#232936'
-      GRAY3  = '#323c4d'
-      GRAY4  = '#51617d'
-      GRAY5  = '#9aa7bd'
-      WHITE  = '#fff'
-      RED    = '#b15e7c'
-      GREEN  = '#96f08d'
-      YELLOW = '#e8cb6b'
-      BLUE   = '#78b5ff'
-      PURPLE = '#b08aed'
-      CYAN   = '#56adb7'
-      ORANGE = '#f28d5e'
-      PINK   = '#c47ebd'
+      GRAY1      = '#1b202a'
+      GRAY2      = '#232936'
+      GRAY3      = '#323c4d'
+      GRAY4      = '#51617d'
+      GRAY5      = '#9aa7bd'
+      WHITE      = '#fff'
+      RED        = '#b15e7c'
+      GREEN      = '#96f08d'
+      DARK_GREEN = '#709d6c'
+      YELLOW     = '#e8cb6b'
+      BLUE       = '#78b5ff'
+      PURPLE     = '#b08aed'
+      CYAN       = '#56adb7'
+      ORANGE     = '#f28d5e'
+      PINK       = '#c47ebd'
 
       BACKGROUND = GRAY1
       STYLES = {
@@ -41,21 +42,21 @@ module RubyJard
         backtrace_method_label:         [YELLOW, BACKGROUND],
         variable_mark:                  [GRAY4, BACKGROUND],
         variable_mark_inline:           [GREEN, BACKGROUND],
-        variable_loc:                   [PURPLE, BACKGROUND],
-        variable_ins:                   [PURPLE, BACKGROUND],
-        variable_con:                   [BLUE, BACKGROUND],
-        variable_inspection:            [GRAY5, BACKGROUND],
         variable_size:                  [GRAY5, BACKGROUND],
-        variable_separator:             [WHITE, BACKGROUND],
+        assignment:                     [WHITE, BACKGROUND],
         source_line_mark:               [GREEN, BACKGROUND],
         source_lineno:                  [GRAY4, BACKGROUND],
-        source_token_keyword:           [BLUE, BACKGROUND],
-        source_token_constant:          [BLUE, BACKGROUND],
-        source_token_instance_variable: [PURPLE, BACKGROUND],
-        source_token_method:            [YELLOW, BACKGROUND],
-        source_token_comment:           [GRAY4, BACKGROUND],
-        source_token_literal:           [RED, BACKGROUND],
-        source_token_other:             [GRAY5, BACKGROUND]
+        keyword:                        [BLUE, BACKGROUND],
+        method:                         [YELLOW, BACKGROUND],
+        comment:                        [GRAY4, BACKGROUND],
+        literal:                        [RED, BACKGROUND],
+        string:                         [DARK_GREEN, BACKGROUND],
+        local_variable:                 [PURPLE, BACKGROUND],
+        instance_variable:              [PURPLE, BACKGROUND],
+        constant:                       [BLUE, BACKGROUND],
+        normal_token:                   [GRAY5, BACKGROUND],
+        object:                         [CYAN, BACKGROUND],
+        trivial_inspection:             [GRAY4, BACKGROUND]
       }.freeze
     end
   end

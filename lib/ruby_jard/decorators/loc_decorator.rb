@@ -9,28 +9,23 @@ module RubyJard
     # The line is tokenized, and feed into JardEncoder to append color (with
     # Span).
     class LocDecorator
-      attr_reader :spans, :tokens
-
-      def initialize(file, loc)
-        @file = file
-        @loc = loc
+      def initialize
         @encoder = JardLocEncoder.new
-
-        decorate
       end
 
-      def decorate
-        @tokens = CodeRay.scan(@loc, extension)
-        @spans = @encoder.encode_tokens(tokens)
+      def decorate(loc, file = nil)
+        tokens = CodeRay.scan(loc, extension(file))
+        spans = @encoder.encode_tokens(tokens)
+        [spans, tokens]
       end
 
       private
 
-      def extension
+      def extension(file)
         # TODO: A map constant is better
-        if @file =~ /.*\.erb$/
+        if file =~ /.*\.erb$/
           :erb
-        elsif @file =~ /.*\.haml$/
+        elsif file =~ /.*\.haml$/
           :haml
         else
           :ruby
@@ -39,7 +34,7 @@ module RubyJard
 
       # A shameless copy from https://github.com/rubychan/coderay/blob/master/lib/coderay/encoders/terminal.rb
       class JardLocEncoder < CodeRay::Encoders::Encoder
-        DEFAULT_STYLE = :other
+        DEFAULT_STYLE = :normal_token
         TOKEN_STYLES = {
           annotation: :keyword,
           attribute_name: :keyword,
@@ -71,7 +66,7 @@ module RubyJard
           entity: :keyword,
           error: :constant,
           exception: :keyword,
-          float: :keyword,
+          float: :literal,
           function: :constant,
           method: :method,
           global_variable: :constant,
@@ -110,11 +105,12 @@ module RubyJard
             escape: :keyword
           },
           string: {
-            self: :keyword,
-            modifier: :keyword,
-            char: :keyword,
-            delimiter: :keyword,
-            escape: :keyword
+            self: :string,
+            modifier: :string,
+            char: :string,
+            delimiter: :string,
+            escape: :string,
+            content: :string
           },
           symbol: {
             self: :literal,
@@ -154,7 +150,7 @@ module RubyJard
             # content: "#{text}(#{kind})",
             content: text,
             content_length: text.length,
-            styles: { element: "source_token_#{style}".to_sym }
+            styles: { element: style.to_sym }
           )
         end
 

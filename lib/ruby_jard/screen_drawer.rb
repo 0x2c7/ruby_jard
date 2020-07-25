@@ -62,7 +62,7 @@ module RubyJard
             if !row.line_limit.nil? && lines >= row.line_limit && !line_content.nil? && !line_content.empty?
               drawing_content[drawing_content.length - ELLIPSIS.length..-1] = ELLIPSIS
               print_with_style(span.styles, drawing_content)
-              break
+              return
             else
               print_with_style(span.styles, drawing_content)
             end

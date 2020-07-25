@@ -45,7 +45,8 @@ module RubyJard
       end
 
       def span_code(loc, _index)
-        [loc_decorator(loc).spans]
+        spans, _tokens = loc_decorator.decorate(loc, current_file)
+        [spans]
       end
 
       private
@@ -74,8 +75,8 @@ module RubyJard
         @source_decorator ||= RubyJard::Decorators::SourceDecorator.new(current_file, current_line, data_size)
       end
 
-      def loc_decorator(loc)
-        RubyJard::Decorators::LocDecorator.new(current_file, loc)
+      def loc_decorator
+        @loc_decorator ||= RubyJard::Decorators::LocDecorator.new
       end
 
       def source_lineno(index)

@@ -24,9 +24,9 @@ module RubyJard
       DEFAULT_TYPE_SYMBOL = :var
 
       KINDS = [
-        KIND_LOC = :loc,
-        KIND_INS = :ins,
-        KIND_CON = :con
+        KIND_LOC = :local_variable,
+        KIND_INS = :instance_variable,
+        KIND_CON = :constant
       ].freeze
 
       KIND_PRIORITIES = {
@@ -71,13 +71,13 @@ module RubyJard
         [
           data_row[1].to_s,
           {
-            element: "variable_#{data_row[0]}".to_sym
+            element: data_row[0].to_sym
           }
         ]
       end
 
       def span_indicator(_data_row, _index)
-        ['=', { element: :variable_separator }]
+        ['=', { element: :assignment }]
       end
 
       def span_size(data_row, _index)
@@ -197,13 +197,13 @@ module RubyJard
         current_file = RubyJard.current_session.frame.file
         current_line = RubyJard.current_session.frame.line
         source_decorator = RubyJard::Decorators::SourceDecorator.new(current_file, current_line, 1)
-        loc_decorator = RubyJard::Decorators::LocDecorator.new(
-          current_file,
-          source_decorator.codes[current_line - source_decorator.window_start]
+        _spans, tokens = loc_decorator.decorate(
+          source_decorator.codes[current_line - source_decorator.window_start],
+          current_file
         )
 
         @inline_tokens = {}
-        loc_decorator.tokens.each_slice(2) do |token, kind|
+        tokens.each_slice(2) do |token, kind|
           next unless INLINE_TOKEN_KINDS.include?(kind)
 
           @inline_tokens[kind] ||= []
@@ -211,6 +211,9 @@ module RubyJard
         end
 
         @inline_tokens
+      end
+      def loc_decorator
+        @loc_decorator ||= RubyJard::Decorators::LocDecorator.new
       end
     end
   end
