@@ -117,10 +117,7 @@ module RubyJard
       layouts = calculate_layouts(width, height)
       draw_screens(layouts)
 
-      RubyJard::Console.move_to(
-        @output, 0,
-        total_screen_height(layouts)
-      )
+      RubyJard::Console.move_to(@output, 0, total_screen_height(layouts))
       RubyJard::Console.clear_screen_to_end(@output)
       draw_debug(width, height)
     rescue StandardError => e
