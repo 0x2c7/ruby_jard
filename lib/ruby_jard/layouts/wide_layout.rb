@@ -5,8 +5,6 @@ module RubyJard
     WideLayout = RubyJard::Templates::LayoutTemplate.new(
       min_width: 120,
       min_height: 10,
-      width_ratio: 100,
-      height_ratio: 80,
       fill_width: true,
       children: [
         RubyJard::Templates::LayoutTemplate.new(
