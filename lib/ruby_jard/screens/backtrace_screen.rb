@@ -34,14 +34,15 @@ module RubyJard
       end
 
       def span_frame_id(frame_id)
+        frame_id_label = "[#{frame_id.to_s.rjust(frames_count.to_s.length)}]"
         if current_frame?(frame_id)
           RubyJard::Span.new(
-            content: '•'.rjust(frames_count.to_s.length),
+            content: frame_id_label,
             styles: :backtrace_frame_id_highlighted
           )
         else
           RubyJard::Span.new(
-            content: frame_id.to_s.rjust(frames_count.to_s.length),
+            content: frame_id_label,
             styles: :backtrace_frame_id
           )
         end
