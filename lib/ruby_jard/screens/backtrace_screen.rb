@@ -9,46 +9,45 @@ module RubyJard
         ['Backtrace', "#{frames_count} frames"]
       end
 
-      def data_size
-        [@height, frames_count].min
+      def build
+        @rows = @session.backtrace.map.with_index do |frame, frame_id|
+          RubyJard::Row.new(
+            line_limit: 2,
+            columns: [
+              RubyJard::Column.new(
+                spans: [
+                  span_frame_id(frame_id)
+                ]
+              ),
+              RubyJard::Column.new(
+                spans: [
+                  span_class_label(frame),
+                  span_label_preposition,
+                  span_method_label(frame),
+                  span_path(frame)
+                ]
+              )
+            ]
+          )
+        end
+        @selected = current_frame
       end
 
-      def data_window
-        return [] if data_size.zero?
-
-        @data_window ||= backtrace[data_window_start..data_window_end]
-      end
-
-      def data_window_start
-        return 0 if data_size.zero?
-
-        current_frame / data_size * data_size
-      end
-
-      def data_window_end
-        [frames_count, data_window_start + data_size - 1].min
-      end
-
-      def span_frame_id(_frame, index)
-        frame_id = index + data_window_start
-        if current_frame?(index)
-          [
-            '•'.rjust(data_window_end.to_s.length),
-            {
-              element: :backtrace_frame_id_highlighted
-            }
-          ]
+      def span_frame_id(frame_id)
+        if current_frame?(frame_id)
+          RubyJard::Span.new(
+            content: '•'.rjust(frames_count.to_s.length),
+            styles: :backtrace_frame_id_highlighted
+          )
         else
-          [
-            frame_id.to_s.rjust(data_window_end.to_s.length),
-            {
-              element: :backtrace_frame_id
-            }
-          ]
+          RubyJard::Span.new(
+            content: frame_id.to_s.rjust(frames_count.to_s.length),
+            styles: :backtrace_frame_id
+          )
         end
       end
 
-      def span_klass_label(frame, index)
+      def span_class_label(frame)
         object = frame[1]
         klass = frame[2]
         klass_label =
@@ -64,20 +63,23 @@ module RubyJard
           else
             klass.name
           end
-        c_frame = frame_at(index).last.nil? ? '[c] ' : ''
-        [
-          "#{c_frame}#{klass_label}",
-          {
-            element: :backtrace_class_label
-          }
-        ]
+        c_frame = frame.last.nil? ? '[c] ' : ''
+        RubyJard::Span.new(
+          content: "#{c_frame}#{klass_label}",
+          margin_right: 1,
+          styles: :backtrace_class_label
+        )
       end
 
-      def span_label_preposition(_frame, _index)
-        ['in', { element: :backtrace_location }]
+      def span_label_preposition
+        RubyJard::Span.new(
+          content: 'in',
+          margin_right: 1,
+          styles: :backtrace_location
+        )
       end
 
-      def span_method_label(frame, _index)
+      def span_method_label(frame)
         location = frame[0]
         method_label =
           if location.label != location.base_label
@@ -85,15 +87,14 @@ module RubyJard
           else
             location.base_label
           end
-        [
-          method_label,
-          {
-            element: :backtrace_method_label
-          }
-        ]
+        RubyJard::Span.new(
+          content: method_label,
+          margin_right: 1,
+          styles: :backtrace_method_label
+        )
       end
 
-      def span_path(frame, _index)
+      def span_path(frame)
         location = frame[0]
         decorated_path = decorate_path(location.absolute_path, location.lineno)
 
@@ -103,18 +104,16 @@ module RubyJard
           else
             "at #{decorated_path.path}:#{decorated_path.lineno}"
           end
-        [
-          path_label,
-          {
-            element: :backtrace_location
-          }
-        ]
+        RubyJard::Span.new(
+          content: path_label,
+          styles: :backtrace_location
+        )
       end
 
       private
 
-      def current_frame?(index)
-        index + data_window_start == current_frame
+      def current_frame?(frame_id)
+        frame_id == current_frame
       end
 
       def current_frame
@@ -125,16 +124,8 @@ module RubyJard
         end
       end
 
-      def frame_at(index)
-        backtrace[index + data_window_start]
-      end
-
       def frames_count
         @session.backtrace.length
-      end
-
-      def backtrace
-        @session.backtrace
       end
 
       def decorate_path(path, lineno)
