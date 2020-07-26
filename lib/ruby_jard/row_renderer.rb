@@ -18,11 +18,14 @@ module RubyJard
       @y = 0
       @content_map = []
 
+      original_x = 0
       @row.columns.each do |column|
         @y = 0
+        @x = original_x
         content_width = column.width - 1
-        render_column(column, @x, content_width)
-        @x += content_width
+        render_column(column, original_x, content_width)
+
+        original_x += column.width
       end
 
       generate_bitmap
