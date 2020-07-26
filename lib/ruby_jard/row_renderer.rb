@@ -39,7 +39,7 @@ module RubyJard
         line_content = span.content
 
         until line_content.nil? || line_content.empty?
-          if content_width - width < line_content.length
+          if content_width - width < line_content.length && width != 0
             width = 0
             lines += 1
             @y += 1
