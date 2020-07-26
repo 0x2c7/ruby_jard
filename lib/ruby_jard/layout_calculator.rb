@@ -31,7 +31,11 @@ module RubyJard
 
     def calculate_layout(template, width, height, x, y)
       if template.is_a?(RubyJard::Templates::ScreenTemplate)
-        layout = RubyJard::Layout.new(template: template, width: width, height: height, x: x, y: y)
+        layout = RubyJard::Layout.new(
+          template: template,
+          width: width - 2, height: height - 2, x: x + 1, y: y + 1,
+          box_width: width, box_height: height, box_x: x, box_y: y
+        )
         adjust_layout_overlap(layout)
         @layouts << layout
       else
@@ -71,14 +75,18 @@ module RubyJard
     end
 
     def adjust_layout_overlap(layout)
-      if layout.x != 0
+      if layout.box_x != 0
         layout.width += 1
         layout.x -= 1
+        layout.box_width += 1
+        layout.box_x -= 1
       end
 
-      if layout.y != 0
+      if layout.box_y != 0
         layout.height += 1
         layout.y -= 1
+        layout.box_height += 1
+        layout.box_y -= 1
       end
     end
 

@@ -63,17 +63,25 @@ module RubyJard
     def draw_basic_lines
       # Exclude the corners
       @screens.each do |screen|
-        RubyJard::Console.move_to(@output, screen.x + 1, screen.y)
-        @output.print colorize_border(HORIZONTAL_LINE * (screen.width - 2))
+        RubyJard::Console.move_to(
+          @output,
+          screen.layout.box_x + 1,
+          screen.layout.box_y
+        )
+        @output.print colorize_border(HORIZONTAL_LINE * (screen.layout.box_width - 2))
 
-        RubyJard::Console.move_to(@output, screen.x + 1, screen.y + screen.height - 1)
-        @output.print colorize_border(HORIZONTAL_LINE * (screen.width - 2))
+        RubyJard::Console.move_to(
+          @output,
+          screen.layout.box_x + 1,
+          screen.layout.box_y + screen.layout.box_height - 1
+        )
+        @output.print colorize_border(HORIZONTAL_LINE * (screen.layout.box_width - 2))
 
-        (screen.y + 1..screen.y + screen.height - 2).each do |moving_y|
-          RubyJard::Console.move_to(@output, screen.x, moving_y)
+        (screen.layout.box_y + 1..screen.layout.box_y + screen.layout.box_height - 2).each do |moving_y|
+          RubyJard::Console.move_to(@output, screen.layout.box_x, moving_y)
           @output.print colorize_border(VERTICAL_LINE)
 
-          RubyJard::Console.move_to(@output, screen.x + screen.width - 1, moving_y)
+          RubyJard::Console.move_to(@output, screen.layout.box_x + screen.layout.box_width - 1, moving_y)
           @output.print colorize_border(VERTICAL_LINE)
         end
       end
@@ -101,7 +109,7 @@ module RubyJard
       @screens.each do |screen|
         next unless screen.respond_to?(:title)
 
-        RubyJard::Console.move_to(@output, screen.x + 1, screen.y)
+        RubyJard::Console.move_to(@output, screen.layout.box_x + 1, screen.layout.box_y)
         total_length = 0
         title_parts = Array(screen.title)
         title_parts.each_with_index do |title_part, index|
@@ -114,7 +122,7 @@ module RubyJard
         end
         @output.print @color_decorator.decorate(
           :screen_title_background,
-          ' ' * (screen.width - total_length - 2)
+          ' ' * (screen.layout.box_width - total_length - 2)
         )
       end
     end
@@ -122,10 +130,30 @@ module RubyJard
     def calculate_corners
       corners = {}
       @screens.each do |screen|
-        mark_corner(corners, screen.x, screen.y, TOP_LEFT)
-        mark_corner(corners, screen.x + screen.width - 1, screen.y, TOP_RIGHT)
-        mark_corner(corners, screen.x + screen.width - 1, screen.y + screen.height - 1, BOTTOM_RIGHT)
-        mark_corner(corners, screen.x, screen.y + screen.height - 1, BOTTOM_LEFT)
+        mark_corner(
+          corners,
+          screen.layout.box_x,
+          screen.layout.box_y,
+          TOP_LEFT
+        )
+        mark_corner(
+          corners,
+          screen.layout.box_x + screen.layout.box_width - 1,
+          screen.layout.box_y,
+          TOP_RIGHT
+        )
+        mark_corner(
+          corners,
+          screen.layout.box_x + screen.layout.box_width - 1,
+          screen.layout.box_y + screen.layout.box_height - 1,
+          BOTTOM_RIGHT
+        )
+        mark_corner(
+          corners,
+          screen.layout.box_x,
+          screen.layout.box_y + screen.layout.box_height - 1,
+          BOTTOM_LEFT
+        )
       end
       corners
     end
