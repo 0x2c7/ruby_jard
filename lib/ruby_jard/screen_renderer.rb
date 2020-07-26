@@ -57,7 +57,7 @@ module RubyJard
     end
 
     def adjust_column_widths(column_widths)
-      fixed_count = column_widths.length
+      dynamic_count = column_widths.values.select(&:nil?).length
       fixed_width = column_widths.values.inject(0) do |sum, col|
         col.nil? ? sum : sum + col
       end
@@ -69,7 +69,7 @@ module RubyJard
             if column_index == row.columns.length - 1
               @screen.layout.width - total_width
             elsif column_widths[column_index].nil?
-              (@screen.layout.width - fixed_width) / fixed_count
+              (@screen.layout.width - fixed_width) / dynamic_count
             else
               column_widths[column_index]
             end
