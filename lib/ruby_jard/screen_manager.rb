@@ -15,8 +15,14 @@ require 'ruby_jard/color_scheme'
 require 'ruby_jard/color_schemes'
 require 'ruby_jard/color_schemes/deep_space_color_scheme'
 
+require 'ruby_jard/row'
+require 'ruby_jard/column'
+require 'ruby_jard/span'
+require 'ruby_jard/row_renderer'
+require 'ruby_jard/screen_renderer'
 require 'ruby_jard/box_drawer'
 require 'ruby_jard/screen_drawer'
+
 require 'ruby_jard/screens/source_screen'
 require 'ruby_jard/screens/backtrace_screen'
 require 'ruby_jard/screens/threads_screen'
@@ -25,18 +31,11 @@ require 'ruby_jard/screens/menu_screen'
 
 require 'ruby_jard/templates/layout_template'
 require 'ruby_jard/templates/screen_template'
-require 'ruby_jard/templates/row_template'
-require 'ruby_jard/templates/column_template'
-require 'ruby_jard/templates/span_template'
-require 'ruby_jard/templates/space_template'
 
 require 'ruby_jard/layouts/wide_layout'
 require 'ruby_jard/layouts/narrow_layout'
 require 'ruby_jard/layout'
 require 'ruby_jard/layout_calculator'
-require 'ruby_jard/row'
-require 'ruby_jard/column'
-require 'ruby_jard/span'
 
 module RubyJard
   ##
@@ -114,11 +113,15 @@ module RubyJard
 
       RubyJard::Console.hide_cursor(@output)
       width, height = RubyJard::Console.screen_size(@output)
-      layouts = calculate_layouts(width, height)
-      draw_screens(layouts)
 
-      RubyJard::Console.move_to(@output, 0, total_screen_height(layouts))
+      @layouts = calculate_layouts(width, height)
+      @screens = build_screens(@layouts)
+      draw_box(@screens)
+      draw_screens(@screens)
+
+      RubyJard::Console.move_to(@output, 0, total_screen_height(@layouts) + 1)
       RubyJard::Console.clear_screen_to_end(@output)
+
       draw_debug(width, height)
     rescue StandardError => e
       RubyJard::Console.clear_screen(@output)
@@ -130,6 +133,10 @@ module RubyJard
       RubyJard::Console.show_cursor(@output)
       @updating = false
     end
+
+    def scroll; end
+
+    def click; end
 
     def draw_error(exception, height = 0)
       @output.print RubyJard::Decorators::ColorDecorator::CSI_RESET
@@ -157,6 +164,19 @@ module RubyJard
       )
     end
 
+    def build_screens(layouts)
+      layouts.map do |layout|
+        screen_class = fetch_screen(layout.template.screen)
+        screen = screen_class.new(
+          layout: layout,
+          color_scheme: pick_color_scheme
+        )
+        screen.build
+        render_screen(screen)
+        screen
+      end
+    end
+
     def draw_box(screens)
       RubyJard::BoxDrawer.new(
         output: @output,
@@ -165,20 +185,21 @@ module RubyJard
       ).draw
     end
 
-    def draw_screens(layouts)
-      screens = layouts.map do |layout|
-        screen = fetch_screen(layout.template.screen)
-        screen&.new(
-          screen_template: layout.template,
-          layout: layout,
-          color_scheme: pick_color_scheme
-        )
-      end
-      draw_box(screens)
-      adjust_screen_contents(screens)
+    def draw_screens(screens)
       screens.each do |screen|
-        screen.draw(@output)
+        RubyJard::ScreenDrawer.new(
+          output: @output,
+          screen: screen,
+          color_scheme: pick_color_scheme
+        ).draw
       end
+    end
+
+    def render_screen(screen)
+      RubyJard::ScreenRenderer.new(
+        screen: screen,
+        color_scheme: pick_color_scheme
+      ).render
     end
 
     def draw_debug(_width, height)
@@ -191,16 +212,6 @@ module RubyJard
         @output.puts '-------------'
       end
       RubyJard.clear_debug
-    end
-
-    def adjust_screen_contents(screens)
-      # After drawing the box, screen sizes should be updated to reflect content-only area
-      screens.each do |screen|
-        screen.width -= 2
-        screen.height -= 2
-        screen.x += 1
-        screen.y += 1
-      end
     end
 
     def fetch_screen(name)

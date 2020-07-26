@@ -6,130 +6,39 @@ module RubyJard
   # generated based on input layout specifiation, screen data, and top-left
   # corner cordination.
   class Screen
-    attr_accessor :output, :rows, :width, :height, :x, :y, :color_scheme
+    attr_accessor :layout, :rows, :color_scheme, :window, :cursor, :selected
 
-    def initialize(screen_template:, session: nil, layout:, color_scheme:)
+    def initialize(session: nil, layout:, color_scheme:)
       @session = session || RubyJard.current_session
-      @screen_template = screen_template
-      @width = layout.width
-      @height = layout.height
-      @x = layout.x
-      @y = layout.y
+      @layout = layout
       @color_scheme = color_scheme
-    end
-
-    def draw(output)
-      calculate
-      drawer = RubyJard::ScreenDrawer.new(
-        output: output,
-        screen: self
-      )
-      drawer.draw
-    end
-
-    def data_size
-      raise NotImplementedError, "#{self.class} must implement #data_size method"
-    end
-
-    def data_window
-      raise NotImplementedError, "#{self.class} must implement #data_window method"
-    end
-
-    def calculate
+      @window = []
+      @cursor = nil
+      @selected = 0
       @rows = []
-      row_template = @screen_template.row_template
-      @rows = data_window.map.with_index do |data_row, index|
-        create_row(row_template, data_row, index)
-      end
-      column_widths = calculate_column_widths(row_template, @rows)
-      fill_column_widths(@rows, column_widths)
+      @need_to_render = true
     end
 
-    private
+    def move_down; end
 
-    def calculate_column_widths(row_template, rows)
-      column_widths = {}
-      ideal_column_width = @width / row_template.columns.length
-      row_template.columns.each_with_index do |_column_template, column_index|
-        column_widths[column_index] ||= 0
-        rows.each do |row|
-          column = row.columns[column_index]
-          if column.content_length > ideal_column_width
-            column_widths[column_index] = nil
-            break
-          elsif column.content_length > column_widths[column_index]
-            column_widths[column_index] = column.content_length
-          end
-        end
-      end
-      column_widths
+    def move_up; end
+
+    def page_up; end
+
+    def page_down; end
+
+    def click(relative_x, relative_y); end
+
+    def build
+      raise NotImplementedError, "#{self.class} should implement this method."
     end
 
-    def fill_column_widths(rows, column_widths)
-      fixed_count = column_widths.length
-      fixed_width = column_widths.values.inject(0) do |sum, col|
-        col.nil? ? sum : sum + col
-      end
-
-      rows.each do |row|
-        total_width = 0
-        row.columns.each_with_index do |column, column_index|
-          column.width =
-            if column_index == row.columns.length - 1
-              @width - total_width
-            elsif column_widths[column_index].nil?
-              (@width - fixed_width) / fixed_count
-            else
-              column_widths[column_index]
-            end
-          total_width += column.width
-        end
-      end
+    def need_to_render?
+      @need_to_render == true
     end
 
-    def create_row(row_template, data_row, index)
-      row = Row.new(row_template: row_template)
-      row.columns = row_template.columns.map do |column_template|
-        create_column(column_template, data_row, index)
-      end
-      row
-    end
-
-    def create_column(column_template, data_row, index)
-      column = Column.new(column_template: column_template)
-      column.spans = column_template.spans.map do |span_template|
-        create_span(span_template, data_row, index)
-      end.flatten
-      column.content_length =
-        column.spans.map(&:content_length).inject(&:+) +
-        column.margin_left +
-        column.margin_right
-      column
-    end
-
-    def create_span(span_template, data_row, index)
-      span = Span.new(span_template: span_template)
-      span_content_method = "span_#{span_template.name}".to_sym
-
-      if respond_to?(span_content_method)
-        content, styles = send(span_content_method, data_row, index)
-        if content.nil?
-          span.content = ''
-          span.content_length = 0
-        elsif content.is_a?(Array)
-          return content
-        else
-          content = ' ' * span_template.margin_left + content if span_template.margin_left
-          content += ' ' * span_template.margin_right if span_template.margin_right
-          span.content = content
-          span.styles = styles
-          span.content_length = span.content.length
-        end
-      else
-        raise NotImplementedError, "#{self.class} must implement #{span_content_method} method"
-      end
-
-      span
+    def mark_rendered!
+      @need_to_render = false
     end
   end
 end
