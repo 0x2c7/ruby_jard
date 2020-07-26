@@ -4,13 +4,13 @@ module RubyJard
   class Row
     extend Forwardable
 
-    attr_accessor :row_template, :columns
+    attr_accessor :columns, :line_limit, :content
 
-    def_delegators :@row_template, :line_limit
-
-    def initialize(row_template:, columns: [])
-      @row_template = row_template
+    def initialize(line_limit: 1, columns: [], ellipsis: true)
+      @content = []
       @columns = columns
+      @ellipsis = ellipsis
+      @line_limit = line_limit
     end
   end
 end

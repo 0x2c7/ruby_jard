@@ -4,14 +4,14 @@ module RubyJard
   class Span
     extend Forwardable
 
-    attr_accessor :span_template, :content, :content_length, :styles
+    attr_accessor :content, :content_length, :styles
 
-    def_delegators :@span_template, :margin_left, :margin_right, :word_wrap, :ellipsis
+    def initialize(content: '', content_length: nil, margin_left: 0, margin_right: 0, styles: [])
+      content = ' ' * margin_left + content if margin_left > 0
+      content += ' ' * margin_right if margin_right > 0
 
-    def initialize(span_template:, content: '', content_length: 0, styles: [])
-      @span_template = span_template
       @content = content
-      @content_length = content_length
+      @content_length = content_length || content.length
       @styles = styles
     end
   end
