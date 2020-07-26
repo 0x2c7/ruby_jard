@@ -68,7 +68,7 @@ module RubyJard
         span_template: nil,
         content: str,
         content_length: str.length,
-        styles: { element: style }
+        styles: style
       )
       @width += str.length
     end

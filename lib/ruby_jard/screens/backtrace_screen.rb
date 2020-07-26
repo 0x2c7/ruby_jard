@@ -34,7 +34,7 @@ module RubyJard
       end
 
       def span_frame_id(frame_id)
-        frame_id_label = "[#{frame_id.to_s.rjust(frames_count.to_s.length)}]"
+        frame_id_label = frame_id.to_s.rjust(frames_count.to_s.length)
         if current_frame?(frame_id)
           RubyJard::Span.new(
             content: frame_id_label,

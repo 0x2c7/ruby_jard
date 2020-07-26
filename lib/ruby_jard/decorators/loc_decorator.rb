@@ -150,7 +150,7 @@ module RubyJard
             # content: "#{text}(#{kind})",
             content: text,
             content_length: text.length,
-            styles: { element: style.to_sym }
+            styles: style.to_sym
           )
         end
 
