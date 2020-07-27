@@ -62,7 +62,7 @@ module RubyJard
                 spans: [
                   span_name(variable),
                   span_size(variable),
-                  RubyJard::Span.new(margin_right: 1, content: '=', styles: :assignment),
+                  RubyJard::Span.new(margin_right: 1, content: '=', styles: :variable_assignment),
                   span_inspection(variable)
                 ]
               )

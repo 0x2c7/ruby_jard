@@ -40,12 +40,12 @@ module RubyJard
         if current_frame?(frame_id)
           RubyJard::Span.new(
             content: frame_id_label,
-            styles: :backtrace_frame_id_highlighted
+            styles: :frame_id_highlighted
           )
         else
           RubyJard::Span.new(
             content: frame_id_label,
-            styles: :backtrace_frame_id
+            styles: :frame_id
           )
         end
       end
@@ -70,7 +70,7 @@ module RubyJard
         RubyJard::Span.new(
           content: "#{c_frame}#{klass_label}",
           margin_right: 1,
-          styles: :backtrace_class_label
+          styles: :constant
         )
       end
 
@@ -78,7 +78,7 @@ module RubyJard
         RubyJard::Span.new(
           content: 'in',
           margin_right: 1,
-          styles: :backtrace_location
+          styles: :frame_location
         )
       end
 
@@ -93,7 +93,7 @@ module RubyJard
         RubyJard::Span.new(
           content: method_label,
           margin_right: 1,
-          styles: :backtrace_method_label
+          styles: :method
         )
       end
 
@@ -109,7 +109,7 @@ module RubyJard
           end
         RubyJard::Span.new(
           content: path_label,
-          styles: :backtrace_location
+          styles: :frame_location
         )
       end
 
