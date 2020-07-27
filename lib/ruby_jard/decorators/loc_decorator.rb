@@ -146,8 +146,6 @@ module RubyJard
               color
             end
           @out << Span.new(
-            span_template: nil,
-            # content: "#{text}(#{kind})",
             content: text,
             content_length: text.length,
             styles: style.to_sym
