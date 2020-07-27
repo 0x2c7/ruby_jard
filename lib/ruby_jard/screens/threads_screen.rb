@@ -7,63 +7,75 @@ module RubyJard
         ['Threads', "#{RubyJard.current_session.contexts.length} threads"]
       end
 
-      def data_size
-        [@height, RubyJard.current_session.contexts.length].min
-      end
-
-      def data_window
-        return @data_window if defined?(@data_window)
-
+      def build
         contexts = RubyJard.current_session.contexts.filter { |c| c.thread.alive? }
-        @data_window ||= sort_contexts(contexts).first(data_size)
-      end
-
-      def span_mark(context, _index)
-        [
-          '•',
-          {
-            element: thread_status_color(context.thread)
-          }
-        ]
-      end
-
-      def span_thread_id(context, _index)
-        [
-          "Thread #{context.thread.object_id}",
-          {
-            element: :thread_id
-          }
-        ]
-      end
-
-      def span_thread_status(context, _index)
-        [
-          "(#{context.thread.status})",
-          {
-            element: thread_status_color(context.thread)
-          }
-        ]
-      end
-
-      def span_thread_name(context, _index)
-        if context.thread.name.nil?
-          [
-            'untitled',
-            {
-              element: :thread_name
-            }
-          ]
-        else
-          [
-            context.thread.name,
-            {
-              element: :thread_name
-            }
-          ]
+        contexts = sort_contexts(contexts)
+        @rows = contexts.map do |context|
+          RubyJard::Row.new(
+            line_limit: 2,
+            columns: [
+              RubyJard::Column.new(
+                spans: [
+                  span_mark(context),
+                  span_thread_id(context)
+                ]
+              ),
+              RubyJard::Column.new(
+                spans: [
+                  span_thread_status(context)
+                ]
+              ),
+              RubyJard::Column.new(
+                spans: [
+                  span_thread_name(context),
+                  span_thread_location(context)
+                ]
+              )
+            ]
+          )
         end
+        @selected = contexts.find { |c| current_thread?(c) }
       end
 
-      def span_thread_location(context, _index)
+      private
+
+      def span_mark(context)
+        RubyJard::Span.new(
+          margin_right: 1,
+          content: '•',
+          styles: thread_status_style(context.thread)
+        )
+      end
+
+      def span_thread_id(context)
+        RubyJard::Span.new(
+          content: "Thread #{context.thread.object_id}",
+          styles: :thread_id
+        )
+      end
+
+      def span_thread_status(context)
+        RubyJard::Span.new(
+          content: "(#{context.thread.status})",
+          styles: thread_status_style(context.thread)
+        )
+      end
+
+      def span_thread_name(context)
+        RubyJard::Span.new(
+          margin_right: 1,
+          content: context.thread.name.nil? ? 'untitled' : context.thread.name,
+          styles: :thread_name
+        )
+      end
+
+      def span_thread_location(context)
+        if context.thread.backtrace_locations.nil? || RubyJard.current_session.backtrace[0].nil?
+          return RubyJard::Span.new(
+            content: 'at ???',
+            styles: :thread_location
+          )
+        end
         last_backtrace =
           if current_thread?(context)
             RubyJard.current_session.backtrace[0].first
@@ -72,23 +84,17 @@ module RubyJard
           end
         decorated_path = decorate_path(last_backtrace.path, last_backtrace.lineno)
         if decorated_path.gem?
-          [
-            "in #{decorated_path.gem} (#{decorated_path.gem_version})",
-            {
-              element: :thread_location
-            }
-          ]
+          RubyJard::Span.new(
+            content: "in #{decorated_path.gem} (#{decorated_path.gem_version})",
+            styles: :thread_location
+          )
         else
-          [
-            "at #{decorated_path.path}:#{decorated_path.lineno}",
-            {
-              element: :thread_location
-            }
-          ]
+          RubyJard::Span.new(
+            content: "at #{decorated_path.path}:#{decorated_path.lineno}",
+            styles: :thread_location
+          )
         end
       end
-
-      private
 
       def sort_contexts(contexts)
         # Sort: current context first
@@ -124,7 +130,7 @@ module RubyJard
         RubyJard::Decorators::PathDecorator.new(path, lineno)
       end
 
-      def thread_status_color(thread)
+      def thread_status_style(thread)
         if thread.status == 'run'
           :thread_status_run
         elsif thread.status == 'sleep'
