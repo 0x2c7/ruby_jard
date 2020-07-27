@@ -68,8 +68,6 @@ module RubyJard
       RubyJard::Console.start_alternative_terminal(@output)
       RubyJard::Console.clear_screen(@output)
 
-      Signal.trap('SIGWINCH') { update }
-
       def $stdout.write(string)
         if !RubyJard::ScreenManager.updating? && RubyJard::ScreenManager.started?
           RubyJard::ScreenManager.instance.output_storage.write(string)
