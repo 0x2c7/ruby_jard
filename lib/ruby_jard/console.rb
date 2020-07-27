@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'io/console'
 require 'English'
 
 module RubyJard
@@ -11,25 +10,36 @@ module RubyJard
         return unless output.tty?
 
         output.print tput('smcup')
+      rescue RubyJard::Error
+        # If tput not found or rmcup not supported, the system still work like normal
       end
 
       def stop_alternative_terminal(output)
         return unless output.tty?
 
         output.print tput('rmcup')
+      rescue RubyJard::Error
+        # If tput not found or rmcup not supported, the system still work like normal
       end
 
       def move_to(output, x, y)
         return unless output.tty?
 
-        output.goto(y, x)
+        output.print format("\e[%<row>d;%<col>dH", row: y, col: x)
       end
 
       def screen_size(output)
         return [0, 0] unless output.tty?
 
-        height, width = output.winsize
-        [width, height]
+        begin
+          height = tput('lines').strip.to_i
+          width = tput('cols').strip.to_i
+          [width, height]
+        rescue RubyJard::Error
+          require 'io/console'
+          height, width = output.winsize
+          [width, height]
+        end
       end
 
       def clear_screen(output)
@@ -48,12 +58,16 @@ module RubyJard
         return unless output.tty?
 
         output.print tput('civis')
+      rescue RubyJard::Error
+        # If tput not found or rmcup not supported, the system still work like normal
       end
 
       def show_cursor(output)
         return unless output.tty?
 
         output.print tput('cnorm')
+      rescue RubyJard::Error
+        # If tput not found or rmcup not supported, the system still work like normal
       end
 
       def cooked!(output)
