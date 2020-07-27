@@ -14,39 +14,51 @@ module RubyJard
         end
       end
 
-      def data_size
-        @height
+      def build
+        return if RubyJard.current_session.frame.nil?
+
+        # TODO: screen now supports window.
+        codes = source_decorator.codes
+        @rows = codes.map.with_index do |loc, index|
+          RubyJard::Row.new(
+            line_limit: 3,
+            columns: [
+              RubyJard::Column.new(
+                spans: [
+                  span_mark(index),
+                  span_lineno(index)
+                ]
+              ),
+              RubyJard::Column.new(
+                word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
+                spans: loc_spans(loc)
+              )
+            ]
+          )
+        end
+        @selected = 0
       end
 
-      def data_window
-        return [] if RubyJard.current_session.frame.nil?
-
-        @data_window ||= source_decorator.codes
-      end
-
-      def span_mark(_loc, index)
+      def span_mark(index)
         lineno = source_lineno(index)
-        [
-          current_line == lineno ? '➠' : ' ',
-          {
-            element: :source_line_mark
-          }
-        ]
+        RubyJard::Span.new(
+          margin_right: 1,
+          content: current_line == lineno ? '➠' : ' ',
+          styles: :source_line_mark
+        )
       end
 
-      def span_lineno(_loc, index)
-        lineno = source_lineno(index)
-        [
-          lineno.to_s.rjust(source_decorator.window_end.to_s.length),
-          {
-            element: current_line == lineno ? :source_line_mark : :source_lineno
-          }
-        ]
+      def span_lineno(index)
+        lineno = source_lineno(index).to_s.rjust(source_decorator.window_end.to_s.length)
+        RubyJard::Span.new(
+          content: lineno,
+          styles: current_line == lineno ? :source_line_mark : :source_lineno
+        )
       end
 
-      def span_code(loc, _index)
+      def loc_spans(loc)
         spans, _tokens = loc_decorator.decorate(loc, current_file)
-        [spans]
+        spans
       end
 
       private
@@ -72,7 +84,7 @@ module RubyJard
       end
 
       def source_decorator
-        @source_decorator ||= RubyJard::Decorators::SourceDecorator.new(current_file, current_line, data_size)
+        @source_decorator ||= RubyJard::Decorators::SourceDecorator.new(current_file, current_line, @layout.height)
       end
 
       def loc_decorator
