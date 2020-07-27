@@ -70,18 +70,19 @@ module RubyJard
       end
 
       def span_thread_location(context)
-        if context.thread.backtrace_locations.nil? || RubyJard.current_session.backtrace[0].nil?
-          return RubyJard::Span.new(
-            content: 'at ???',
-            styles: :thread_location
-          )
-        end
+        return unknown_thread_location if
+          context.thread.backtrace_locations.nil? ||
+          RubyJard.current_session.backtrace[0].nil?
+
         last_backtrace =
           if current_thread?(context)
             RubyJard.current_session.backtrace[0].first
           else
             context.thread.backtrace_locations[1]
           end
+
+        return unknown_thread_location if last_backtrace.nil?
+
         decorated_path = decorate_path(last_backtrace.path, last_backtrace.lineno)
         if decorated_path.gem?
           RubyJard::Span.new(
@@ -94,6 +95,13 @@ module RubyJard
             styles: :thread_location
           )
         end
+      end
+
+      def unknown_thread_location
+        RubyJard::Span.new(
+          content: 'at ???',
+          styles: :thread_location
+        )
       end
 
       def sort_contexts(contexts)
