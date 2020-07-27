@@ -120,9 +120,10 @@ module RubyJard
           end
           total_length += title_part.length + 2
         end
+        title_background = screen.layout.box_width - total_length - 2
         @output.print @color_decorator.decorate(
           :screen_title_background,
-          ' ' * (screen.layout.box_width - total_length - 2)
+          ' ' * (title_background < 0 ? 0 : title_background)
         )
       end
     end
