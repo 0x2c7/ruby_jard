@@ -40,11 +40,22 @@ module RubyJard
         line_content = span.content
 
         until line_content.nil? || line_content.empty?
-          if content_width - width < line_content.length && width != 0
-            width = 0
-            lines += 1
-            @y += 1
-            @x = original_x
+          if column.word_wrap == RubyJard::Column::WORD_WRAP_NORMAL
+            if content_width - width < line_content.length && width != 0
+              width = 0
+              lines += 1
+              @y += 1
+              @x = original_x
+            end
+          elsif column.word_wrap == RubyJard::Column::WORD_WRAP_BREAK_WORD
+            if content_width - width <= 0
+              width = 0
+              lines += 1
+              @y += 1
+              @x = original_x
+            end
+          elsif content_width - width <= 0
+            return
           end
           drawing_content = line_content[0..content_width - width - 1]
           line_content = line_content[content_width - width..-1]
