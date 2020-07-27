@@ -19,10 +19,11 @@ module RubyJard
       @content_map = []
 
       original_x = 0
-      @row.columns.each do |column|
+      @row.columns.each_with_index do |column, index|
         @y = 0
         @x = original_x
-        content_width = column.width - 1
+        content_width = column.width
+        content_width -= 1 if index < @row.columns.length - 1
         render_column(column, original_x, content_width)
 
         original_x += column.width

@@ -48,7 +48,7 @@ module RubyJard
           if column.content_length > ideal_column_width - 1
             column_widths[column_index] = nil
             break
-          elsif column.content_length > column_widths[column_index]
+          elsif column.content_length + 1 > column_widths[column_index]
             column_widths[column_index] = column.content_length + 1
           end
         end
