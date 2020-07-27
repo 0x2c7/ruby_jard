@@ -180,6 +180,8 @@ module RubyJard
 
         constants = constant_source.constants.select { |v| v.to_s.upcase == v.to_s }
         constants.map do |variable|
+          next if %w[NIL TRUE FALSE].include?(variable.to_s)
+
           [KIND_CON, variable, constant_source.const_get(variable)]
         rescue NameError
           nil
