@@ -46,59 +46,82 @@ module RubyJard
         'Variables'
       end
 
-      def data_size
-        @height
-      end
-
-      def data_window
-        return [] if current_frame.nil?
-        return @data_window if defined?(@data_window)
-
+      def build
         variables = fetch_local_variables + fetch_instance_variables + fetch_constants
-        # Each row is an array of [kind, name, value]
-        @data_window = sort_variables(variables).first(data_size)
+        variables = sort_variables(variables)
+        @rows = variables.map do |variable|
+          RubyJard::Row.new(
+            line_limit: 3,
+            columns: [
+              RubyJard::Column.new(
+                spans: [
+                  span_inline(variable)
+                ]
+              ),
+              RubyJard::Column.new(
+                spans: [
+                  span_name(variable),
+                  span_size(variable),
+                  RubyJard::Span.new(margin_right: 1, content: '=', styles: :assignment),
+                  span_inspection(variable)
+                ]
+              )
+            ]
+          )
+        end
+        @selected = 0
       end
 
-      def span_inline(data_row, _index)
-        if inline?(data_row[0], data_row[1])
-          ['•', { element: :variable_mark_inline }]
+      def span_inline(variable)
+        if inline?(variable[0], variable[1])
+          RubyJard::Span.new(
+            content: '•',
+            styles: :variable_mark_inline
+          )
         else
-          [' ', { element: :variable_mark }]
+          RubyJard::Span.new(
+            content: ' ',
+            styles: :variable_mark
+          )
         end
       end
 
-      def span_name(data_row, _index)
-        [
-          data_row[1].to_s,
-          {
-            element: data_row[0].to_sym
-          }
-        ]
+      def span_name(variable)
+        RubyJard::Span.new(
+          margin_right: 1,
+          content: variable[1].to_s,
+          styles: variable[0].to_sym
+        )
       end
 
-      def span_indicator(_data_row, _index)
-        ['=', { element: :assignment }]
+      def span_size(variable)
+        value = variable[2]
+        size_label =
+          if value.is_a?(Array) && !value.empty?
+            "(len:#{value.length})"
+          elsif value.is_a?(String) && value.length > 20
+            "(len:#{value.length})"
+          elsif value.is_a?(Hash) && !value.empty?
+            "(size:#{value.length})"
+          end
+        RubyJard::Span.new(
+          margin_right: 1,
+          content: size_label,
+          styles: :variable_size
+        )
       end
 
-      def span_size(data_row, _index)
-        value = data_row[2]
-        if value.is_a?(Array) && !value.empty?
-          ["(len:#{value.length})", { element: :variable_size }]
-        elsif value.is_a?(String) && value.length > 20
-          ["(len:#{value.length})", { element: :variable_size }]
-        elsif value.is_a?(Hash) && !value.empty?
-          ["(size:#{value.length})", { element: :variable_size }]
-        end
-      end
-
-      def span_inspection(data_row, _index)
+      def span_inspection(variable)
         # Hard limit: screen area
-        inspection = data_row[2].inspect[0..@height * @width]
+        inspection = variable[2].inspect[0..@layout.height * @layout.width]
         # TODO: This is just a workable. Should write a decorator to inspect objects accurately
         ["\n", "\r", "\r\n"].each do |esc|
           inspection.gsub!(esc, esc.inspect)
         end
-        [inspection, { element: :variable_inspection }]
+        RubyJard::Span.new(
+          content: inspection,
+          styles: :variable_inspection
+        )
       end
 
       private
