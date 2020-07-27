@@ -33,6 +33,8 @@ module RubyJard
         @selected = current_frame
       end
 
+      private
+
       def span_frame_id(frame_id)
         frame_id_label = frame_id.to_s.rjust(frames_count.to_s.length)
         if current_frame?(frame_id)
@@ -110,8 +112,6 @@ module RubyJard
           styles: :backtrace_location
         )
       end
-
-      private
 
       def current_frame?(frame_id)
         frame_id == current_frame
