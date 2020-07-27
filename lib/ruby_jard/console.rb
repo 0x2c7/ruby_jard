@@ -25,7 +25,7 @@ module RubyJard
       def move_to(output, x, y)
         return unless output.tty?
 
-        output.print format("\e[%<row>d;%<col>dH", row: y, col: x)
+        output.print format("\e[%<row>d;%<col>dH", row: y + 1, col: x + 1)
       end
 
       def screen_size(output)
