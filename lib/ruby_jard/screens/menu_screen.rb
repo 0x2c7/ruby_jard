@@ -6,7 +6,7 @@ module RubyJard
       def build
         span_title = RubyJard::Span.new(
           content: ' REPL Console ',
-          styles: :screen_title_highlighted
+          styles: :title_highlighted
         )
         menu_spans = generate_menu_spans
 

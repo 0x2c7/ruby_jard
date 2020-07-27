@@ -41,7 +41,7 @@ require 'ruby_jard/version'
 module RubyJard
   class Error < StandardError; end
 
-  DEFAULT_COLOR_SCHEME = 'deep-space'
+  DEFAULT_COLOR_SCHEME = '256'
   DEFAULT_LAYOUT_TEMPLATES = [
     RubyJard::Layouts::WideLayout,
     RubyJard::Layouts::NarrowLayout
