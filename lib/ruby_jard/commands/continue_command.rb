@@ -26,3 +26,4 @@ module RubyJard
 end
 
 Pry::Commands.add_command(RubyJard::Commands::ContinueCommand)
+Pry::Commands.alias_command 'c', 'continue'
