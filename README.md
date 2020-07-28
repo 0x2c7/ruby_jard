@@ -14,6 +14,8 @@ If you still don't know what it is, let's watch this video.
 
 [![Ruby Jard Demo](./docs/demo.png)](https://asciinema.org/a/350233)
 
+*[(Click for demo video)](https://asciinema.org/a/350233)*
+
 ## Getting Started
 
 **Warning**: Ruby Jard is still under heavy development. Bugs and weird behaviors are expected. If you see one, please don't hesitate to open an issue. I'll try my best to fix.
