@@ -34,7 +34,7 @@ module RubyJard
             ]
           )
         end
-        @selected = contexts.find { |c| current_thread?(c) }
+        @selected = contexts.index { |c| current_thread?(c) }
       end
 
       private
