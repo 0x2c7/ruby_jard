@@ -94,9 +94,9 @@ module RubyJard
       @started = false
 
       RubyJard::Console.stop_alternative_terminal(@output)
-      RubyJard::Console.cooked!(@output)
-      RubyJard::Console.echo!(@output)
-      RubyJard::Console.show_cursor(@output)
+      RubyJard::Console.cooked!
+      RubyJard::Console.enable_echo!
+      RubyJard::Console.enable_cursor!
 
       unless @output_storage.string.empty?
         @output.puts ''
@@ -110,7 +110,7 @@ module RubyJard
       start unless started?
       @updating = true
 
-      RubyJard::Console.hide_cursor(@output)
+      RubyJard::Console.disable_cursor!
       width, height = RubyJard::Console.screen_size(@output)
 
       @layouts = calculate_layouts(width, height)
@@ -127,9 +127,9 @@ module RubyJard
       draw_error(e, height)
     ensure
       # You don't want to mess up previous user TTY no matter happens
-      RubyJard::Console.cooked!(@output)
-      RubyJard::Console.echo!(@output)
-      RubyJard::Console.show_cursor(@output)
+      RubyJard::Console.cooked!
+      RubyJard::Console.enable_echo!
+      RubyJard::Console.enable_cursor!
       @updating = false
     end
 

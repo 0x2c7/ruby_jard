@@ -81,7 +81,7 @@ module RubyJard
     end
 
     def read_key
-      STDIN.getch(min: 0, time: KEYPRESS_POLLING)
+      RubyJard::Console.getch(STDIN, KEYPRESS_POLLING)
     end
 
     def repl(current_binding)

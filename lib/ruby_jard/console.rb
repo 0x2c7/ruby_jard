@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'tty-screen'
+require 'io/console'
 require 'English'
 
 module RubyJard
@@ -11,7 +13,8 @@ module RubyJard
 
         output.print tput('smcup')
       rescue RubyJard::Error
-        # If tput not found or rmcup not supported, the system still work like normal
+        # If tput not found, fallback to hard-coded sequence.
+        output.print "\e[?1049h\e[22;0;0t"
       end
 
       def stop_alternative_terminal(output)
@@ -19,7 +22,8 @@ module RubyJard
 
         output.print tput('rmcup')
       rescue RubyJard::Error
-        # If tput not found or rmcup not supported, the system still work like normal
+        # If tput not found, fallback to hard-coded sequence.
+        output.print "\e[?1049l\e[23;0;0t"
       end
 
       def move_to(output, x, y)
@@ -31,15 +35,7 @@ module RubyJard
       def screen_size(output)
         return [0, 0] unless output.tty?
 
-        begin
-          height = tput('lines').strip.to_i
-          width = tput('cols').strip.to_i
-          [width, height]
-        rescue RubyJard::Error
-          require 'io/console'
-          height, width = output.winsize
-          [width, height]
-        end
+        [TTY::Screen.width, TTY::Screen.height]
       end
 
       def clear_screen(output)
@@ -54,32 +50,90 @@ module RubyJard
         output.print "\e[0J"
       end
 
-      def hide_cursor(output)
+      def disable_cursor!(output = STDOUT)
         return unless output.tty?
 
         output.print tput('civis')
       rescue RubyJard::Error
-        # If tput not found or rmcup not supported, the system still work like normal
+        # If tput not found, fallback to hard-coded sequence.
+        output.print "\e[?25l"
       end
 
-      def show_cursor(output)
+      def enable_cursor!(output = STDOUT)
         return unless output.tty?
 
         output.print tput('cnorm')
       rescue RubyJard::Error
-        # If tput not found or rmcup not supported, the system still work like normal
+        # If tput not found, fallback to hard-coded sequence.
+        output.print "\e[?12l\e[?25h"
       end
 
-      def cooked!(output)
-        return unless output.tty?
+      def getch(input, timeout)
+        return input.getch(min: 0, time: timeout) if input.respond_to?(:getch)
 
-        output.cooked!
+        raw!
+        disable_echo!
+        key =
+          begin
+            input.read_nonblock(255)
+          rescue IO::WaitReadable
+            io = IO.select([input], nil, nil, timeout)
+            if io.nil?
+              nil
+            else
+              retry
+            end
+          rescue IO::WaitWritable
+            nil
+          end
+
+        key
+      ensure
+        cooked!
+        enable_echo!
       end
 
-      def echo!(output)
+      def raw!(output = STDOUT)
         return unless output.tty?
 
-        output.echo = true
+        begin
+          output.raw!
+        rescue StandardError
+          stty('raw')
+        end
+      end
+
+      def cooked!(output = STDOUT)
+        return unless output.tty?
+
+        begin
+          output.cooked!
+        rescue StandardError
+          # If stty not found, or raise error, nothing I can do
+          stty('-raw')
+        end
+      end
+
+      def disable_echo!(output = STDOUT)
+        return unless output.tty?
+
+        begin
+          output.echo = false
+        rescue StandardError
+          # If stty not found, or raise error, nothing I can do
+          stty('-echo')
+        end
+      end
+
+      def enable_echo!(output = STDOUT)
+        return unless output.tty?
+
+        begin
+          output.echo = true
+        rescue StandardError
+          # If stty not found, or raise error, nothing I can do
+          stty('echo')
+        end
       end
 
       def cached_tput
@@ -93,6 +147,18 @@ module RubyJard
         output = `#{command}`
         if $CHILD_STATUS.success?
           cached_tput[command] = output
+        else
+          raise RubyJard::Error, "Fail to call `#{command}`: #{$CHILD_STATUS}"
+        end
+      rescue StandardError => e
+        raise RubyJard::Error, "Fail to call `#{command}`. Error: #{e}"
+      end
+
+      def stty(*args)
+        command = "stty #{args.join(' ')}"
+        output = `#{command}`
+        if $CHILD_STATUS.success?
+          output
         else
           raise RubyJard::Error, "Fail to call `#{command}`: #{$CHILD_STATUS}"
         end
