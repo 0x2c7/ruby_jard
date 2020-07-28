@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.1 - Alpha 3] - Render mechanism and theme system
+### UX/UI
+- New color scheme: 256, as the default color scheme. It works well with all 256-color terminal emulators.
+- New color scheme: deep-space. It's a 24-bit color scheme.
+- UX change: swap positions of default panels:
+    ```
+      Source    | Backtrace
+      Variables | Threads
+    ```
+- New narrow layout, which consists of source and variables only. Useful when running tests.
+- Add aliases to common commands
+### Bug fixes
+- https://github.com/nguyenquangminh0711/ruby_jard/issues/2
+- Fix display bug that some rows are out of screen if above rows have word wraps.
+### Internal Refactoring
+- New rendering mechanism, that supports data windowing, selection locating, and cursor.
+- Improve compatibility, and add fallbacks in case io/console, or tput are not available.
+
 ## [0.2.0 - Alpha 2] - UI completeness
 
 ### UX/UI

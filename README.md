@@ -1,18 +1,18 @@
 ![Ruby Jard](./docs/logo.jpg)
 
-Jard stands for Just Another Ruby Debugger, aims to provide a better experience while debugging Ruby. Ruby Jard supports the following major features at the moment: 
+Jard stands for Just Another Ruby Debugger, aims to provide a better experience while debugging Ruby. Ruby Jard supports the following major features at the moment:
 
 - Informative Terminal UI, reduce your mental effort for repeated stuff so that you can focus on killing bugs.
-- Highlighted source code screen.  
-- Backtrace visualization and navigation. 
-- Auto variable display in the current context. 
+- Highlighted source code screen.
+- Backtrace visualization and navigation.
+- Auto variable display in the current context.
 - Multi-thread exploration and debugging.
 
 Ruby Jard's core is [Byebug](https://github.com/deivid-rodriguez/byebug), an awesome de factor debugger for Ruby. Therefore, Ruby Jard supports most of Byebug's functionalities.
 
-If you still don't know what it is, let's watch this video. 
+If you still don't know what it is, let's watch this video.
 
-[![asciicast](https://asciinema.org/a/348526.svg)](https://asciinema.org/a/348526)
+[![Ruby Jard Demo](./docs/demo.png)](https://asciinema.org/a/350233)
 
 ## Getting Started
 
@@ -41,9 +41,9 @@ When Jard attaches at any line of code, the main tile-style UI shows up. By defa
 
 ### Source panel
 
-<img src="./docs/screen-source.png" alt="Source screen" style="max-width: 500px;" />
+<img src="./docs/screen-source.png" alt="Source screen" />
 
-This panel shows the current line of code that your program is stopping, and surrounding related lines. The number of lines shown in this panel depends on your current terminal height, but never less than 5. 
+This panel shows the current line of code that your program is stopping, and surrounding related lines. The number of lines shown in this panel depends on your current terminal height, but never less than 5.
 
 Ruby Jard supports any file extensions that your program runs into, especially `.rb`, `.erb`, `.haml` files. Other file types may encounter minor syntax highlighting issues.
 
@@ -51,9 +51,9 @@ Ruby Jard also supports inspecting gems and libraries, if you are interested.
 
 ### Backtrace panel
 
-<img src="./docs/screen-backtrace.png" alt="Screen backtrace" style="max-width: 500px;" />
+<img src="./docs/screen-backtrace.png" alt="Screen backtrace"/>
 
-This panel describes the current backtrace of the current thread your program is stopping. Each line of this panel describes the current Frame. What is frame and backtrace by the way? Let's step back a little bit at how Ruby executes your code. Internally, Ruby uses an interpreter to read and execute your code, line by line (technically, YARD instructions, but let's go with a simple version). When it meets a chunk of code that needs to open a new scope, like method calls or inline-block call, the interpreter creates a new structure to store the current context so that it can link to the next scope and go back later. This data structure is call Frame. The interpreter pushes frame into a stack, called backtrace (or stack trace, or call stack, whatever), and continues to execute your code. Each thread has a separate backtrace. To understand deeply, you may be interested in this wonderful slide: [Grow and Shrink - Dynamically Extending the Ruby VM Stack](https://www.slideshare.net/KeitaSugiyama1/grow-and-shrink-dynamically-extending-the-ruby-vm-stack). 
+This panel describes the current backtrace of the current thread your program is stopping. Each line of this panel describes the current Frame. What is frame and backtrace by the way? Let's step back a little bit at how Ruby executes your code. Internally, Ruby uses an interpreter to read and execute your code, line by line (technically, YARD instructions, but let's go with a simple version). When it meets a chunk of code that needs to open a new scope, like method calls or inline-block call, the interpreter creates a new structure to store the current context so that it can link to the next scope and go back later. This data structure is call Frame. The interpreter pushes frame into a stack, called backtrace (or stack trace, or call stack, whatever), and continues to execute your code. Each thread has a separate backtrace. To understand deeply, you may be interested in this wonderful slide: [Grow and Shrink - Dynamically Extending the Ruby VM Stack](https://www.slideshare.net/KeitaSugiyama1/grow-and-shrink-dynamically-extending-the-ruby-vm-stack).
 
 Overall, the whole backtrace panel lets you know where you are stopping at, the trace of how your program is running. When combining with other tools and other panels, you will be surprised by how much information the bugger can help you when you encounter your bugs.
 
@@ -65,19 +65,19 @@ Each frame includes the following information:
 
 ### Variable panel
 
-<img src="./docs/screen-variables.png" alt="Variables screen" style="max-width: 500px;" />
+<img src="./docs/screen-variables.png" alt="Variables screen"/>
 
 The variable panel lets you explore all the local variables, instance variables, and constants in the current display context. Each variable is described by:
 
-- Inline indicator: the beginning dot (`•`) implies a variable that appears in the current line. 
+- Inline indicator: the beginning dot (`•`) implies a variable that appears in the current line.
 - Variable type: allow you to know the type of a variable at a single glance. Only built-in types, such as `int`, `flt`, `hash`, `bool`, `rng`, are supported. Instances of any classes will be noted as `var`.
 - Size of variable: the size of collection-like variables. Current Jard version supports 3 types:
-  - Hash: this field shows the number of keys 
+  - Hash: this field shows the number of keys
   - Array: this field shows the number of items
   - String: this field shows the number of character (fetched from`String#size` method)
 - Variable inspection: the content of the variable. The current Jard version generates this field by calling `#inspect`. **Known issue**: this accidentally triggers materializing method of objects, such as `ActiveRecord::Relation`. Future Jard version gonna fix this by a new safe generator.
 
-This panel interacts well with backtrace panel and backtrace-exploring commands such as (`up`, `down`, `frame`, etc.) to inspect relative variables at each frame layer in the program. A common use case is to recall the parameter values you forgot when digging too deep into a method call. 
+This panel interacts well with backtrace panel and backtrace-exploring commands such as (`up`, `down`, `frame`, etc.) to inspect relative variables at each frame layer in the program. A common use case is to recall the parameter values you forgot when digging too deep into a method call.
 
 By default, the variables are sorted by the following criteria:
 
@@ -90,9 +90,9 @@ By default, the variables are sorted by the following criteria:
 
 ### Thread panel
 
-<img src="./docs/screen-threads.png" alt="Screen threads" style="max-width: 500px;" />
+<img src="./docs/screen-threads.png" alt="Screen threads" />
 
-Show all the threads running at the moment. This panel is useful when you are working with a complicated multi-threaded environment like web server, or background jobs. 
+Show all the threads running at the moment. This panel is useful when you are working with a complicated multi-threaded environment like web server, or background jobs.
 
 ### Repl panel
 
@@ -102,11 +102,23 @@ An interactive Repl for you to interact with your program, inspect values, updat
 
 ## Commands
 
+### List
+
+**Repl command**: `list`
+
+**Key binding:** F5
+
+**Alias**: `l`
+
+Refresh the whole terminal UI. This command doesn't move you to other steps, nor change any data in your session. It is useful (or the only way) to get back the beautiful UI if you type too much in the REPL console.
+
 ### Step
 
 **Repl command**: `step`
 
 **Key binding**: F7
+
+**Alias**: `s`
 
 Detect and step into a method call or block in the current line. If there isn't anything to step in, the program continues to next line. In case there are multiple methods on the same line, Jard hornors Ruby's execution order.
 
@@ -115,6 +127,8 @@ Detect and step into a method call or block in the current line. If there isn't 
 **Repl command**: `step-out`
 
 **Key binding**: Shift + F7
+
+**Alias**: `so`
 
 The opposite of step out. This command is used to finish the execution of current frame, and jump to the next line of upper frame. In other words, this command is equivalent to the sequence `up` and `next`. If the neighbor frame already finishes, it continues with even higher frame.
 
@@ -126,13 +140,17 @@ This command is useful when you loose your interest in frame, and want to quickl
 
 **Key binding**: F8
 
-Continue to the next line in the current frame, by pass any steppable method call or blocks in the mid way unless they contains dynamic breakpoint or any `jard` attachment command. If the current frame already reaches the end, it continues to the next line of upper frame and so on. 
+**Alias**: `n`
+
+Continue to the next line in the current frame, by pass any steppable method call or blocks in the mid way unless they contains dynamic breakpoint or any `jard` attachment command. If the current frame already reaches the end, it continues to the next line of upper frame and so on.
 
 ### Continue
 
 **Repl command**: `continue`
 
 **Key binding**: F9
+
+**Alias**: `c`
 
 Continue the execution of your program to the end, or stop at the first dynamic break point or `jard` attachment command. One common confusion is that long-running ruby processes, such as web server or background jobs, won't stop, and may be used to debug the next request without restarting. If you want to end everything and just exit the process, let's use `exit`.
 
@@ -142,7 +160,7 @@ Continue the execution of your program to the end, or stop at the first dynamic 
 
 **Key binding**: F6
 
-Explore the upper frame. When you use this command, all associated displaying screens will be updated accordingly, but your program current position is still at the latest frame. This command is mostly used to explore, and view the trace, input parameters, or how your program stops at the current position. When use this command, you should have a glance at Variable panel, and Source panel to see the variables at destination frame. 
+Explore the upper frame. When you use this command, all associated displaying screens will be updated accordingly, but your program current position is still at the latest frame. This command is mostly used to explore, and view the trace, input parameters, or how your program stops at the current position. When use this command, you should have a glance at Variable panel, and Source panel to see the variables at destination frame.
 
 You can combine with `next` or `step` to perform powerful execution redirection at the destination frame. Let's look at an example. You are debugging a chain of 10 rack middlewares, you go deep into the #9 middleware, found something, then want to go back to #5 middleware. It's pretty boring and frustrated to just use `next` or `step-out` and hope it eventually goes back. Now use `up` for some times (or `frame`, described below) to go to your desired frame, and use `next` there. Tada, it's magical, just like teleport.
 
@@ -164,13 +182,7 @@ Explore the lower frame. See `up` command for more information.
 
 **Examples**:`frame 10`
 
-Explore a particular frame with id `<frame_id>`. It's faster than `up` and `down`. See `up` command for more information. 
-
-
-
-## Roadmap
-
-The ultimate goal of Ruby Jard is to provide a better experience while debugging Ruby. All the items in the roadmap are supposed to serve that. However, I have a life. There won't be any promises on when those items will be finished. In fact, this roadmap may be changed at anytime, depends on the current direction, focus and circumstances. 
+Explore a particular frame with id `<frame_id>`. It's faster than `up` and `down`. See `up` command for more information.
 
 ### [Done] Version 0.1.0: Proof of concept
 
@@ -182,7 +194,7 @@ The bootstrap version is just a series of ugly prints on stdout. It's frustrated
 
 ### Version 0.3.0: Complete the workflow
 
-This version focuses on making Jard usable for daily activities of any developer. In other words, this version is to become a complete replacement for Byebug (sorry :pray:). 
+This version focuses on making Jard usable for daily activities of any developer. In other words, this version is to become a complete replacement for Byebug (sorry :pray:).
 
 - Dynamic breakpoints.
 - Watch expressions.
