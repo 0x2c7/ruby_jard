@@ -73,6 +73,7 @@ module RubyJard
 
       def $stdout.write(string)
         # NOTE: `RubyJard::ScreenManager.instance` is a must. Jard doesn't work well with delegator
+        # TODO: Debug and fix the issues permanently
         if !RubyJard::ScreenManager.instance.updating? && RubyJard::ScreenManager.instance.started?
           RubyJard::ScreenManager.instance.output_storage.write(string)
         end
