@@ -239,7 +239,7 @@ module RubyJard
 
     def pick_color_scheme
       # TODO: Fallback to a default color scheme if not found
-      RubyJard::ColorSchemes[RubyJard::DEFAULT_COLOR_SCHEME].new
+      RubyJard::ColorSchemes.current.new
     end
   end
 end

@@ -133,5 +133,10 @@ module RubyJard
     def handle_list_command(_options = {})
       process_commands
     end
+
+    def handle_color_scheme_command(options = {})
+      RubyJard::ColorSchemes.current = options[:color_scheme]
+      process_commands
+    end
   end
 end
