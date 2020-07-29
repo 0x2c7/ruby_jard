@@ -190,8 +190,8 @@ Explore a particular frame with id `<frame_id>`. It's faster than `up` and `down
 
 | Name                                                         | Screenshots                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 256 - Default theme, 256 basic colors, supported by all terminals | <img src="./docs/color_schemes/256.png" style="max-width: 400px;" /> |
-| Deep Space                                                   | <img src="./docs/color_schemes/deep-space.png" style="max-width: 400px;" /> |
+| `256` <br />Default theme, 256 basic colors, supported by all terminals | <img src="./docs/color_schemes/256.png" style="max-width: 400px;" /> |
+| `deep-space`                                                 | <img src="./docs/color_schemes/deep-space.png" style="max-width: 400px;" /> |
 
 
 
