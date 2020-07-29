@@ -62,7 +62,7 @@ module RubyJard
             end
           elsif klass.singleton_class?
             # No easy way to get the original class of a singleton class
-            object.name
+            object.respond_to?(:name) ? object.name : object.to_s
           else
             klass.name
           end
