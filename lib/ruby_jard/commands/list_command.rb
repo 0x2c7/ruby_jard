@@ -27,3 +27,4 @@ end
 
 Pry::Commands.add_command(RubyJard::Commands::ListCommand)
 Pry::Commands.alias_command 'l', 'list'
+Pry::Commands.alias_command 'whereami', 'list'

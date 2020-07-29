@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.2 - Alpha 3] - Unreleased
+
+### UX/UI
+- Add `wehereami` as an alias for `list` command
+
+### Bug fixes
+- Backward compatible issue: Array#filter is available in ruby 2.5.x and above.
+
+
 ## [0.2.1 - Alpha 3] - Render mechanism and theme system
 ### UX/UI
 - New color scheme: 256, as the default color scheme. It works well with all 256-color terminal emulators.

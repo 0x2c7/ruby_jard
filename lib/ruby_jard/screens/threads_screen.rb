@@ -8,7 +8,7 @@ module RubyJard
       end
 
       def build
-        contexts = RubyJard.current_session.contexts.filter { |c| c.thread.alive? }
+        contexts = RubyJard.current_session.contexts.select { |c| c.thread.alive? }
         contexts = sort_contexts(contexts)
         @rows = contexts.map do |context|
           RubyJard::Row.new(
