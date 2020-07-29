@@ -20,7 +20,7 @@ module RubyJard
       def initialize(path, lineno)
         @gem = nil
         @gem_version = nil
-        @path = path
+        @path = path.to_s
         @lineno = lineno
         @type = TYPE_UNKNOWN
 
