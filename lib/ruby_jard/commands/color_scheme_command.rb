@@ -3,15 +3,15 @@
 module RubyJard
   module Commands
     # Command used to explore stacktrace.
-    class ColorschemeCommand < Pry::ClassCommand
+    class ColorSchemeCommand < Pry::ClassCommand
       group 'RubyJard'
       description 'Control the color scheme used in Jard'
 
-      match 'colorscheme'
+      match 'color-scheme'
 
       banner <<-BANNER
-        Usage: colorscheme -l
-               colorscheme [scheme-name]
+        Usage: color-scheme -l
+               color-scheme [scheme-name]
       BANNER
 
       def options(opt)
@@ -30,7 +30,7 @@ module RubyJard
             raise Pry::CommandError, "You must provide a color scheme name."
           end
           if RubyJard::ColorSchemes[color_scheme].nil?
-            raise Pry::CommandError, "Color scheme `#{color_scheme}` not found. Please use `colorscheme -l` to list all color schemes."
+            raise Pry::CommandError, "Color scheme `#{color_scheme}` not found. Please use `color-scheme -l` to list all color schemes."
           end
           RubyJard::ControlFlow.dispatch(:color_scheme, color_scheme: color_scheme)
         end
@@ -39,4 +39,4 @@ module RubyJard
   end
 end
 
-Pry::Commands.add_command(RubyJard::Commands::ColorschemeCommand)
+Pry::Commands.add_command(RubyJard::Commands::ColorSchemeCommand)
