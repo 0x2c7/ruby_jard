@@ -66,6 +66,8 @@ module RubyJard
     def start
       return if started?
 
+      # Load configurations
+      RubyJard.config
       RubyJard::Console.start_alternative_terminal(@output)
       RubyJard::Console.clear_screen(@output)
 
