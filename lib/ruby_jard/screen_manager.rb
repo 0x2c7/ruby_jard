@@ -72,7 +72,8 @@ module RubyJard
       RubyJard::Console.clear_screen(@output)
 
       def $stdout.write(string)
-        if !RubyJard::ScreenManager.updating? && RubyJard::ScreenManager.started?
+        # NOTE: `RubyJard::ScreenManager.instance` is a must. Jard doesn't work well with delegator
+        if !RubyJard::ScreenManager.instance.updating? && RubyJard::ScreenManager.instance.started?
           RubyJard::ScreenManager.instance.output_storage.write(string)
         end
         super
