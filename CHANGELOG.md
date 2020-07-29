@@ -4,6 +4,8 @@
 
 ### UX/UI
 - Add `wehereami` as an alias for `list` command
+- Add `theme` command to switch theme at runtime
+- Load configuration file when Jard starts
 
 ### Bug fixes
 - Backward compatible issue: Array#filter is available in ruby 2.5.x and above.

@@ -186,6 +186,36 @@ Explore the lower frame. See `up` command for more information.
 
 Explore a particular frame with id `<frame_id>`. It's faster than `up` and `down`. See `up` command for more information.
 
+## Color schemes
+
+| Name                                                         | Screenshots                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 256 - Default theme, 256 basic colors, supported by all terminals | <img src="./docs/color_schemes/256.png" style="zoom:50%; max-width: 100%;" /> |
+| Deep Space                                                   | <img src="./docs/color_schemes/deep-space.png" style="zoom:50%; max-width: 100%;" /> |
+
+
+
+## Configuration
+
+Ruby Jard supports customization via pre-loaded configuration files. You can configure Jard both globally, and per-project.
+
+- The global configuration file is located at `~/.jardrc`.
+- The project configuration file is located at `.jardrc` in working directory when you start Ruby Jard. Per-project ones will override, and merge with global ones.
+
+There are some supported configurations:
+
+| Name           | Description                                                  | Default |
+| -------------- | ------------------------------------------------------------ | ------- |
+| `color_scheme` | Choose your favorite color scheme. The list of color schemes can be looke up in [Color schemes session](#color-schemes), or from `color-scheme -l` command in REPL. | `256`   |
+
+This is a complete example of a configuration file:
+
+```ruby
+config.color_scheme = "deep-space"
+```
+
+## Roadmap
+
 ### [Done] Version 0.1.0: Proof of concept
 
 This version is a bootstrap to see whether my idea works or not, in term of technical possibility and user usability. Luckily, everything works now, and I receive possible feedback from friends and peers.
