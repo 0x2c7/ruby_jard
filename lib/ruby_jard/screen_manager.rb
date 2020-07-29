@@ -240,8 +240,10 @@ module RubyJard
     end
 
     def pick_color_scheme
-      # TODO: Fallback to a default color scheme if not found
-      RubyJard::ColorSchemes.current.new
+      color_scheme_class =
+        RubyJard::ColorSchemes[RubyJard.config.color_scheme] ||
+        RubyJard::ColorSchemes[RubyJard::Config::DEFAULT_COLOR_SCHEME]
+      color_scheme_class.new
     end
   end
 end
