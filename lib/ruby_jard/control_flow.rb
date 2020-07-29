@@ -7,15 +7,16 @@ module RubyJard
   class ControlFlow
     THROW_KEYWORD = :jard_control_flow
     ALLOW_LIST = {
-      continue: [:times],     # lib/ruby_jard/commands/continue_command.rb
-      frame: [:frame],        # lib/ruby_jard/commands/frame_command.rb
-      up: [:times],           # lib/ruby_jard/commands/up_command.rb
-      down: [:times],         # lib/ruby_jard/commands/down_command.rb
-      next: [:times],         # lib/ruby_jard/commands/next_command.rb
-      step: [:times],         # lib/ruby_jard/commands/step_command.rb
-      step_out: [:times],     # lib/ruby_jard/commands/step_out_command.rb
-      key_binding: [:action], # lib/ruby_jard/commands/step_command.rb
-      list: []                # lib/ruby_jard/commands/step_command.rb
+      continue: [:times],           # lib/ruby_jard/commands/continue_command.rb
+      frame: [:frame],              # lib/ruby_jard/commands/frame_command.rb
+      up: [:times],                 # lib/ruby_jard/commands/up_command.rb
+      down: [:times],               # lib/ruby_jard/commands/down_command.rb
+      next: [:times],               # lib/ruby_jard/commands/next_command.rb
+      step: [:times],               # lib/ruby_jard/commands/step_command.rb
+      step_out: [:times],           # lib/ruby_jard/commands/step_out_command.rb
+      key_binding: [:action],       # lib/ruby_jard/commands/step_command.rb
+      list: [],                     # lib/ruby_jard/commands/list_command.rb
+      color_scheme: [:color_scheme] # lib/ruby_jard/commands/colorscheme_command.rb
     }.freeze
 
     attr_reader :command, :arguments

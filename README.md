@@ -1,20 +1,12 @@
 ![Ruby Jard](./docs/logo.jpg)
 
-Jard stands for Just Another Ruby Debugger, aims to provide a better experience while debugging Ruby. Ruby Jard supports the following major features at the moment:
-
-- Informative Terminal UI, reduce your mental effort for repeated stuff so that you can focus on killing bugs.
-- Highlighted source code screen.
-- Backtrace visualization and navigation.
-- Auto variable display in the current context.
-- Multi-thread exploration and debugging.
-
-Ruby Jard's core is [Byebug](https://github.com/deivid-rodriguez/byebug), an awesome de factor debugger for Ruby. Therefore, Ruby Jard supports most of Byebug's functionalities.
-
-If you still don't know what it is, let's watch this video.
+Jard stands for Just Another Ruby Debugger, aims to provide a better experience while debugging Ruby. Ruby Jard provides modular visual interfaces to show relevant information about your debugging program. Those interfaces are optimized for usability, and highly friendly to developers, especially new comers. They help you reduce the commands you need to type, the mental efforts wasted trying to navigate and grab the information you need. As a result, you can now focus more on the debug flow. 
 
 [![Ruby Jard Demo](./docs/demo.png)](https://asciinema.org/a/350233)
 
 *[(Click for demo video)](https://asciinema.org/a/350233)*
+
+Ruby Jard's core is [Byebug](https://github.com/deivid-rodriguez/byebug), an awesome de factor debugger for Ruby. Therefore, Ruby Jard supports most of Byebug's functionalities.
 
 ## Getting Started
 
@@ -185,6 +177,36 @@ Explore the lower frame. See `up` command for more information.
 **Examples**:`frame 10`
 
 Explore a particular frame with id `<frame_id>`. It's faster than `up` and `down`. See `up` command for more information.
+
+## Color schemes
+
+| Name                                                         | Screenshots                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `256` <br />Default theme, 256 basic colors, supported by all terminals | <img src="./docs/color_schemes/256.png" style="max-width: 400px;" /> |
+| `deep-space`                                                 | <img src="./docs/color_schemes/deep-space.png" style="max-width: 400px;" /> |
+
+
+
+## Configuration
+
+Ruby Jard supports customization via pre-loaded configuration files. You can configure Jard both globally, and per-project.
+
+- The global configuration file is located at `~/.jardrc`.
+- The project configuration file is located at `.jardrc` in working directory when you start Ruby Jard. Per-project ones will override, and merge with global ones.
+
+There are some supported configurations:
+
+| Name           | Description                                                  | Default |
+| -------------- | ------------------------------------------------------------ | ------- |
+| `color_scheme` | Choose your favorite color scheme. The list of color schemes can be looke up in [Color schemes session](#color-schemes), or from `color-scheme -l` command in REPL. | `256`   |
+
+This is a complete example of a configuration file:
+
+```ruby
+config.color_scheme = "deep-space"
+```
+
+## Roadmap
 
 ### [Done] Version 0.1.0: Proof of concept
 

@@ -7,6 +7,7 @@ require 'forwardable'
 require 'benchmark'
 
 require 'ruby_jard/control_flow'
+require 'ruby_jard/config'
 require 'ruby_jard/keys'
 require 'ruby_jard/key_binding'
 require 'ruby_jard/key_bindings'
@@ -41,7 +42,6 @@ require 'ruby_jard/version'
 module RubyJard
   class Error < StandardError; end
 
-  DEFAULT_COLOR_SCHEME = '256'
   DEFAULT_LAYOUT_TEMPLATES = [
     RubyJard::Layouts::WideLayout,
     RubyJard::Layouts::NarrowLayout
@@ -87,6 +87,10 @@ module RubyJard
       @global_key_bindings.push(sequence, action)
     end
     @global_key_bindings
+  end
+
+  def self.config
+    @config ||= RubyJard::Config.smart_load
   end
 end
 

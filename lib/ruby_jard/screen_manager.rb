@@ -66,6 +66,8 @@ module RubyJard
     def start
       return if started?
 
+      # Load configurations
+      RubyJard.config
       RubyJard::Console.start_alternative_terminal(@output)
       RubyJard::Console.clear_screen(@output)
 
@@ -238,8 +240,10 @@ module RubyJard
     end
 
     def pick_color_scheme
-      # TODO: Fallback to a default color scheme if not found
-      RubyJard::ColorSchemes[RubyJard::DEFAULT_COLOR_SCHEME].new
+      color_scheme_class =
+        RubyJard::ColorSchemes[RubyJard.config.color_scheme] ||
+        RubyJard::ColorSchemes[RubyJard::Config::DEFAULT_COLOR_SCHEME]
+      color_scheme_class.new
     end
   end
 end
