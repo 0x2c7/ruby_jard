@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.2.2 - Alpha 3] - Unreleased
+## [0.2.2 - Alpha 3]
 
 ### UX/UI
 - Add `wehereami` as an alias for `list` command
@@ -9,7 +9,7 @@
 
 ### Bug fixes
 - Backward compatible issue: Array#filter is available in ruby 2.5.x and above.
-
+- Fix Jard is bypassed when writting something to stdout while debugging (https://github.com/nguyenquangminh0711/ruby_jard/pull/5)
 
 ## [0.2.1 - Alpha 3] - Render mechanism and theme system
 ### UX/UI
