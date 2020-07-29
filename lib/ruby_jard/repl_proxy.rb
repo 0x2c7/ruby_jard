@@ -38,7 +38,6 @@ module RubyJard
     PRY_EXCLUDED_COMMANDS = [
       'pry-backtrace', # Redundant method for normal user
       'watch',         # Conflict with byebug and jard watch
-      'whereami',      # Jard already provides similar. Keeping this command makes conflicted experience
       'edit',          # Sorry, but a file should not be editted while debugging, as it made breakpoints shifted
       'play',          # What if the played files or methods include jard again?
       'stat',          # Included in jard UI
