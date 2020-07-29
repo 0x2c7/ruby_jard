@@ -9,10 +9,10 @@ module RubyJard
         config = RubyJard::Config.new
 
         path = File.expand_path(File.join(Dir.pwd, CONFIG_FILE_NAME))
-        return load_config(config, path) if File.exist?(path)
+        load_config(config, path) if File.exist?(path)
 
         path = File.expand_path(File.join('~/', CONFIG_FILE_NAME))
-        return load_config(config, path) if File.exist?(path)
+        load_config(config, path) if File.exist?(path)
 
         config
       rescue StandardError => e
