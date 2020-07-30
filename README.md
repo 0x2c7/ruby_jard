@@ -184,6 +184,7 @@ Explore a particular frame with id `<frame_id>`. It's faster than `up` and `down
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `256` <br />Default theme, 256 basic colors, supported by all terminals | <img src="./docs/color_schemes/256.png" style="max-width: 400px;" /> |
 | `deep-space`                                                 | <img src="./docs/color_schemes/deep-space.png" style="max-width: 400px;" /> |
+| `gruvbox`                                                    | <img src="./docs/color_schemes/gruvbox.png" style="max-width: 400px;" /> |
 
 
 

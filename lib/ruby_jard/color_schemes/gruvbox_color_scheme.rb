@@ -3,7 +3,7 @@
 module RubyJard
   module ColorSchemes
     class GruvboxColorScheme < ColorScheme
-      # Shameless copy from https://github.com/tyrannicaltoucan/vim-deep-space/blob/master/colors/deep-space.vim
+      # Shameless copy from https://github.com/morhetz/gruvbox
       GRAY1      = '#282828'
       GRAY2      = '#3c3836'
       GRAY3      = '#504945'
