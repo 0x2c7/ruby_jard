@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module RubyJard
+  ##
+  # Smallest unit of texts. A span includes content, margin, and styles of a particular
+  # text chunk. All decorators and presenters return single/a list of spans.
   class Span
     extend Forwardable
 

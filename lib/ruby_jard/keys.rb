@@ -34,8 +34,6 @@ module RubyJard
     SHIFT_F10 = "\e[21;2~"
     SHIFT_F11 = "\e[23;2~"
     SHIFT_F12 = "\e[24;2~"
-
-    # rubocop:disable Layout/HashAlignment
     DEFAULT_KEY_BINDINGS = {
       F5       => (ACTION_LIST     = :list),
       F6       => (ACTION_UP       = :up),
@@ -45,6 +43,5 @@ module RubyJard
       F8       => (ACTION_NEXT     = :next),
       F9       => (ACTION_CONTINUE = :continue)
     }.freeze
-    # rubocop:enable Layout/HashAlignment
   end
 end

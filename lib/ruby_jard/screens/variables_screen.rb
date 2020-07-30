@@ -2,6 +2,8 @@
 
 module RubyJard
   module Screens
+    ##
+    # Display the relevant variables and constants of current context, scopes
     class VariablesScreen < RubyJard::Screen
       TYPE_SYMBOLS = {
         # Intertal classes for those values may differ between Ruby versions
@@ -237,6 +239,7 @@ module RubyJard
 
         @inline_tokens
       end
+
       def loc_decorator
         @loc_decorator ||= RubyJard::Decorators::LocDecorator.new
       end

@@ -2,6 +2,8 @@
 
 module RubyJard
   module Screens
+    ##
+    # Display key binding guidelines and shortcuts.
     class MenuScreen < RubyJard::Screen
       def build
         span_title = RubyJard::Span.new(

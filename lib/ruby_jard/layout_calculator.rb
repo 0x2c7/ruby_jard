@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/MethodLength
-# rubocop:disable Metrics/CyclomaticComplexity
 module RubyJard
   ##
   # Layout calculator based on screen resolution to decide the height, width,
@@ -57,8 +56,8 @@ module RubyJard
             overflow_width = 0
             max_height = child_height
             lines << []
-          else
-            max_height = child_height if max_height < child_height
+          elsif max_height < child_height
+            max_height = child_height
           end
 
           lines.last << [child_template, child_width, child_height, child_x, child_y]
@@ -148,4 +147,3 @@ module RubyJard
 end
 
 # rubocop:enable Metrics/MethodLength
-# rubocop:enable Metrics/CyclomaticComplexity

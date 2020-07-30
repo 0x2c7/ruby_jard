@@ -15,23 +15,28 @@ module RubyJard
       BANNER
 
       def options(opt)
-        opt.on :l, :list, "List all available color schemes"
+        opt.on :l, :list, 'List all available color schemes'
       end
 
       def process
         if opts[:l]
-          if args.length != 0
+          if args.empty?
             raise Pry::CommandError, "Color scheme list command shouldn't have any argument."
           end
+
           pry_instance.pager.page RubyJard::ColorSchemes.names.join("\n")
         else
           color_scheme = args.first.to_s.strip
           if color_scheme.empty?
-            raise Pry::CommandError, "You must provide a color scheme name."
+            raise Pry::CommandError,
+                  'You must provide a color scheme name. Please use `color-scheme -l` to list all color schemes.'
           end
+
           if RubyJard::ColorSchemes[color_scheme].nil?
-            raise Pry::CommandError, "Color scheme `#{color_scheme}` not found. Please use `color-scheme -l` to list all color schemes."
+            raise Pry::CommandError,
+                  "Color scheme `#{color_scheme}` not found. Please use `color-scheme -l` to list all color schemes."
           end
+
           RubyJard::ControlFlow.dispatch(:color_scheme, color_scheme: color_scheme)
         end
       end

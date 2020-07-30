@@ -38,19 +38,19 @@ module RubyJard
       private
 
       def translate_color(color, foreground)
-        if matches = HEX_PATTERN_6.match(color.to_s)
+        if (matches = HEX_PATTERN_6.match(color.to_s))
           red = matches[1].to_i(16)
           green = matches[2].to_i(16)
           blue = matches[3].to_i(16)
           sequence = foreground ? CSI_FOREGROUND_24BIT : CSI_BACKGROUND_24BIT
           format sequence, red, green, blue
-        elsif matches = HEX_PATTERN_3.match(color.to_s)
+        elsif (matches = HEX_PATTERN_3.match(color.to_s))
           red = (matches[1] * 2).to_i(16)
           green = (matches[2] * 2).to_i(16)
           blue = (matches[3] * 2).to_i(16)
           sequence = foreground ? CSI_FOREGROUND_24BIT : CSI_BACKGROUND_24BIT
           format sequence, red, green, blue
-        elsif matches = XTERM_NUMBER_PATTERN.match(color.to_s)
+        elsif (matches = XTERM_NUMBER_PATTERN.match(color.to_s))
           color = matches[1]
           sequence = foreground ? CSI_FOREGROUND_256 : CSI_BACKGROUND_256
           format sequence, color

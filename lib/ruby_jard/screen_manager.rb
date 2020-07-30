@@ -71,6 +71,7 @@ module RubyJard
       RubyJard::Console.start_alternative_terminal(@output)
       RubyJard::Console.clear_screen(@output)
 
+      # rubocop:disable Lint/NestedMethodDefinition
       def $stdout.write(string)
         # NOTE: `RubyJard::ScreenManager.instance` is a must. Jard doesn't work well with delegator
         # TODO: Debug and fix the issues permanently
@@ -79,6 +80,7 @@ module RubyJard
         end
         super
       end
+      # rubocop:enable Lint/NestedMethodDefinition
 
       at_exit { stop }
       @started = true

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module RubyJard
+  ##
+  # Draw rendered screen bitmap in current screen window onto the screen.
+  # Fulfill missing window if needed
   class ScreenDrawer
     def initialize(output:, screen:, color_scheme:)
       @output = output

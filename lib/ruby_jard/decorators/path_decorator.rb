@@ -8,7 +8,7 @@ module RubyJard
     # location of the file.
     # If it's from the current working dir, strip the working dir.
     class PathDecorator
-      GEM_PATTERN = /(.*)\-(\d+\.\d+[\.\d]*[\.\d]*[\-\.\w]*)/i.freeze
+      GEM_PATTERN = /(.*)-(\d+\.\d+[.\d]*[.\d]*[-.\w]*)/i.freeze
       PATH_TYPES = [
         TYPE_UNKNOWN = :unknown,
         TYPE_PWD = :pwd,

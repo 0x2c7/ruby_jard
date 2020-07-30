@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module RubyJard
+  ##
+  # This class is an object to store a row of data display on a screen
   class Row
     extend Forwardable
 
