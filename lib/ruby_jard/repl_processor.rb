@@ -67,29 +67,25 @@ module RubyJard
       proceed!
     end
 
-    def handle_step_command(_options = {})
-      Byebug.current_context.step_into(1, Byebug.current_context.frame.pos)
+    def handle_step_command(options = {})
+      times = options[:times] || 1
+      Byebug.current_context.step_into(times, Byebug.current_context.frame.pos)
       proceed!
     end
 
-    def handle_step_out_command(_options = {})
-      # TODO: handle c-frame and out of range frames
-      Byebug.current_context.frame = 1
-      proceed!
+    def handle_step_out_command(options = {})
+      times = options[:times] || 1
+
+      next_frame = up_n_frames(Byebug.current_context.frame.pos, times)
+      Byebug.current_context.frame = next_frame
       Byebug.current_context.step_over(1, Byebug.current_context.frame.pos)
       proceed!
     end
 
     def handle_up_command(options = {})
       times = options[:times] || 1
-      next_frame = Byebug.current_context.frame.pos
-      times.times do
-        next_frame = [next_frame + 1, Byebug.current_context.backtrace.length - 1].min
-        while Byebug::Frame.new(Byebug.current_context, next_frame).c_frame? &&
-              next_frame < Byebug.current_context.backtrace.length - 1
-          next_frame += 1
-        end
-      end
+
+      next_frame = up_n_frames(Byebug.current_context.frame.pos, times)
       Byebug.current_context.frame = next_frame
       proceed!
       process_commands
@@ -97,14 +93,7 @@ module RubyJard
 
     def handle_down_command(options = {})
       times = options[:times] || 1
-      next_frame = Byebug.current_context.frame.pos
-      times.times do
-        next_frame = [next_frame - 1, 0].max
-        while Byebug::Frame.new(Byebug.current_context, next_frame).c_frame? &&
-              next_frame > 0
-          next_frame -= 1
-        end
-      end
+      next_frame = down_n_frames(Byebug.current_context.frame.pos, times)
       Byebug.current_context.frame = next_frame
       proceed!
       process_commands
@@ -143,6 +132,30 @@ module RubyJard
     def handle_color_scheme_command(options = {})
       RubyJard.config.color_scheme = options[:color_scheme]
       process_commands
+    end
+
+    def up_n_frames(current_frame, times)
+      next_frame = current_frame
+      times.times do
+        next_frame = [next_frame + 1, Byebug.current_context.backtrace.length - 1].min
+        while Byebug::Frame.new(Byebug.current_context, next_frame).c_frame? &&
+              next_frame < Byebug.current_context.backtrace.length - 1
+          next_frame += 1
+        end
+      end
+      next_frame
+    end
+
+    def down_n_frames(current_frame, times)
+      next_frame = current_frame
+      times.times do
+        next_frame = [next_frame - 1, 0].max
+        while Byebug::Frame.new(Byebug.current_context, next_frame).c_frame? &&
+              next_frame > 0
+          next_frame -= 1
+        end
+      end
+      next_frame
     end
   end
 end

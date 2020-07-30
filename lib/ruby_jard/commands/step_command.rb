@@ -4,22 +4,28 @@ module RubyJard
   module Commands
     # Command used to Step into the execution of the current line.
     class StepCommand < Pry::ClassCommand
+      include RubyJard::Commands::ValidationHelpers
+
       group 'RubyJard'
       description 'Step into the execution of the current line'
 
       match 'step'
 
       banner <<-BANNER
-        Usage: step
-
-        Step into the execution of the current line
-
+        Usage: step [times]
         Examples:
           step
+          step 1
+          step 7
+
+        Step into the execution of the current line.
       BANNER
 
       def process
-        RubyJard::ControlFlow.dispatch(:step)
+        times = args.first || 1
+        validate_integer!(times)
+
+        RubyJard::ControlFlow.dispatch(:step, times: times.to_i)
       end
     end
   end
