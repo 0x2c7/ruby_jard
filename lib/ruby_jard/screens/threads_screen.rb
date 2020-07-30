@@ -2,6 +2,8 @@
 
 module RubyJard
   module Screens
+    ##
+    # Display all current alive threads, excluding internal threads
     class ThreadsScreen < RubyJard::Screen
       def title
         ['Threads', "#{RubyJard.current_session.contexts.length} threads"]
@@ -139,9 +141,10 @@ module RubyJard
       end
 
       def thread_status_style(thread)
-        if thread.status == 'run'
+        case thread.status
+        when 'run'
           :thread_status_run
-        elsif thread.status == 'sleep'
+        when 'sleep'
           :thread_status_sleep
         else
           :thread_status_other

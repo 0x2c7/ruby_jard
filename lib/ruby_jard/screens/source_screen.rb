@@ -2,6 +2,8 @@
 
 module RubyJard
   module Screens
+    ##
+    # Display source code of current stopping line and surrounding lines
     class SourceScreen < RubyJard::Screen
       def title
         return 'Source' if RubyJard.current_session.frame.nil?

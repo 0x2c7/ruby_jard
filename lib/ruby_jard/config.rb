@@ -31,8 +31,7 @@ module RubyJard
       end
     end
 
-    attr_reader :color_scheme
-    attr_writer :color_scheme
+    attr_accessor :color_scheme
 
     CONFIG_FILE_NAME = '.jardrc'
     DEFAULTS = [

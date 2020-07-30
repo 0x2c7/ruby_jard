@@ -60,13 +60,10 @@ module RubyJard
       CMD_IDLE      = :idle,
       CMD_INTERRUPT = :interrupt
     ].freeze
-
-    # rubocop:disable Layout/HashAlignment
     INTERNAL_KEY_BINDINGS = {
       RubyJard::Keys::END_LINE => (KEY_BINDING_ENDLINE   = :end_line),
       RubyJard::Keys::CTRL_C   => (KEY_BINDING_INTERRUPT = :interrupt)
     }.freeze
-    # rubocop:enable Layout/HashAlignment
 
     KEYPRESS_POLLING = 0.1 # 100ms
 
