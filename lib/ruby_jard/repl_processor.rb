@@ -61,8 +61,9 @@ module RubyJard
       raise
     end
 
-    def handle_next_command(_options = {})
-      Byebug.current_context.step_over(1, Byebug.current_context.frame.pos)
+    def handle_next_command(options = {})
+      times = options[:times] || 1
+      Byebug.current_context.step_over(times, Byebug.current_context.frame.pos)
       proceed!
     end
 
