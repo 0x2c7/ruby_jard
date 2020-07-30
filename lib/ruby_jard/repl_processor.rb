@@ -94,11 +94,15 @@ module RubyJard
       process_commands
     end
 
-    def handle_down_command(_options = {})
-      next_frame = [Byebug.current_context.frame.pos - 1, 0].max
-      while Byebug::Frame.new(Byebug.current_context, next_frame).c_frame? &&
-            next_frame > 0
-        next_frame -= 1
+    def handle_down_command(options = {})
+      times = options[:times] || 1
+      next_frame = Byebug.current_context.frame.pos
+      times.times do
+        next_frame = [next_frame - 1, 0].max
+        while Byebug::Frame.new(Byebug.current_context, next_frame).c_frame? &&
+              next_frame > 0
+          next_frame -= 1
+        end
       end
       Byebug.current_context.frame = next_frame
       proceed!
