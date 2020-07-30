@@ -80,14 +80,15 @@ module RubyJard
       proceed!
     end
 
-    def handle_up_command(_options = {})
-      next_frame = [
-        Byebug.current_context.frame.pos + 1,
-        Byebug.current_context.backtrace.length - 1
-      ].min
-      while Byebug::Frame.new(Byebug.current_context, next_frame).c_frame? &&
-            next_frame < Byebug.current_context.backtrace.length - 1
-        next_frame += 1
+    def handle_up_command(options = {})
+      times = options[:times] || 1
+      next_frame = Byebug.current_context.frame.pos
+      times.times do
+        next_frame = [next_frame + 1, Byebug.current_context.backtrace.length - 1].min
+        while Byebug::Frame.new(Byebug.current_context, next_frame).c_frame? &&
+              next_frame < Byebug.current_context.backtrace.length - 1
+          next_frame += 1
+        end
       end
       Byebug.current_context.frame = next_frame
       proceed!
