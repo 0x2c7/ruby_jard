@@ -16,61 +16,66 @@ module RubyJard
     def render
       @x = 0
       @y = 0
+      @original_x = 0
+      @original_y = 0
       @content_map = []
 
-      original_x = 0
-      @row.columns.each_with_index do |column, index|
-        @y = 0
-        @x = original_x
-        content_width = column.width
-        content_width -= 1 if index < @row.columns.length - 1
-        render_column(column, original_x, content_width)
+      @row.columns.each do |column|
+        @x = @original_x
+        @y = @original_y
 
-        original_x += column.width
+        @drawing_width = 0
+        @drawing_lines = 1
+
+        column.spans.each do |span|
+          render_span(column, span)
+        end
+
+        @original_x += column.width
       end
 
       generate_bitmap
     end
 
-    def render_column(column, original_x, content_width)
-      width = 0
-      lines = 1
+    # rubocop:disable Metrics/MethodLength
+    def render_span(column, span)
+      line_content = span.content
 
-      column.spans.each do |span|
-        line_content = span.content
-
-        until line_content.nil? || line_content.empty?
-          if column.word_wrap == RubyJard::Column::WORD_WRAP_NORMAL
-            if content_width - width < line_content.length && width != 0
-              width = 0
-              lines += 1
-              @y += 1
-              @x = original_x
-            end
-          elsif column.word_wrap == RubyJard::Column::WORD_WRAP_BREAK_WORD
-            if content_width - width <= 0
-              width = 0
-              lines += 1
-              @y += 1
-              @x = original_x
-            end
-          elsif content_width - width <= 0
-            return
+      until line_content.nil? || line_content.empty?
+        if column.word_wrap == RubyJard::Column::WORD_WRAP_NORMAL
+          if column.content_width - @drawing_width < line_content.length && @drawing_width != 0
+            @drawing_width = 0
+            @drawing_lines += 1
+            @y += 1
+            @x = @original_x
           end
-          drawing_content = line_content[0..content_width - width - 1]
-          line_content = line_content[content_width - width..-1]
-          width += drawing_content.length
-
-          if !@row.line_limit.nil? && lines >= @row.line_limit && !line_content.nil? && !line_content.empty?
-            drawing_content[drawing_content.length - ELLIPSIS.length..-1] = ELLIPSIS
-            draw_content(drawing_content, span.styles)
-            return
-          else
-            draw_content(drawing_content, span.styles)
+        elsif column.word_wrap == RubyJard::Column::WORD_WRAP_BREAK_WORD
+          if column.content_width - @drawing_width <= 0
+            @drawing_width = 0
+            @drawing_lines += 1
+            @y += 1
+            @x = @original_x
           end
+        elsif column.content_width - @drawing_width <= 0
+          return
+        end
+        drawing_content = line_content[0..column.content_width - @drawing_width - 1]
+        line_content = line_content[column.content_width - @drawing_width..-1]
+        @drawing_width += drawing_content.length
+
+        if !@row.line_limit.nil? &&
+           @drawing_lines >= @row.line_limit &&
+           !line_content.nil? &&
+           !line_content.empty?
+          drawing_content[drawing_content.length - ELLIPSIS.length..-1] = ELLIPSIS
+          draw_content(drawing_content, span.styles)
+          return
+        else
+          draw_content(drawing_content, span.styles)
         end
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     def draw_content(drawing_content, styles)
       return if @y < 0 || @y >= @height

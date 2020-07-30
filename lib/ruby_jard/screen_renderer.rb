@@ -71,6 +71,9 @@ module RubyJard
             else
               column_widths[column_index]
             end
+          column.content_width = column.width
+          column.content_width -= 1 if column_index < row.columns.length - 1
+
           total_width += column.width
         end
       end
