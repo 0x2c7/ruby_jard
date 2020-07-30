@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'ruby_jard/commands/validation_helpers'
 require 'ruby_jard/commands/continue_command'
 require 'ruby_jard/commands/up_command'
 require 'ruby_jard/commands/down_command'

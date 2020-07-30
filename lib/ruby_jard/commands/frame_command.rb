@@ -4,6 +4,8 @@ module RubyJard
   module Commands
     # Command used to explore stacktrace.
     class FrameCommand < Pry::ClassCommand
+      include RubyJard::Commands::ValidationHelpers
+
       group 'RubyJard'
       description 'Explore to any frame of current stacktrace.'
 
@@ -18,17 +20,15 @@ module RubyJard
         frame 4 # Jump to frame 4 in the backtrace
       BANNER
 
-      def process
-        frame = args.first
-        raise Pry::CommandError, 'Frame ID is required' if frame.nil?
-        raise Pry::CommandError, 'Frame ID must be numeric' unless frame =~ /^\d+$/i
+      def self.session_backtrace
+        RubyJard.current_session.backtrace
+      end
 
-        frame = frame.to_i
-        if frame >= RubyJard.current_session.backtrace.length || frame < 0
-          raise Pry::CommandError, "Frame #{frame} does not exist!"
-        else
-          RubyJard::ControlFlow.dispatch(:frame, frame: args.first)
-        end
+      def process
+        frame = validate_present!(args.first)
+        frame = validate_non_negative_integer!(frame)
+        frame = validate_range!(frame, 0, self.class.session_backtrace.length - 1)
+        RubyJard::ControlFlow.dispatch(:frame, frame: frame)
       end
     end
   end

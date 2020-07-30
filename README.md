@@ -114,6 +114,13 @@ Refresh the whole terminal UI. This command doesn't move you to other steps, nor
 
 **Alias**: `s`
 
+**Examples:**
+
+```
+step     # Step once
+step 3   # Step 3 times
+```
+
 Detect and step into a method call or block in the current line. If there isn't anything to step in, the program continues to next line. In case there are multiple methods on the same line, Jard hornors Ruby's execution order.
 
 ### Step out
@@ -124,7 +131,14 @@ Detect and step into a method call or block in the current line. If there isn't 
 
 **Alias**: `so`
 
-The opposite of step out. This command is used to finish the execution of current frame, and jump to the next line of upper frame. In other words, this command is equivalent to the sequence `up` and `next`. If the neighbor frame already finishes, it continues with even higher frame.
+**Examples:**
+
+```
+step-out     # Step out once
+step-out 3   # Step out 3 times
+```
+
+The opposite of step. This command is used to finish the execution of current frame, and jump to the next line of upper frame. In other words, this command is equivalent to the sequence `up` and `next`. If the neighbor frame already finishes, it continues with even higher frame.
 
 This command is useful when you loose your interest in frame, and want to quickly go up again. One example is that you accidentally step into a longgggg loop with nothing useful. Another example is that you step into the library source code and don't really care what it does underlying.
 
@@ -135,6 +149,13 @@ This command is useful when you loose your interest in frame, and want to quickl
 **Key binding**: F8
 
 **Alias**: `n`
+
+**Examples:**
+
+```
+next     # Next instruction
+next 3   # Next 3 next instructions
+```
 
 Continue to the next line in the current frame, by pass any steppable method call or blocks in the mid way unless they contains dynamic breakpoint or any `jard` attachment command. If the current frame already reaches the end, it continues to the next line of upper frame and so on.
 
@@ -154,6 +175,13 @@ Continue the execution of your program to the end, or stop at the first dynamic 
 
 **Key binding**: F6
 
+**Examples:**
+
+```
+up     # Move to upper frame
+up 3   # Move to upper 3 frames
+```
+
 Explore the upper frame. When you use this command, all associated displaying screens will be updated accordingly, but your program current position is still at the latest frame. This command is mostly used to explore, and view the trace, input parameters, or how your program stops at the current position. When use this command, you should have a glance at Variable panel, and Source panel to see the variables at destination frame.
 
 You can combine with `next` or `step` to perform powerful execution redirection at the destination frame. Let's look at an example. You are debugging a chain of 10 rack middlewares, you go deep into the #9 middleware, found something, then want to go back to #5 middleware. It's pretty boring and frustrated to just use `next` or `step-out` and hope it eventually goes back. Now use `up` for some times (or `frame`, described below) to go to your desired frame, and use `next` there. Tada, it's magical, just like teleport.
@@ -166,17 +194,49 @@ One note is that you cannot explore a frame in c.
 
 **Key binding**: Shift+F6
 
+**Examples:**
+
+```
+down     # Move to lower frame
+down 3   # Move to lower 3 frames
+```
+
 Explore the lower frame. See `up` command for more information.
 
 ### Frame
 
-**Repl command**: `frame <frame_id>`
+**Repl command**: `frame [frame_id]`
 
 **Key binding:** None
 
-**Examples**:`frame 10`
+**Examples:**
+
+```
+frame 0     # Jump to frame 0
+frame 7     # Jump to frame 7
+```
 
 Explore a particular frame with id `<frame_id>`. It's faster than `up` and `down`. See `up` command for more information.
+
+### Color scheme
+
+**Repl command**: `color-scheme [-l] [frame_id]`
+
+**Key binding:** None
+
+**Examples:**
+
+```
+color-scheme -l # List all available color schemes
+# Output:
+# jard >> 
+# 256
+# deep-space
+# gruvbox
+color-scheme deep-space # Switch to color scheme deep-space
+```
+
+List all available color schemes, or switch to a particular color scheme at runtime.
 
 ## Color schemes
 
@@ -184,6 +244,7 @@ Explore a particular frame with id `<frame_id>`. It's faster than `up` and `down
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `256` <br />Default theme, 256 basic colors, supported by all terminals | <img src="./docs/color_schemes/256.png" style="max-width: 400px;" /> |
 | `deep-space`                                                 | <img src="./docs/color_schemes/deep-space.png" style="max-width: 400px;" /> |
+| `gruvbox`                                                    | <img src="./docs/color_schemes/gruvbox.png" style="max-width: 400px;" /> |
 
 
 

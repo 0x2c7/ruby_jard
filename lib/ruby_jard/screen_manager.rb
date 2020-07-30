@@ -15,6 +15,7 @@ require 'ruby_jard/color_scheme'
 require 'ruby_jard/color_schemes'
 require 'ruby_jard/color_schemes/deep_space_color_scheme'
 require 'ruby_jard/color_schemes/256_color_scheme'
+require 'ruby_jard/color_schemes/gruvbox_color_scheme'
 
 require 'ruby_jard/row'
 require 'ruby_jard/column'

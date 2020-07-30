@@ -11,11 +11,10 @@ module RubyJard
 
       banner <<-BANNER
       Usage: continue
-
-      Continue program execution. The program will stop at the next breakpoint, or run until it finishes.
-
       Examples:
         continue
+
+      Continue program execution. The program will stop at the next breakpoint, or run until it finishes.
       BANNER
 
       def process

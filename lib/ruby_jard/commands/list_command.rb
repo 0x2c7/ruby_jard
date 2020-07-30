@@ -10,12 +10,13 @@ module RubyJard
       match 'list'
 
       banner <<-BANNER
-      Usage:
-        - list
-        - l
+      Usage: list
+      Examples:
+        list
+        l
+        whereami
 
       Refresh the current UI.
-
       BANNER
 
       def process

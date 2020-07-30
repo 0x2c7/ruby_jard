@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.3 - Alpha 4] - Unreleased
+
+### UX/UI
+- Add `gruvbox` color scheme
+
+### Bug fixes
+
+### Internal & Refactoring
+- Add tests for critical sections
+
 ## [0.2.2 - Alpha 3]
 
 ### UX/UI

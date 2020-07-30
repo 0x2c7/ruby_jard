@@ -1,3 +1,8 @@
+require: rubocop-rspec
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
 Lint/NonLocalExitFromIterator:
   Enabled: false
 Naming/MethodParameterName:
@@ -70,6 +75,11 @@ Style/RedundantRegexpEscape:
   Enabled: true
 Style/SlicingWithRange:
   Enabled: true
+
+RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/ExampleLength:
+  Max: 10
 
 AllCops:
   TargetRubyVersion: 2.5

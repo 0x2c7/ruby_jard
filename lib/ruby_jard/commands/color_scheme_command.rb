@@ -14,17 +14,26 @@ module RubyJard
                color-scheme [scheme-name]
       BANNER
 
+      def self.color_scheme_names
+        RubyJard::ColorSchemes.names
+      end
+
+      def self.get_color_scheme(color_scheme)
+        RubyJard::ColorSchemes[color_scheme]
+      end
+
       def options(opt)
         opt.on :l, :list, 'List all available color schemes'
       end
 
       def process
         if opts[:l]
-          if args.empty?
-            raise Pry::CommandError, "Color scheme list command shouldn't have any argument."
+          color_scheme_names = self.class.color_scheme_names
+          if color_scheme_names.empty?
+            pry_instance.output.puts 'No loaded color schemes'
+          else
+            pry_instance.output.puts self.class.color_scheme_names.join("\n")
           end
-
-          pry_instance.pager.page RubyJard::ColorSchemes.names.join("\n")
         else
           color_scheme = args.first.to_s.strip
           if color_scheme.empty?
@@ -32,7 +41,7 @@ module RubyJard
                   'You must provide a color scheme name. Please use `color-scheme -l` to list all color schemes.'
           end
 
-          if RubyJard::ColorSchemes[color_scheme].nil?
+          if self.class.get_color_scheme(color_scheme).nil?
             raise Pry::CommandError,
                   "Color scheme `#{color_scheme}` not found. Please use `color-scheme -l` to list all color schemes."
           end
