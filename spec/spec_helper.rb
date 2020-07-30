@@ -2,6 +2,7 @@
 
 require 'bundler/setup'
 require 'ruby_jard'
+require_relative './helpers/shared_command_with_times_spec'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
