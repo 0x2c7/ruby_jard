@@ -22,8 +22,7 @@ module RubyJard
       BANNER
 
       def process
-        times = args.first || 1
-        validate_integer!(times)
+        times = validate_positive_integer!(args.first || 1)
 
         RubyJard::ControlFlow.dispatch(:up, times: times.to_i)
       end

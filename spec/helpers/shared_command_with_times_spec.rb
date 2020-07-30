@@ -13,13 +13,32 @@ RSpec.shared_examples 'command with times' do |command_text, command_flow|
   end
 
   context "with `#{command_text} 0`" do
-    it "dispatches #{command_text} flow with 0" do
-      flow = RubyJard::ControlFlow.listen do
-        command_object.process_line("#{command_text} 0")
-      end
-      expect(flow).to be_a(::RubyJard::ControlFlow)
-      expect(flow.command).to eql(command_flow)
-      expect(flow.arguments).to eql({ times: 0 })
+    it 'raises Pry::CommandError' do
+      expect do
+        RubyJard::ControlFlow.listen do
+          command_object.process_line("#{command_text} 0")
+        end
+      end.to raise_error(::Pry::CommandError, /must be positive/)
+    end
+  end
+
+  context "with `#{command_text} -2`" do
+    it 'raises Pry::CommandError' do
+      expect do
+        RubyJard::ControlFlow.listen do
+          command_object.process_line("#{command_text} -2")
+        end
+      end.to raise_error(::Pry::CommandError, /must be positive/)
+    end
+  end
+
+  context "with `#{command_text} 1.1`" do
+    it 'raises Pry::CommandError' do
+      expect do
+        RubyJard::ControlFlow.listen do
+          command_object.process_line("#{command_text} 1.1")
+        end
+      end.to raise_error(::Pry::CommandError, /is not an integer/)
     end
   end
 
@@ -31,6 +50,17 @@ RSpec.shared_examples 'command with times' do |command_text, command_flow|
       expect(flow).to be_a(::RubyJard::ControlFlow)
       expect(flow.command).to eql(command_flow)
       expect(flow.arguments).to eql({ times: 3 })
+    end
+  end
+
+  context "with `#{command_text}       +33`" do
+    it "dispatches #{command_text} flow with 3" do
+      flow = RubyJard::ControlFlow.listen do
+        command_object.process_line("#{command_text}       +33")
+      end
+      expect(flow).to be_a(::RubyJard::ControlFlow)
+      expect(flow.command).to eql(command_flow)
+      expect(flow.arguments).to eql({ times: 33 })
     end
   end
 
