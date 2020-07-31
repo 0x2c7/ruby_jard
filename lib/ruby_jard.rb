@@ -100,4 +100,8 @@ module Kernel
   def jard
     RubyJard.current_session.attach
   end
+
+  if RubyJard.config.alias_to_debugger
+    alias_method :debugger, :jard
+  end
 end

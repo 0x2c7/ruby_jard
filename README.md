@@ -1,6 +1,6 @@
 ![Ruby Jard](./docs/logo.jpg)
 
-Jard stands for Just Another Ruby Debugger, aims to provide a better experience while debugging Ruby. Ruby Jard provides modular visual interfaces to show relevant information about your debugging program. Those interfaces are optimized for usability, and highly friendly to developers, especially new comers. They help you reduce the commands you need to type, the mental efforts wasted trying to navigate and grab the information you need. As a result, you can now focus more on the debug flow. 
+Jard stands for Just Another Ruby Debugger, aims to provide a better experience while debugging Ruby. Ruby Jard provides modular visual interfaces to show relevant information about your debugging program. Those interfaces are optimized for usability, and highly friendly to developers, especially new comers. They help you reduce the commands you need to type, the mental efforts wasted trying to navigate and grab the information you need. As a result, you can now focus more on the debug flow.
 
 [![Ruby Jard Demo](./docs/demo.png)](https://asciinema.org/a/350233)
 
@@ -229,7 +229,7 @@ Explore a particular frame with id `<frame_id>`. It's faster than `up` and `down
 ```
 color-scheme -l # List all available color schemes
 # Output:
-# jard >> 
+# jard >>
 # 256
 # deep-space
 # gruvbox
@@ -257,14 +257,16 @@ Ruby Jard supports customization via pre-loaded configuration files. You can con
 
 There are some supported configurations:
 
-| Name           | Description                                                  | Default |
-| -------------- | ------------------------------------------------------------ | ------- |
-| `color_scheme` | Choose your favorite color scheme. The list of color schemes can be looke up in [Color schemes session](#color-schemes), or from `color-scheme -l` command in REPL. | `256`   |
+| Name                | Description                                                  | Default |
+| ------------------- | ------------------------------------------------------------ | ------- |
+| `color_scheme`      | Choose your favorite color scheme. The list of color schemes can be looke up in [Color schemes session](#color-schemes), or from `color-scheme -l` command in REPL. | `256`   |
+| `alias_to_debugger` | Use `debugger` instead of `jard` when debugging. | `false`   |
 
 This is a complete example of a configuration file:
 
 ```ruby
 config.color_scheme = "deep-space"
+config.alias_to_debugger = true
 ```
 
 ## Roadmap
