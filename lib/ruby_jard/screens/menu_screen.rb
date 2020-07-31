@@ -35,7 +35,7 @@ module RubyJard
           RubyJard::Span.new(
             margin_left: 1,
             content: 'All gems',
-            styles: :menu_tips
+            styles: :menu_mode
           ),
           RubyJard::Span.new(
             margin_left: 1,
@@ -45,7 +45,7 @@ module RubyJard
           RubyJard::Span.new(
             margin_left: 1,
             content: 'Application only',
-            styles: :menu_mode
+            styles: :menu_tips
           )
         ]
       end
