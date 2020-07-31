@@ -11,14 +11,13 @@ module RubyJard
   # other processes. Therefore, an internal, jard-specific data mapping should
   # be built.
   class Session
-    attr_reader :backtrace, :frame, :contexts, :current_context
+    attr_reader :contexts, :current_context
 
     def initialize(options = {})
       @options = options
 
-      @backtrace = []
-      @frame = nil
-      @contexts = []
+      @current_context = options[:current_context] || []
+      @contexts = options[:contexts] || []
 
       @started = false
       @session_lock = Mutex.new
@@ -58,9 +57,28 @@ module RubyJard
     end
 
     def update
-      @backtrace = Byebug.current_context.backtrace
-      @frame = Byebug.current_context.frame
+      @current_context = Byebug.current_context
       @contexts = Byebug.contexts
+    end
+
+    def frame
+      @current_context.frame
+    end
+
+    def backtrace
+      @current_context.backtrace
+    end
+
+    def frame_self
+      backtrace[frame.pos][1]
+    end
+
+    def frame_class
+      backtrace[frame.pos][2]
+    end
+
+    def frame_binding
+      backtrace[frame.pos][3]
     end
 
     def lock

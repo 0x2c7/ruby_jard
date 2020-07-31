@@ -128,42 +128,26 @@ module RubyJard
 
       private
 
-      def current_binding
-        RubyJard.current_session.frame._binding
-      end
-
-      def current_frame
-        RubyJard.current_session.frame
-      end
-
-      def current_frame_scope
-        RubyJard.current_session.backtrace[RubyJard.current_session.frame.pos][1]
-      end
-
-      def current_frame_scope_class
-        RubyJard.current_session.backtrace[RubyJard.current_session.frame.pos][2]
-      end
-
       def fetch_local_variables
-        variables = current_binding.local_variables
+        variables = @session.frame_binding.local_variables
         # Exclude Pry's sticky locals
         pry_sticky_locals =
           if variables.include?(:pry_instance)
-            current_binding.local_variable_get(:pry_instance).sticky_locals.keys
+            @session.frame_binding.local_variable_get(:pry_instance).sticky_locals.keys
           else
             []
           end
         variables -= pry_sticky_locals
         variables.map do |variable|
-          [KIND_LOC, variable, current_binding.local_variable_get(variable)]
+          [KIND_LOC, variable, @session.frame_binding.local_variable_get(variable)]
         rescue NameError
           nil
         end.compact
       end
 
       def fetch_instance_variables
-        current_frame_scope.instance_variables.map do |variable|
-          [KIND_INS, variable, current_frame_scope.instance_variable_get(variable)]
+        @session.frame_self.instance_variables.map do |variable|
+          [KIND_INS, variable, @session.frame_self.instance_variable_get(variable)]
         rescue NameError
           nil
         end.compact
@@ -172,10 +156,10 @@ module RubyJard
       def fetch_constants
         # Filter out truly constants (CONSTANT convention) only
         constant_source =
-          if current_frame_scope_class&.singleton_class?
-            current_frame_scope
+          if @session.frame_class&.singleton_class?
+            @session.frame_self
           else
-            current_frame_scope_class
+            @session.frame_class
           end
 
         return [] unless constant_source.respond_to?(:constants)
