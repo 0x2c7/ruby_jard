@@ -69,16 +69,35 @@ module RubyJard
       @current_context.backtrace
     end
 
+    def frame_file
+      frame.file
+    end
+
+    def frame_line
+      frame.line
+    end
+
+    def frame_location
+      frame_backtrace = backtrace[frame.pos]
+      return nil if frame_backtrace.nil?
+
+      frame_backtrace.first
+    end
+
     def frame_self
-      backtrace[frame.pos][1]
+      frame._self
     end
 
     def frame_class
-      backtrace[frame.pos][2]
+      frame._class
     end
 
     def frame_binding
-      backtrace[frame.pos][3]
+      frame._binding
+    end
+
+    def frame_method
+      frame._method
     end
 
     def lock

@@ -6,11 +6,11 @@ module RubyJard
     # Display all current alive threads, excluding internal threads
     class ThreadsScreen < RubyJard::Screen
       def title
-        ['Threads', "#{RubyJard.current_session.contexts.length} threads"]
+        ['Threads', "#{@session.contexts.length} threads"]
       end
 
       def build
-        contexts = RubyJard.current_session.contexts.select { |c| c.thread.alive? }
+        contexts = @session.contexts.select { |c| c.thread.alive? }
         contexts = sort_contexts(contexts)
         @rows = contexts.map do |context|
           RubyJard::Row.new(
@@ -74,11 +74,11 @@ module RubyJard
       def span_thread_location(context)
         return unknown_thread_location if
           context.thread.backtrace_locations.nil? ||
-          RubyJard.current_session.backtrace[0].nil?
+          @session.frame_location.nil?
 
         last_backtrace =
           if current_thread?(context)
-            RubyJard.current_session.backtrace[0].first
+            @session.frame_location
           else
             context.thread.backtrace_locations[1]
           end

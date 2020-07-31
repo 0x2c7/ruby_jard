@@ -200,7 +200,7 @@ module RubyJard
       end
 
       def self_variable
-        [[KIND_SELF, :self, current_binding.eval('self')]]
+        [[KIND_SELF, :self, @session.frame_self]]
       rescue StandardError
         []
       end
