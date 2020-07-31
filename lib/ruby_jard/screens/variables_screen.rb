@@ -26,12 +26,21 @@ module RubyJard
       DEFAULT_TYPE_SYMBOL = :var
 
       KINDS = [
-        KIND_LOC = :local_variable,
-        KIND_INS = :instance_variable,
-        KIND_CON = :constant
+        KIND_LOC  = :local_variable,
+        KIND_INS  = :instance_variable,
+        KIND_CON  = :constant,
+        KIND_SELF = :self
       ].freeze
 
+      KIND_STYLES = {
+        KIND_LOC  => :local_variable,
+        KIND_INS  => :instance_variable,
+        KIND_CON  => :constant,
+        KIND_SELF => :constant
+      }.freeze
+
       KIND_PRIORITIES = {
+        KIND_SELF => 0,
         KIND_LOC => 1,
         KIND_INS => 2,
         KIND_CON => 3
@@ -49,7 +58,11 @@ module RubyJard
       end
 
       def build
-        variables = fetch_local_variables + fetch_instance_variables + fetch_constants
+        variables =
+          self_variable +
+          fetch_local_variables +
+          fetch_instance_variables +
+          fetch_constants
         variables = sort_variables(variables)
         @rows = variables.map do |variable|
           RubyJard::Row.new(
@@ -92,7 +105,7 @@ module RubyJard
         RubyJard::Span.new(
           margin_right: 1,
           content: variable[1].to_s,
-          styles: variable[0].to_sym
+          styles: KIND_STYLES[variable[0].to_sym]
         )
       end
 
@@ -114,14 +127,26 @@ module RubyJard
       end
 
       def span_inspection(variable)
+        inspection =
+          case variable[0]
+          when KIND_SELF
+            variable[2].to_s
+          else
+            variable[2].inspect
+          end
         # Hard limit: screen area
-        inspection = variable[2].inspect[0..@layout.height * @layout.width]
+        inspection = inspection[0..@layout.height * @layout.width]
         # TODO: This is just a workable. Should write a decorator to inspect objects accurately
         ["\n", "\r", "\r\n"].each do |esc|
           inspection.gsub!(esc, esc.inspect)
         end
         RubyJard::Span.new(
           content: inspection,
+          styles: :variable_inspection
+        )
+      rescue StandardError
+        RubyJard::Span.new(
+          content: '<Fail to inspect>',
           styles: :variable_inspection
         )
       end
@@ -172,6 +197,12 @@ module RubyJard
         rescue NameError
           nil
         end.compact
+      end
+
+      def self_variable
+        [[KIND_SELF, :self, current_binding.eval('self')]]
+      rescue StandardError
+        []
       end
 
       def sort_variables(variables)
