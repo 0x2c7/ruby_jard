@@ -31,15 +31,17 @@ module RubyJard
       end
     end
 
-    attr_accessor :color_scheme
+    attr_accessor :color_scheme, :alias_to_debugger
 
     CONFIG_FILE_NAME = '.jardrc'
     DEFAULTS = [
-      DEFAULT_COLOR_SCHEME = '256'
+      DEFAULT_COLOR_SCHEME = '256',
+      DEFAULT_ALIAS_TO_DEBUGGER = false
     ].freeze
 
     def initialize
       @color_scheme = DEFAULT_COLOR_SCHEME
+      @alias_to_debugger = DEFAULT_ALIAS_TO_DEBUGGER
     end
 
     def config
