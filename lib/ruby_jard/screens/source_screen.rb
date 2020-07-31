@@ -6,9 +6,9 @@ module RubyJard
     # Display source code of current stopping line and surrounding lines
     class SourceScreen < RubyJard::Screen
       def title
-        return 'Source' if RubyJard.current_session.frame.nil?
+        return 'Source' if @session.current_frame.nil?
 
-        decorated_path = path_decorator(@session.frame_file, @session.frame_line)
+        decorated_path = path_decorator(@session.current_frame.frame_file, @session.current_frame.frame_line)
         if decorated_path.gem?
           ['Source', "#{decorated_path.gem} - #{decorated_path.path}:#{decorated_path.lineno}"]
         else
@@ -17,7 +17,7 @@ module RubyJard
       end
 
       def build
-        return if RubyJard.current_session.frame.nil?
+        return if @session.current_frame.nil?
 
         # TODO: screen now supports window.
         codes = source_decorator.codes
@@ -45,7 +45,7 @@ module RubyJard
         lineno = source_lineno(index)
         RubyJard::Span.new(
           margin_right: 1,
-          content: @session.frame_line == lineno ? '➠' : ' ',
+          content: @session.current_frame.frame_line == lineno ? '➠' : ' ',
           styles: :source_line_mark
         )
       end
@@ -54,12 +54,12 @@ module RubyJard
         lineno = source_lineno(index).to_s.rjust(source_decorator.window_end.to_s.length)
         RubyJard::Span.new(
           content: lineno,
-          styles: @session.frame_line == lineno ? :source_line_mark : :source_lineno
+          styles: @session.current_frame.frame_line == lineno ? :source_line_mark : :source_lineno
         )
       end
 
       def loc_spans(loc)
-        spans, _tokens = loc_decorator.decorate(loc, @session.frame_file)
+        spans, _tokens = loc_decorator.decorate(loc, @session.current_frame.frame_file)
         spans
       end
 
@@ -71,7 +71,7 @@ module RubyJard
 
       def source_decorator
         @source_decorator ||= RubyJard::Decorators::SourceDecorator.new(
-          @session.frame_file, @session.frame_line, @layout.height
+          @session.current_frame.frame_file, @session.current_frame.frame_line, @layout.height
         )
       end
 

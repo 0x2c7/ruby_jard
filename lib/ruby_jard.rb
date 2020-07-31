@@ -15,6 +15,7 @@ require 'ruby_jard/repl_proxy'
 require 'ruby_jard/repl_processor'
 require 'ruby_jard/screen_manager'
 
+require 'ruby_jard/frame'
 require 'ruby_jard/session'
 require 'ruby_jard/version'
 

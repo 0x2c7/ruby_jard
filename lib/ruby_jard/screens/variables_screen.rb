@@ -154,25 +154,25 @@ module RubyJard
       private
 
       def fetch_local_variables
-        variables = @session.frame_binding.local_variables
+        variables = @session.current_frame.frame_binding.local_variables
         # Exclude Pry's sticky locals
         pry_sticky_locals =
           if variables.include?(:pry_instance)
-            @session.frame_binding.local_variable_get(:pry_instance).sticky_locals.keys
+            @session.current_frame.frame_binding.local_variable_get(:pry_instance).sticky_locals.keys
           else
             []
           end
         variables -= pry_sticky_locals
         variables.map do |variable|
-          [KIND_LOC, variable, @session.frame_binding.local_variable_get(variable)]
+          [KIND_LOC, variable, @session.current_frame.frame_binding.local_variable_get(variable)]
         rescue NameError
           nil
         end.compact
       end
 
       def fetch_instance_variables
-        @session.frame_self.instance_variables.map do |variable|
-          [KIND_INS, variable, @session.frame_self.instance_variable_get(variable)]
+        @session.current_frame.frame_self.instance_variables.map do |variable|
+          [KIND_INS, variable, @session.current_frame.frame_self.instance_variable_get(variable)]
         rescue NameError
           nil
         end.compact
@@ -181,10 +181,10 @@ module RubyJard
       def fetch_constants
         # Filter out truly constants (CONSTANT convention) only
         constant_source =
-          if @session.frame_class&.singleton_class?
-            @session.frame_self
+          if @session.current_frame.frame_class&.singleton_class?
+            @session.current_frame.frame_self
           else
-            @session.frame_class
+            @session.current_frame.frame_class
           end
 
         return [] unless constant_source.respond_to?(:constants)
@@ -200,7 +200,7 @@ module RubyJard
       end
 
       def self_variable
-        [[KIND_SELF, :self, @session.frame_self]]
+        [[KIND_SELF, :self, @session.current_frame.frame_self]]
       rescue StandardError
         []
       end
@@ -236,8 +236,8 @@ module RubyJard
       def inline_tokens
         return @inline_tokens if defined?(@inline_tokens)
 
-        current_file = RubyJard.current_session.frame.file
-        current_line = RubyJard.current_session.frame.line
+        current_file = @session.current_frame.frame_file
+        current_line = @session.current_frame.frame_line
         source_decorator = RubyJard::Decorators::SourceDecorator.new(current_file, current_line, 1)
         _spans, tokens = loc_decorator.decorate(
           source_decorator.codes[current_line - source_decorator.window_start],
