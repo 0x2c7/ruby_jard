@@ -20,7 +20,7 @@ module RubyJard
       def [](name)
         color_scheme_registry[name.to_s.strip]
       end
-      alias get []
+      alias_method :get, :[]
 
       def names
         color_scheme_registry.keys.sort.dup

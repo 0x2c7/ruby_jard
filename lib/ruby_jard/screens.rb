@@ -20,7 +20,7 @@ module RubyJard
       def [](name)
         screen_registry[name]
       end
-      alias get []
+      alias_method :get, :[]
     end
   end
 end

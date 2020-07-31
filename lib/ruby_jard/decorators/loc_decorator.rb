@@ -156,7 +156,7 @@ module RubyJard
           @opened << kind
           open_token(kind)
         end
-        alias begin_line begin_group
+        alias_method :begin_line, :begin_group
 
         def end_group(_kind)
           return unless @opened.pop

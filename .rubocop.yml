@@ -75,6 +75,8 @@ Style/RedundantRegexpEscape:
   Enabled: true
 Style/SlicingWithRange:
   Enabled: true
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
 
 RSpec/MultipleExpectations:
   Enabled: false
