@@ -83,7 +83,7 @@ Style/EvalWithLocation:
 RSpec/MultipleExpectations:
   Enabled: false
 RSpec/ExampleLength:
-  Max: 10
+  Max: 15
 
 AllCops:
   TargetRubyVersion: 2.5

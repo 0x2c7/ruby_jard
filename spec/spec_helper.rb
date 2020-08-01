@@ -3,6 +3,8 @@
 require 'bundler/setup'
 require 'ruby_jard'
 
+RSPEC_ROOT = File.dirname __FILE__
+
 def require_relative_folder(pattern)
   pattern = File.expand_path(File.join(File.dirname(__FILE__), pattern))
   Dir[pattern].sort.each do |file|
