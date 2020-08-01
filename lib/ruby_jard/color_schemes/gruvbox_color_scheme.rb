@@ -26,7 +26,7 @@ module RubyJard
         title:                 [GRAY2, BLUE],
         title_highlighted:     [GRAY2, ORANGE],
         title_secondary:       [WHITE, GRAY3],
-        title_background:      [WHITE, GRAY2],
+        title_background:      [GRAY2, GRAY2],
         menu_mode:             [ORANGE, BACKGROUND],
         menu_tips:             [GRAY4, BACKGROUND],
         thread_id:             [BLUE, BACKGROUND],
