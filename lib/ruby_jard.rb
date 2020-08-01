@@ -15,6 +15,7 @@ require 'ruby_jard/repl_proxy'
 require 'ruby_jard/repl_processor'
 require 'ruby_jard/screen_manager'
 
+require 'ruby_jard/frame'
 require 'ruby_jard/session'
 require 'ruby_jard/version'
 
@@ -41,11 +42,6 @@ require 'ruby_jard/version'
 #
 module RubyJard
   class Error < StandardError; end
-
-  DEFAULT_LAYOUT_TEMPLATES = [
-    RubyJard::Layouts::WideLayout,
-    RubyJard::Layouts::NarrowLayout
-  ].freeze
 
   def self.current_session
     @current_session ||= RubyJard::Session.new

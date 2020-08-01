@@ -6,11 +6,11 @@ module RubyJard
     # Display all current alive threads, excluding internal threads
     class ThreadsScreen < RubyJard::Screen
       def title
-        ['Threads', "#{RubyJard.current_session.contexts.length} threads"]
+        ['Threads', "#{@session.threads.length} threads"]
       end
 
       def build
-        contexts = RubyJard.current_session.contexts.select { |c| c.thread.alive? }
+        contexts = @session.threads.select { |c| c.thread.alive? }
         contexts = sort_contexts(contexts)
         @rows = contexts.map do |context|
           RubyJard::Row.new(
@@ -74,11 +74,11 @@ module RubyJard
       def span_thread_location(context)
         return unknown_thread_location if
           context.thread.backtrace_locations.nil? ||
-          RubyJard.current_session.backtrace[0].nil?
+          @session.current_frame.frame_location.nil?
 
         last_backtrace =
           if current_thread?(context)
-            RubyJard.current_session.backtrace[0].first
+            @session.current_frame.frame_location
           else
             context.thread.backtrace_locations[1]
           end
@@ -114,14 +114,10 @@ module RubyJard
         contexts.sort do |a, b|
           [
             bool_to_int(current_thread?(a)),
-            bool_to_int(b.ignored?),
-            bool_to_int(b.suspended?),
             bool_to_int(b.thread.name.nil?),
             a.thread.object_id
           ] <=> [
             bool_to_int(current_thread?(b)),
-            bool_to_int(a.ignored?),
-            bool_to_int(a.suspended?),
             bool_to_int(a.thread.name.nil?),
             b.thread.object_id
           ]

@@ -26,12 +26,21 @@ module RubyJard
       DEFAULT_TYPE_SYMBOL = :var
 
       KINDS = [
-        KIND_LOC = :local_variable,
-        KIND_INS = :instance_variable,
-        KIND_CON = :constant
+        KIND_LOC  = :local_variable,
+        KIND_INS  = :instance_variable,
+        KIND_CON  = :constant,
+        KIND_SELF = :self
       ].freeze
 
+      KIND_STYLES = {
+        KIND_LOC  => :local_variable,
+        KIND_INS  => :instance_variable,
+        KIND_CON  => :constant,
+        KIND_SELF => :constant
+      }.freeze
+
       KIND_PRIORITIES = {
+        KIND_SELF => 0,
         KIND_LOC => 1,
         KIND_INS => 2,
         KIND_CON => 3
@@ -49,7 +58,11 @@ module RubyJard
       end
 
       def build
-        variables = fetch_local_variables + fetch_instance_variables + fetch_constants
+        variables =
+          self_variable +
+          fetch_local_variables +
+          fetch_instance_variables +
+          fetch_constants
         variables = sort_variables(variables)
         @rows = variables.map do |variable|
           RubyJard::Row.new(
@@ -92,7 +105,7 @@ module RubyJard
         RubyJard::Span.new(
           margin_right: 1,
           content: variable[1].to_s,
-          styles: variable[0].to_sym
+          styles: KIND_STYLES[variable[0].to_sym]
         )
       end
 
@@ -114,8 +127,15 @@ module RubyJard
       end
 
       def span_inspection(variable)
+        inspection =
+          case variable[0]
+          when KIND_SELF
+            variable[2].to_s
+          else
+            variable[2].inspect
+          end
         # Hard limit: screen area
-        inspection = variable[2].inspect[0..@layout.height * @layout.width]
+        inspection = inspection[0..@layout.height * @layout.width]
         # TODO: This is just a workable. Should write a decorator to inspect objects accurately
         ["\n", "\r", "\r\n"].each do |esc|
           inspection.gsub!(esc, esc.inspect)
@@ -124,46 +144,35 @@ module RubyJard
           content: inspection,
           styles: :variable_inspection
         )
+      rescue StandardError
+        RubyJard::Span.new(
+          content: '<Fail to inspect>',
+          styles: :variable_inspection
+        )
       end
 
       private
 
-      def current_binding
-        RubyJard.current_session.frame._binding
-      end
-
-      def current_frame
-        RubyJard.current_session.frame
-      end
-
-      def current_frame_scope
-        RubyJard.current_session.backtrace[RubyJard.current_session.frame.pos][1]
-      end
-
-      def current_frame_scope_class
-        RubyJard.current_session.backtrace[RubyJard.current_session.frame.pos][2]
-      end
-
       def fetch_local_variables
-        variables = current_binding.local_variables
+        variables = @session.current_frame.frame_binding.local_variables
         # Exclude Pry's sticky locals
         pry_sticky_locals =
           if variables.include?(:pry_instance)
-            current_binding.local_variable_get(:pry_instance).sticky_locals.keys
+            @session.current_frame.frame_binding.local_variable_get(:pry_instance).sticky_locals.keys
           else
             []
           end
         variables -= pry_sticky_locals
         variables.map do |variable|
-          [KIND_LOC, variable, current_binding.local_variable_get(variable)]
+          [KIND_LOC, variable, @session.current_frame.frame_binding.local_variable_get(variable)]
         rescue NameError
           nil
         end.compact
       end
 
       def fetch_instance_variables
-        current_frame_scope.instance_variables.map do |variable|
-          [KIND_INS, variable, current_frame_scope.instance_variable_get(variable)]
+        @session.current_frame.frame_self.instance_variables.map do |variable|
+          [KIND_INS, variable, @session.current_frame.frame_self.instance_variable_get(variable)]
         rescue NameError
           nil
         end.compact
@@ -172,10 +181,10 @@ module RubyJard
       def fetch_constants
         # Filter out truly constants (CONSTANT convention) only
         constant_source =
-          if current_frame_scope_class&.singleton_class?
-            current_frame_scope
+          if @session.current_frame.frame_class&.singleton_class?
+            @session.current_frame.frame_self
           else
-            current_frame_scope_class
+            @session.current_frame.frame_class
           end
 
         return [] unless constant_source.respond_to?(:constants)
@@ -188,6 +197,12 @@ module RubyJard
         rescue NameError
           nil
         end.compact
+      end
+
+      def self_variable
+        [[KIND_SELF, :self, @session.current_frame.frame_self]]
+      rescue StandardError
+        []
       end
 
       def sort_variables(variables)
@@ -221,8 +236,8 @@ module RubyJard
       def inline_tokens
         return @inline_tokens if defined?(@inline_tokens)
 
-        current_file = RubyJard.current_session.frame.file
-        current_line = RubyJard.current_session.frame.line
+        current_file = @session.current_frame.frame_file
+        current_line = @session.current_frame.frame_line
         source_decorator = RubyJard::Decorators::SourceDecorator.new(current_file, current_line, 1)
         _spans, tokens = loc_decorator.decorate(
           source_decorator.codes[current_line - source_decorator.window_start],

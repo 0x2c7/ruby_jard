@@ -6,29 +6,17 @@ module RubyJard
     # Display key binding guidelines and shortcuts.
     class MenuScreen < RubyJard::Screen
       def build
-        span_title = RubyJard::Span.new(
-          content: ' REPL Console ',
-          styles: :title_highlighted
-        )
-        menu_spans = generate_menu_spans
-
-        alignment =
-          @layout.width -
-          span_title.content_length -
-          menu_spans.map(&:content_length).sum
-        span_align = RubyJard::Span.new(
-          content: ' ' * (alignment < 0 ? 0 : alignment),
-          styles: :background
-        )
+        left_spans = generate_left_spans
+        right_spans = generate_right_spans
         @rows = [RubyJard::Row.new(
           line_limit: 1,
-          ellipsis: false,
           columns: [
             RubyJard::Column.new(
+              word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
               spans: [
-                span_title,
-                span_align,
-                menu_spans
+                left_spans,
+                align(left_spans, right_spans),
+                right_spans
               ].flatten
             )
           ]
@@ -38,7 +26,31 @@ module RubyJard
 
       private
 
-      def generate_menu_spans
+      def generate_left_spans
+        [
+          RubyJard::Span.new(
+            content: ' Mode (F2) ',
+            styles: :title_highlighted
+          ),
+          RubyJard::Span.new(
+            margin_left: 1,
+            content: 'All gems',
+            styles: :menu_mode
+          ),
+          RubyJard::Span.new(
+            margin_left: 1,
+            content: '|',
+            styles: :menu_tips
+          ),
+          RubyJard::Span.new(
+            margin_left: 1,
+            content: 'Application only',
+            styles: :menu_tips
+          )
+        ]
+      end
+
+      def generate_right_spans
         [
           'Up (F6)',
           'Down (Shift+F6)',
@@ -50,9 +62,20 @@ module RubyJard
           RubyJard::Span.new(
             content: menu_item,
             margin_left: 3,
-            styles: :control_buttons
+            styles: :menu_tips
           )
         end
+      end
+
+      def align(left_spans, right_spans)
+        alignment =
+          @layout.width -
+          right_spans.map(&:content_length).sum -
+          left_spans.map(&:content_length).sum
+        RubyJard::Span.new(
+          content: ' ' * (alignment < 0 ? 0 : alignment),
+          styles: :background
+        )
       end
     end
   end

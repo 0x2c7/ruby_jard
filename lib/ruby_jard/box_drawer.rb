@@ -123,7 +123,7 @@ module RubyJard
         title_background = screen.layout.box_width - total_length - 2
         @output.print @color_decorator.decorate(
           :title_background,
-          ' ' * (title_background < 0 ? 0 : title_background)
+          HORIZONTAL_LINE * (title_background < 0 ? 0 : title_background)
         )
       end
     end

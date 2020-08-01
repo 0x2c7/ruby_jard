@@ -3,7 +3,10 @@
 ## [0.2.3 - Alpha 4] - Unreleased
 
 ### UX/UI
+- Add `self` to variables screen
 - Add `gruvbox` color scheme
+- Add `alias_to_debugger` option
+- Add `layout` option
 
 ### Bug fixes
 

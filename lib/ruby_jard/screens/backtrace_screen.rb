@@ -10,7 +10,7 @@ module RubyJard
       end
 
       def build
-        @rows = @session.backtrace.map.with_index do |frame, frame_id|
+        @rows = @session.current_backtrace.map.with_index do |frame, frame_id|
           RubyJard::Row.new(
             line_limit: 2,
             columns: [
@@ -51,24 +51,23 @@ module RubyJard
       end
 
       def span_class_label(frame)
-        object = frame[1]
-        klass = frame[2]
-        klass_label =
-          if klass.nil? || object.class == klass
-            if object.is_a?(Class)
-              object.name
+        class_label =
+          if frame.frame_class.nil? || frame.frame_self.class == frame.frame_class
+            if frame.frame_self.is_a?(Class)
+              frame.frame_self.name
             else
-              object.class.name
+              frame.frame_self.class.name
             end
-          elsif klass.singleton_class?
+          elsif frame.frame_class.singleton_class?
             # No easy way to get the original class of a singleton class
-            object.respond_to?(:name) ? object.name : object.to_s
+            frame.frame_self.respond_to?(:name) ? frame.frame_self.name : frame.frame_self.to_s
           else
-            klass.name
+            frame.frame_class.name
           end
-        c_frame = frame.last.nil? ? '[c] ' : ''
+
+        c_frame = frame.c_frame? ? '[c] ' : ''
         RubyJard::Span.new(
-          content: "#{c_frame}#{klass_label}",
+          content: "#{c_frame}#{class_label}",
           margin_right: 1,
           styles: :constant
         )
@@ -83,12 +82,11 @@ module RubyJard
       end
 
       def span_method_label(frame)
-        location = frame[0]
         method_label =
-          if location.label != location.base_label
-            "#{location.base_label} (#{location.label.split(' ').first})"
+          if frame.frame_location.label != frame.frame_location.base_label
+            "#{frame.frame_location.base_label} (#{frame.frame_location.label.split(' ').first})"
           else
-            location.base_label
+            frame.frame_location.base_label
           end
         RubyJard::Span.new(
           content: method_label,
@@ -98,8 +96,7 @@ module RubyJard
       end
 
       def span_path(frame)
-        location = frame[0]
-        decorated_path = decorate_path(location.absolute_path, location.lineno)
+        decorated_path = decorate_path(frame.frame_location.absolute_path, frame.frame_location.lineno)
 
         path_label =
           if decorated_path.gem?
@@ -118,15 +115,15 @@ module RubyJard
       end
 
       def current_frame
-        if @session.frame.nil?
+        if @session.current_frame.nil?
           0
         else
-          @session.frame.pos.to_i
+          @session.current_frame.pos.to_i
         end
       end
 
       def frames_count
-        @session.backtrace.length
+        @session.current_backtrace.length
       end
 
       def decorate_path(path, lineno)

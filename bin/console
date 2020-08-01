@@ -11,5 +11,4 @@ require 'ruby_jard'
 # require "pry"
 # Pry.start
 
-require 'pry'
-Pry.start(__FILE__)
+IRB.start(__FILE__)
