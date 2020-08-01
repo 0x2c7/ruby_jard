@@ -11,6 +11,8 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.5
+    - name: Install tmux
+      run: sudo apt install -y tmux
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -23,6 +25,8 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.5
+    - name: Install tmux
+      run: sudo apt install -y tmux
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -35,6 +39,8 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.6
+    - name: Install tmux
+      run: sudo apt install -y tmux
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -47,6 +53,8 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7.1
+    - name: Install tmux
+      run: sudo apt install -y tmux
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -59,6 +67,8 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.5
+    - name: Install tmux
+      run: brew install tmux
     - name: Install dependencies
       run: bundle install
     - name: Run tests
