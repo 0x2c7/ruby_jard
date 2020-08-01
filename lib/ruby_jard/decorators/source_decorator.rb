@@ -12,6 +12,8 @@ module RubyJard
         @file = file
         @lineno = lineno
         @window = window
+        @window_start = 0
+        @window_end = 0
         @codes = []
 
         decorate

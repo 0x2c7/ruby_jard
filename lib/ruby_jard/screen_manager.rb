@@ -174,8 +174,7 @@ module RubyJard
       layouts.map do |layout|
         screen_class = fetch_screen(layout.template.screen)
         screen = screen_class.new(
-          layout: layout,
-          color_scheme: pick_color_scheme
+          layout: layout
         )
         screen.build
         render_screen(screen)

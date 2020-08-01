@@ -77,6 +77,8 @@ Style/SlicingWithRange:
   Enabled: true
 Style/Alias:
   EnforcedStyle: prefer_alias_method
+Style/EvalWithLocation:
+  Enabled: false
 
 RSpec/MultipleExpectations:
   Enabled: false

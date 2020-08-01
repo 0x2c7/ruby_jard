@@ -11,12 +11,16 @@ module RubyJard
   # other processes. Therefore, an internal, jard-specific data mapping should
   # be built.
   class Session
-    attr_reader :threads, :current_frame, :current_backtrace
+    attr_accessor :threads, :current_frame, :current_backtrace
 
     def initialize(options = {})
       @options = options
       @started = false
       @session_lock = Mutex.new
+
+      @current_frame = nil
+      @current_backtrace = []
+      @threads = []
     end
 
     def start

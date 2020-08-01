@@ -6,12 +6,11 @@ module RubyJard
   # generated based on input layout specifiation, screen data, and top-left
   # corner cordination.
   class Screen
-    attr_accessor :layout, :rows, :color_scheme, :window, :cursor, :selected
+    attr_accessor :layout, :rows, :window, :cursor, :selected
 
-    def initialize(session: nil, layout:, color_scheme:)
+    def initialize(session: nil, layout:)
       @session = session || RubyJard.current_session
       @layout = layout
-      @color_scheme = color_scheme
       @window = []
       @cursor = nil
       @selected = 0
