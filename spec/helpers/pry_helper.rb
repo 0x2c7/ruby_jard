@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ##
 # Config to test pry-related commands. Copy from pry and pry-byebug test base
 Pry.config.color = false

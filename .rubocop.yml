@@ -87,3 +87,5 @@ RSpec/ExampleLength:
 
 AllCops:
   TargetRubyVersion: 2.5
+  Exclude:
+      - '**/*_example.rb'
