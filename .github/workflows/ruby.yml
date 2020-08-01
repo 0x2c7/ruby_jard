@@ -13,6 +13,8 @@ jobs:
         ruby-version: 2.5
     - name: Install tmux
       run: sudo apt install -y tmux
+    - name: Start tmux
+      run: tmux start-server
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -27,6 +29,8 @@ jobs:
         ruby-version: 2.5
     - name: Install tmux
       run: sudo apt install -y tmux
+    - name: Start tmux
+      run: tmux start-server
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -41,6 +45,8 @@ jobs:
         ruby-version: 2.6
     - name: Install tmux
       run: sudo apt install -y tmux
+    - name: Start tmux
+      run: tmux start-server
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -55,6 +61,8 @@ jobs:
         ruby-version: 2.7.1
     - name: Install tmux
       run: sudo apt install -y tmux
+    - name: Start tmux
+      run: tmux start-server
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -69,6 +77,8 @@ jobs:
         ruby-version: 2.5
     - name: Install tmux
       run: brew install tmux
+    - name: Start tmux
+      run: tmux start-server
     - name: Install dependencies
       run: bundle install
     - name: Run tests

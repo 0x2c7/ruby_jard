@@ -31,7 +31,11 @@ class JardIntegrationTest
 
   def send_keys(*args)
     tmux('send-keys', '-t', @target, *args)
-    sleep 0.5
+    if ENV['CI']
+      sleep 3
+    else
+      sleep 0.5
+    end
   end
 
   def screen
@@ -39,6 +43,10 @@ class JardIntegrationTest
   end
 
   def screen_content
+    if ENV['CI']
+      sleep 1
+    end
+
     lines =
       screen.split("\n")
             .reject { |line| line.start_with?('jard >>') }
