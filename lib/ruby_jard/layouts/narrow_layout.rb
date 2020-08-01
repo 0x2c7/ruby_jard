@@ -39,3 +39,4 @@ module RubyJard
     )
   end
 end
+RubyJard::Layouts.add_layout('narrow', RubyJard::Layouts::NarrowLayout)

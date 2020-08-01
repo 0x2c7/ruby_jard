@@ -50,3 +50,4 @@ module RubyJard
     )
   end
 end
+RubyJard::Layouts.add_layout('wide', RubyJard::Layouts::WideLayout)

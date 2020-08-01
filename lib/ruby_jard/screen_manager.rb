@@ -34,9 +34,11 @@ require 'ruby_jard/screens/menu_screen'
 require 'ruby_jard/templates/layout_template'
 require 'ruby_jard/templates/screen_template'
 
+require 'ruby_jard/layout'
+require 'ruby_jard/layouts'
 require 'ruby_jard/layouts/wide_layout'
 require 'ruby_jard/layouts/narrow_layout'
-require 'ruby_jard/layout'
+require 'ruby_jard/layouts/standalone_variables_layout'
 require 'ruby_jard/layout_calculator'
 
 module RubyJard
@@ -228,19 +230,24 @@ module RubyJard
     end
 
     def pick_layout(width, height)
-      RubyJard::DEFAULT_LAYOUT_TEMPLATES.each do |template|
-        matched = true
-        matched &&= (
-          template.min_width.nil? ||
-          width > template.min_width
-        )
-        matched &&= (
-          template.min_height.nil? ||
-          height > template.min_height
-        )
-        return template if matched
+      if RubyJard.config.layout.nil?
+        RubyJard::Laytous.each do |template|
+          matched = true
+          matched &&= (
+            template.min_width.nil? ||
+            width > template.min_width
+          )
+          matched &&= (
+            template.min_height.nil? ||
+            height > template.min_height
+          )
+          return template if matched
+        end
+        RubyJard::Layouts[RubyJard::Config::DEFAULT_LAYOUT]
+      else
+        RubyJard::Layouts[RubyJard.config.layout] ||
+          RubyJard::Layouts[RubyJard::Config::DEFAULT_LAYOUT]
       end
-      RubyJard::DEFAULT_LAYOUT_TEMPLATES.first
     end
 
     def pick_color_scheme
