@@ -198,18 +198,18 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
   context 'with code evaluation' do
     let(:expected_output_1) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test7_example.rb:21 ───────────────────────────────┐
-        │  12     c = a + b                                                            │
+        ┌ Source  ../../../examples/test7_example.rb:22 ───────────────────────────────┐
         │  13     c * 3                                                                │
-        │  14   end                                                                    │
-        │  15 CODE                                                                     │
-        │  16                                                                          │
-        │  17 eval(code1)                                                              │
-        │  18 eval(*code2)                                                             │
-        │  19                                                                          │
-        │  20 jard                                                                     │
-        │➠ 21 test1(1, 2)                                                              │
-        │  22 test2(3, 4)                                                              │
+        │  14     jard                                                                 │
+        │  15   end                                                                    │
+        │  16 CODE                                                                     │
+        │  17                                                                          │
+        │  18 eval(code1)                                                              │
+        │  19 eval(*code2)                                                             │
+        │  20                                                                          │
+        │  21 jard                                                                     │
+        │➠ 22 test1(1, 2)                                                              │
+        │  23 test2(3, 4)                                                              │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -238,14 +238,14 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
         │  11   def test2(a, b)                                                        │
         │➠ 12     c = a + b                                                            │
         │  13     c * 3                                                                │
-        │  14   end                                                                    │
-        │  15 CODE                                                                     │
-        │  16                                                                          │
-        │  17 eval(code1)                                                              │
-        │  18 eval(*code2)                                                             │
-        │  19                                                                          │
-        │  20 jard                                                                     │
-        │  21 test1(1, 2)                                                              │
+        │  14     jard                                                                 │
+        │  15   end                                                                    │
+        │  16 CODE                                                                     │
+        │  17                                                                          │
+        │  18 eval(code1)                                                              │
+        │  19 eval(*code2)                                                             │
+        │  20                                                                          │
+        │  21 jard                                                                     │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -259,6 +259,62 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
       test.send_keys('step-out', 'Enter')
       test.send_keys('step', 'Enter')
       expect(test.screen_content).to match_screen(expected_output_3)
+    ensure
+      test.stop
+    end
+  end
+
+  context 'when stop at the end of a method' do
+    let(:expected_output) do
+      <<~EXPECTED
+        ┌ Source  ../../../examples/test7_example.rb:15 ───────────────────────────────┐
+        │   6     c * 2                                                                │
+        │   7   end                                                                    │
+        │   8 CODE                                                                     │
+        │   9                                                                          │
+        │  10 code2 = <<~CODE, nil, __FILE__, __LINE__ + 1                             │
+        │  11   def test2(a, b)                                                        │
+        │  12     c = a + b                                                            │
+        │  13     c * 3                                                                │
+        │  14     jard                                                                 │
+        │➠ 15   end                                                                    │
+        │  16 CODE                                                                     │
+        │  17                                                                          │
+        │  18 eval(code1)                                                              │
+        │  19 eval(*code2)                                                             │
+        │  20                                                                          │
+        │  21 jard                                                                     │
+        │  22 test1(1, 2)                                                              │
+        │  23 test2(3, 4)                                                              │
+        └──────────────────────────────────────────────────────────────────────────────┘
+      EXPECTED
+    end
+
+    it 'displays correct line' do
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test7_example.rb")
+      test.start
+      test.send_keys('continue', 'Enter')
+      expect(test.screen_content).to match_screen(expected_output)
+    ensure
+      test.stop
+    end
+  end
+
+  context 'when run with ruby -e' do
+    let(:expected_output) do
+      <<~EXPECTED
+        ┌ Source  -e:3 ────────────────────────────────────────────────────────────────┐
+        │This section is anonymous!                                                    │
+        │Maybe it is dynamically evaluated, or called via ruby-e, without file informat│
+        │ion.                                                                          │
+        └──────────────────────────────────────────────────────────────────────────────┘
+      EXPECTED
+    end
+
+    it 'displays correct line' do
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby -e \"require 'ruby_jard'\njard\na = 100 + 300\"")
+      test.start
+      expect(test.screen_content).to match_screen(expected_output)
     ensure
       test.stop
     end
