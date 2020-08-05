@@ -5,6 +5,10 @@ module RubyJard
     ##
     # Display source code of current stopping line and surrounding lines
     class SourceScreen < RubyJard::Screen
+      ANONYMOUS_SIGNATURES = [
+        '(eval)', '-e'
+      ].freeze
+
       def title
         return 'Source' if @session.current_frame.nil?
 
@@ -19,7 +23,7 @@ module RubyJard
       def build
         return if @session.current_frame.nil?
 
-        if @session.current_frame.frame_file == '(eval)'
+        if ANONYMOUS_SIGNATURES.include? @session.current_frame.frame_file
           # (eval) is hard-coded in Ruby source code for in-code evaluation
           handle_anonymous_evaluation
         else
@@ -69,7 +73,7 @@ module RubyJard
               RubyJard::Column.new(
                 spans: [
                   RubyJard::Span.new(
-                    content: 'Maybe it is dynamically evaluated without file information.',
+                    content: 'Maybe it is dynamically evaluated, or called via ruby-e, without file information.',
                     styles: :source_lineno
                   )
                 ]
