@@ -198,18 +198,18 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
   context 'with code evaluation' do
     let(:expected_output_1) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test7_example.rb:22 ───────────────────────────────┐
+        ┌ Source  ../../../examples/test7_example.rb:21 ───────────────────────────────┐
+        │  12   <<~CODE, nil, __FILE__, __LINE__ + 1                                   │
         │  13     def test2(a, b)                                                      │
         │  14       c = a + b                                                          │
         │  15       c * 3                                                              │
-        │  16       jard                                                               │
-        │  17     end                                                                  │
-        │  18   CODE                                                                   │
-        │  19 )                                                                        │
-        │  20                                                                          │
-        │  21 jard                                                                     │
-        │➠ 22 test1(1, 2)                                                              │
-        │  23 test2(3, 4)                                                              │
+        │  16     end                                                                  │
+        │  17   CODE                                                                   │
+        │  18 )                                                                        │
+        │  19                                                                          │
+        │  20 jard                                                                     │
+        │➠ 21 test1(1, 2)                                                              │
+        │  22 test2(3, 4)                                                              │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -238,14 +238,13 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
         │  13     def test2(a, b)                                                      │
         │➠ 14       c = a + b                                                          │
         │  15       c * 3                                                              │
-        │  16       jard                                                               │
-        │  17     end                                                                  │
-        │  18   CODE                                                                   │
-        │  19 )                                                                        │
-        │  20                                                                          │
-        │  21 jard                                                                     │
-        │  22 test1(1, 2)                                                              │
-        │  23 test2(3, 4)                                                              │
+        │  16     end                                                                  │
+        │  17   CODE                                                                   │
+        │  18 )                                                                        │
+        │  19                                                                          │
+        │  20 jard                                                                     │
+        │  21 test1(1, 2)                                                              │
+        │  22 test2(3, 4)                                                              │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -265,34 +264,54 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
   end
 
   context 'when stop at the end of a method' do
-    let(:expected_output) do
+    let(:expected_output_1) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test7_example.rb:17 ───────────────────────────────┐
-        │   8     end                                                                  │
-        │   9   CODE                                                                   │
-        │  10 )                                                                        │
-        │  11 eval(                                                                    │
-        │  12   <<~CODE, nil, __FILE__, __LINE__ + 1                                   │
-        │  13     def test2(a, b)                                                      │
-        │  14       c = a + b                                                          │
-        │  15       c * 3                                                              │
-        │  16       jard                                                               │
-        │➠ 17     end                                                                  │
-        │  18   CODE                                                                   │
-        │  19 )                                                                        │
-        │  20                                                                          │
-        │  21 jard                                                                     │
-        │  22 test1(1, 2)                                                              │
-        │  23 test2(3, 4)                                                              │
+        ┌ Source  ../../../examples/test8_example.rb:10 ───────────────────────────────┐
+        │   1 # frozen_string_literal: true                                            │
+        │   2                                                                          │
+        │   3 require 'ruby_jard'                                                      │
+        │   4                                                                          │
+        │   5 class DummyCalculator                                                    │
+        │   6   def calculate(n)                                                       │
+        │   7     1.times do |index_c|                                                 │
+        │   8       n += index_c + 1                                                   │
+        │   9       jard                                                               │
+        │➠ 10     end                                                                  │
+        │  11     jard                                                                 │
+        │  12   end                                                                    │
+        │  13 end                                                                      │
+        │  14                                                                          │
+        │  15 DummyCalculator.new.calculate(10)                                        │
+        └──────────────────────────────────────────────────────────────────────────────┘
+      EXPECTED
+    end
+
+    let(:expected_output_2) do
+      <<~EXPECTED
+        ┌ Source  ../../../examples/test8_example.rb:12 ───────────────────────────────┐
+        │   3 require 'ruby_jard'                                                      │
+        │   4                                                                          │
+        │   5 class DummyCalculator                                                    │
+        │   6   def calculate(n)                                                       │
+        │   7     1.times do |index_c|                                                 │
+        │   8       n += index_c + 1                                                   │
+        │   9       jard                                                               │
+        │  10     end                                                                  │
+        │  11     jard                                                                 │
+        │➠ 12   end                                                                    │
+        │  13 end                                                                      │
+        │  14                                                                          │
+        │  15 DummyCalculator.new.calculate(10)                                        │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
 
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test7_example.rb")
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test8_example.rb")
       test.start
+      expect(test.screen_content).to match_screen(expected_output_1)
       test.send_keys('continue', 'Enter')
-      expect(test.screen_content).to match_screen(expected_output)
+      expect(test.screen_content).to match_screen(expected_output_2)
     ensure
       test.stop
     end

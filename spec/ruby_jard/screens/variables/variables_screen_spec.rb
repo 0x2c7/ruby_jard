@@ -281,22 +281,31 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
   end
 
   context 'when stop at the end of a method' do
-    let(:expected_output) do
+    let(:expected_output_1) do
       <<~EXPECTED
         ┌ Variables ───────────────────────────────────────────────────────────────────┐
-        │  self = main                                                                 │
-        │  a = 3                                                                       │
-        │  b = 4                                                                       │
-        │  c = 7                                                                       │
+        │  self = #<DummyCalculator:??????????????????>                                │
+        │  index_c = 0                                                                 │
+        │  n = 11                                                                      │
+        └──────────────────────────────────────────────────────────────────────────────┘
+      EXPECTED
+    end
+
+    let(:expected_output_2) do
+      <<~EXPECTED
+        ┌ Variables ───────────────────────────────────────────────────────────────────┐
+        │  self = #<DummyCalculator:??????????????????>                                │
+        │  n = 11                                                                      │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
 
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test7_example.rb")
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test8_example.rb")
       test.start
+      expect(test.screen_content).to match_screen(expected_output_1)
       test.send_keys('continue', 'Enter')
-      expect(test.screen_content).to match_screen(expected_output)
+      expect(test.screen_content).to match_screen(expected_output_2)
     ensure
       test.stop
     end

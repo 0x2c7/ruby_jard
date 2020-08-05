@@ -13,7 +13,6 @@ eval(
     def test2(a, b)
       c = a + b
       c * 3
-      jard
     end
   CODE
 )
