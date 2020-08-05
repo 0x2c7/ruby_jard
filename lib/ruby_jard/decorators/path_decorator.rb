@@ -31,11 +31,10 @@ module RubyJard
         if path.start_with?(Dir.pwd)
           @type = TYPE_PWD
           @path = @path[Dir.pwd.length..-1]
+          @path = @path[1..-1] if @path.start_with?('/')
         else
           decorate_gem_path
         end
-
-        @path = @path[1..-1] if @path.start_with?('/')
       end
 
       def gem?
