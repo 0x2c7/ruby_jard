@@ -21,7 +21,7 @@ module RubyJard
       process_commands_with_lock
     end
 
-    def at_return(_)
+    def at_return(_return_value)
       process_commands_with_lock
     end
 

@@ -53,7 +53,7 @@ module RubyJard
       start unless started?
 
       Byebug.attach
-      Byebug.current_context.step_out(2, false)
+      Byebug.current_context.step_out(3, true)
     end
 
     def update
