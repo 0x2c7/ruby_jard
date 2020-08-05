@@ -199,13 +199,13 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     let(:expected_output_1) do
       <<~EXPECTED
         ┌ Source  ../../../examples/test7_example.rb:22 ───────────────────────────────┐
-        │  13     c * 3                                                                │
-        │  14     jard                                                                 │
-        │  15   end                                                                    │
-        │  16 CODE                                                                     │
-        │  17                                                                          │
-        │  18 eval(code1)                                                              │
-        │  19 eval(*code2)                                                             │
+        │  13     def test2(a, b)                                                      │
+        │  14       c = a + b                                                          │
+        │  15       c * 3                                                              │
+        │  16       jard                                                               │
+        │  17     end                                                                  │
+        │  18   CODE                                                                   │
+        │  19 )                                                                        │
         │  20                                                                          │
         │  21 jard                                                                     │
         │➠ 22 test1(1, 2)                                                              │
@@ -225,27 +225,27 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
 
     let(:expected_output_3) do
-      <<~EXPECTED
-        ┌ Source  ../../../examples/test7_example.rb:12 ───────────────────────────────┐
-        │   3 code1 = <<~CODE                                                          │
-        │   4   def test1(a, b)                                                        │
-        │   5     c = a + b                                                            │
-        │   6     c * 2                                                                │
-        │   7   end                                                                    │
-        │   8 CODE                                                                     │
-        │   9                                                                          │
-        │  10 code2 = <<~CODE, nil, __FILE__, __LINE__ + 1                             │
-        │  11   def test2(a, b)                                                        │
-        │➠ 12     c = a + b                                                            │
-        │  13     c * 3                                                                │
-        │  14     jard                                                                 │
-        │  15   end                                                                    │
-        │  16 CODE                                                                     │
-        │  17                                                                          │
-        │  18 eval(code1)                                                              │
-        │  19 eval(*code2)                                                             │
+      <<~'EXPECTED'
+        ┌ Source  ../../../examples/test7_example.rb:14 ───────────────────────────────┐
+        │   5     def test1(a, b)                                                      │
+        │   6       c = a + b                                                          │
+        │   7       c * 2                                                              │
+        │   8     end                                                                  │
+        │   9   CODE                                                                   │
+        │  10 )                                                                        │
+        │  11 eval(                                                                    │
+        │  12   <<~CODE, nil, __FILE__, __LINE__ + 1                                   │
+        │  13     def test2(a, b)                                                      │
+        │➠ 14       c = a + b                                                          │
+        │  15       c * 3                                                              │
+        │  16       jard                                                               │
+        │  17     end                                                                  │
+        │  18   CODE                                                                   │
+        │  19 )                                                                        │
         │  20                                                                          │
         │  21 jard                                                                     │
+        │  22 test1(1, 2)                                                              │
+        │  23 test2(3, 4)                                                              │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -267,21 +267,19 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
   context 'when stop at the end of a method' do
     let(:expected_output) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test7_example.rb:15 ───────────────────────────────┐
-        │   6     c * 2                                                                │
-        │   7   end                                                                    │
-        │   8 CODE                                                                     │
-        │   9                                                                          │
-        │  10 code2 = <<~CODE, nil, __FILE__, __LINE__ + 1                             │
-        │  11   def test2(a, b)                                                        │
-        │  12     c = a + b                                                            │
-        │  13     c * 3                                                                │
-        │  14     jard                                                                 │
-        │➠ 15   end                                                                    │
-        │  16 CODE                                                                     │
-        │  17                                                                          │
-        │  18 eval(code1)                                                              │
-        │  19 eval(*code2)                                                             │
+        ┌ Source  ../../../examples/test7_example.rb:17 ───────────────────────────────┐
+        │   8     end                                                                  │
+        │   9   CODE                                                                   │
+        │  10 )                                                                        │
+        │  11 eval(                                                                    │
+        │  12   <<~CODE, nil, __FILE__, __LINE__ + 1                                   │
+        │  13     def test2(a, b)                                                      │
+        │  14       c = a + b                                                          │
+        │  15       c * 3                                                              │
+        │  16       jard                                                               │
+        │➠ 17     end                                                                  │
+        │  18   CODE                                                                   │
+        │  19 )                                                                        │
         │  20                                                                          │
         │  21 jard                                                                     │
         │  22 test1(1, 2)                                                              │

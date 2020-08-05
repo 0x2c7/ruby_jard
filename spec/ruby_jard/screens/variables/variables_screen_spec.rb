@@ -240,10 +240,6 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
       <<~'EXPECTED'
         ┌ Variables ───────────────────────────────────────────────────────────────────┐
         │  self = main                                                                 │
-        │  code1 (len:40) = "def test1(a, b)\n  c = a + b\n  c * 2\nend\n"             │
-        │  code2 (len:4) =                                                             │
-        │  ["def test2(a, b)\n  c = a + b\n  c * 3\n  jard\nend\n", nil, "/home/darkwin│
-        │  g0711/www/ruby_jard/spec/examples/test7_example.rb", 11]                    │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
