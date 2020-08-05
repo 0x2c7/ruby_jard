@@ -58,6 +58,7 @@ class JardIntegrationTest
   def tmux(*args)
     command = "tmux #{args.join(' ')}"
     output = `#{command}`
+    puts command if ENV['CI']
     if $CHILD_STATUS.success?
       output
     else
