@@ -43,9 +43,7 @@ class JardIntegrationTest
   end
 
   def screen_content
-    if ENV['CI']
-      sleep 1
-    end
+    sleep 1
 
     lines =
       screen.split("\n")
