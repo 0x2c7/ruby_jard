@@ -188,6 +188,7 @@ module RubyJard
           end
 
         return [] unless constant_source.respond_to?(:constants)
+        return [] if toplevel_binding?
 
         constants = constant_source.constants.select { |v| v.to_s.upcase == v.to_s }
         constants.map do |variable|
@@ -197,6 +198,12 @@ module RubyJard
         rescue NameError
           nil
         end.compact
+      end
+
+      def toplevel_binding?
+        @session.current_frame.frame_self == TOPLEVEL_BINDING.receiver
+      rescue StandardError
+        false
       end
 
       def self_variable
