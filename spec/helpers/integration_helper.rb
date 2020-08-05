@@ -43,9 +43,7 @@ class JardIntegrationTest
   end
 
   def screen_content
-    if ENV['CI']
-      sleep 1
-    end
+    sleep 1
 
     lines =
       screen.split("\n")
@@ -75,23 +73,52 @@ RSpec::Matchers.define :match_screen do |expected|
     @expected = expected.strip
     @actual = actual.strip
     if @expected != @actual
-      actual_lines = @actual.split("\n")
-      expected_lines = @expected.split("\n")
-      if actual_lines.length == expected_lines.length
-        matched_all = true
-        expected_lines.each.with_index do |expected_line, index|
-          unless match_line(expected_line, actual_lines[index])
-            matched_all = false
-            break
-          end
-        end
-        matched_all
-      else
-        false
-      end
+      match_content(@expected, @actual)
     else
       true
     end
+  end
+
+  failure_message do |actual|
+    <<~SCREEN
+      Expected screen:
+      ###
+      #{expected}
+      ###
+
+      Actual screen:
+      ###
+      #{actual}
+      ###
+    SCREEN
+  end
+
+  def match_content(expected, actual)
+    actual_lines = actual.split("\n")
+    expected_lines = expected.split("\n")
+    return false unless actual_lines.length == expected_lines.length
+
+    actual_title = actual_lines.shift
+    expected_title = expected_lines.shift
+
+    return false unless match_title(expected_title, actual_title)
+
+    matched_all = true
+    expected_lines.each.with_index do |expected_line, index|
+      unless match_line(expected_line, actual_lines[index])
+        matched_all = false
+        break
+      end
+    end
+    matched_all
+  end
+
+  def match_title(expected_title, actual_title)
+    box_lines.each do |char|
+      expected_title.to_s.gsub!(/#{char}/, ' ')
+      actual_title.to_s.gsub!(/#{char}/, ' ')
+    end
+    expected_title.strip == actual_title.strip
   end
 
   def match_line(expected_line, actual_line)
@@ -103,6 +130,16 @@ RSpec::Matchers.define :match_screen do |expected|
       return false if char != actual_line[index]
     end
     true
+  end
+
+  def box_lines
+    [
+      RubyJard::BoxDrawer::NORMALS_CORNERS.values,
+      RubyJard::BoxDrawer::OVERLAPPED_CORNERS.values,
+      RubyJard::BoxDrawer::HORIZONTAL_LINE,
+      RubyJard::BoxDrawer::VERTICAL_LINE,
+      RubyJard::BoxDrawer::CROSS_CORNER
+    ].flatten
   end
 
   diffable

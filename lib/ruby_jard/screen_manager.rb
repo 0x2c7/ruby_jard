@@ -36,9 +36,6 @@ require 'ruby_jard/templates/screen_template'
 
 require 'ruby_jard/layout'
 require 'ruby_jard/layouts'
-require 'ruby_jard/layouts/wide_layout'
-require 'ruby_jard/layouts/narrow_layout'
-require 'ruby_jard/layouts/standalone_variables_layout'
 require 'ruby_jard/layout_calculator'
 
 module RubyJard

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'pathname'
+
 module RubyJard
   module Decorators
     ##
@@ -28,14 +30,16 @@ module RubyJard
       end
 
       def decorate
-        if path.start_with?(Dir.pwd)
-          @type = TYPE_PWD
-          @path = @path[Dir.pwd.length..-1]
-        else
-          decorate_gem_path
-        end
+        try_parse_gem_path
+        return if gem?
 
-        @path = @path[1..-1] if @path.start_with?('/')
+        @type = TYPE_PWD
+        if @path.start_with?(Dir.pwd)
+          @path = @path[Dir.pwd.length..-1]
+          @path = @path[1..-1] if @path.start_with?('/')
+        else
+          try_relative_path
+        end
       end
 
       def gem?
@@ -44,7 +48,7 @@ module RubyJard
 
       private
 
-      def decorate_gem_path
+      def try_parse_gem_path
         gem_paths.each do |gem_path|
           next unless path.start_with?(gem_path)
 
@@ -63,6 +67,15 @@ module RubyJard
 
           break
         end
+      end
+
+      def try_relative_path
+        relative_path = Pathname.new(@path).relative_path_from(Pathname.pwd).to_s
+        if relative_path.length < @path.length
+          @path = relative_path
+        end
+      rescue ArgumentError
+        # Fail to get relative path, ignore
       end
 
       def gem_paths

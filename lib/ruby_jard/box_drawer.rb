@@ -113,6 +113,9 @@ module RubyJard
         total_length = 0
         title_parts = Array(screen.title)
         title_parts.each_with_index do |title_part, index|
+          break if total_length >= screen.layout.box_width
+
+          title_part = title_part[0..screen.layout.box_width - total_length - 2 - 1 - 2]
           if index == 0
             @output.print @color_decorator.decorate(:title, " #{title_part} ")
           else

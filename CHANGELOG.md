@@ -7,8 +7,12 @@
 - Add `gruvbox` color scheme
 - Add `alias_to_debugger` option
 - Add `layout` option
+- Source screen: Use relative path if shorter than absolute path.
 
 ### Bug fixes
+- Jard doesn't work when place at the end of a method, or a block.
+- box title overflow
+- source screen doesn't work well with anonymous evaluation, or `ruby -e`
 
 ### Internal & Refactoring
 - Add tests for critical sections
