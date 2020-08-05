@@ -79,6 +79,20 @@ RSpec::Matchers.define :match_screen do |expected|
     end
   end
 
+  failure_message do |actual|
+    <<~SCREEN
+      Expected screen:
+      ###
+      #{expected}
+      ###
+
+      Actual screen:
+      ###
+      #{actual}"
+      ###
+    SCREEN
+  end
+
   def match_content(expected, actual)
     actual_lines = actual.split("\n")
     expected_lines = expected.split("\n")
