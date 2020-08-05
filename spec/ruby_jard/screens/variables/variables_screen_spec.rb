@@ -234,4 +234,110 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
       test.stop
     end
   end
+
+  context 'with code evaluation' do
+    let(:expected_output_1) do
+      <<~'EXPECTED'
+        ┌ Variables ───────────────────────────────────────────────────────────────────┐
+        │  self = main                                                                 │
+        │  code1 (len:40) = "def test1(a, b)\n  c = a + b\n  c * 2\nend\n"             │
+        │  code2 (len:4) =                                                             │
+        │  ["def test2(a, b)\n  c = a + b\n  c * 3\n  jard\nend\n", nil, "/home/darkwin│
+        │  g0711/www/ruby_jard/spec/examples/test7_example.rb", 11]                    │
+        └──────────────────────────────────────────────────────────────────────────────┘
+      EXPECTED
+    end
+
+    let(:expected_output_2) do
+      <<~EXPECTED
+        ┌ Variables ───────────────────────────────────────────────────────────────────┐
+        │  self = main                                                                 │
+        │  a = 1                                                                       │
+        │  b = 2                                                                       │
+        │  c = nil                                                                     │
+        └──────────────────────────────────────────────────────────────────────────────┘
+      EXPECTED
+    end
+
+    let(:expected_output_3) do
+      <<~'EXPECTED'
+        ┌ Variables ───────────────────────────────────────────────────────────────────┐
+        │  self = main                                                                 │
+        │• a = 3                                                                       │
+        │• b = 4                                                                       │
+        │• c = nil                                                                     │
+        └──────────────────────────────────────────────────────────────────────────────┘
+      EXPECTED
+    end
+
+    it 'displays correct line' do
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test7_example.rb")
+      test.start
+      expect(test.screen_content).to match_screen(expected_output_1)
+      test.send_keys('step', 'Enter')
+      expect(test.screen_content).to match_screen(expected_output_2)
+      test.send_keys('step-out', 'Enter')
+      test.send_keys('step', 'Enter')
+      expect(test.screen_content).to match_screen(expected_output_3)
+    ensure
+      test.stop
+    end
+  end
+
+  context 'when stop at the end of a method' do
+    let(:expected_output) do
+      <<~EXPECTED
+        ┌ Variables ───────────────────────────────────────────────────────────────────┐
+        │  self = main                                                                 │
+        │  a = 3                                                                       │
+        │  b = 4                                                                       │
+        │  c = 7                                                                       │
+        └──────────────────────────────────────────────────────────────────────────────┘
+      EXPECTED
+    end
+
+    it 'displays correct line' do
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test7_example.rb")
+      test.start
+      test.send_keys('continue', 'Enter')
+      expect(test.screen_content).to match_screen(expected_output)
+    ensure
+      test.stop
+    end
+  end
+
+  context 'when run with ruby -e' do
+    let(:expected_output_1) do
+      <<~EXPECTED
+        ┌ Variables ───────────────────────────────────────────────────────────────────┐
+        │  self = main                                                                 │
+        │  a = nil                                                                     │
+        │  b = nil                                                                     │
+        └──────────────────────────────────────────────────────────────────────────────┘
+      EXPECTED
+    end
+
+    let(:expected_output_2) do
+      <<~EXPECTED
+        ┌ Variables ───────────────────────────────────────────────────────────────────┐
+        │  self = main                                                                 │
+        │  a = 400                                                                     │
+        │  b = nil                                                                     │
+        └──────────────────────────────────────────────────────────────────────────────┘
+      EXPECTED
+    end
+
+    it 'displays correct line' do
+      code = <<~CODE
+        bundle exec ruby -e \"require 'ruby_jard'\njard\na = 100 + 300\nb = a + 1\"
+      CODE
+      test = JardIntegrationTest.new(work_dir, code)
+      test.start
+      expect(test.screen_content).to match_screen(expected_output_1)
+      test.send_keys('next', 'Enter')
+      expect(test.screen_content).to match_screen(expected_output_2)
+    ensure
+      test.stop
+    end
+  end
 end
