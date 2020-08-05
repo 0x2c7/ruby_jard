@@ -19,26 +19,64 @@ module RubyJard
       def build
         return if @session.current_frame.nil?
 
-        # TODO: screen now supports window.
-        codes = source_decorator.codes
-        @rows = codes.map.with_index do |loc, index|
+        if @session.current_frame.frame_file == '(eval)'
+          # (eval) is hard-coded in Ruby source code for in-code evaluation
+          handle_anonymous_evaluation
+        else
+          # TODO: screen now supports window.
+          codes = source_decorator.codes
+          @rows = codes.map.with_index do |loc, index|
+            RubyJard::Row.new(
+              line_limit: 3,
+              columns: [
+                RubyJard::Column.new(
+                  spans: [
+                    span_mark(index),
+                    span_lineno(index)
+                  ]
+                ),
+                RubyJard::Column.new(
+                  word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
+                  spans: loc_spans(loc)
+                )
+              ]
+            )
+          end
+        end
+        @selected = 0
+      end
+
+      private
+
+      def handle_anonymous_evaluation
+        @rows = [
           RubyJard::Row.new(
             line_limit: 3,
             columns: [
               RubyJard::Column.new(
                 spans: [
-                  span_mark(index),
-                  span_lineno(index)
+                  RubyJard::Span.new(
+                    content: 'This section is anonymous!',
+                    styles: :normal_token
+                  )
                 ]
-              ),
+              )
+            ]
+          ),
+          RubyJard::Row.new(
+            line_limit: 3,
+            columns: [
               RubyJard::Column.new(
-                word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
-                spans: loc_spans(loc)
+                spans: [
+                  RubyJard::Span.new(
+                    content: 'Maybe it is dynamically evaluated without file information.',
+                    styles: :source_lineno
+                  )
+                ]
               )
             ]
           )
-        end
-        @selected = 0
+        ]
       end
 
       def span_mark(index)
@@ -62,8 +100,6 @@ module RubyJard
         spans, _tokens = loc_decorator.decorate(loc, @session.current_frame.frame_file)
         spans
       end
-
-      private
 
       def path_decorator(path, lineno)
         @path_decorator ||= RubyJard::Decorators::PathDecorator.new(path, lineno)
