@@ -53,7 +53,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
     end
 
     it 'captures all variables' do
-      test = JardIntegrationTest.new(work_dir, 'bundle exec ruby test1_example.rb')
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test1_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output_1)
       test.send_keys('continue', 'Enter')
@@ -112,7 +112,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
     end
 
     it 'captures all variables' do
-      test = JardIntegrationTest.new(work_dir, 'bundle exec ruby test2_example.rb')
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test2_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output_1)
       test.send_keys('continue', 'Enter')
@@ -138,7 +138,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
     end
 
     it 'captures all variables' do
-      test = JardIntegrationTest.new(work_dir, 'bundle exec ruby test3_example.rb')
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test3_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output)
     ensure
@@ -163,7 +163,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
     end
 
     it 'captures all variables' do
-      test = JardIntegrationTest.new(work_dir, 'bundle exec ruby test4_example.rb')
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test4_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output)
     ensure
@@ -221,7 +221,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
     end
 
     it 'captures all variables' do
-      test = JardIntegrationTest.new(work_dir, 'bundle exec ruby test5_example.rb')
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test5_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output_1)
       test.send_keys('step', 'Enter')

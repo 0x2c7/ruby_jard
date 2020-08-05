@@ -13,7 +13,7 @@ def require_relative_folder(pattern)
 end
 
 require_relative_folder('./helpers/**/*')
-require_relative_folder('./shared_examples/**/*')
+require_relative_folder('./shared/**/*')
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
