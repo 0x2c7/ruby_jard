@@ -48,7 +48,7 @@ module RubyJard
     COMMANDS = [
       CMD_FLOW      = :flow,
       CMD_EVALUATE  = :evaluate,
-      CMD_IDLE      = :idle,
+      CMD_EVALUATED = :evaluated,
       CMD_INTERRUPT = :interrupt
     ].freeze
     INTERNAL_KEY_BINDINGS = {
@@ -59,12 +59,19 @@ module RubyJard
     KEY_READ_TIMEOUT = 0.1           # 100ms
     PTY_OUTPUT_TIMEOUT = 1.to_f / 60 # 60hz
 
+    STATES = [
+      STATE_READY = 0,
+      STATE_EXITING = 1,
+      STATE_EXITED = 2
+    ].freeze
+
     def initialize(key_bindings: nil)
+      @state = STATE_EXITED
+
       @pry_input_pipe_read, @pry_input_pipe_write = IO.pipe
       @pry_output_pty_read, @pry_output_pty_write = PTY.open
       @pry = pry_instance
-      @commands = Queue.new
-      @repling = 0
+      @pry_commands = Queue.new
 
       @key_bindings = key_bindings || RubyJard::KeyBindings.new
       INTERNAL_KEY_BINDINGS.each do |sequence, action|
@@ -75,23 +82,24 @@ module RubyJard
     end
 
     def repl(current_binding)
+      ready!
+
       RubyJard::Console.disable_echo!
 
       Readline.input = @pry_input_pipe_read
       Readline.output = @pry_output_pty_write
-      @repling = 2
-      @commands.clear
+      @pry_commands.clear
       @pry.binding_stack.clear
 
       @pry_input_thread = Thread.new { pry_repl(current_binding) }
       @pry_input_thread.report_on_exception = false if @pry_input_thread.respond_to?(:report_on_exception)
       loop do
-        break unless repling?
+        break unless ready?
 
-        if @commands.empty?
+        if @pry_commands.empty?
           listen_key_press
         else
-          cmd, value = @commands.deq
+          cmd, value = @pry_commands.deq
           handle_command(cmd, value)
         end
       end
@@ -100,12 +108,34 @@ module RubyJard
       Readline.input = STDIN
       Readline.output = STDOUT
       @pry_input_thread&.exit if @pry_input_thread&.alive?
+
+      exited!
     end
 
     private
 
-    def repling?
-      @repling == 2
+    def ready?
+      @state == STATE_READY
+    end
+
+    def ready!
+      @state = STATE_READY
+    end
+
+    def exiting?
+      @state == STATE_EXITING
+    end
+
+    def exiting!
+      @state = STATE_EXITING
+    end
+
+    def exited?
+      @state == STATE_EXITED
+    end
+
+    def exited!
+      @state = STATE_EXITED
     end
 
     def read_key
@@ -113,12 +143,12 @@ module RubyJard
     end
 
     def pry_repl(current_binding)
-      sleep KEY_READ_TIMEOUT unless repling?
+      sleep PTY_OUTPUT_TIMEOUT unless ready?
 
       flow = RubyJard::ControlFlow.listen do
         @pry.repl(current_binding)
       end
-      @commands << [CMD_FLOW, flow]
+      @pry_commands << [CMD_FLOW, flow]
     rescue StandardError => e
       RubyJard::ScreenManager.draw_error(e)
       raise
@@ -126,8 +156,17 @@ module RubyJard
 
     def pry_pty_output
       loop do
-        @repling = 0 if @repling == 1 && !@pry_output_pty_read.ready?
-        STDOUT.print @pry_output_pty_read.read_nonblock(255)
+        if exiting?
+          if @pry_output_pty_read.ready?
+            STDOUT.print @pry_output_pty_read.read_nonblock(255)
+          else
+            exited!
+          end
+        elsif exited?
+          sleep PTY_OUTPUT_TIMEOUT
+        else
+          STDOUT.print @pry_output_pty_read.read_nonblock(255)
+        end
       rescue IO::WaitReadable, IO::WaitWritable
         # Retry
         sleep PTY_OUTPUT_TIMEOUT
@@ -147,32 +186,25 @@ module RubyJard
       case key_binding.action
       when KEY_BINDING_ENDLINE
         @pry_input_pipe_write.write(key_binding.sequence)
-        @commands << [CMD_EVALUATE]
+        @pry_commands << [CMD_EVALUATE]
       when KEY_BINDING_INTERRUPT
-        @commands << [CMD_INTERRUPT]
+        handle_interrupt_command
       else
-        @commands << [
-          CMD_FLOW, RubyJard::ControlFlow.new(:key_binding, action: key_binding.action)
-        ]
+        handle_flow_command(RubyJard::ControlFlow.new(:key_binding, action: key_binding.action))
       end
     end
 
     def handle_command(cmd, value)
       case cmd
       when CMD_FLOW
-        @repling = 1
-        @commands.clear
-        sleep PTY_OUTPUT_TIMEOUT if @repling != 0
-        RubyJard::ControlFlow.dispatch(value)
+        handle_flow_command(value)
       when CMD_EVALUATE
         loop do
-          cmd, value = @commands.deq
-          break if [CMD_IDLE, CMD_FLOW, CMD_INTERRUPT].include?(cmd)
+          cmd, value = @pry_commands.deq
+          break if [CMD_EVALUATED, CMD_FLOW].include?(cmd)
         end
         handle_command(cmd, value)
-      when CMD_INTERRUPT
-        handle_interrupt_command
-      when CMD_IDLE
+      when CMD_EVALUATED
         # Ignore
       end
     end
@@ -181,12 +213,19 @@ module RubyJard
       @pry_input_thread&.raise Interrupt if @pry_input_thread&.alive?
       loop do
         begin
-          sleep KEY_READ_TIMEOUT
+          sleep PTY_OUTPUT_TIMEOUT
         rescue Interrupt
           # Interrupt spam. Ignore.
         end
         break unless @pry_input_thread&.pending_interrupt?
       end
+    end
+
+    def handle_flow_command(flow)
+      @pry_commands.clear
+      exiting!
+      sleep PTY_OUTPUT_TIMEOUT until exited?
+      RubyJard::ControlFlow.dispatch(flow)
     end
 
     def pry_instance
@@ -236,17 +275,15 @@ module RubyJard
     def pry_hooks
       hooks = Pry::Hooks.default
       hooks.add_hook(:after_read, :jard_proxy_acquire_lock) do |read_string, _pry|
-        @commands <<
-          if Pry::Code.complete_expression?(read_string)
-            [CMD_EVALUATE]
-          else
-            [CMD_IDLE]
-          end
+        unless Pry::Code.complete_expression?(read_string)
+          @pry_commands << [CMD_EVALUATED]
+        end
       rescue SyntaxError
-        @commands << [CMD_IDLE]
+        # Ignore
+        @pry_commands << [CMD_EVALUATED]
       end
       hooks.add_hook(:after_handle_line, :jard_proxy_release_lock) do
-        @commands << [CMD_IDLE]
+        @pry_commands << [CMD_EVALUATED]
       end
     end
   end
