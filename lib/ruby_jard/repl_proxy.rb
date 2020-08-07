@@ -128,6 +128,7 @@ module RubyJard
     def pry_pty_output
       loop do
         STDOUT.print @pry_output_pty_read.read_nonblock(255)
+        STDOUT.flush
       rescue IO::WaitReadable, IO::WaitWritable
         # Retry
         sleep PTY_OUTPUT_TIMEOUT
