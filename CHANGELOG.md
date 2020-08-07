@@ -14,6 +14,7 @@
 - box title overflow
 - Source screen doesn't work well with anonymous evaluation, or `ruby -e`
 - Auto-completion of pry (actually readline) is broken
+- Could not exit when starting Jard inside irb
 
 ### Internal & Refactoring
 - Add tests for critical sections
