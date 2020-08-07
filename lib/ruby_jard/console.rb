@@ -72,7 +72,6 @@ module RubyJard
         return input.getch(min: 0, time: timeout) if input.respond_to?(:getch)
 
         raw!
-        disable_echo!
         key =
           begin
             input.read_nonblock(255)
@@ -90,7 +89,6 @@ module RubyJard
         key
       ensure
         cooked!
-        enable_echo!
       end
 
       def raw!(output = STDOUT)
