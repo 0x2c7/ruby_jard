@@ -64,7 +64,7 @@ module RubyJard
       @pry_output_pty_read, @pry_output_pty_write = PTY.open
       @pry = pry_instance
       @commands = Queue.new
-      @repling = false
+      @repling = 0
 
       @key_bindings = key_bindings || RubyJard::KeyBindings.new
       INTERNAL_KEY_BINDINGS.each do |sequence, action|
@@ -77,10 +77,9 @@ module RubyJard
     def repl(current_binding)
       RubyJard::Console.disable_echo!
 
-      STDOUT.flush
       Readline.input = @pry_input_pipe_read
       Readline.output = @pry_output_pty_write
-      @repling = true
+      @repling = 2
       @commands.clear
       @pry.binding_stack.clear
 
@@ -106,7 +105,7 @@ module RubyJard
     private
 
     def repling?
-      @repling == true
+      @repling == 2
     end
 
     def read_key
@@ -127,8 +126,8 @@ module RubyJard
 
     def pry_pty_output
       loop do
+        @repling = 0 if @repling == 1 && !@pry_output_pty_read.ready?
         STDOUT.print @pry_output_pty_read.read_nonblock(255)
-        STDOUT.flush
       rescue IO::WaitReadable, IO::WaitWritable
         # Retry
         sleep PTY_OUTPUT_TIMEOUT
@@ -161,7 +160,9 @@ module RubyJard
     def handle_command(cmd, value)
       case cmd
       when CMD_FLOW
-        @repling = false
+        @repling = 1
+        @commands.clear
+        sleep PTY_OUTPUT_TIMEOUT if @repling != 0
         RubyJard::ControlFlow.dispatch(value)
       when CMD_EVALUATE
         loop do
