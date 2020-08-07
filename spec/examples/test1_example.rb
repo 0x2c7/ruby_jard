@@ -9,6 +9,7 @@ variable_d = { test: 1, this: 'Bye', array: nil }
 variable_e = /Wait, what/i
 variable_f = 1.1
 variable_g = 99..100
+variable_k = StandardError.new('A random error')
 
 jard
 variable_h = 15

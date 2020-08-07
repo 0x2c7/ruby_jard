@@ -16,6 +16,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
         │  variable_f = 1.1                                                            │
         │  variable_g = 99..100                                                        │
         │• variable_h = nil                                                            │
+        │  variable_k = #<StandardError: A random error>                               │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -32,6 +33,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
         │  variable_f = 1.1                                                            │
         │  variable_g = 99..100                                                        │
         │  variable_h = 15                                                             │
+        │  variable_k = #<StandardError: A random error>                               │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -48,6 +50,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
         │• variable_f = 1.1                                                            │
         │  variable_g = 99..100                                                        │
         │• variable_h = 15                                                             │
+        │  variable_k = #<StandardError: A random error>                               │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
