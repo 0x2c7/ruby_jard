@@ -1,16 +1,6 @@
 # frozen_string_literal: true
 
 require 'pty'
-require 'ruby_jard/commands/validation_helpers'
-require 'ruby_jard/commands/continue_command'
-require 'ruby_jard/commands/up_command'
-require 'ruby_jard/commands/down_command'
-require 'ruby_jard/commands/next_command'
-require 'ruby_jard/commands/step_command'
-require 'ruby_jard/commands/step_out_command'
-require 'ruby_jard/commands/frame_command'
-require 'ruby_jard/commands/list_command'
-require 'ruby_jard/commands/color_scheme_command'
 
 module RubyJard
   ##
@@ -46,7 +36,6 @@ module RubyJard
       'stat',          # Included in jard UI
       'backtrace',     # Re-implemented later
       'break',         # Re-implemented later
-      'exit',          # Conflicted with continue
       'exit-all',      # Conflicted with continue
       'exit-program',  # We already have `exit` native command
       '!pry',          # No need to complicate things

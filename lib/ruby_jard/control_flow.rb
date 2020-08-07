@@ -7,7 +7,8 @@ module RubyJard
   class ControlFlow
     THROW_KEYWORD = :jard_control_flow
     ALLOW_LIST = {
-      continue: [:times],           # lib/ruby_jard/commands/continue_command.rb
+      continue: [],                 # lib/ruby_jard/commands/continue_command.rb
+      exit: [],                     # lib/ruby_jard/commands/exit_command.rb
       frame: [:frame],              # lib/ruby_jard/commands/frame_command.rb
       up: [:times],                 # lib/ruby_jard/commands/up_command.rb
       down: [:times],               # lib/ruby_jard/commands/down_command.rb
