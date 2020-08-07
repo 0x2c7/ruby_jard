@@ -3,84 +3,84 @@
 RSpec.describe 'RubyJard::Screens::SourceScreen' do
   let(:work_dir) { File.join(RSPEC_ROOT, '/ruby_jard/screens/source') }
 
-  context 'with TOPLEVEL_BINDING code' do
+  context 'when jard stops at top-level binding' do
     let(:expected_output_1) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test1_example.rb:14 ───────────────────────────────┐
-        │   5 var_a = 123                                                              │
+        ┌ Source  ../../../examples/test1_example.rb:15 ───────────────────────────────┐
         │   6 var_b = 'hello world'                                                    │
         │   7 var_c = ['Hello', 1, 2, 3]                                               │
         │   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
         │   9 variable_e = /Wait, what/i                                               │
         │  10 variable_f = 1.1                                                         │
         │  11 variable_g = 99..100                                                     │
-        │  12                                                                          │
-        │  13 jard                                                                     │
-        │➠ 14 variable_h = 15                                                          │
-        │  15                                                                          │
-        │  16 jard                                                                     │
-        │  17 1.times {}                                                               │
-        │  18                                                                          │
-        │  19 jard                                                                     │
-        │  20 var_a + variable_f + variable_h || 5                                     │
+        │  12 variable_k = StandardError.new('A random error')                         │
+        │  13                                                                          │
+        │  14 jard                                                                     │
+        │➠ 15 variable_h = 15                                                          │
+        │  16                                                                          │
+        │  17 jard                                                                     │
+        │  18 1.times {}                                                               │
+        │  19                                                                          │
+        │  20 jard                                                                     │
+        │  21 var_a + variable_f + variable_h || 5                                     │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
 
     let(:expected_output_2) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test1_example.rb:16 ───────────────────────────────┐
-        │   7 var_c = ['Hello', 1, 2, 3]                                               │
+        ┌ Source  ../../../examples/test1_example.rb:17 ───────────────────────────────┐
         │   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
         │   9 variable_e = /Wait, what/i                                               │
         │  10 variable_f = 1.1                                                         │
         │  11 variable_g = 99..100                                                     │
-        │  12                                                                          │
-        │  13 jard                                                                     │
-        │  14 variable_h = 15                                                          │
-        │  15                                                                          │
-        │➠ 16 jard                                                                     │
-        │  17 1.times {}                                                               │
-        │  18                                                                          │
-        │  19 jard                                                                     │
-        │  20 var_a + variable_f + variable_h || 5                                     │
+        │  12 variable_k = StandardError.new('A random error')                         │
+        │  13                                                                          │
+        │  14 jard                                                                     │
+        │  15 variable_h = 15                                                          │
+        │  16                                                                          │
+        │➠ 17 jard                                                                     │
+        │  18 1.times {}                                                               │
+        │  19                                                                          │
+        │  20 jard                                                                     │
+        │  21 var_a + variable_f + variable_h || 5                                     │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
 
     let(:expected_output_3) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test1_example.rb:17 ───────────────────────────────┐
-        │   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
+        ┌ Source  ../../../examples/test1_example.rb:18 ───────────────────────────────┐
         │   9 variable_e = /Wait, what/i                                               │
         │  10 variable_f = 1.1                                                         │
         │  11 variable_g = 99..100                                                     │
-        │  12                                                                          │
-        │  13 jard                                                                     │
-        │  14 variable_h = 15                                                          │
-        │  15                                                                          │
-        │  16 jard                                                                     │
-        │➠ 17 1.times {}                                                               │
-        │  18                                                                          │
-        │  19 jard                                                                     │
-        │  20 var_a + variable_f + variable_h || 5                                     │
+        │  12 variable_k = StandardError.new('A random error')                         │
+        │  13                                                                          │
+        │  14 jard                                                                     │
+        │  15 variable_h = 15                                                          │
+        │  16                                                                          │
+        │  17 jard                                                                     │
+        │➠ 18 1.times {}                                                               │
+        │  19                                                                          │
+        │  20 jard                                                                     │
+        │  21 var_a + variable_f + variable_h || 5                                     │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
 
     let(:expected_output_4) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test1_example.rb:20 ───────────────────────────────┐
-        │  11 variable_g = 99..100                                                     │
-        │  12                                                                          │
-        │  13 jard                                                                     │
-        │  14 variable_h = 15                                                          │
-        │  15                                                                          │
-        │  16 jard                                                                     │
-        │  17 1.times {}                                                               │
-        │  18                                                                          │
-        │  19 jard                                                                     │
-        │➠ 20 var_a + variable_f + variable_h || 5                                     │
+        ┌ Source  ../../../examples/test1_example.rb:21 ───────────────────────────────┐
+        │  12 variable_k = StandardError.new('A random error')                         │
+        │  13                                                                          │
+        │  14 jard                                                                     │
+        │  15 variable_h = 15                                                          │
+        │  16                                                                          │
+        │  17 jard                                                                     │
+        │  18 1.times {}                                                               │
+        │  19                                                                          │
+        │  20 jard                                                                     │
+        │➠ 21 var_a + variable_f + variable_h || 5                                     │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -100,7 +100,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
   end
 
-  context 'with instance method' do
+  context 'when jard stops inside an instance method' do
     let(:expected_output) do
       <<~EXPECTED
         ┌ Source  ../../../examples/test2_example.rb:23 ───────────────────────────────┐
@@ -142,7 +142,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
   end
 
-  context 'with nested method' do
+  context 'when jard stops within a nested method' do
     let(:expected_output) do
       <<~EXPECTED
         ┌ Source  ../../../examples/test4_example.rb:13 ───────────────────────────────┐
@@ -176,7 +176,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
   end
 
-  context 'with jard putting at the beginning of file, as well as at the end of file' do
+  context 'when jard stops at the beginning of file or at the end of file' do
     let(:expected_output) do
       <<~EXPECTED
         ┌ Source  ../../../examples/test6_example.rb:2 ────────────────────────────────┐
@@ -195,7 +195,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
   end
 
-  context 'with code evaluation' do
+  context 'when jard steps into a code evaluation' do
     let(:expected_output_1) do
       <<~EXPECTED
         ┌ Source  ../../../examples/test7_example.rb:21 ───────────────────────────────┐
@@ -317,7 +317,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
   end
 
-  context 'when run with ruby -e' do
+  context 'when use jard with ruby -e' do
     let(:expected_output) do
       <<~EXPECTED
         ┌ Source  -e:3 ────────────────────────────────────────────────────────────────┐

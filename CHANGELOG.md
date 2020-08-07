@@ -12,10 +12,13 @@
 ### Bug fixes
 - Jard doesn't work when place at the end of a method, or a block.
 - box title overflow
-- source screen doesn't work well with anonymous evaluation, or `ruby -e`
+- Source screen doesn't work well with anonymous evaluation, or `ruby -e`
+- Auto-completion of pry (actually readline) is broken
+- Could not exit when starting Jard inside irb
 
 ### Internal & Refactoring
 - Add tests for critical sections
+- Use PTY to feed output from pry to actual STDOUT
 
 ## [0.2.2 - Alpha 3]
 
