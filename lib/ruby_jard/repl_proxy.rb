@@ -88,6 +88,7 @@ module RubyJard
     def repl(current_binding)
       RubyJard::Console.disable_echo!
 
+      STDOUT.flush
       Readline.input = @pry_input_pipe_read
       Readline.output = @pry_output_pty_write
       @repling = true

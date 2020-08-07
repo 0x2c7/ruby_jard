@@ -3,7 +3,7 @@
 RSpec.describe 'RubyJard::Screens::SourceScreen' do
   let(:work_dir) { File.join(RSPEC_ROOT, '/ruby_jard/screens/source') }
 
-  context 'with TOPLEVEL_BINDING code' do
+  context 'when jard stops at top-level binding' do
     let(:expected_output_1) do
       <<~EXPECTED
         ┌ Source  ../../../examples/test1_example.rb:14 ───────────────────────────────┐
@@ -100,7 +100,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
   end
 
-  context 'with instance method' do
+  context 'when jard stops inside an instance method' do
     let(:expected_output) do
       <<~EXPECTED
         ┌ Source  ../../../examples/test2_example.rb:23 ───────────────────────────────┐
@@ -142,7 +142,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
   end
 
-  context 'with nested method' do
+  context 'when jard stops within a nested method' do
     let(:expected_output) do
       <<~EXPECTED
         ┌ Source  ../../../examples/test4_example.rb:13 ───────────────────────────────┐
@@ -176,7 +176,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
   end
 
-  context 'with jard putting at the beginning of file, as well as at the end of file' do
+  context 'when jard stops at the beginning of file or at the end of file' do
     let(:expected_output) do
       <<~EXPECTED
         ┌ Source  ../../../examples/test6_example.rb:2 ────────────────────────────────┐
@@ -195,7 +195,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
   end
 
-  context 'with code evaluation' do
+  context 'when jard steps into a code evaluation' do
     let(:expected_output_1) do
       <<~EXPECTED
         ┌ Source  ../../../examples/test7_example.rb:21 ───────────────────────────────┐
@@ -317,7 +317,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
   end
 
-  context 'when run with ruby -e' do
+  context 'when use jard with ruby -e' do
     let(:expected_output) do
       <<~EXPECTED
         ┌ Source  -e:3 ────────────────────────────────────────────────────────────────┐

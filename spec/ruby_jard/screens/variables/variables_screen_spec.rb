@@ -3,7 +3,7 @@
 RSpec.describe 'RubyJard::Screens::VariablesScreen' do
   let(:work_dir) { File.join(RSPEC_ROOT, '/ruby_jard/screens/variables') }
 
-  context 'with TOPLEVEL_BINDING variables' do
+  context 'when jard stops at top-level binding' do
     let(:expected_output_1) do
       <<~EXPECTED
         ┌ Variables ───────────────────────────────────────────────────────────────────┐
@@ -65,7 +65,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
     end
   end
 
-  context 'with context inside an instance method' do
+  context 'when jard stops at an instance method' do
     let(:expected_output_1) do
       <<~EXPECTED
         ┌ Variables ───────────────────────────────────────────────────────────────────┐
@@ -124,7 +124,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
     end
   end
 
-  context 'with context inside a class method' do
+  context 'when jard stops inside a class method' do
     let(:expected_output) do
       <<~EXPECTED
         ┌ Variables ───────────────────────────────────────────────────────────────────┐
@@ -146,7 +146,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
     end
   end
 
-  context 'with context inside a nested loop' do
+  context 'when jard stops inside a nested loop' do
     let(:expected_output) do
       <<~EXPECTED
         ┌ Variables ───────────────────────────────────────────────────────────────────┐
@@ -235,7 +235,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
     end
   end
 
-  context 'with code evaluation' do
+  context 'when jard steps into a code evaluation' do
     let(:expected_output_1) do
       <<~'EXPECTED'
         ┌ Variables ───────────────────────────────────────────────────────────────────┐
@@ -280,7 +280,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
     end
   end
 
-  context 'when stop at the end of a method' do
+  context 'when jard stops at the end of a method' do
     let(:expected_output_1) do
       <<~EXPECTED
         ┌ Variables ───────────────────────────────────────────────────────────────────┐
@@ -311,7 +311,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
     end
   end
 
-  context 'when run with ruby -e' do
+  context 'when use jard with ruby -e' do
     let(:expected_output_1) do
       <<~EXPECTED
         ┌ Variables ───────────────────────────────────────────────────────────────────┐
