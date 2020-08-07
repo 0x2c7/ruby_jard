@@ -124,7 +124,7 @@ module RubyJard
       draw_box(@screens)
       draw_screens(@screens)
 
-      RubyJard::Console.move_to(@output, 0, total_screen_height(@layouts) + 1)
+      RubyJard::Console.move_to(@output, 0, total_screen_height(@layouts) + 2)
       RubyJard::Console.clear_screen_to_end(@output)
 
       draw_debug(width, height)

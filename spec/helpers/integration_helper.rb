@@ -48,7 +48,7 @@ class JardIntegrationTest
     lines =
       screen.split("\n")
             .reject { |line| line.start_with?('jard >>') }
-            .reject { |line| line[1..line.length - 2].strip.empty? }
+            .reject { |line| line[1..line.length - 2]&.strip&.empty? }
 
     lines.join("\n")
   end
