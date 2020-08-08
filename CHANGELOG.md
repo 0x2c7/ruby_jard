@@ -8,6 +8,7 @@
 - Add `alias_to_debugger` option
 - Add `layout` option
 - Source screen: Use relative path if shorter than absolute path.
+- Add `show-output` command
 
 ### Bug fixes
 - Jard doesn't work when place at the end of a method, or a block.
@@ -19,6 +20,7 @@
 ### Internal & Refactoring
 - Add tests for critical sections
 - Use PTY to feed output from pry to actual STDOUT
+- Use a custom pager to allow internal customization
 
 ## [0.2.2 - Alpha 3]
 
