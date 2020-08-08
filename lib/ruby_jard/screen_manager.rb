@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'tempfile'
 require 'ruby_jard/console'
 
 require 'ruby_jard/decorators/color_decorator'
@@ -60,7 +61,7 @@ module RubyJard
       @screens = {}
       @started = false
       @updating = false
-      @output_storage = StringIO.new
+      @output_storage = Tempfile.new('jard')
     end
 
     def start
@@ -72,13 +73,13 @@ module RubyJard
       RubyJard::Console.clear_screen(@output)
 
       # rubocop:disable Lint/NestedMethodDefinition
-      def $stdout.write(string)
+      def $stdout.write(*string, from_jard: false)
         # NOTE: `RubyJard::ScreenManager.instance` is a must. Jard doesn't work well with delegator
         # TODO: Debug and fix the issues permanently
-        if !RubyJard::ScreenManager.instance.updating? && RubyJard::ScreenManager.instance.started?
-          RubyJard::ScreenManager.instance.output_storage.write(string)
+        if !RubyJard::ScreenManager.instance.updating? && RubyJard::ScreenManager.instance.started? && !from_jard
+          RubyJard::ScreenManager.instance.output_storage.write(*string)
         end
-        super
+        super(*string)
       end
       # rubocop:enable Lint/NestedMethodDefinition
 
@@ -104,12 +105,10 @@ module RubyJard
       RubyJard::Console.enable_echo!
       RubyJard::Console.enable_cursor!
 
-      unless @output_storage.string.empty?
-        @output.puts ''
-        @output.write @output_storage.string
-        @output.puts ''
-      end
+      @output_storage.rewind
+      @output.write @output_storage.read until @output_storage.eof?
       @output_storage.close
+      @output_storage.unlink
     end
 
     def update
@@ -126,8 +125,6 @@ module RubyJard
 
       RubyJard::Console.move_to(@output, 0, total_screen_height(@layouts) + 1)
       RubyJard::Console.clear_screen_to_end(@output)
-
-      draw_debug(width, height)
     rescue StandardError => e
       RubyJard::Console.clear_screen(@output)
       draw_error(e, height)

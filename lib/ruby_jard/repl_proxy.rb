@@ -158,14 +158,14 @@ module RubyJard
       loop do
         if exiting?
           if @pry_output_pty_read.ready?
-            STDOUT.print @pry_output_pty_read.read_nonblock(255)
+            STDOUT.write @pry_output_pty_read.read_nonblock(255), from_jard: true
           else
             exited!
           end
         elsif exited?
           sleep PTY_OUTPUT_TIMEOUT
         else
-          STDOUT.print @pry_output_pty_read.read_nonblock(255)
+          STDOUT.write @pry_output_pty_read.read_nonblock(255), from_jard: true
         end
       rescue IO::WaitReadable, IO::WaitWritable
         # Retry
