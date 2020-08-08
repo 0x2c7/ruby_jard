@@ -15,14 +15,12 @@ module RubyJard
     end
 
     def open(options = {})
-      pager = LessPager.new(@pry_instance.output, **options)
+      pager = LessPager.new(@pry_instance, **options)
       yield pager
     rescue Pry::Pager::StopPaging
       # Ignore
     ensure
       pager.close
-      prompt = @pry_instance.prompt.wait_proc.call
-      @pry_instance.output.puts "#{prompt}Tips: You can use `list` command to show back debugger screens"
     end
 
     private
@@ -34,8 +32,9 @@ module RubyJard
     ##
     # Pager using GNU Less
     class LessPager < Pry::Pager::NullPager
-      def initialize(out, force_open: false, pager_start_at_the_end: false)
-        super(out)
+      def initialize(pry_instance, force_open: false, pager_start_at_the_end: false)
+        super(pry_instance.output)
+        @pry_instance = pry_instance
         @buffer = ''
 
         @pager_start_at_the_end = pager_start_at_the_end
@@ -62,6 +61,9 @@ module RubyJard
       def close
         if invoked_pager?
           @pager.close
+          prompt = @pry_instance.prompt.wait_proc.call
+          # TODO: should show this tip even pager not invoked, when the size exceed a certain height
+          @out.puts "#{prompt}Tips: You can use `list` command to show back debugger screens"
         else
           @out.write @buffer
         end
