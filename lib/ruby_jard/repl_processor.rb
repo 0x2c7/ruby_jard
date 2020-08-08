@@ -11,6 +11,7 @@ require 'ruby_jard/commands/step_out_command'
 require 'ruby_jard/commands/frame_command'
 require 'ruby_jard/commands/list_command'
 require 'ruby_jard/commands/color_scheme_command'
+require 'ruby_jard/commands/show_output_command'
 
 module RubyJard
   ##
