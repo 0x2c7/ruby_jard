@@ -39,6 +39,8 @@ require 'ruby_jard/layout'
 require 'ruby_jard/layouts'
 require 'ruby_jard/layout_calculator'
 
+require 'ruby_jard/pager'
+
 module RubyJard
   ##
   # This class acts as a coordinator, in which it combines the data and screen

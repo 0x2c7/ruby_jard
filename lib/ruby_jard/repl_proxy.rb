@@ -245,6 +245,10 @@ module RubyJard
         end
         alias_method :_original_handle_line, :handle_line
         alias_method :handle_line, :_jard_handle_line
+
+        def pager
+          RubyJard::Pager.new(self)
+        end
       end
       pry_instance
     end

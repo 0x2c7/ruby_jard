@@ -18,7 +18,7 @@ module RubyJard
       end
 
       def process
-        pry_instance.pager.open do |pager|
+        pry_instance.pager.open(pager_start_at_the_end: true) do |pager|
           self.class.output_storage.rewind
           pager.write self.class.output_storage.read until self.class.output_storage.eof?
         end
