@@ -76,7 +76,10 @@ module RubyJard
       def open_pager
         less_command = ['less', '-R', '-X', '-F', '-J']
         less_command << '+G' if @pager_start_at_the_end
-        IO.popen(less_command.join(' '), 'w')
+        IO.popen(
+          less_command.join(' '), 'w',
+          out: @pry_instance.output, err: @pry_instance.output
+        )
       end
     end
   end
