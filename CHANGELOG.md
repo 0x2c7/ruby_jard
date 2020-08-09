@@ -21,6 +21,8 @@
 - Add tests for critical sections
 - Use PTY to feed output from pry to actual STDOUT
 - Use a custom pager to allow internal customization
+- Improve performance of Jard when working with process with plenty of threads
+- Handle key-binding spamming well
 
 ## [0.2.2 - Alpha 3]
 

@@ -38,20 +38,10 @@ class JardIntegrationTest
     end
   end
 
-  def screen
-    tmux('capture-pane', '-J', '-p', '-t', @target)
-  end
-
   def screen_content
     sleep 1
 
-    lines =
-      screen
-      .split("\n")
-      .reject { |line| line.strip.include?('jard >>') }
-      .reject { |line| line[1..line.length - 2]&.strip&.empty? }
-
-    lines.join("\n")
+    tmux('capture-pane', '-J', '-p', '-t', @target)
   end
 
   private
@@ -71,6 +61,13 @@ end
 
 RSpec::Matchers.define :match_screen do |expected|
   match do |actual|
+    actual =
+      actual
+      .split("\n")
+      .reject { |line| line.strip.include?('jard >>') }
+      .reject { |line| line[1..line.length - 2]&.strip&.empty? }
+      .join("\n")
+
     @expected = expected.strip
     @actual = actual.strip
     if @expected != @actual
@@ -141,6 +138,60 @@ RSpec::Matchers.define :match_screen do |expected|
       RubyJard::BoxDrawer::VERTICAL_LINE,
       RubyJard::BoxDrawer::CROSS_CORNER
     ].flatten
+  end
+
+  diffable
+end
+
+RSpec::Matchers.define :match_repl do |expected|
+  match do |actual|
+    @expected = expected.strip
+    @actual = actual.strip
+    if @expected != @actual
+      match_content(@expected, @actual)
+    else
+      true
+    end
+  end
+
+  failure_message do |actual|
+    <<~SCREEN
+      Expected screen:
+      ###
+      #{expected}
+      ###
+
+      Actual screen:
+      ###
+      #{actual}
+      ###
+    SCREEN
+  end
+
+  def match_content(expected, actual)
+    actual_lines = actual.split("\n")
+    expected_lines = expected.split("\n")
+    return false unless actual_lines.length == expected_lines.length
+
+    matched_all = true
+    expected_lines.each.with_index do |expected_line, index|
+      unless match_line(expected_line.strip, actual_lines[index].strip)
+        matched_all = false
+        break
+      end
+    end
+    matched_all
+  end
+
+  def match_line(expected_line, actual_line)
+    return false if expected_line.length != actual_line.length
+
+    expected_line.each_char.with_index do |char, index|
+      next if char == '?'
+
+      return false if char != actual_line[index]
+    end
+    true
   end
 
   diffable

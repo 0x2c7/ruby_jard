@@ -1,0 +1,9 @@
+# frozen_string_literal: true
+
+RubyJard::Layouts.add_layout(
+  'empty',
+  RubyJard::Templates::LayoutTemplate.new(
+    children: []
+  )
+)
+config.layout = 'empty'

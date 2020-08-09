@@ -222,7 +222,7 @@ module RubyJard
     end
 
     def total_screen_height(layouts)
-      layouts.map { |layout| layout.y + layout.height }.max
+      layouts.map { |layout| layout.y + layout.height }.max || 0
     end
 
     def pick_layout(width, height)
