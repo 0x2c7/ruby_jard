@@ -45,33 +45,89 @@ module RubyJard
       'disable-pry'    # No need to complicate things
     ].freeze
 
-    COMMANDS = [
-      CMD_FLOW      = :flow,
-      CMD_EVALUATE  = :evaluate,
-      CMD_EVALUATED = :evaluated,
-      CMD_INTERRUPT = :interrupt
-    ].freeze
     INTERNAL_KEY_BINDINGS = {
-      RubyJard::Keys::END_LINE => (KEY_BINDING_ENDLINE   = :end_line),
-      RubyJard::Keys::CTRL_C   => (KEY_BINDING_INTERRUPT = :interrupt)
+      RubyJard::Keys::CTRL_C => (KEY_BINDING_INTERRUPT = :interrupt)
     }.freeze
 
     KEY_READ_TIMEOUT = 0.1           # 100ms
     PTY_OUTPUT_TIMEOUT = 1.to_f / 60 # 60hz
 
-    STATES = [
-      STATE_READY = 0,
-      STATE_EXITING = 1,
-      STATE_EXITED = 2
-    ].freeze
+    ##
+    # A tool to communicate between functional threads and main threads
+    class FlowInterrupt < StandardError
+      attr_reader :flow
+
+      def initialize(msg = '', flow = nil)
+        super(msg)
+        @flow = flow
+      end
+    end
+
+    ##
+    # A class to store the state with multi-thread guarding
+    # Ready => Processing/Exiting
+    # Processing => Ready again
+    # Exiting => Exited
+    # Exited => Ready
+    class ReplState
+      STATES = [
+        STATE_READY      = 0,
+        STATE_EXITING    = 1,
+        STATE_PROCESSING = 2,
+        STATE_EXITED     = 3
+      ].freeze
+      def initialize
+        @state = STATE_EXITED
+        @mutex = Mutex.new
+      end
+
+      def check(method_name)
+        @mutex.synchronize { yield if send(method_name) }
+      end
+
+      def ready?
+        @state == STATE_READY
+      end
+
+      def ready!
+        if ready? || processing? || exited?
+          @mutex.synchronize { @state = STATE_READY }
+        end
+      end
+
+      def processing?
+        @state == STATE_PROCESSING
+      end
+
+      def processing!
+        return unless ready?
+
+        @mutex.synchronize { @state = STATE_PROCESSING }
+      end
+
+      def exiting?
+        @state == STATE_EXITING
+      end
+
+      def exiting!
+        @mutex.synchronize { @state = STATE_EXITING }
+      end
+
+      def exited?
+        @state == STATE_EXITED
+      end
+
+      def exited!
+        @mutex.synchronize { @state = STATE_EXITED }
+      end
+    end
 
     def initialize(key_bindings: nil)
-      @state = STATE_EXITED
+      @state = ReplState.new
 
       @pry_input_pipe_read, @pry_input_pipe_write = IO.pipe
       @pry_output_pty_read, @pry_output_pty_write = PTY.open
       @pry = pry_instance
-      @pry_commands = Queue.new
 
       @key_bindings = key_bindings || RubyJard::KeyBindings.new
       INTERNAL_KEY_BINDINGS.each do |sequence, action|
@@ -82,87 +138,52 @@ module RubyJard
     end
 
     def repl(current_binding)
-      ready!
+      @state.ready!
 
       RubyJard::Console.disable_echo!
 
       Readline.input = @pry_input_pipe_read
       Readline.output = @pry_output_pty_write
-      @pry_commands.clear
       @pry.binding_stack.clear
 
-      @pry_input_thread = Thread.new { pry_repl(current_binding) }
-      @pry_input_thread.report_on_exception = false if @pry_input_thread.respond_to?(:report_on_exception)
-      loop do
-        break unless ready?
+      @main_thread = Thread.current
 
-        if @pry_commands.empty?
-          listen_key_press
-        else
-          cmd, value = @pry_commands.deq
-          handle_command(cmd, value)
-        end
-      end
+      @pry_input_thread = Thread.new { pry_repl(current_binding) }
+      @key_listen_thread = Thread.new { listen_key_press }
+      @key_listen_thread.abort_on_exception = true
+      @pry_input_thread.abort_on_exception = true
+      @key_listen_thread.report_on_exception = false
+      @pry_input_thread.report_on_exception = false
+
+      [@pry_input_thread, @key_listen_thread].map(&:join)
+    rescue FlowInterrupt => e
+      @state.exiting!
+      sleep PTY_OUTPUT_TIMEOUT until @state.exited?
+      RubyJard::ControlFlow.dispatch(e.flow)
     ensure
       RubyJard::Console.enable_echo!
       Readline.input = STDIN
       Readline.output = STDOUT
+      @key_listen_thread&.exit if @key_listen_thread&.alive?
       @pry_input_thread&.exit if @pry_input_thread&.alive?
-
-      exited!
+      @state.exited!
     end
 
     private
-
-    def ready?
-      @state == STATE_READY
-    end
-
-    def ready!
-      @state = STATE_READY
-    end
-
-    def exiting?
-      @state == STATE_EXITING
-    end
-
-    def exiting!
-      @state = STATE_EXITING
-    end
-
-    def exited?
-      @state == STATE_EXITED
-    end
-
-    def exited!
-      @state = STATE_EXITED
-    end
 
     def read_key
       RubyJard::Console.getch(STDIN, KEY_READ_TIMEOUT)
     end
 
-    def pry_repl(current_binding)
-      sleep PTY_OUTPUT_TIMEOUT unless ready?
-
-      flow = RubyJard::ControlFlow.listen do
-        @pry.repl(current_binding)
-      end
-      @pry_commands << [CMD_FLOW, flow]
-    rescue StandardError => e
-      RubyJard::ScreenManager.draw_error(e)
-      raise
-    end
-
     def pry_pty_output
       loop do
-        if exiting?
+        if @state.exiting?
           if @pry_output_pty_read.ready?
             STDOUT.write @pry_output_pty_read.read_nonblock(255), from_jard: true
           else
-            exited!
+            @state.exited!
           end
-        elsif exited?
+        elsif @state.exited?
           sleep PTY_OUTPUT_TIMEOUT
         else
           STDOUT.write @pry_output_pty_read.read_nonblock(255), from_jard: true
@@ -173,44 +194,51 @@ module RubyJard
       end
     end
 
+    def pry_repl(current_binding)
+      flow = RubyJard::ControlFlow.listen do
+        @pry.repl(current_binding)
+      end
+      @state.check(:ready?) do
+        @main_thread.raise FlowInterrupt.new('Interrupt from repl thread', flow)
+      end
+    end
+
     def listen_key_press
-      key = @key_bindings.match { read_key }
-      if key.is_a?(RubyJard::KeyBinding)
-        handle_key_binding(key)
-      elsif !key.empty?
-        @pry_input_pipe_write.write(key)
+      loop do
+        break if @state.exiting? || @state.exited?
+
+        if @state.processing?
+          read_key
+        else
+          key = @key_bindings.match { read_key }
+          if key.is_a?(RubyJard::KeyBinding)
+            continue = handle_key_binding(key)
+            break unless continue
+          elsif !key.empty?
+            @pry_input_pipe_write.write(key)
+          end
+        end
       end
     end
 
     def handle_key_binding(key_binding)
       case key_binding.action
-      when KEY_BINDING_ENDLINE
-        @pry_input_pipe_write.write(key_binding.sequence)
-        @pry_commands << [CMD_EVALUATE]
       when KEY_BINDING_INTERRUPT
         handle_interrupt_command
+        true
       else
-        handle_flow_command(RubyJard::ControlFlow.new(:key_binding, action: key_binding.action))
-      end
-    end
-
-    def handle_command(cmd, value)
-      case cmd
-      when CMD_FLOW
-        handle_flow_command(value)
-      when CMD_EVALUATE
-        loop do
-          cmd, value = @pry_commands.deq
-          break if [CMD_EVALUATED, CMD_FLOW].include?(cmd)
+        flow = RubyJard::ControlFlow.new(:key_binding, action: key_binding.action)
+        @state.check(:ready?) do
+          @main_thread.raise FlowInterrupt.new('Interrupt from repl thread', flow)
         end
-        handle_command(cmd, value)
-      when CMD_EVALUATED
-        # Ignore
+        false
       end
     end
 
     def handle_interrupt_command
-      @pry_input_thread&.raise Interrupt if @pry_input_thread&.alive?
+      @state.check(:ready?) do
+        @pry_input_thread&.raise Interrupt if @pry_input_thread&.alive?
+      end
       loop do
         begin
           sleep PTY_OUTPUT_TIMEOUT
@@ -219,13 +247,6 @@ module RubyJard
         end
         break unless @pry_input_thread&.pending_interrupt?
       end
-    end
-
-    def handle_flow_command(flow)
-      @pry_commands.clear
-      exiting!
-      sleep PTY_OUTPUT_TIMEOUT until exited?
-      RubyJard::ControlFlow.dispatch(flow)
     end
 
     def pry_instance
@@ -279,15 +300,13 @@ module RubyJard
     def pry_hooks
       hooks = Pry::Hooks.default
       hooks.add_hook(:after_read, :jard_proxy_acquire_lock) do |read_string, _pry|
-        unless Pry::Code.complete_expression?(read_string)
-          @pry_commands << [CMD_EVALUATED]
-        end
+        @state.processing! if Pry::Code.complete_expression?(read_string)
       rescue SyntaxError
         # Ignore
-        @pry_commands << [CMD_EVALUATED]
+        @state.ready!
       end
       hooks.add_hook(:after_handle_line, :jard_proxy_release_lock) do
-        @pry_commands << [CMD_EVALUATED]
+        @state.ready!
       end
     end
   end
