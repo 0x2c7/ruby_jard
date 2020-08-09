@@ -31,5 +31,3 @@ end
 
 require 'ruby_jard/layouts/wide_layout'
 require 'ruby_jard/layouts/narrow_layout'
-require 'ruby_jard/layouts/standalone_variables_layout'
-require 'ruby_jard/layouts/standalone_source_layout'
