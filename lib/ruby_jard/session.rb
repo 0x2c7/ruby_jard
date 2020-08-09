@@ -66,6 +66,7 @@ module RubyJard
         Byebug
         .contexts
         .reject(&:ignored?)
+        .reject { |c| c.thread.name.to_s =~ /<<Jard:.*>>/ }
         .map do |context|
           RubyJard::Frame.new(context, 0)
         end

@@ -135,6 +135,7 @@ module RubyJard
       end
 
       @pry_pty_output_thread = Thread.new { pry_pty_output }
+      @pry_pty_output_thread.name = '<<Jard: Pty Output Thread>>'
     end
 
     def repl(current_binding)
@@ -149,11 +150,14 @@ module RubyJard
       @main_thread = Thread.current
 
       @pry_input_thread = Thread.new { pry_repl(current_binding) }
+      @pry_input_thread.abort_on_exception = true
+      @pry_input_thread.report_on_exception = false
+      @pry_input_thread.name = '<<Jard: Pry input thread >>'
+
       @key_listen_thread = Thread.new { listen_key_press }
       @key_listen_thread.abort_on_exception = true
-      @pry_input_thread.abort_on_exception = true
       @key_listen_thread.report_on_exception = false
-      @pry_input_thread.report_on_exception = false
+      @key_listen_thread.name = '<<Jard: Repl key listen >>'
 
       [@pry_input_thread, @key_listen_thread].map(&:join)
     rescue FlowInterrupt => e
