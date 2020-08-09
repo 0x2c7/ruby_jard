@@ -84,6 +84,10 @@ RSpec/MultipleExpectations:
   Enabled: false
 RSpec/ExampleLength:
   Max: 15
+RSpec/DescribeClass:
+  Enabled: false
+RSpec/NestedGroups:
+  Max: 4
 
 AllCops:
   TargetRubyVersion: 2.5
