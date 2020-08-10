@@ -156,6 +156,11 @@ end
 
 RSpec::Matchers.define :match_repl do |expected|
   match do |actual|
+    actual =
+      actual
+      .split("\n")
+      .map(&:strip)
+      .join("\n")
     @expected = expected.strip
     @actual = actual.strip
     if @expected != @actual
