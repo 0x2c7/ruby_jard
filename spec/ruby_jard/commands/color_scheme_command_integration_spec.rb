@@ -5,7 +5,7 @@ RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests' do
 
   context 'when list color schemes' do
     it 'displays list of schemes' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test1_example.rb")
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb")
       test.start
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >> 
@@ -25,7 +25,7 @@ RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests' do
 
   context 'when switching to new scheme' do
     it 'displays no error' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test1_example.rb")
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb")
       test.start
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >> 
@@ -41,7 +41,7 @@ RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests' do
 
   context 'when switching to not-found scheme' do
     it 'displays error' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test1_example.rb")
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb")
       test.start
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >> 
