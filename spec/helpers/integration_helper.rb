@@ -30,6 +30,13 @@ class JardIntegrationTest
   end
 
   def send_keys(*args)
+    args.map! do |key|
+      if key.is_a?(String)
+        "\"#{key.gsub(/"/i, '\"')}\""
+      else
+        key.to_s
+      end
+    end
     tmux('send-keys', '-t', @target, *args)
     if ENV['CI']
       sleep 3
@@ -39,7 +46,11 @@ class JardIntegrationTest
   end
 
   def screen_content
-    sleep 1
+    if ENV['CI']
+      sleep 1
+    else
+      sleep 0.5
+    end
 
     tmux('capture-pane', '-J', '-p', '-t', @target)
   end

@@ -7,7 +7,7 @@ RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests' do
     it 'displays list of schemes' do
       test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test1_example.rb")
       test.start
-      test.send_keys('color-scheme', 'Space', '-l', 'Enter')
+      test.send_keys('color-scheme -l', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >> color-scheme -l
         256
@@ -24,7 +24,7 @@ RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests' do
     it 'displays no error' do
       test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test1_example.rb")
       test.start
-      test.send_keys('color-scheme', 'Space', '256', 'Enter')
+      test.send_keys('color-scheme 256', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >> 
       SCREEN
@@ -37,7 +37,7 @@ RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests' do
     it 'displays error' do
       test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test1_example.rb")
       test.start
-      test.send_keys('color-scheme', 'Space', 'NotExistedScheme', 'Enter')
+      test.send_keys('color-scheme NotExistedScheme', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >> color-scheme NotExistedScheme
         Error: Color scheme `NotExistedScheme` not found. Please use `color-scheme -l` to list all color schemes.

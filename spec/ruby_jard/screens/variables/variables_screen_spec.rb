@@ -59,9 +59,9 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
       test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test1_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output_1)
-      test.send_keys('continue', 'Enter')
+      test.send_keys('continue', :Enter)
       expect(test.screen_content).to match_screen(expected_output_2)
-      test.send_keys('continue', 'Enter')
+      test.send_keys('continue', :Enter)
       expect(test.screen_content).to match_screen(expected_output_3)
     ensure
       test.stop
@@ -118,9 +118,9 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
       test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test2_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output_1)
-      test.send_keys('continue', 'Enter')
+      test.send_keys('continue', :Enter)
       expect(test.screen_content).to match_screen(expected_output_2)
-      test.send_keys('continue', 'Enter')
+      test.send_keys('continue', :Enter)
       expect(test.screen_content).to match_screen(expected_output_3)
     ensure
       test.stop
@@ -227,11 +227,11 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
       test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test5_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output_1)
-      test.send_keys('step', 'Enter')
+      test.send_keys('step', :Enter)
       expect(test.screen_content).to match_screen(expected_output_2)
-      test.send_keys('next', 'Enter')
+      test.send_keys('next', :Enter)
       expect(test.screen_content).to match_screen(expected_output_3)
-      test.send_keys('continue', 'Enter')
+      test.send_keys('continue', :Enter)
       expect(test.screen_content).to match_screen(expected_output_4)
     ensure
       test.stop
@@ -273,10 +273,10 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
       test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test7_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output_1)
-      test.send_keys('step', 'Enter')
+      test.send_keys('step', :Enter)
       expect(test.screen_content).to match_screen(expected_output_2)
-      test.send_keys('step-out', 'Enter')
-      test.send_keys('step', 'Enter')
+      test.send_keys('step-out', :Enter)
+      test.send_keys('step', :Enter)
       expect(test.screen_content).to match_screen(expected_output_3)
     ensure
       test.stop
@@ -307,7 +307,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
       test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test8_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output_1)
-      test.send_keys('continue', 'Enter')
+      test.send_keys('continue', :Enter)
       expect(test.screen_content).to match_screen(expected_output_2)
     ensure
       test.stop
@@ -342,7 +342,7 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
       test = JardIntegrationTest.new(work_dir, code)
       test.start
       expect(test.screen_content).to match_screen(expected_output_1)
-      test.send_keys('next', 'Enter')
+      test.send_keys('next', :Enter)
       expect(test.screen_content).to match_screen(expected_output_2)
     ensure
       test.stop
