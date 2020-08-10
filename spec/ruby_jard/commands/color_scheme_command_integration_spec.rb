@@ -10,7 +10,6 @@ RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests' do
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >> 
       SCREEN
-      test.send_keys(:Enter)
       test.send_keys('color-scheme -l', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >> color-scheme -l
@@ -31,7 +30,6 @@ RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests' do
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >> 
       SCREEN
-      test.send_keys(:Enter)
       test.send_keys('color-scheme 256', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >> 
@@ -48,7 +46,6 @@ RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests' do
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >> 
       SCREEN
-      test.send_keys(:Enter)
       test.send_keys('color-scheme NotExistedScheme', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >> color-scheme NotExistedScheme

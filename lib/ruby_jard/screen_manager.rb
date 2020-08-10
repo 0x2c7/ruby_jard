@@ -122,6 +122,9 @@ module RubyJard
 
       @layouts = calculate_layouts(width, height)
       @screens = build_screens(@layouts)
+
+      RubyJard::Console.move_to(@output, 0, 0)
+
       draw_box(@screens)
       draw_screens(@screens)
 
