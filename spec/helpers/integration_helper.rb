@@ -45,14 +45,25 @@ class JardIntegrationTest
     end
   end
 
-  def screen_content
+  def screen_content(allow_duplication = true)
     if ENV['CI']
       sleep 1
     else
       sleep 0.5
     end
 
-    tmux('capture-pane', '-J', '-p', '-t', @target)
+    previous_content = @content
+    attempt = 5
+    loop do
+      @content = tmux('capture-pane', '-J', '-p', '-t', @target)
+      break if allow_duplication
+      break if attempt <= 0
+      break if @content != previous_content
+
+      sleep 0.5
+      attempt -= 1
+    end
+    @content
   end
 
   private
