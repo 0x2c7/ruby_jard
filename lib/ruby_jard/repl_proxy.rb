@@ -190,7 +190,10 @@ module RubyJard
         elsif @state.exited?
           sleep PTY_OUTPUT_TIMEOUT
         else
-          STDOUT.write @pry_output_pty_read.read_nonblock(255), from_jard: true
+          output = @pry_output_pty_read.read_nonblock(255)
+          unless output.nil?
+            STDOUT.write output, from_jard: true
+          end
         end
       rescue IO::WaitReadable, IO::WaitWritable
         # Retry
@@ -212,6 +215,7 @@ module RubyJard
         break if @state.exiting? || @state.exited?
 
         if @state.processing?
+          # Discard all keys unfortunately
           read_key
         else
           key = @key_bindings.match { read_key }
@@ -303,13 +307,19 @@ module RubyJard
 
     def pry_hooks
       hooks = Pry::Hooks.default
-      hooks.add_hook(:after_read, :jard_proxy_acquire_lock) do |read_string, _pry|
-        @state.processing! if Pry::Code.complete_expression?(read_string)
+      hooks.add_hook(:after_read, :jard_proxy_acquire_lock) do |_read_string, _pry|
+        @state.processing!
       rescue SyntaxError
         # Ignore
         @state.ready!
       end
       hooks.add_hook(:after_handle_line, :jard_proxy_release_lock) do
+        @state.ready!
+      end
+      hooks.add_hook(:before_pager, :jard_proxy_before_pager) do
+        @state.processing!
+      end
+      hooks.add_hook(:after_pager, :jard_proxy_after_pager) do
         @state.ready!
       end
     end

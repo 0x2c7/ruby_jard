@@ -41,6 +41,8 @@ module RubyJard
 
         @tracker = Pry::Pager::PageTracker.new(height, width)
         @pager = force_open ? open_pager : nil
+
+        @pry_instance.exec_hook :before_pager, self
       end
 
       def write(str)
@@ -67,6 +69,8 @@ module RubyJard
         else
           @out.write @buffer
         end
+      ensure
+        @pry_instance.exec_hook :after_pager, self
       end
 
       def invoked_pager?
@@ -74,7 +78,9 @@ module RubyJard
       end
 
       def open_pager
-        less_command = ['less', '-R', '-X', '-F', '-J']
+        # TODO: Force open
+        less_command = ['less', '-R', '-X', '-J']
+        less_command << '-F' if @force_open
         less_command << '+G' if @pager_start_at_the_end
         IO.popen(
           less_command.join(' '), 'w',
