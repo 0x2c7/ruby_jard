@@ -20,7 +20,7 @@ module RubyJard
       def process
         pry_instance.pager.open(force_open: true, pager_start_at_the_end: true) do |pager|
           self.class.output_storage.rewind
-          pager.write self.class.output_storage.read until self.class.output_storage.eof?
+          pager.write self.class.output_storage.read_nonblock(2048) until self.class.output_storage.eof?
         end
       end
     end

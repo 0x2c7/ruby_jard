@@ -69,26 +69,16 @@ module RubyJard
       end
 
       def getch(input, timeout)
-        return input.getch(min: 0, time: timeout) if input.respond_to?(:getch)
-
-        raw!
-        key =
-          begin
-            input.read_nonblock(255)
-          rescue IO::WaitReadable
-            io = IO.select([input], nil, nil, timeout)
-            if io.nil?
-              nil
-            else
-              retry
-            end
-          rescue IO::WaitWritable
-            nil
-          end
-
-        key
-      ensure
-        cooked!
+        input.read_nonblock(255)
+      rescue IO::WaitReadable
+        io = IO.select([input], nil, nil, timeout)
+        if io.nil?
+          nil
+        else
+          retry
+        end
+      rescue IO::WaitWritable
+        nil
       end
 
       def raw!(output = STDOUT)
