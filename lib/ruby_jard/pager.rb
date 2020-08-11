@@ -41,8 +41,6 @@ module RubyJard
 
         @tracker = Pry::Pager::PageTracker.new(height, width)
         @pager = force_open ? open_pager : nil
-
-        @pry_instance.exec_hook :before_pager, self
       end
 
       def write(str)
@@ -53,6 +51,7 @@ module RubyJard
           @buffer += str
           if @tracker.page?
             @pager = open_pager
+            @pager.write(@buffer)
             @pager.write(str)
           end
         end
@@ -63,14 +62,14 @@ module RubyJard
       def close
         if invoked_pager?
           @pager.close
+          @pry_instance.exec_hook :after_pager, self
+
           prompt = @pry_instance.prompt.wait_proc.call
           # TODO: should show this tip even pager not invoked, when the size exceed a certain height
           @out.puts "#{prompt}Tips: You can use `list` command to show back debugger screens"
         else
           @out.write @buffer
         end
-      ensure
-        @pry_instance.exec_hook :after_pager, self
       end
 
       def invoked_pager?
@@ -78,10 +77,10 @@ module RubyJard
       end
 
       def open_pager
-        # TODO: Force open
-        less_command = ['less', '-R', '-X', '-J']
-        less_command << '-F' if @force_open
+        @pry_instance.exec_hook :before_pager, self
+        less_command = ['less', '-R', '-X']
         less_command << '+G' if @pager_start_at_the_end
+
         IO.popen(
           less_command.join(' '), 'w',
           out: @pry_instance.output, err: @pry_instance.output

@@ -140,6 +140,7 @@ module RubyJard
 
     def repl(current_binding)
       @state.ready!
+      @openning_pager = false
 
       RubyJard::Console.disable_echo!
       RubyJard::Console.raw!
@@ -216,9 +217,9 @@ module RubyJard
       loop do
         break if @state.exiting? || @state.exited?
 
-        if @state.processing?
+        if @state.processing? && @openning_pager
           # Discard all keys unfortunately
-          read_key
+          sleep PTY_OUTPUT_TIMEOUT
         else
           key = @key_bindings.match { read_key }
           if key.is_a?(RubyJard::KeyBinding)
@@ -321,10 +322,13 @@ module RubyJard
         @state.ready!
       end
       hooks.add_hook(:before_pager, :jard_proxy_before_pager) do
+        @openning_pager = true
+
         @state.processing!
         RubyJard::Console.cooked!
       end
       hooks.add_hook(:after_pager, :jard_proxy_after_pager) do
+        @openning_pager = false
         @state.ready!
         RubyJard::Console.raw!
       end
