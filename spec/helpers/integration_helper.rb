@@ -30,6 +30,13 @@ class JardIntegrationTest
   end
 
   def send_keys(*args)
+    args.map! do |key|
+      if key.is_a?(String)
+        "\"#{key.gsub(/"/i, '\"')}\""
+      else
+        key.to_s
+      end
+    end
     tmux('send-keys', '-t', @target, *args)
     if ENV['CI']
       sleep 3
@@ -38,10 +45,25 @@ class JardIntegrationTest
     end
   end
 
-  def screen_content
-    sleep 1
+  def screen_content(allow_duplication = true)
+    if ENV['CI']
+      sleep 1
+    else
+      sleep 0.5
+    end
 
-    tmux('capture-pane', '-J', '-p', '-t', @target)
+    previous_content = @content
+    attempt = 5
+    loop do
+      @content = tmux('capture-pane', '-J', '-p', '-t', @target)
+      break if allow_duplication
+      break if attempt <= 0
+      break if @content != previous_content
+
+      sleep 0.5
+      attempt -= 1
+    end
+    @content
   end
 
   private
@@ -145,6 +167,11 @@ end
 
 RSpec::Matchers.define :match_repl do |expected|
   match do |actual|
+    actual =
+      actual
+      .split("\n")
+      .map(&:strip)
+      .join("\n")
     @expected = expected.strip
     @actual = actual.strip
     if @expected != @actual

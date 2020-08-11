@@ -6,7 +6,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
   context 'when jard stops at top-level binding' do
     let(:expected_output_1) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test1_example.rb:15 ───────────────────────────────┐
+        ┌ Source  ../../../examples/top_level_example.rb:15 ───────────────────────────┐
         │   6 var_b = 'hello world'                                                    │
         │   7 var_c = ['Hello', 1, 2, 3]                                               │
         │   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
@@ -29,7 +29,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
 
     let(:expected_output_2) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test1_example.rb:17 ───────────────────────────────┐
+        ┌ Source  ../../../examples/top_level_example.rb:17 ───────────────────────────┐
         │   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
         │   9 variable_e = /Wait, what/i                                               │
         │  10 variable_f = 1.1                                                         │
@@ -50,7 +50,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
 
     let(:expected_output_3) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test1_example.rb:18 ───────────────────────────────┐
+        ┌ Source  ../../../examples/top_level_example.rb:18 ───────────────────────────┐
         │   9 variable_e = /Wait, what/i                                               │
         │  10 variable_f = 1.1                                                         │
         │  11 variable_g = 99..100                                                     │
@@ -70,7 +70,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
 
     let(:expected_output_4) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test1_example.rb:21 ───────────────────────────────┐
+        ┌ Source  ../../../examples/top_level_example.rb:21 ───────────────────────────────┐
         │  12 variable_k = StandardError.new('A random error')                         │
         │  13                                                                          │
         │  14 jard                                                                     │
@@ -86,14 +86,14 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
 
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test1_example.rb")
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output_1)
-      test.send_keys('next', 'Enter')
+      test.send_keys('next', :Enter)
       expect(test.screen_content).to match_screen(expected_output_2)
-      test.send_keys('next', 'Enter')
+      test.send_keys('next', :Enter)
       expect(test.screen_content).to match_screen(expected_output_3)
-      test.send_keys('continue', 'Enter')
+      test.send_keys('continue', :Enter)
       expect(test.screen_content).to match_screen(expected_output_4)
     ensure
       test.stop
@@ -103,7 +103,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
   context 'when jard stops inside an instance method' do
     let(:expected_output) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test2_example.rb:23 ───────────────────────────────┐
+        ┌ Source  ../../../examples/instance_method_example.rb:23 ─────────────────────┐
         │  14   def calculate(n)                                                       │
         │  15     raise 'Exceeded support max' if n > MAX_SUPPORTED                    │
         │  16                                                                          │
@@ -128,14 +128,14 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
 
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test2_example.rb")
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output)
-      test.send_keys('continue', 'Enter')
+      test.send_keys('continue', :Enter)
       expect(test.screen_content).to match_screen(expected_output)
-      test.send_keys('continue', 'Enter')
+      test.send_keys('continue', :Enter)
       expect(test.screen_content).to match_screen(expected_output)
-      test.send_keys('continue', 'Enter')
+      test.send_keys('continue', :Enter)
       expect(test.screen_content).to match_screen(expected_output)
     ensure
       test.stop
@@ -145,7 +145,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
   context 'when jard stops within a nested method' do
     let(:expected_output) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test4_example.rb:13 ───────────────────────────────┐
+        ┌ Source  ../../../examples/nested_loop_example.rb:13 ─────────────────────────┐
         │   4                                                                          │
         │   5 class DummyCalculator                                                    │
         │   6   def calculate(n)                                                       │
@@ -168,7 +168,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
 
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test4_example.rb")
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/nested_loop_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output)
     ensure
@@ -179,7 +179,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
   context 'when jard stops at the beginning of file or at the end of file' do
     let(:expected_output) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test6_example.rb:2 ────────────────────────────────┐
+        ┌ Source  ../../../examples/start_of_file_example.rb:2 ────────────────────────┐
         │   1 require 'ruby_jard'; jard                                                │
         │➠  2 123                                                                      │
         └──────────────────────────────────────────────────────────────────────────────┘
@@ -187,7 +187,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
 
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test6_example.rb")
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/start_of_file_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output)
     ensure
@@ -198,7 +198,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
   context 'when jard steps into a code evaluation' do
     let(:expected_output_1) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test7_example.rb:21 ───────────────────────────────┐
+        ┌ Source  ../../../examples/evaluation_example.rb:21 ──────────────────────────┐
         │  12   <<~CODE, nil, __FILE__, __LINE__ + 1                                   │
         │  13     def test2(a, b)                                                      │
         │  14       c = a + b                                                          │
@@ -226,7 +226,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
 
     let(:expected_output_3) do
       <<~'EXPECTED'
-        ┌ Source  ../../../examples/test7_example.rb:14 ───────────────────────────────┐
+        ┌ Source  ../../../examples/evaluation_example.rb:14 ──────────────────────────┐
         │   5     def test1(a, b)                                                      │
         │   6       c = a + b                                                          │
         │   7       c * 2                                                              │
@@ -250,13 +250,13 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
 
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test7_example.rb")
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/evaluation_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output_1)
-      test.send_keys('step', 'Enter')
+      test.send_keys('step', :Enter)
       expect(test.screen_content).to match_screen(expected_output_2)
-      test.send_keys('step-out', 'Enter')
-      test.send_keys('step', 'Enter')
+      test.send_keys('step-out', :Enter)
+      test.send_keys('step', :Enter)
       expect(test.screen_content).to match_screen(expected_output_3)
     ensure
       test.stop
@@ -266,7 +266,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
   context 'when stop at the end of a method' do
     let(:expected_output_1) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test8_example.rb:10 ───────────────────────────────┐
+        ┌ Source  ../../../examples/end_of_method_example.rb:10 ───────────────────────┐
         │   1 # frozen_string_literal: true                                            │
         │   2                                                                          │
         │   3 require 'ruby_jard'                                                      │
@@ -288,7 +288,7 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
 
     let(:expected_output_2) do
       <<~EXPECTED
-        ┌ Source  ../../../examples/test8_example.rb:12 ───────────────────────────────┐
+        ┌ Source  ../../../examples/end_of_method_example.rb:12 ───────────────────────┐
         │   3 require 'ruby_jard'                                                      │
         │   4                                                                          │
         │   5 class DummyCalculator                                                    │
@@ -307,10 +307,10 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
     end
 
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/test8_example.rb")
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/end_of_method_example.rb")
       test.start
       expect(test.screen_content).to match_screen(expected_output_1)
-      test.send_keys('continue', 'Enter')
+      test.send_keys('continue', :Enter)
       expect(test.screen_content).to match_screen(expected_output_2)
     ensure
       test.stop

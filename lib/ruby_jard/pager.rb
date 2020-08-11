@@ -51,6 +51,7 @@ module RubyJard
           @buffer += str
           if @tracker.page?
             @pager = open_pager
+            @pager.write(@buffer)
             @pager.write(str)
           end
         end
@@ -61,6 +62,8 @@ module RubyJard
       def close
         if invoked_pager?
           @pager.close
+          @pry_instance.exec_hook :after_pager, self
+
           prompt = @pry_instance.prompt.wait_proc.call
           # TODO: should show this tip even pager not invoked, when the size exceed a certain height
           @out.puts "#{prompt}Tips: You can use `list` command to show back debugger screens"
@@ -74,8 +77,10 @@ module RubyJard
       end
 
       def open_pager
-        less_command = ['less', '-R', '-X', '-F', '-J']
+        @pry_instance.exec_hook :before_pager, self
+        less_command = ['less', '-R', '-X']
         less_command << '+G' if @pager_start_at_the_end
+
         IO.popen(
           less_command.join(' '), 'w',
           out: @pry_instance.output, err: @pry_instance.output

@@ -83,7 +83,7 @@ Style/EvalWithLocation:
 RSpec/MultipleExpectations:
   Enabled: false
 RSpec/ExampleLength:
-  Max: 15
+  Enabled: false
 RSpec/DescribeClass:
   Enabled: false
 RSpec/NestedGroups:

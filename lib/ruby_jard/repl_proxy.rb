@@ -49,8 +49,8 @@ module RubyJard
       RubyJard::Keys::CTRL_C => (KEY_BINDING_INTERRUPT = :interrupt)
     }.freeze
 
-    KEY_READ_TIMEOUT = 0.1           # 100ms
-    PTY_OUTPUT_TIMEOUT = 1.to_f / 60 # 60hz
+    KEY_READ_TIMEOUT = 0.2            # 100ms
+    PTY_OUTPUT_TIMEOUT = 1.to_f / 120 # 120hz
 
     ##
     # A tool to communicate between functional threads and main threads
@@ -140,8 +140,10 @@ module RubyJard
 
     def repl(current_binding)
       @state.ready!
+      @openning_pager = false
 
       RubyJard::Console.disable_echo!
+      RubyJard::Console.raw!
 
       Readline.input = @pry_input_pipe_read
       Readline.output = @pry_output_pty_write
@@ -166,6 +168,7 @@ module RubyJard
       RubyJard::ControlFlow.dispatch(e.flow)
     ensure
       RubyJard::Console.enable_echo!
+      RubyJard::Console.cooked!
       Readline.input = STDIN
       Readline.output = STDOUT
       @key_listen_thread&.exit if @key_listen_thread&.alive?
@@ -183,14 +186,17 @@ module RubyJard
       loop do
         if @state.exiting?
           if @pry_output_pty_read.ready?
-            STDOUT.write @pry_output_pty_read.read_nonblock(255), from_jard: true
+            STDOUT.write @pry_output_pty_read.read_nonblock(2048), from_jard: true
           else
             @state.exited!
           end
         elsif @state.exited?
           sleep PTY_OUTPUT_TIMEOUT
         else
-          STDOUT.write @pry_output_pty_read.read_nonblock(255), from_jard: true
+          output = @pry_output_pty_read.read_nonblock(2048)
+          unless output.nil?
+            STDOUT.write output, from_jard: true
+          end
         end
       rescue IO::WaitReadable, IO::WaitWritable
         # Retry
@@ -211,8 +217,9 @@ module RubyJard
       loop do
         break if @state.exiting? || @state.exited?
 
-        if @state.processing?
-          read_key
+        if @state.processing? && @openning_pager
+          # Discard all keys unfortunately
+          sleep PTY_OUTPUT_TIMEOUT
         else
           key = @key_bindings.match { read_key }
           if key.is_a?(RubyJard::KeyBinding)
@@ -303,14 +310,27 @@ module RubyJard
 
     def pry_hooks
       hooks = Pry::Hooks.default
-      hooks.add_hook(:after_read, :jard_proxy_acquire_lock) do |read_string, _pry|
-        @state.processing! if Pry::Code.complete_expression?(read_string)
+      hooks.add_hook(:after_read, :jard_proxy_acquire_lock) do |_read_string, _pry|
+        RubyJard::Console.cooked!
+        @state.processing!
       rescue SyntaxError
         # Ignore
         @state.ready!
       end
       hooks.add_hook(:after_handle_line, :jard_proxy_release_lock) do
+        RubyJard::Console.raw!
         @state.ready!
+      end
+      hooks.add_hook(:before_pager, :jard_proxy_before_pager) do
+        @openning_pager = true
+
+        @state.processing!
+        RubyJard::Console.cooked!
+      end
+      hooks.add_hook(:after_pager, :jard_proxy_after_pager) do
+        @openning_pager = false
+        @state.ready!
+        RubyJard::Console.raw!
       end
     end
   end
