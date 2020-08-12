@@ -18,10 +18,24 @@ module RubyJard
     end
 
     def shrinkable?
-      @window.length < @layout.height
+      case @layout.template.adjust_mode
+      when :expand
+        false
+      else
+        @window.length < @layout.height
+      end
     end
 
-    def schrinkable_height
+    def expandable?
+      case @layout.template.adjust_mode
+      when :expand
+        true
+      else
+        @window.length >= @layout.height
+      end
+    end
+
+    def shrinkable_height
       if @window.length < @layout.height
         @layout.height - @window.length
       else

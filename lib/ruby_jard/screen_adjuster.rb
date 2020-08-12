@@ -7,23 +7,23 @@ module RubyJard
   # away those spaces to other screens. This layout adjustment is small, and
   # should not affect the original generated layout too much, nor work with
   # nested layout.
-  class ScreenShrinker
+  class ScreenAdjuster
     def initialize(screens)
       @screens = screens
     end
 
-    def shrink
+    def adjust
       groups = @screens.group_by { |screen| screen.layout.parent_template }
       groups.each do |_, grouped_screens|
         next if grouped_screens.length <= 1
 
         grouped_screens.sort_by! { |screen| screen.layout.box_y }
         shrinkable_screens = grouped_screens.select(&:shrinkable?)
-        expandable_screens = grouped_screens.reject(&:shrinkable?)
+        expandable_screens = grouped_screens.select(&:expandable?)
 
         next if shrinkable_screens.empty? || expandable_screens.empty?
 
-        budget = shrinkable_screens.map(&:schrinkable_height).sum
+        budget = shrinkable_screens.map(&:shrinkable_height).sum
         expand_screens(expandable_screens, budget)
         shrink_screens(shrinkable_screens)
         compact_screens(grouped_screens)
@@ -49,7 +49,7 @@ module RubyJard
 
     def shrink_screens(shrinkable_screens)
       shrinkable_screens.each do |screen|
-        delta = screen.schrinkable_height
+        delta = screen.shrinkable_height
         screen.layout.height -= delta
         screen.layout.box_height -= delta
       end

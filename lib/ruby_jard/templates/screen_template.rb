@@ -9,7 +9,7 @@ module RubyJard
       attr_reader :screen, :row_template, :height_ratio, :width_ratio,
                   :min_width, :min_height,
                   :height, :width,
-                  :fill_width, :fill_height
+                  :adjust_mode
 
       def initialize(
         screen: nil,
@@ -17,7 +17,7 @@ module RubyJard
         height_ratio: nil, width_ratio: nil,
         min_width: nil, min_height: nil,
         height: nil, width: nil,
-        fill_width: nil, fill_height: nil
+        adjust_mode: nil
       )
         @screen = screen
         @row_template = row_template
@@ -27,8 +27,7 @@ module RubyJard
         @min_height = min_height
         @height = height
         @width = width
-        @fill_width = fill_width
-        @fill_height = fill_height
+        @adjust_mode = adjust_mode
       end
     end
   end

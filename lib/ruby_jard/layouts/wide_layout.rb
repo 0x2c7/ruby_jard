@@ -14,7 +14,8 @@ module RubyJard
           children: [
             RubyJard::Templates::ScreenTemplate.new(
               screen: :source,
-              height_ratio: 70
+              height_ratio: 70,
+              adjust_mode: :expand
             ),
             RubyJard::Templates::ScreenTemplate.new(
               screen: :backtrace,
@@ -29,11 +30,12 @@ module RubyJard
           children: [
             RubyJard::Templates::ScreenTemplate.new(
               screen: :variables,
-              height_ratio: 60
+              height_ratio: 80,
+              adjust_mode: :expand
             ),
             RubyJard::Templates::ScreenTemplate.new(
               screen: :threads,
-              height_ratio: 40
+              height_ratio: 20
             )
           ]
         ),

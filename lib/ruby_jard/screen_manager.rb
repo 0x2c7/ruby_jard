@@ -23,7 +23,7 @@ require 'ruby_jard/column'
 require 'ruby_jard/span'
 require 'ruby_jard/row_renderer'
 require 'ruby_jard/screen_renderer'
-require 'ruby_jard/screen_shrinker'
+require 'ruby_jard/screen_adjuster'
 require 'ruby_jard/box_drawer'
 require 'ruby_jard/screen_drawer'
 
@@ -184,11 +184,14 @@ module RubyJard
         render_screen(screen)
         screen
       end
-      RubyJard::ScreenShrinker.new(screens).shrink
-      screens.each do |screen|
+      RubyJard::ScreenAdjuster.new(screens).adjust
+      layouts.map do |layout|
+        screen_class = fetch_screen(layout.template.screen)
+        screen = screen_class.new(layout: layout)
+        screen.build
         render_screen(screen)
+        screen
       end
-      screens
     end
 
     def draw_box(screens)
