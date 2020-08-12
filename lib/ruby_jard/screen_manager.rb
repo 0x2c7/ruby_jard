@@ -49,7 +49,7 @@ module RubyJard
     class << self
       extend Forwardable
 
-      def_delegators :instance, :update, :draw_error, :started?, :updating?
+      def_delegators :instance, :update, :puts, :draw_error, :started?, :updating?
 
       def instance
         @instance ||= new
@@ -158,6 +158,10 @@ module RubyJard
         @output.puts exception.backtrace.first(10)
       end
       @output.puts '-------------'
+    end
+
+    def puts(content)
+      @output.write "#{content}\n", from_jard: true
     end
 
     private
