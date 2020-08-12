@@ -11,14 +11,11 @@ module RubyJard
     end
 
     def render
-      return unless @screen.need_to_render?
-
       # Move this logic into a class called SreenRenderer
       calculate_content_lengths
       column_widths = calculate_column_widths
       adjust_column_widths(column_widths)
       calculate_window
-      @screen.mark_rendered!
 
       @screen
     end

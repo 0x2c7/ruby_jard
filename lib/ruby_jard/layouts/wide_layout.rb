@@ -10,18 +10,15 @@ module RubyJard
         RubyJard::Templates::LayoutTemplate.new(
           height_ratio: 80,
           width_ratio: 50,
-          min_height: 7,
           fill_height: true,
           children: [
             RubyJard::Templates::ScreenTemplate.new(
               screen: :source,
-              height_ratio: 60
+              height_ratio: 70
             ),
             RubyJard::Templates::ScreenTemplate.new(
-              screen: :variables,
-              width_ratio: 100,
-              height_ratio: 40,
-              min_height: 3
+              screen: :backtrace,
+              height_ratio: 30
             )
           ]
         ),
@@ -31,14 +28,12 @@ module RubyJard
           fill_height: true,
           children: [
             RubyJard::Templates::ScreenTemplate.new(
-              screen: :backtrace,
-              height_ratio: 50,
-              fill_height: true
+              screen: :variables,
+              height_ratio: 60
             ),
             RubyJard::Templates::ScreenTemplate.new(
               screen: :threads,
-              height_ratio: 50,
-              fill_height: true
+              height_ratio: 40
             )
           ]
         ),

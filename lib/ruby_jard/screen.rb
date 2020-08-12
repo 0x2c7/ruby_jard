@@ -15,7 +15,18 @@ module RubyJard
       @cursor = nil
       @selected = 0
       @rows = []
-      @need_to_render = true
+    end
+
+    def shrinkable?
+      @window.length < @layout.height
+    end
+
+    def schrinkable_height
+      if @window.length < @layout.height
+        @layout.height - @window.length
+      else
+        0
+      end
     end
 
     def move_down; end
@@ -30,14 +41,6 @@ module RubyJard
 
     def build
       raise NotImplementedError, "#{self.class} should implement this method."
-    end
-
-    def need_to_render?
-      @need_to_render == true
-    end
-
-    def mark_rendered!
-      @need_to_render = false
     end
   end
 end

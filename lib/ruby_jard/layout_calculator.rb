@@ -22,16 +22,16 @@ module RubyJard
 
     def calculate
       @layouts = []
-      calculate_layout(@layout_template, @width, @height, @x, @y)
+      calculate_layout(@layout_template, @width, @height, @x, @y, nil)
       @layouts
     end
 
     private
 
-    def calculate_layout(template, width, height, x, y)
+    def calculate_layout(template, width, height, x, y, parent_template)
       if template.is_a?(RubyJard::Templates::ScreenTemplate)
         layout = RubyJard::Layout.new(
-          template: template,
+          template: template, parent_template: parent_template,
           width: width - 2, height: height - 2, x: x + 1, y: y + 1,
           box_width: width, box_height: height, box_x: x, box_y: y
         )
@@ -64,10 +64,10 @@ module RubyJard
           child_x += child_width
         end
 
-        stretch_lines(template, width, height, lines)
+        stretch_children_layouts(template, width, height, lines)
         lines.each do |line|
           line.each do |child_template, child_width, child_height, xx, yy|
-            calculate_layout(child_template, child_width, child_height, xx, yy)
+            calculate_layout(child_template, child_width, child_height, xx, yy, template)
           end
         end
       end
@@ -89,7 +89,8 @@ module RubyJard
       end
     end
 
-    def stretch_lines(parent_template, parent_width, parent_height, lines)
+    # Stretch the children layouts to fill the gaps, remove redundant spaces inside the parent layout
+    def stretch_children_layouts(parent_template, parent_width, parent_height, lines)
       total_height = 0
       lines.each_with_index do |line, line_index|
         desired_height =
