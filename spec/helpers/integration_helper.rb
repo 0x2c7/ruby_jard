@@ -17,9 +17,15 @@ class JardIntegrationTest
       '-d',
       '-c', @dir,
       '-s', @target,
-      '-n', 'main',
+      '-n', 'blank',
       "-x #{@width}",
-      "-y #{@height}",
+      "-y #{@height}"
+    )
+    tmux(
+      'new-window',
+      '-c', @dir,
+      '-t', @target,
+      '-n', 'main',
       @command
     )
     sleep 0.5
