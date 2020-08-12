@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'RubyJard::Screens::VariablesScreen' do
+RSpec.describe 'RubyJard::Screens::VariablesScreen', integration: true do
   let(:work_dir) { File.join(RSPEC_ROOT, '/ruby_jard/screens/variables') }
 
   context 'when jard stops at top-level binding' do

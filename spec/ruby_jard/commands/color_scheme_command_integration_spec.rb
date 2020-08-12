@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests' do
+RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests', integration: true do
   let(:work_dir) { File.join(RSPEC_ROOT, '/ruby_jard/commands') }
 
   context 'when list color schemes' do
@@ -8,7 +8,7 @@ RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests' do
       test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb")
       test.start
       expect(test.screen_content).to match_repl(<<~SCREEN)
-        jard >> 
+        jard >>
       SCREEN
       test.send_keys('color-scheme -l', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
@@ -28,11 +28,11 @@ RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests' do
       test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb")
       test.start
       expect(test.screen_content).to match_repl(<<~SCREEN)
-        jard >> 
+        jard >>
       SCREEN
       test.send_keys('color-scheme 256', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
-        jard >> 
+        jard >>
       SCREEN
     ensure
       test.stop
@@ -44,7 +44,7 @@ RSpec.describe 'RubyJard::Commands::ColorSchemeCommand Integration tests' do
       test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb")
       test.start
       expect(test.screen_content).to match_repl(<<~SCREEN)
-        jard >> 
+        jard >>
       SCREEN
       test.send_keys('color-scheme NotExistedScheme', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
