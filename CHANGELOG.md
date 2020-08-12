@@ -7,8 +7,10 @@
 - Add `gruvbox` color scheme
 - Add `alias_to_debugger` option
 - Add `layout` option
-- Source screen: Use relative path if shorter than absolute path.
+- Source screen: Use relative path if shorter than absolute path
 - Add `show-output` command
+- Move variable screen to the right again (sorry :pray:)
+- Auto-adjust screens to utilize spaces on the screen
 
 ### Bug fixes
 - Jard doesn't work when place at the end of a method, or a block.
@@ -16,6 +18,7 @@
 - Source screen doesn't work well with anonymous evaluation, or `ruby -e`
 - Auto-completion of pry (actually readline) is broken
 - Could not exit when starting Jard inside irb
+- Repl is broken if the keyboard repeat rate is too high.
 
 ### Internal & Refactoring
 - Add tests for critical sections
