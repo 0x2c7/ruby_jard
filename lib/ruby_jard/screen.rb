@@ -17,32 +17,6 @@ module RubyJard
       @rows = []
     end
 
-    def shrinkable?
-      case @layout.template.adjust_mode
-      when :expand
-        false
-      else
-        @window.length < @layout.height
-      end
-    end
-
-    def expandable?
-      case @layout.template.adjust_mode
-      when :expand
-        true
-      else
-        @window.length >= @layout.height
-      end
-    end
-
-    def shrinkable_height
-      if @window.length < @layout.height
-        @layout.height - @window.length
-      else
-        0
-      end
-    end
-
     def move_down; end
 
     def move_up; end

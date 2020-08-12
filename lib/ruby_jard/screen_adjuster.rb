@@ -18,12 +18,12 @@ module RubyJard
         next if grouped_screens.length <= 1
 
         grouped_screens.sort_by! { |screen| screen.layout.box_y }
-        shrinkable_screens = grouped_screens.select(&:shrinkable?)
-        expandable_screens = grouped_screens.select(&:expandable?)
+        shrinkable_screens = grouped_screens.select { |s| shrinkable?(s) }
+        expandable_screens = grouped_screens.select { |s| expandable?(s) }
 
         next if shrinkable_screens.empty? || expandable_screens.empty?
 
-        budget = shrinkable_screens.map(&:shrinkable_height).sum
+        budget = shrinkable_screens.map { |s| shrinkable_height(s) }.sum
         expand_screens(expandable_screens, budget)
         shrink_screens(shrinkable_screens)
         compact_screens(grouped_screens)
@@ -49,7 +49,7 @@ module RubyJard
 
     def shrink_screens(shrinkable_screens)
       shrinkable_screens.each do |screen|
-        delta = screen.shrinkable_height
+        delta = shrinkable_height(screen)
         screen.layout.height -= delta
         screen.layout.box_height -= delta
       end
@@ -61,6 +61,32 @@ module RubyJard
         screen.layout.box_y = box_y
         screen.layout.y = box_y + 1
         box_y += screen.layout.box_height - 1
+      end
+    end
+
+    def shrinkable?(screen)
+      case screen.layout.template.adjust_mode
+      when :expand
+        false
+      else
+        screen.window.length < screen.layout.height
+      end
+    end
+
+    def expandable?(screen)
+      case screen.layout.template.adjust_mode
+      when :expand
+        true
+      else
+        screen.window.length >= screen.layout.height
+      end
+    end
+
+    def shrinkable_height(screen)
+      if screen.window.length < screen.layout.height
+        screen.layout.height - screen.window.length
+      else
+        0
       end
     end
   end
