@@ -121,6 +121,40 @@ RSpec.describe RubyJard::ScreenAdjuster do
     end
   end
 
+  context 'when first screen needs to expand and second one has min_height attribute' do
+    let(:screen_1) { RubyJard::Screen.new(layout: layout_1) }
+    let(:template_2) { RubyJard::Templates::ScreenTemplate.new(min_height: 3) }
+    let(:screen_2) { RubyJard::Screen.new(layout: layout_2) }
+
+    let(:adjuster) { described_class.new([screen_1, screen_2]) }
+
+    before do
+      screen_1.window = ['empty line'] * 39 # Right reaching the edge
+      screen_2.window = ['empty line'] * 1
+    end
+
+    it 'expands the first screen, and shrinks the second one to min_height' do
+      adjuster.adjust
+      expect(layout_1.box_width).to eq(75)
+      expect(layout_1.box_height).to eq(48)
+      expect(layout_1.box_x).to eq(72)
+      expect(layout_1.box_y).to eq(0)
+      expect(layout_1.width).to eq(73)
+      expect(layout_1.height).to eq(46)
+      expect(layout_1.x).to eq(73)
+      expect(layout_1.y).to eq(1)
+
+      expect(layout_2.box_width).to eq(75)
+      expect(layout_2.box_height).to eq(5)
+      expect(layout_2.box_x).to eq(72)
+      expect(layout_2.box_y).to eq(47)
+      expect(layout_2.width).to eq(73)
+      expect(layout_2.height).to eq(3)
+      expect(layout_2.x).to eq(73)
+      expect(layout_2.y).to eq(48)
+    end
+  end
+
   context 'when second screen needs to expand and first one is shrinkable' do
     let(:layout_3) do
       RubyJard::Layout.new(

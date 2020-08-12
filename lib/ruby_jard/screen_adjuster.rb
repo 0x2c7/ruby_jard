@@ -84,7 +84,11 @@ module RubyJard
 
     def shrinkable_height(screen)
       if screen.window.length < screen.layout.height
-        screen.layout.height - screen.window.length
+        window_height = screen.window.length
+        if !screen.layout.template.min_height.nil? && screen.layout.template.min_height > window_height
+          window_height = screen.layout.template.min_height
+        end
+        screen.layout.height - window_height
       else
         0
       end

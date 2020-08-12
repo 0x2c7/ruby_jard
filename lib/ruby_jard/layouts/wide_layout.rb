@@ -19,7 +19,8 @@ module RubyJard
             ),
             RubyJard::Templates::ScreenTemplate.new(
               screen: :backtrace,
-              height_ratio: 30
+              height_ratio: 30,
+              min_height: 3
             )
           ]
         ),
@@ -35,7 +36,8 @@ module RubyJard
             ),
             RubyJard::Templates::ScreenTemplate.new(
               screen: :threads,
-              height_ratio: 20
+              height_ratio: 20,
+              min_height: 3
             )
           ]
         ),
