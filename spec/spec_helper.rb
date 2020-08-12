@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+require 'rspec/retry'
 require 'ruby_jard'
 
 RSPEC_ROOT = File.dirname __FILE__
@@ -16,6 +17,13 @@ require_relative_folder('./helpers/**/*')
 require_relative_folder('./shared/**/*')
 
 RSpec.configure do |config|
+  config.verbose_retry = true
+  config.display_try_failure_messages = true
+
+  config.around :each, :integration do |ex|
+    ex.run_with_retry retry: 3
+  end
+
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
 

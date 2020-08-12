@@ -11,15 +11,11 @@ module RubyJard
     end
 
     def render
-      return unless @screen.need_to_render?
-
       # Move this logic into a class called SreenRenderer
       calculate_content_lengths
       column_widths = calculate_column_widths
       adjust_column_widths(column_widths)
-      render_rows
       calculate_window
-      @screen.mark_rendered!
 
       @screen
     end
@@ -91,12 +87,6 @@ module RubyJard
 
     def render_rows
       @screen.rows.each do |row|
-        RubyJard::RowRenderer.new(
-          row: row,
-          width: @screen.layout.width,
-          height: @screen.layout.height,
-          color_scheme: @color_scheme
-        ).render
       end
     end
 
@@ -112,7 +102,7 @@ module RubyJard
 
     def find_seleted_window
       @screen.rows.each_with_index do |row, row_index|
-        row.content.each_with_index do |line, line_index|
+        row_content(row).each_with_index do |line, line_index|
           if @screen.window.length < @screen.layout.height
             @screen.window << line
           elsif row_index < @screen.selected
@@ -134,7 +124,7 @@ module RubyJard
     def find_cursor_window
       cursor_line = -1
       @screen.rows.each do |row|
-        row.content.each do |line|
+        row_content(row).each do |line|
           cursor_line += 1
           @screen.window << line if cursor_line >= @screen.cursor
           return if @screen.window.length >= @screen.layout.height
@@ -144,6 +134,19 @@ module RubyJard
 
     def count_columns
       @screen.rows.map { |row| row.columns.count }.max.to_i
+    end
+
+    def row_content(row)
+      unless row.rendered?
+        RubyJard::RowRenderer.new(
+          row: row,
+          width: @screen.layout.width,
+          height: @screen.layout.height,
+          color_scheme: @color_scheme
+        ).render
+      end
+
+      row.content
     end
   end
 end

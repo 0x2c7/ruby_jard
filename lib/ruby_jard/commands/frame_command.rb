@@ -21,7 +21,7 @@ module RubyJard
       BANNER
 
       def self.session_backtrace
-        RubyJard.current_session.backtrace
+        RubyJard.current_session.current_backtrace
       end
 
       def process

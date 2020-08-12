@@ -39,12 +39,12 @@ module RubyJard
         frame_id_label = frame_id.to_s.rjust(frames_count.to_s.length)
         if current_frame?(frame_id)
           RubyJard::Span.new(
-            content: frame_id_label,
+            content: "➠ #{frame_id_label}",
             styles: :frame_id_highlighted
           )
         else
           RubyJard::Span.new(
-            content: frame_id_label,
+            content: "  #{frame_id_label}",
             styles: :frame_id
           )
         end

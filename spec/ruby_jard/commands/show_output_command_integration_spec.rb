@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'RubyJard::Commands::ShowOutputCommand Integration tests' do
+RSpec.describe 'RubyJard::Commands::ShowOutputCommand Integration tests', integration: true do
   let(:work_dir) { File.join(RSPEC_ROOT, '/ruby_jard/commands') }
 
   context 'when there is no output yet' do

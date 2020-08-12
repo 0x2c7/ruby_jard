@@ -23,6 +23,7 @@ require 'ruby_jard/column'
 require 'ruby_jard/span'
 require 'ruby_jard/row_renderer'
 require 'ruby_jard/screen_renderer'
+require 'ruby_jard/screen_adjuster'
 require 'ruby_jard/box_drawer'
 require 'ruby_jard/screen_drawer'
 
@@ -49,7 +50,7 @@ module RubyJard
     class << self
       extend Forwardable
 
-      def_delegators :instance, :update, :draw_error, :started?, :updating?
+      def_delegators :instance, :update, :puts, :draw_error, :started?, :updating?
 
       def instance
         @instance ||= new
@@ -160,6 +161,10 @@ module RubyJard
       @output.puts '-------------'
     end
 
+    def puts(content)
+      @output.write "#{content}\n", from_jard: true
+    end
+
     private
 
     def calculate_layouts(width, height)
@@ -172,11 +177,17 @@ module RubyJard
     end
 
     def build_screens(layouts)
+      screens = layouts.map do |layout|
+        screen_class = fetch_screen(layout.template.screen)
+        screen = screen_class.new(layout: layout)
+        screen.build
+        render_screen(screen)
+        screen
+      end
+      RubyJard::ScreenAdjuster.new(screens).adjust
       layouts.map do |layout|
         screen_class = fetch_screen(layout.template.screen)
-        screen = screen_class.new(
-          layout: layout
-        )
+        screen = screen_class.new(layout: layout)
         screen.build
         render_screen(screen)
         screen

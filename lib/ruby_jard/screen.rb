@@ -15,7 +15,6 @@ module RubyJard
       @cursor = nil
       @selected = 0
       @rows = []
-      @need_to_render = true
     end
 
     def move_down; end
@@ -30,14 +29,6 @@ module RubyJard
 
     def build
       raise NotImplementedError, "#{self.class} should implement this method."
-    end
-
-    def need_to_render?
-      @need_to_render == true
-    end
-
-    def mark_rendered!
-      @need_to_render = false
     end
   end
 end

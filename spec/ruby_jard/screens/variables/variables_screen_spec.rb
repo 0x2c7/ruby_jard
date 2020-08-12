@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'RubyJard::Screens::VariablesScreen' do
+RSpec.describe 'RubyJard::Screens::VariablesScreen', integration: true do
   let(:work_dir) { File.join(RSPEC_ROOT, '/ruby_jard/screens/variables') }
 
   context 'when jard stops at top-level binding' do
@@ -344,6 +344,29 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
       expect(test.screen_content).to match_screen(expected_output_1)
       test.send_keys('next', :Enter)
       expect(test.screen_content).to match_screen(expected_output_2)
+    ensure
+      test.stop
+    end
+  end
+
+  context 'when jumping into an ERB file' do
+    let(:expected_output) do
+      <<~'EXPECTED'
+        ┌ Variables ───────────────────────────────────────────────────────────────────┐
+        │  self = #<ProductView::ProductObject:??????????????????>                     │
+        │  capitalized_name = "BITCOIN"                                                │
+        │• price = 5710                                                                │
+        │  _erbout (len:39) = "\n<h1>BITCOIN</h1>\n<ul>\n  \n    \n    <li>"           │
+        │  @name = "Bitcoin"                                                           │
+        │  @prices (len:2) = [5710, 5810]                                              │
+        └──────────────────────────────────────────────────────────────────────────────┘
+      EXPECTED
+    end
+
+    it 'displays correct line' do
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/erb_evaluation.rb")
+      test.start
+      expect(test.screen_content).to match_screen(expected_output)
     ensure
       test.stop
     end

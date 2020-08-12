@@ -115,7 +115,7 @@ module RubyJard
     def handle_frame_command(options)
       next_frame = options[:frame].to_i
       if Byebug::Frame.new(Byebug.current_context, next_frame).c_frame?
-        puts "Error: Frame #{next_frame} is a c-frame. Not able to inspect c layer!"
+        RubyJard::ScreenManager.puts "Error: Frame #{next_frame} is a c-frame. Not able to inspect c layer!"
         process_commands(false)
       else
         Byebug.current_context.frame = next_frame
@@ -125,7 +125,7 @@ module RubyJard
     end
 
     def handle_continue_command(_options = {})
-      # Do nothing
+      RubyJard::ScreenManager.puts '► ► Program resumed ► ►'
     end
 
     def handle_exit_command(_options = {})

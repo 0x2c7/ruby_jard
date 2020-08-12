@@ -14,6 +14,8 @@ module RubyJard
     end
 
     def render
+      @row.reset_rendered
+
       @x = 0
       @y = 0
       @original_x = 0
@@ -35,6 +37,8 @@ module RubyJard
       end
 
       generate_bitmap
+
+      @row.mark_rendered
     end
 
     # rubocop:disable Metrics/MethodLength
