@@ -8,4 +8,7 @@ gem 'rake', '~> 12.0'
 gem 'rspec', '~> 3.0'
 gem 'rubocop', '~> 0.88'
 gem 'rubocop-rspec', require: false
-gem 'rspec-retry', group: :test
+
+group :test do
+  gem 'rspec-retry'
+end
