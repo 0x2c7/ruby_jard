@@ -348,4 +348,27 @@ RSpec.describe 'RubyJard::Screens::VariablesScreen' do
       test.stop
     end
   end
+
+  context 'when jumping into an ERB file' do
+    let(:expected_output) do
+      <<~'EXPECTED'
+        ┌ Variables ───────────────────────────────────────────────────────────────────┐
+        │  self = #<ProductView::ProductObject:??????????????????>                     │
+        │  capitalized_name = "BITCOIN"                                                │
+        │• price = 5710                                                                │
+        │  _erbout (len:39) = "\n<h1>BITCOIN</h1>\n<ul>\n  \n    \n    <li>"           │
+        │  @name = "Bitcoin"                                                           │
+        │  @prices (len:2) = [5710, 5810]                                              │
+        └──────────────────────────────────────────────────────────────────────────────┘
+      EXPECTED
+    end
+
+    it 'displays correct line' do
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/erb_evaluation.rb")
+      test.start
+      expect(test.screen_content).to match_screen(expected_output)
+    ensure
+      test.stop
+    end
+  end
 end

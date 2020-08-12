@@ -336,4 +336,29 @@ RSpec.describe 'RubyJard::Screens::SourceScreen' do
       test.stop
     end
   end
+
+  context 'when jumping into an ERB file' do
+    let(:expected_output) do
+      <<~EXPECTED
+        ┌ Source  ../../../examples/erb_evaluation.erb:6 ──────────────────────────────┐
+        │   1 <% capitalized_name = @name.upcase %>                                    │
+        │   2 <h1><%= capitalized_name %></h1>                                         │
+        │   3 <ul>                                                                     │
+        │   4   <% @prices.each do |price| %>                                          │
+        │   5     <% jard %>                                                           │
+        │➠  6     <li><%= price %></li>                                                │
+        │   7   <% end %>                                                              │
+        │   8 </ul>                                                                    │
+        └──────────────────────────────────────────────────────────────────────────────┘
+      EXPECTED
+    end
+
+    it 'displays correct line' do
+      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/erb_evaluation.rb")
+      test.start
+      expect(test.screen_content).to match_screen(expected_output)
+    ensure
+      test.stop
+    end
+  end
 end
