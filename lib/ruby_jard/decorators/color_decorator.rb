@@ -4,6 +4,12 @@ module RubyJard
   module Decorators
     ##
     # Manipulate and decorate color for texts.
+    # This class translate colors to corresponding escape sequences.
+    # Support 24-bit color (#51617d format) or 256 colors (https://jonasjacek.github.io/colors/)
+    # Example:
+    # - #fafafa => \e[38;2;250;250;250m
+    # - #aaa => \e[38;2;170;170;170m
+    # - 77 => \e[38;2;170;170;170m
     class ColorDecorator
       HEX_PATTERN_6 = /^#([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})$/i.freeze
       HEX_PATTERN_3 = /^#([A-Fa-f0-9]{1})([A-Fa-f0-9]{1})([A-Fa-f0-9]{1})$/i.freeze
@@ -35,8 +41,6 @@ module RubyJard
         "#{foreground}#{background}#{translate_styles(styles)}#{content}#{CSI_RESET}"
       end
 
-      private
-
       def translate_color(color, foreground)
         if (matches = HEX_PATTERN_6.match(color.to_s))
           red = matches[1].to_i(16)
@@ -58,6 +62,8 @@ module RubyJard
           ''
         end
       end
+
+      private
 
       def translate_styles(styles = [])
         styles.map { |key| STYLES_CSI_MAP[key] }.compact.join
