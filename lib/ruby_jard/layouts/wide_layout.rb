@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Layouts
+  class Layouts
     WideLayout = RubyJard::Templates::LayoutTemplate.new(
       min_width: 120,
       min_height: 24,

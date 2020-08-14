@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Layouts
+  class Layouts
     NarrowVerticalLayout = RubyJard::Templates::LayoutTemplate.new(
       min_width: 40,
       min_height: 24,

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Layouts
+  class Layouts
     TinyLayout = RubyJard::Templates::LayoutTemplate.new(
       min_height: 10,
       children: [

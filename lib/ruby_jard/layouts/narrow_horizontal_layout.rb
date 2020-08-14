@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Layouts
+  class Layouts
     NarrowHorizontalLayout = RubyJard::Templates::LayoutTemplate.new(
       min_width: 80,
       min_height: 10,
