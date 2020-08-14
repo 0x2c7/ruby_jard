@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe 'RubyJard::LayoutPicker integrations test', integration: true do
-  let(:work_dir) { File.join(RSPEC_ROOT, '/ruby_jard') }
+RSpec.describe 'Auto layout', integration: true do
+  let(:work_dir) { File.join(RSPEC_ROOT, '/integration') }
 
   context 'when the window is enormous' do
     it 'picks wide layout' do

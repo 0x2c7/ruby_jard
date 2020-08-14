@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe 'RubyJard::Screens::SourceScreen', integration: true do
-  let(:work_dir) { File.join(RSPEC_ROOT, '/ruby_jard/screens/source') }
+RSpec.describe 'Source screen', integration: true do
+  let(:work_dir) { File.join(RSPEC_ROOT, '/integration/screens/source') }
 
   context 'when jard stops at top-level binding' do
     let(:expected_output_1) do
