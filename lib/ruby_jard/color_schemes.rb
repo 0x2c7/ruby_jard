@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'ruby_jard/color_scheme'
+
 module RubyJard
   ##
   # Color scheme registry.
@@ -28,3 +30,7 @@ module RubyJard
     end
   end
 end
+
+require 'ruby_jard/color_schemes/deep_space_color_scheme'
+require 'ruby_jard/color_schemes/256_color_scheme'
+require 'ruby_jard/color_schemes/gruvbox_color_scheme'

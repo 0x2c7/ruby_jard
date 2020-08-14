@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+require 'ruby_jard/layout'
+require 'ruby_jard/templates/layout_template'
+require 'ruby_jard/templates/screen_template'
+require 'ruby_jard/layout_picker'
+require 'ruby_jard/layout_calculator'
+
 module RubyJard
   ##
   # Layouts registry.

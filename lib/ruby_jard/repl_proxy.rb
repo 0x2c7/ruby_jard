@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'pty'
+require 'ruby_jard/pager'
 
 module RubyJard
   ##

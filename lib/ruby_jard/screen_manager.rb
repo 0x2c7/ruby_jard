@@ -9,14 +9,9 @@ require 'ruby_jard/decorators/loc_decorator'
 require 'ruby_jard/decorators/source_decorator'
 require 'ruby_jard/decorators/inspection_decorator'
 
-require 'ruby_jard/screen'
 require 'ruby_jard/screens'
-
-require 'ruby_jard/color_scheme'
 require 'ruby_jard/color_schemes'
-require 'ruby_jard/color_schemes/deep_space_color_scheme'
-require 'ruby_jard/color_schemes/256_color_scheme'
-require 'ruby_jard/color_schemes/gruvbox_color_scheme'
+require 'ruby_jard/layouts'
 
 require 'ruby_jard/row'
 require 'ruby_jard/column'
@@ -26,22 +21,6 @@ require 'ruby_jard/screen_renderer'
 require 'ruby_jard/screen_adjuster'
 require 'ruby_jard/box_drawer'
 require 'ruby_jard/screen_drawer'
-
-require 'ruby_jard/screens/source_screen'
-require 'ruby_jard/screens/backtrace_screen'
-require 'ruby_jard/screens/threads_screen'
-require 'ruby_jard/screens/variables_screen'
-require 'ruby_jard/screens/menu_screen'
-
-require 'ruby_jard/templates/layout_template'
-require 'ruby_jard/templates/screen_template'
-
-require 'ruby_jard/layout'
-require 'ruby_jard/layouts'
-require 'ruby_jard/layout_picker'
-require 'ruby_jard/layout_calculator'
-
-require 'ruby_jard/pager'
 
 module RubyJard
   ##
