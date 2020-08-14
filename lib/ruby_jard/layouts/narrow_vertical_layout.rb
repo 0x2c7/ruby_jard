@@ -5,12 +5,11 @@ module RubyJard
     NarrowVerticalLayout = RubyJard::Templates::LayoutTemplate.new(
       min_width: 40,
       min_height: 24,
+      fill_height: false,
       children: [
         RubyJard::Templates::LayoutTemplate.new(
           height_ratio: 80,
           width_ratio: 100,
-          fill_height: true,
-          fill_width: true,
           children: [
             RubyJard::Templates::ScreenTemplate.new(
               screen: :source,

@@ -4,6 +4,7 @@ module RubyJard
   class Layouts
     TinyLayout = RubyJard::Templates::LayoutTemplate.new(
       min_height: 10,
+      fill_height: false,
       children: [
         RubyJard::Templates::LayoutTemplate.new(
           height_ratio: 80,
