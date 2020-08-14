@@ -4,7 +4,7 @@ module RubyJard
   module Layouts
     NarrowVerticalLayout = RubyJard::Templates::LayoutTemplate.new(
       min_width: 40,
-      min_height: 30,
+      min_height: 24,
       children: [
         RubyJard::Templates::LayoutTemplate.new(
           height_ratio: 80,
