@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Screens
+  class Screens
     ##
     # Backtrace screen implements the content to display current thread's backtrace to the user.
     class BacktraceScreen < RubyJard::Screen
@@ -133,4 +133,4 @@ module RubyJard
   end
 end
 
-RubyJard::Screens.add_screen(:backtrace, RubyJard::Screens::BacktraceScreen)
+RubyJard::Screens.add_screen('backtrace', RubyJard::Screens::BacktraceScreen)

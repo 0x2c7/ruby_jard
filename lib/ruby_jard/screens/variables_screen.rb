@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Screens
+  class Screens
     ##
     # Display the relevant variables and constants of current context, scopes
     class VariablesScreen < RubyJard::Screen
@@ -269,4 +269,4 @@ module RubyJard
   end
 end
 
-RubyJard::Screens.add_screen(:variables, RubyJard::Screens::VariablesScreen)
+RubyJard::Screens.add_screen('variables', RubyJard::Screens::VariablesScreen)

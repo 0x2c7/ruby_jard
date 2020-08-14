@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Screens
+  class Screens
     ##
     # Display source code of current stopping line and surrounding lines
     class SourceScreen < RubyJard::Screen
@@ -126,4 +126,4 @@ module RubyJard
   end
 end
 
-RubyJard::Screens.add_screen(:source, RubyJard::Screens::SourceScreen)
+RubyJard::Screens.add_screen('source', RubyJard::Screens::SourceScreen)

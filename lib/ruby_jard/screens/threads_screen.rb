@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Screens
+  class Screens
     ##
     # Display all current alive threads, excluding internal threads
     class ThreadsScreen < RubyJard::Screen
@@ -151,4 +151,4 @@ module RubyJard
   end
 end
 
-RubyJard::Screens.add_screen(:threads, RubyJard::Screens::ThreadsScreen)
+RubyJard::Screens.add_screen('threads', RubyJard::Screens::ThreadsScreen)
