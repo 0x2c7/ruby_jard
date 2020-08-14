@@ -50,8 +50,8 @@ module RubyJard
       RubyJard::Keys::CTRL_C => (KEY_BINDING_INTERRUPT = :interrupt)
     }.freeze
 
-    KEY_READ_TIMEOUT = 0.2            # 100ms
-    PTY_OUTPUT_TIMEOUT = 1.to_f / 120 # 120hz
+    KEY_READ_TIMEOUT = 0.2           # 200ms
+    PTY_OUTPUT_TIMEOUT = 1.to_f / 60 # 60hz
 
     ##
     # A tool to communicate between functional threads and main threads
@@ -314,9 +314,8 @@ module RubyJard
       hooks.add_hook(:after_read, :jard_proxy_acquire_lock) do |_read_string, _pry|
         RubyJard::Console.cooked!
         @state.processing!
-      rescue SyntaxError
-        # Ignore
-        @state.ready!
+        # Sleep 2 ticks, wait for pry to print out all existing output in the queue
+        sleep PTY_OUTPUT_TIMEOUT * 2
       end
       hooks.add_hook(:after_handle_line, :jard_proxy_release_lock) do
         RubyJard::Console.raw!
