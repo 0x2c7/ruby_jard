@@ -29,25 +29,31 @@ module RubyJard
       def generate_left_spans
         [
           RubyJard::Span.new(
-            content: ' Mode (F2) ',
+            content: ' REPL ',
             styles: :title_highlighted
-          ),
-          RubyJard::Span.new(
-            margin_left: 1,
-            content: 'All gems',
-            styles: :menu_mode
-          ),
-          RubyJard::Span.new(
-            margin_left: 1,
-            content: '|',
-            styles: :menu_tips
-          ),
-          RubyJard::Span.new(
-            margin_left: 1,
-            content: 'Application only',
-            styles: :menu_tips
           )
         ]
+        # [
+        #   RubyJard::Span.new(
+        #     content: ' Mode (F2) ',
+        #     styles: :title_highlighted
+        #   ),
+        #   RubyJard::Span.new(
+        #     margin_left: 1,
+        #     content: 'All gems',
+        #     styles: :menu_mode
+        #   ),
+        #   RubyJard::Span.new(
+        #     margin_left: 1,
+        #     content: '|',
+        #     styles: :menu_tips
+        #   ),
+        #   RubyJard::Span.new(
+        #     margin_left: 1,
+        #     content: 'Application only',
+        #     styles: :menu_tips
+        #   )
+        # ]
       end
 
       def generate_right_spans
