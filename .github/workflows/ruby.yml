@@ -1,6 +1,11 @@
 name: Ruby
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   rubocop:
@@ -19,46 +24,17 @@ jobs:
       run: bundle install
     - name: Checking offenses
       run: bundle exec rubocop
-  test-v2-5-0:
+  test-ubuntu:
+    strategy:
+      matrix:
+        ruby: [2.5, 2.6, 2.7.1]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.5
-    - name: Install tmux
-      run: sudo apt install -y tmux
-    - name: Start tmux
-      run: tmux start-server
-    - name: Install dependencies
-      run: bundle install
-    - name: Run tests
-      run: bundle exec rspec
-  test-v2-6-0:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.6
-    - name: Install tmux
-      run: sudo apt install -y tmux
-    - name: Start tmux
-      run: tmux start-server
-    - name: Install dependencies
-      run: bundle install
-    - name: Run tests
-      run: bundle exec rspec
-  test-v2-7-1:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.7.1
+        ruby-version: ${{ matrix.ruby }}
     - name: Install tmux
       run: sudo apt install -y tmux
     - name: Start tmux
@@ -68,7 +44,31 @@ jobs:
     - name: Run tests
       run: bundle exec rspec
   test-macos:
+    strategy:
+      matrix:
+        ruby: [2.5, 2.6, 2.7.1]
     runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+    - name: Install tmux
+      run: brew install tmux
+    - name: Start tmux
+      run: tmux start-server
+    - name: Install dependencies
+      run: bundle install
+    - name: Run tests
+      run: bundle exec rspec
+  test-previous-byebug:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        byebug: [9.1.0, 10.0.2]
+    env:
+      BUNDLE_GEMFILE: "./spec/gemfiles/Gemfile-byebug-${{ matrix.byebug }}"
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
@@ -76,7 +76,7 @@ jobs:
       with:
         ruby-version: 2.5
     - name: Install tmux
-      run: brew install tmux
+      run: sudo apt install -y tmux
     - name: Start tmux
       run: tmux start-server
     - name: Install dependencies

@@ -23,8 +23,8 @@ module RubyJard
   # repl, and triggers Byebug debugger if needed.
   #
   class ReplProcessor < Byebug::CommandProcessor
-    def initialize(context, interface = LocalInterface.new)
-      super(context, interface)
+    def initialize(context, *args)
+      super(context, *args)
       @repl_proxy = RubyJard::ReplProxy.new(
         key_bindings: RubyJard.global_key_bindings
       )
