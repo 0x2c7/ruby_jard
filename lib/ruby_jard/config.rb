@@ -37,7 +37,7 @@ module RubyJard
     DEFAULTS = [
       DEFAULT_COLOR_SCHEME = '256',
       DEFAULT_ALIAS_TO_DEBUGGER = false,
-      DEFAULT_LAYOUT = 'wide'
+      DEFAULT_LAYOUT = nil # Pick layout automatically
     ].freeze
 
     def initialize

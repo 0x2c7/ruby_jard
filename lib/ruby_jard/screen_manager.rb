@@ -241,7 +241,7 @@ module RubyJard
 
     def pick_layout(width, height)
       if RubyJard.config.layout.nil?
-        RubyJard::Laytous.each do |template|
+        RubyJard::Layouts.each do |_name, template|
           matched = true
           matched &&= (
             template.min_width.nil? ||
