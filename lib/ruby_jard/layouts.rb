@@ -30,4 +30,6 @@ module RubyJard
 end
 
 require 'ruby_jard/layouts/wide_layout'
-require 'ruby_jard/layouts/narrow_layout'
+require 'ruby_jard/layouts/narrow_vertical_layout'
+require 'ruby_jard/layouts/narrow_horizontal_layout'
+require 'ruby_jard/layouts/tiny_layout'
