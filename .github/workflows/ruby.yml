@@ -1,6 +1,11 @@
 name: Ruby
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   rubocop:
@@ -48,7 +53,7 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: ${{ maatrix.ruby }}
+        ruby-version: ${{ matrix.ruby }}
     - name: Install tmux
       run: brew install tmux
     - name: Start tmux
