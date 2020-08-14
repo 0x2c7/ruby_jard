@@ -28,7 +28,7 @@ jobs:
     strategy:
       matrix:
         ruby: [2.5, 2.6, 2.7.1]
-    runs-on: ubuntu-laest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
