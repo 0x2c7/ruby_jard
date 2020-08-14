@@ -18,7 +18,7 @@ module RubyJard
         min_width: nil, min_height: nil,
         height: nil, width: nil,
         children: [],
-        fill_width: nil, fill_height: nil
+        fill_width: true, fill_height: true
       )
         @height_ratio = height_ratio
         @width_ratio = width_ratio

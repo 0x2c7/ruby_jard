@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'RubyJard::Commands::ShowOutputCommand Integration tests', integration: true do
-  let(:work_dir) { File.join(RSPEC_ROOT, '/ruby_jard/commands') }
+  let(:work_dir) { File.join(RSPEC_ROOT, '/integration/commands') }
 
   context 'when there is no output yet' do
     it 'displays empty pager' do

@@ -5,19 +5,20 @@
 ### UX/UI
 - Add `self` to variables screen
 - Add `gruvbox` color scheme
+- Add `show-output` command
 - Add `alias_to_debugger` option
 - Add `layout` option
-- Source screen: Use relative path if shorter than absolute path
-- Add `show-output` command
-- Move variable screen to the right again (sorry :pray:)
+- Add responsive layouts to fit into different screen sizes
 - Auto-adjust screens to utilize spaces on the screen
+- Move variable screen to the right again (sorry :pray:)
 - Small colorless friendly adjustment to variable and thread marks
+- Source screen: Use relative path if shorter than absolute path
 
 ### Bug fixes
 - Jard doesn't work when place at the end of a method, or a block.
-- box title overflow
+- Box title overflow
 - Source screen doesn't work well with anonymous evaluation, or `ruby -e`
-- Auto-completion of pry (actually readline) is broken
+- Auto-completion with tab of pry (actually readline) is broken
 - Could not exit when starting Jard inside irb
 - Repl is broken if the keyboard repeat rate is too high.
 - Fix broken frame command

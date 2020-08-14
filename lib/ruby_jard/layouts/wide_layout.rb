@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Layouts
+  class Layouts
     WideLayout = RubyJard::Templates::LayoutTemplate.new(
       min_width: 120,
-      min_height: 10,
-      fill_width: true,
+      min_height: 24,
+      fill_height: false,
       children: [
         RubyJard::Templates::LayoutTemplate.new(
           height_ratio: 80,
           width_ratio: 50,
-          fill_height: true,
           children: [
             RubyJard::Templates::ScreenTemplate.new(
               screen: :source,
@@ -27,7 +26,6 @@ module RubyJard
         RubyJard::Templates::LayoutTemplate.new(
           height_ratio: 80,
           width_ratio: 50,
-          fill_height: true,
           children: [
             RubyJard::Templates::ScreenTemplate.new(
               screen: :variables,

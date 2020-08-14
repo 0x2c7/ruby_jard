@@ -16,6 +16,7 @@ module RubyJard
       groups = @screens.group_by { |screen| screen.layout.parent_template }
       groups.each do |_, grouped_screens|
         next if grouped_screens.length <= 1
+        next unless same_column?(grouped_screens)
 
         grouped_screens.sort_by! { |screen| screen.layout.box_y }
         shrinkable_screens = grouped_screens.select { |s| shrinkable?(s) }
@@ -31,6 +32,12 @@ module RubyJard
     end
 
     private
+
+    def same_column?(screens)
+      column_x = screens.first.layout.box_x
+      column_width = screens.first.layout.box_width
+      screens.all? { |s| s.layout.box_x == column_x && s.layout.box_width == column_width }
+    end
 
     def expand_screens(expandable_screens, budget)
       budget_each = budget / expandable_screens.length

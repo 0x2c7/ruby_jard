@@ -38,6 +38,7 @@ require 'ruby_jard/templates/screen_template'
 
 require 'ruby_jard/layout'
 require 'ruby_jard/layouts'
+require 'ruby_jard/layout_picker'
 require 'ruby_jard/layout_calculator'
 
 require 'ruby_jard/pager'
@@ -168,7 +169,7 @@ module RubyJard
     private
 
     def calculate_layouts(width, height)
-      layout = pick_layout(width, height)
+      layout = RubyJard::LayoutPicker.new(width, height).pick
       RubyJard::LayoutCalculator.calculate(
         layout_template: layout,
         width: width, height: height,
@@ -237,27 +238,6 @@ module RubyJard
 
     def total_screen_height(layouts)
       layouts.map { |layout| layout.y + layout.height }.max || 0
-    end
-
-    def pick_layout(width, height)
-      if RubyJard.config.layout.nil?
-        RubyJard::Laytous.each do |template|
-          matched = true
-          matched &&= (
-            template.min_width.nil? ||
-            width > template.min_width
-          )
-          matched &&= (
-            template.min_height.nil? ||
-            height > template.min_height
-          )
-          return template if matched
-        end
-        RubyJard::Layouts[RubyJard::Config::DEFAULT_LAYOUT]
-      else
-        RubyJard::Layouts[RubyJard.config.layout] ||
-          RubyJard::Layouts[RubyJard::Config::DEFAULT_LAYOUT]
-      end
     end
 
     def pick_color_scheme

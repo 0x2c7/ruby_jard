@@ -17,7 +17,7 @@ jobs:
       run: tmux start-server
     - name: Install dependencies
       run: bundle install
-    - name: Run tests
+    - name: Checking offenses
       run: bundle exec rubocop
   test-v2-5-0:
     runs-on: ubuntu-latest

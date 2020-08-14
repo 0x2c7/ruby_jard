@@ -3,6 +3,7 @@
 RubyJard::Layouts.add_layout(
   'standalone-variables',
   RubyJard::Templates::LayoutTemplate.new(
+    fill_height: false,
     children: [
       RubyJard::Templates::ScreenTemplate.new(
         height_ratio: 90,
