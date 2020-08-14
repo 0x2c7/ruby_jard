@@ -1,6 +1,10 @@
 name: Ruby
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   rubocop:
@@ -19,46 +23,17 @@ jobs:
       run: bundle install
     - name: Checking offenses
       run: bundle exec rubocop
-  test-v2-5-0:
-    runs-on: ubuntu-latest
+  test-ubuntu:
+    strategy:
+      matrix:
+        ruby: [2.5, 2.6, 2.7.1]
+    runs-on: ubuntu-laest
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.5
-    - name: Install tmux
-      run: sudo apt install -y tmux
-    - name: Start tmux
-      run: tmux start-server
-    - name: Install dependencies
-      run: bundle install
-    - name: Run tests
-      run: bundle exec rspec
-  test-v2-6-0:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.6
-    - name: Install tmux
-      run: sudo apt install -y tmux
-    - name: Start tmux
-      run: tmux start-server
-    - name: Install dependencies
-      run: bundle install
-    - name: Run tests
-      run: bundle exec rspec
-  test-v2-7-1:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.7.1
+        ruby-version: ${{ matrix.ruby }}
     - name: Install tmux
       run: sudo apt install -y tmux
     - name: Start tmux
@@ -68,13 +43,16 @@ jobs:
     - name: Run tests
       run: bundle exec rspec
   test-macos:
+    strategy:
+      matrix:
+        ruby: [2.5, 2.6, 2.7.1]
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.5
+        ruby-version: ${{ maatrix.ruby }}
     - name: Install tmux
       run: brew install tmux
     - name: Start tmux
