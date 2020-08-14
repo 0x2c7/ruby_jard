@@ -169,7 +169,7 @@ module RubyJard
     private
 
     def calculate_layouts(width, height)
-      layout = RubyJard::LayoutPicker.new(height, width).pick
+      layout = RubyJard::LayoutPicker.new(width, height).pick
       RubyJard::LayoutCalculator.calculate(
         layout_template: layout,
         width: width, height: height,
