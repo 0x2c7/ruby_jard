@@ -13,13 +13,11 @@ module RubyJard
       end
     end
 
+    attr_reader :fallback_layout
+
     def initialize(fallback_layout = RubyJard::Layouts::WideLayout)
       @layout_registry = {}
       @fallback_layout = fallback_layout
-    end
-
-    def fallback_layout
-      @fallback_layout
     end
 
     def add_layout(name, layout_class)
