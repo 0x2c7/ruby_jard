@@ -9,13 +9,13 @@ module RubyJard
       banner <<-BANNER
         Usage: jard hide [-h] [screen]
       BANNER
+      match 'hide'
 
-      def self.screens
-        RubyJard::Screens.names
-      end
+      def initialize(context = {})
+        super(context)
 
-      def self.enabled_screens
-        RubyJard.config.enabled_screens
+        @screens = context[:screens] || RubyJard::Screens
+        @config = context[:config] || RubyJard.config
       end
 
       def process
@@ -23,15 +23,15 @@ module RubyJard
 
         if screen.empty?
           raise Pry::CommandError,
-                "Please input one of the following: #{self.class.screens.join(', ')}"
+                "Please input one of the following: #{@screens.names.join(', ')}"
         end
 
-        unless self.class.screens.include?(screen)
+        unless @screens.names.include?(screen)
           raise Pry::CommandError,
-                "Screen `#{screen}` not found. Please input one of the following: #{self.class.screens.join(', ')}"
+                "Screen `#{screen}` not found. Please input one of the following: #{@screens.names.join(', ')}"
         end
 
-        self.class.enabled_screens.delete(screen)
+        @config.enabled_screens.delete(screen)
 
         RubyJard::ControlFlow.dispatch(:list)
       end

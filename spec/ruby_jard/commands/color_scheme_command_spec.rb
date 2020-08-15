@@ -76,7 +76,7 @@ RSpec.describe RubyJard::Commands::ColorSchemeCommand do
         config.color_scheme = 'default_scheme'
       end
 
-      it 'returns error message' do
+      it 'updates config, and dispatches a new flow' do
         flow = nil
         expect do
           flow = RubyJard::ControlFlow.listen do
