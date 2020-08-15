@@ -11,13 +11,17 @@ module RubyJard
       new(**args).calculate
     end
 
-    def initialize(layout_template:, width: 0, height: 0, x: 0, y: 0)
+    def initialize(
+      layout_template:, width: 0, height: 0, x: 0, y: 0,
+      config: RubyJard.config
+    )
       @layout_template = layout_template
       @width = width
       @height = height
       @x = x
       @y = y
       @layouts = []
+      @config = config
     end
 
     def calculate
@@ -44,7 +48,7 @@ module RubyJard
         max_height = 0
 
         lines = [[]]
-        template.children.each do |child_template|
+        visible_children(template).each do |child_template|
           child_height = calculate_child_height(child_template, height)
           child_width = calculate_child_width(child_template, width)
 
@@ -70,6 +74,20 @@ module RubyJard
             calculate_layout(child_template, child_width, child_height, xx, yy, template)
           end
         end
+      end
+    end
+
+    def visible_children(template)
+      template.children.select do |child|
+        visible?(child)
+      end
+    end
+
+    def visible?(template)
+      if template.is_a?(RubyJard::Templates::ScreenTemplate)
+        @config.enabled_screens.include?(template.screen.to_s.strip)
+      else
+        template.children.any? { |child| visible?(child) }
       end
     end
 

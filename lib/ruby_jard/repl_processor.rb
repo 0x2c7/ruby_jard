@@ -10,8 +10,7 @@ require 'ruby_jard/commands/step_command'
 require 'ruby_jard/commands/step_out_command'
 require 'ruby_jard/commands/frame_command'
 require 'ruby_jard/commands/list_command'
-require 'ruby_jard/commands/color_scheme_command'
-require 'ruby_jard/commands/show_output_command'
+require 'ruby_jard/commands/jard_command'
 
 module RubyJard
   ##
@@ -143,11 +142,6 @@ module RubyJard
     end
 
     def handle_list_command(_options = {})
-      process_commands
-    end
-
-    def handle_color_scheme_command(options = {})
-      RubyJard.config.color_scheme = options[:color_scheme]
       process_commands
     end
 

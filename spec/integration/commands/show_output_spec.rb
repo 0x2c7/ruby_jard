@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'RubyJard::Commands::ShowOutputCommand Integration tests', integration: true do
+RSpec.describe 'Output Integration tests', integration: true do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/commands') }
 
   context 'when there is no output yet' do
@@ -10,7 +10,7 @@ RSpec.describe 'RubyJard::Commands::ShowOutputCommand Integration tests', integr
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >>
       SCREEN
-      test.send_keys('show-output', :Enter)
+      test.send_keys('jard output', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
         ?
         ?
@@ -50,7 +50,7 @@ RSpec.describe 'RubyJard::Commands::ShowOutputCommand Integration tests', integr
         jard >>
       SCREEN
       test.send_keys('next', :Enter)
-      test.send_keys('show-output', :Enter)
+      test.send_keys('jard output', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
         ?
         ?
@@ -91,7 +91,7 @@ RSpec.describe 'RubyJard::Commands::ShowOutputCommand Integration tests', integr
       SCREEN
       test.send_keys('next', :Enter)
       test.send_keys('next', :Enter)
-      test.send_keys('show-output', :Enter)
+      test.send_keys('jard output', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
         100 | 77: xyz
         100 | 78: xyz

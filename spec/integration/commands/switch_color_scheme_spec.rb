@@ -10,9 +10,9 @@ RSpec.describe 'color-scheme command', integration: true do
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >>
       SCREEN
-      test.send_keys('color-scheme -l', :Enter)
+      test.send_keys('jard color-scheme -l', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
-        jard >> color-scheme -l
+        jard >> jard color-scheme -l
         256
         deep-space
         gruvbox
@@ -30,7 +30,7 @@ RSpec.describe 'color-scheme command', integration: true do
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >>
       SCREEN
-      test.send_keys('color-scheme 256', :Enter)
+      test.send_keys('jard color-scheme 256', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >>
       SCREEN
@@ -46,9 +46,9 @@ RSpec.describe 'color-scheme command', integration: true do
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >>
       SCREEN
-      test.send_keys('color-scheme NotExistedScheme', :Enter)
+      test.send_keys('jard color-scheme NotExistedScheme', :Enter)
       expect(test.screen_content).to match_repl(<<~SCREEN)
-        jard >> color-scheme NotExistedScheme
+        jard >> jard color-scheme NotExistedScheme
         Error: Color scheme `NotExistedScheme` not found. Please use `color-scheme -l` to list all color schemes.
         jard >>
       SCREEN

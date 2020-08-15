@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Screens
+  class Screens
     ##
     # Display key binding guidelines and shortcuts.
     class MenuScreen < RubyJard::Screen
@@ -87,4 +87,4 @@ module RubyJard
   end
 end
 
-RubyJard::Screens.add_screen(:menu, RubyJard::Screens::MenuScreen)
+RubyJard::Screens.add_screen('menu', RubyJard::Screens::MenuScreen)

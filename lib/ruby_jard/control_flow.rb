@@ -16,8 +16,7 @@ module RubyJard
       step: [:times],               # lib/ruby_jard/commands/step_command.rb
       step_out: [:times],           # lib/ruby_jard/commands/step_out_command.rb
       key_binding: [:action],       # lib/ruby_jard/commands/step_command.rb
-      list: [],                     # lib/ruby_jard/commands/list_command.rb
-      color_scheme: [:color_scheme] # lib/ruby_jard/commands/colorscheme_command.rb
+      list: []                      # lib/ruby_jard/commands/list_command.rb
     }.freeze
 
     attr_reader :command, :arguments

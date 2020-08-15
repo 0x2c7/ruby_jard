@@ -220,20 +220,20 @@ Explore a particular frame with id `<frame_id>`. It's faster than `up` and `down
 
 ### Color scheme
 
-**Repl command**: `color-scheme [-l] [frame_id]`
+**Repl command**: `jard color-scheme [-l] [frame_id]`
 
 **Key binding:** None
 
 **Examples:**
 
 ```
-color-scheme -l # List all available color schemes
+jard color-scheme -l # List all available color schemes
 # Output:
 # jard >>
 # 256
 # deep-space
 # gruvbox
-color-scheme deep-space # Switch to color scheme deep-space
+jard color-scheme deep-space # Switch to color scheme deep-space
 ```
 
 List all available color schemes, or switch to a particular color scheme at runtime.
@@ -259,7 +259,7 @@ There are some supported configurations:
 
 | Name                | Description                                                  | Default |
 | ------------------- | ------------------------------------------------------------ | ------- |
-| `color_scheme`      | Choose your favorite color scheme. The list of color schemes can be looke up in [Color schemes session](#color-schemes), or from `color-scheme -l` command in REPL. | `256`   |
+| `color_scheme`      | Choose your favorite color scheme. The list of color schemes can be looke up in [Color schemes session](#color-schemes), or from `jard color-scheme -l` command in REPL. | `256`   |
 | `alias_to_debugger` | Use `debugger` instead of `jard` when debugging. | `false`   |
 
 This is a complete example of a configuration file:

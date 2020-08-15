@@ -31,7 +31,7 @@ module RubyJard
       end
     end
 
-    attr_accessor :color_scheme, :alias_to_debugger, :layout
+    attr_accessor :color_scheme, :alias_to_debugger, :layout, :enabled_screens
 
     CONFIG_FILE_NAME = '.jardrc'
     DEFAULTS = [
@@ -44,6 +44,7 @@ module RubyJard
       @color_scheme = DEFAULT_COLOR_SCHEME
       @alias_to_debugger = DEFAULT_ALIAS_TO_DEBUGGER
       @layout = DEFAULT_LAYOUT
+      @enabled_screens = RubyJard::Screens.names
     end
 
     def config
