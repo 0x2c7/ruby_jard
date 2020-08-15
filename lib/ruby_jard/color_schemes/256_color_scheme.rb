@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module ColorSchemes
+  class ColorSchemes
     class X256ColorScheme < ColorScheme
       # Basic 256 colors that nearly all terminal supports. Just for backward-compatibility
       # https://en.wikipedia.org/wiki/ANSI_escape_code
@@ -13,7 +13,6 @@ module RubyJard
       WHITE      = '15'
       RED        = '167'
       GREEN      = '40'
-      DARK_GREEN = '34'
       YELLOW     = '184'
       BLUE       = '75'
       PURPLE     = '177'
@@ -51,7 +50,7 @@ module RubyJard
         method:                [YELLOW, BACKGROUND],
         comment:               [GRAY4, BACKGROUND],
         literal:               [RED, BACKGROUND],
-        string:                [DARK_GREEN, BACKGROUND],
+        string:                [GREEN, BACKGROUND],
         local_variable:        [PURPLE, BACKGROUND],
         instance_variable:     [PURPLE, BACKGROUND],
         constant:              [BLUE, BACKGROUND],

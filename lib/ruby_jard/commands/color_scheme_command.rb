@@ -14,12 +14,10 @@ module RubyJard
                color-scheme [scheme-name]
       BANNER
 
-      def self.color_scheme_names
-        RubyJard::ColorSchemes.names
-      end
-
-      def self.get_color_scheme(color_scheme)
-        RubyJard::ColorSchemes[color_scheme]
+      def initialize(context = {})
+        super(context)
+        @color_schemes = context[:color_schemes] || RubyJard::ColorSchemes
+        @config = context[:config] || RubyJard.config
       end
 
       def options(opt)
@@ -28,11 +26,10 @@ module RubyJard
 
       def process
         if opts[:l]
-          color_scheme_names = self.class.color_scheme_names
-          if color_scheme_names.empty?
+          if @color_schemes.names.empty?
             pry_instance.output.puts 'No loaded color schemes'
           else
-            pry_instance.output.puts self.class.color_scheme_names.join("\n")
+            pry_instance.output.puts @color_schemes.names.join("\n")
           end
         else
           color_scheme = args.first.to_s.strip
@@ -41,12 +38,13 @@ module RubyJard
                   'You must provide a color scheme name. Please use `color-scheme -l` to list all color schemes.'
           end
 
-          if self.class.get_color_scheme(color_scheme).nil?
+          if @color_schemes[color_scheme].nil?
             raise Pry::CommandError,
                   "Color scheme `#{color_scheme}` not found. Please use `color-scheme -l` to list all color schemes."
           end
 
-          RubyJard::ControlFlow.dispatch(:color_scheme, color_scheme: color_scheme)
+          @config.color_scheme = color_scheme
+          RubyJard::ControlFlow.dispatch(:list)
         end
       end
     end

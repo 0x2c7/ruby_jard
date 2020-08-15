@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module ColorSchemes
+  class ColorSchemes
     class DeepSpaceColorScheme < ColorScheme
       # Shameless copy from https://github.com/tyrannicaltoucan/vim-deep-space/blob/master/colors/deep-space.vim
       GRAY1      = '#1b202a'
@@ -12,7 +12,6 @@ module RubyJard
       WHITE      = '#fff'
       RED        = '#b15e7c'
       GREEN      = '#96f08d'
-      DARK_GREEN = '#709d6c'
       YELLOW     = '#e8cb6b'
       BLUE       = '#78b5ff'
       PURPLE     = '#b08aed'
@@ -50,7 +49,7 @@ module RubyJard
         method:                [YELLOW, BACKGROUND],
         comment:               [GRAY4, BACKGROUND],
         literal:               [RED, BACKGROUND],
-        string:                [DARK_GREEN, BACKGROUND],
+        string:                [GREEN, BACKGROUND],
         local_variable:        [PURPLE, BACKGROUND],
         instance_variable:     [PURPLE, BACKGROUND],
         constant:              [BLUE, BACKGROUND],

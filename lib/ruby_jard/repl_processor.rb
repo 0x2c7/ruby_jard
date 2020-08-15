@@ -147,11 +147,6 @@ module RubyJard
       process_commands
     end
 
-    def handle_color_scheme_command(options = {})
-      RubyJard.config.color_scheme = options[:color_scheme]
-      process_commands
-    end
-
     def up_n_frames(current_frame, times)
       next_frame = current_frame
       times.times do

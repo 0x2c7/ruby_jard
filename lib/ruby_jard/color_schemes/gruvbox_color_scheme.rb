@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module ColorSchemes
+  class ColorSchemes
     class GruvboxColorScheme < ColorScheme
       # Shameless copy from https://github.com/morhetz/gruvbox
       GRAY1      = '#282828'
@@ -12,7 +12,6 @@ module RubyJard
       WHITE      = '#f9f5d7'
       RED        = '#fb4934'
       GREEN      = '#b8bb26'
-      DARK_GREEN = '#98971a'
       YELLOW     = '#fabd2f'
       BLUE       = '#83a598'
       PURPLE     = '#d3869b'
@@ -49,7 +48,7 @@ module RubyJard
         method:                [YELLOW, BACKGROUND],
         comment:               [GRAY4, BACKGROUND],
         literal:               [RED, BACKGROUND],
-        string:                [DARK_GREEN, BACKGROUND],
+        string:                [GREEN, BACKGROUND],
         local_variable:        [PURPLE, BACKGROUND],
         instance_variable:     [PURPLE, BACKGROUND],
         constant:              [BLUE, BACKGROUND],
