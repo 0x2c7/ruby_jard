@@ -11,7 +11,7 @@ module RubyJard
       GRAY5      = '#9aa7bd'
       WHITE      = '#fff'
       RED        = '#b15e7c'
-      GREEN      = '#96f08d'
+      GREEN      = '#80b57b'
       YELLOW     = '#e8cb6b'
       BLUE       = '#78b5ff'
       PURPLE     = '#b08aed'
