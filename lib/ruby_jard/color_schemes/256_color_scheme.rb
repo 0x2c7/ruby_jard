@@ -6,8 +6,8 @@ module RubyJard
       # Basic 256 colors that nearly all terminal supports. Just for backward-compatibility
       # https://en.wikipedia.org/wiki/ANSI_escape_code
       GRAY1      = '234'
-      GRAY2      = '238'
-      GRAY3      = '241'
+      GRAY2      = '237'
+      GRAY3      = '239'
       GRAY4      = '245'
       GRAY5      = '249'
       WHITE      = '15'

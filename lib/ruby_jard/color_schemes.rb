@@ -40,4 +40,7 @@ end
 
 require 'ruby_jard/color_schemes/deep_space_color_scheme'
 require 'ruby_jard/color_schemes/256_color_scheme'
+require 'ruby_jard/color_schemes/256_light_color_scheme'
 require 'ruby_jard/color_schemes/gruvbox_color_scheme'
+require 'ruby_jard/color_schemes/one_half_dark_color_scheme'
+require 'ruby_jard/color_schemes/one_half_light_color_scheme'
