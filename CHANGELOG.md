@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.2.3 - Alpha 4] - Unreleased
+## [0.2.3 - Alpha 4]
 
 ### UX/UI
 - Add `gruvbox`, `256-light`, `one-half-dark`, and `one-half-light` color scheme
@@ -29,6 +29,7 @@
 - Improve performance of Jard when working with process with plenty of threads
 - Handle key-binding spamming well
 - Lazily load screen data
+- Support byebug >= 9.1.0
 
 ## [0.2.2 - Alpha 3]
 
