@@ -50,5 +50,3 @@ module RubyJard
     end
   end
 end
-
-Pry::Commands.add_command(RubyJard::Commands::ColorSchemeCommand)

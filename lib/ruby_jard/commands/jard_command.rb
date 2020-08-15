@@ -2,6 +2,7 @@
 
 require 'ruby_jard/commands/jard/show_command'
 require 'ruby_jard/commands/jard/hide_command'
+require 'ruby_jard/commands/jard/color_scheme_command'
 
 module RubyJard
   module Commands
@@ -28,6 +29,13 @@ module RubyJard
           opt.description 'Hide a particular screen'
           opt.run do |_, arguments|
             RubyJard::Commands::HideCommand.new(context).send(:call_safely, *arguments)
+          end
+        end
+
+        cmd.command 'color-scheme' do |opt|
+          opt.description 'Blah blah'
+          opt.run do |_, arguments|
+            RubyJard::Commands::ColorSchemeCommand.new(context).send(:call_safely, *arguments)
           end
         end
       end
