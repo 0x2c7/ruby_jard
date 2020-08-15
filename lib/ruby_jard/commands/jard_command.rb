@@ -3,6 +3,7 @@
 require 'ruby_jard/commands/jard/show_command'
 require 'ruby_jard/commands/jard/hide_command'
 require 'ruby_jard/commands/jard/color_scheme_command'
+require 'ruby_jard/commands/jard/output_command'
 
 module RubyJard
   module Commands
@@ -17,25 +18,20 @@ module RubyJard
         Usage: jard [-h] [sub commands]
       BANNER
 
+      SUB_COMMANDS = {
+        'show' => RubyJard::Commands::ShowCommand,
+        'hide' => RubyJard::Commands::HideCommand,
+        'color-scheme' => RubyJard::Commands::ColorSchemeCommand,
+        'output' => RubyJard::Commands::OutputCommand
+      }.freeze
+
       def subcommands(cmd)
-        cmd.command :show do |opt|
-          opt.description 'Show a particular screen'
-          opt.run do |_, arguments|
-            RubyJard::Commands::ShowCommand.new(context).send(:call_safely, *arguments)
-          end
-        end
-
-        cmd.command :hide do |opt|
-          opt.description 'Hide a particular screen'
-          opt.run do |_, arguments|
-            RubyJard::Commands::HideCommand.new(context).send(:call_safely, *arguments)
-          end
-        end
-
-        cmd.command 'color-scheme' do |opt|
-          opt.description 'Blah blah'
-          opt.run do |_, arguments|
-            RubyJard::Commands::ColorSchemeCommand.new(context).send(:call_safely, *arguments)
+        SUB_COMMANDS.each do |command_name, sub_command|
+          cmd.command command_name do |opt|
+            opt.description sub_command.description
+            opt.run do |_, arguments|
+              sub_command.new(context).send(:call_safely, *arguments)
+            end
           end
         end
       end

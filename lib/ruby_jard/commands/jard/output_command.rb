@@ -3,14 +3,14 @@
 module RubyJard
   module Commands
     # Command used to explore stacktrace.
-    class ShowOutputCommand < Pry::ClassCommand
+    class OutputCommand < Pry::ClassCommand
       group 'RubyJard'
       description 'Show all current program output'
 
-      match 'show-output'
+      match 'output'
 
       banner <<-BANNER
-        Usage: show-output
+        Usage: output
       BANNER
 
       def self.output_storage
@@ -26,5 +26,3 @@ module RubyJard
     end
   end
 end
-
-Pry::Commands.add_command(RubyJard::Commands::ShowOutputCommand)
