@@ -30,13 +30,19 @@ module RubyJard
           cmd.command command_name do |opt|
             opt.description sub_command.description
             opt.run do |_, arguments|
+              @ran_sub_command = true
               sub_command.new(context).send(:call_safely, *arguments)
             end
           end
         end
       end
 
-      def process; end
+      def process
+        return if @ran_sub_command
+        return if ['-h', '--help'].include?(args.first) || SUB_COMMANDS.keys.include?(args.first)
+
+        pry_instance.output.puts help
+      end
     end
   end
 end
