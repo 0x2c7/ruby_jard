@@ -14,8 +14,11 @@ RSpec.describe 'color-scheme command', integration: true do
       expect(test.screen_content).to match_repl(<<~SCREEN)
         jard >> jard color-scheme -l
         256
+        256-light
         deep-space
         gruvbox
+        one-half-dark
+        one-half-light
         jard >>
       SCREEN
     ensure

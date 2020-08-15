@@ -3,16 +3,15 @@
 ## [0.2.3 - Alpha 4] - Unreleased
 
 ### UX/UI
-- Add `self` to variables screen
-- Add `gruvbox` color scheme
-- Add `show-output` command
-- Add `alias_to_debugger` option
-- Add `layout` option
+- Add `gruvbox`, `256-light`, `one-half-dark`, and `one-half-light` color scheme
+- Add `jard output` command
+- Add `jard hide` command
+- Add `jard show` command
+- Add `alias_to_debugger`, `enabled_screens` option
 - Add responsive layouts to fit into different screen sizes
 - Auto-adjust screens to utilize spaces on the screen
 - Move variable screen to the right again (sorry :pray:)
 - Small colorless friendly adjustment to variable and thread marks
-- Source screen: Use relative path if shorter than absolute path
 
 ### Bug fixes
 - Jard doesn't work when place at the end of a method, or a block.
@@ -29,7 +28,7 @@
 - Use a custom pager to allow internal customization
 - Improve performance of Jard when working with process with plenty of threads
 - Handle key-binding spamming well
-- Lazily load row data
+- Lazily load screen data
 
 ## [0.2.2 - Alpha 3]
 

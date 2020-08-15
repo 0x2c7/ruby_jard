@@ -94,7 +94,7 @@ Show all the threads running at the moment. This panel is useful when you are wo
 
 An interactive Repl for you to interact with your program, inspect values, update values, or control the debug flow as you want. The heart of Jard's repl is [Pry](https://github.com/pry/pry), a masterpiece gem. When you type a command, Jard parses, and does corresponding actions if what you type matches supported command. Otherwise, they are evaluated as Ruby code.
 
-## Commands
+## Flow Commands
 
 ### List
 
@@ -205,7 +205,7 @@ Explore the lower frame. See `up` command for more information.
 
 ### Frame
 
-**Repl command**: `frame [frame_id]`
+**Repl command**: `frame [-h] [frame_id]`
 
 **Key binding:** None
 
@@ -218,9 +218,13 @@ frame 7     # Jump to frame 7
 
 Explore a particular frame with id `<frame_id>`. It's faster than `up` and `down`. See `up` command for more information.
 
+## Control commands
+
+All control commands start with`jard` namespaces. This class of commands are used to control the visual interfaces, configuration, or specific operations provided by Jard.
+
 ### Color scheme
 
-**Repl command**: `jard color-scheme [-l] [frame_id]`
+**Repl command**: `jard color-scheme [-l|-h] [frame_id]`
 
 **Key binding:** None
 
@@ -238,13 +242,60 @@ jard color-scheme deep-space # Switch to color scheme deep-space
 
 List all available color schemes, or switch to a particular color scheme at runtime.
 
+### Show
+
+**Repl command**: `jard show [screen]`
+
+**Key binding:** None
+
+**Examples:**
+
+```
+jard show variables
+jard show threads
+```
+
+Show a particular screen on the current interface. 
+
+### Hide
+
+**Repl command**: `jard hide [screen]`
+
+**Key binding:** None
+
+**Examples:**
+
+```
+jard hide variables
+jard hide threads
+```
+
+Hide a particular screen from the current interface. 
+
+### Output
+
+**Repl command**: `jard output`
+
+**Key binding:** None
+
+**Examples:**
+
+```
+jard output
+```
+
+Show all the program output in a pager, allowing navigation, searching (powered by GNU Less). Note that the output are only captured only after Jard already started. All the previous output could not be captured.
+
 ## Color schemes
 
 | Name                                                         | Screenshots                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `256` <br />Default theme, 256 basic colors, supported by all terminals | <img src="./docs/color_schemes/256.png" style="max-width: 400px;" /> |
+| `256-light`                                                  | <img src="./docs/color_schemes/256-light.png" style="max-width: 400px;" /> |
 | `deep-space`                                                 | <img src="./docs/color_schemes/deep-space.png" style="max-width: 400px;" /> |
 | `gruvbox`                                                    | <img src="./docs/color_schemes/gruvbox.png" style="max-width: 400px;" /> |
+| `one-half-dark`                                              | <img src="./docs/color_schemes/one-half-dark.png" style="max-width: 400px;" /> |
+| `one-half-light`                                             | <img src="./docs/color_schemes/one-half-light.png" style="max-width: 400px;" /> |
 
 
 
