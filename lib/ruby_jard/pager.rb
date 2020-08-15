@@ -45,14 +45,13 @@ module RubyJard
 
       def write(str)
         if invoked_pager?
-          @pager.write str
+          write_into_pager str
         else
           @tracker.record str
           @buffer += str
           if @tracker.page?
             @pager = open_pager
-            @pager.write(@buffer)
-            @pager.write(str)
+            write_into_pager(@buffer)
           end
         end
       rescue Errno::EPIPE
@@ -85,6 +84,12 @@ module RubyJard
           less_command.join(' '), 'w',
           out: @pry_instance.output, err: @pry_instance.output
         )
+      end
+
+      def write_into_pager(str)
+        return unless invoked_pager?
+
+        @pager.write str.encode('UTF-8', undef: :replace)
       end
     end
   end
