@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 RSpec.describe RubyJard::Commands::FrameCommand do
-  subject(:command_object) { described_class.new }
+  subject(:command_object) { described_class.new(session: session) }
+
+  let(:session) { RubyJard::Session.new }
 
   before do
-    allow(described_class).to receive(:session_backtrace).and_return(
+    allow(session).to receive(:current_backtrace).and_return(
       Array.new(30, nil)
     )
   end

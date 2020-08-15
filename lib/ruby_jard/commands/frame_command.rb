@@ -20,14 +20,15 @@ module RubyJard
         frame 4 # Jump to frame 4 in the backtrace
       BANNER
 
-      def self.session_backtrace
-        RubyJard.current_session.current_backtrace
+      def initialize(context = {})
+        super(context)
+        @session = context[:session] || RubyJard.current_session
       end
 
       def process
         frame = validate_present!(args.first)
         frame = validate_non_negative_integer!(frame)
-        frame = validate_range!(frame, 0, self.class.session_backtrace.length - 1)
+        frame = validate_range!(frame, 0, @session.current_backtrace.length - 1)
         RubyJard::ControlFlow.dispatch(:frame, frame: frame)
       end
     end
