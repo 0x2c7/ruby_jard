@@ -24,6 +24,13 @@ RSpec.configure do |config|
     ex.run_with_retry retry: 3
   end
 
+  config.after :suite do
+    JardIntegrationTest.tests.each do |test|
+      test.stop
+      puts "Someone forgot to stop integration test at #{test.source}"
+    end
+  end
+
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
 

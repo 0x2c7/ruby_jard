@@ -3,12 +3,20 @@
 require 'securerandom'
 
 class JardIntegrationTest
+  def self.tests
+    @tests ||= []
+  end
+
+  attr_reader :source
+
   def initialize(dir, command, width: 80, height: 24)
     @target = "TestJard#{SecureRandom.uuid}"
     @dir = dir
     @command = command
     @width = width
     @height = height
+    @source = caller[0]
+    JardIntegrationTest.tests << self
   end
 
   def start
@@ -33,6 +41,7 @@ class JardIntegrationTest
 
   def stop
     tmux('kill-session', '-t', @target)
+    JardIntegrationTest.tests.delete(self)
   end
 
   def send_keys(*args)

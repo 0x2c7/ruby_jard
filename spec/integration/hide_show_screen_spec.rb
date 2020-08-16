@@ -351,6 +351,8 @@ RSpec.describe 'Hide/show screens', integration: true do
         └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
         jard >>
       SCREEN
+    ensure
+      test.stop
     end
   end
 end
