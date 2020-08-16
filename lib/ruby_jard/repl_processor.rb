@@ -27,6 +27,7 @@ module RubyJard
       @repl_proxy = RubyJard::ReplProxy.new(
         key_bindings: RubyJard.global_key_bindings
       )
+      @previous_flow = nil
     end
 
     def at_line
@@ -44,6 +45,11 @@ module RubyJard
     private
 
     def process_commands_with_lock
+      if bypassed?(Byebug.current_context)
+        handle_flow(@previous_flow)
+        return
+      end
+
       allowing_other_threads do
         RubyJard::Session.lock do
           process_commands
@@ -51,6 +57,18 @@ module RubyJard
       end
     ensure
       RubyJard::Session.flush_secondary_output_buffer
+    end
+
+    def bypassed?(context)
+      file = context.frame_file
+      lineno = context.frame_line
+      decorator = RubyJard::Decorators::PathDecorator.new(file, lineno)
+      if decorator.gem?
+        RubyJard.debug("Bypassed #{file}:#{lineno}")
+      else
+        RubyJard.debug("[Gem? #{decorator.gem?}] Stopped at #{file}:#{lineno}")
+      end
+      !decorator.source_tree?
     end
 
     def process_commands(update = true)
@@ -64,15 +82,20 @@ module RubyJard
         return_value = @repl_proxy.repl(frame._binding)
       end
 
-      unless flow.nil?
-        command = flow.command
-        send("handle_#{command}_command", flow.arguments)
-      end
+      handle_flow(flow)
 
       return_value
     rescue StandardError => e
       RubyJard::ScreenManager.draw_error(e)
       raise
+    end
+
+    def handle_flow(flow)
+      return if flow.nil?
+
+      @previous_flow = flow
+      command = flow.command
+      send("handle_#{command}_command", flow.arguments)
     end
 
     def handle_next_command(options = {})

@@ -13,7 +13,7 @@ module RubyJard
       GEM_PATTERN = /(.*)-(\d+\.\d+[.\d]*[.\d]*[-.\w]*)/i.freeze
       PATH_TYPES = [
         TYPE_UNKNOWN = :unknown,
-        TYPE_PWD = :pwd,
+        TYPE_SOURCE_TREE = :source_tree,
         TYPE_GEM = :gem
       ].freeze
 
@@ -33,8 +33,8 @@ module RubyJard
         try_parse_gem_path
         return if gem?
 
-        @type = TYPE_PWD
         if @path.start_with?(Dir.pwd)
+          @type = TYPE_SOURCE_TREE
           @path = @path[Dir.pwd.length..-1]
           @path = @path[1..-1] if @path.start_with?('/')
         else
@@ -44,6 +44,10 @@ module RubyJard
 
       def gem?
         @type == TYPE_GEM
+      end
+
+      def source_tree?
+        @type == TYPE_SOURCE_TREE
       end
 
       private
