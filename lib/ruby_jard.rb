@@ -64,6 +64,16 @@ module RubyJard
     end
   end
 
+  def self.error(exception)
+    File.open('./jard_errors.txt', 'a') do |f|
+      f.puts '--- Error ---'
+      f.puts exception.message
+      f.puts exception.backtrace
+    end
+  rescue StandardError
+    # Ignore
+  end
+
   def self.debug_info
     @debug_info ||= []
   end
