@@ -1,4 +1,4 @@
-![Ruby Jard](./docs/logo.jpg)
+<img src="./docs/logo.jpg" width="400" />
 
 Jard stands for Just Another Ruby Debugger, aims to provide a better experience while debugging Ruby. Ruby Jard provides modular visual interfaces to show relevant information about your debugging program. Those interfaces are optimized for usability, and highly friendly to developers, especially new comers. They help you reduce the commands you need to type, the mental efforts wasted trying to navigate and grab the information you need. As a result, you can now focus more on the debug flow.
 
@@ -290,12 +290,12 @@ Show all the program output in a pager, allowing navigation, searching (powered 
 
 | Name                                                         | Screenshots                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `256` <br />Default theme, 256 basic colors, supported by all terminals | <img src="./docs/color_schemes/256.png" style="max-width: 400px;" /> |
-| `256-light`                                                  | <img src="./docs/color_schemes/256-light.png" style="max-width: 400px;" /> |
-| `deep-space`                                                 | <img src="./docs/color_schemes/deep-space.png" style="max-width: 400px;" /> |
-| `gruvbox`                                                    | <img src="./docs/color_schemes/gruvbox.png" style="max-width: 400px;" /> |
-| `one-half-dark`                                              | <img src="./docs/color_schemes/one-half-dark.png" style="max-width: 400px;" /> |
-| `one-half-light`                                             | <img src="./docs/color_schemes/one-half-light.png" style="max-width: 400px;" /> |
+| `256` <br />Default theme, 256 basic colors, supported by all terminals | <img src="./docs/color_schemes/256.png" width="400" /> |
+| `256-light`                                                  | <img src="./docs/color_schemes/256-light.png" width="400"/> |
+| `deep-space`                                                 | <img src="./docs/color_schemes/deep-space.png" width="400" /> |
+| `gruvbox`                                                    | <img src="./docs/color_schemes/gruvbox.png" width="400" /> |
+| `one-half-dark`                                              | <img src="./docs/color_schemes/one-half-dark.png" width="400" /> |
+| `one-half-light`                                             | <img src="./docs/color_schemes/one-half-light.png" width="400" /> |
 
 
 
