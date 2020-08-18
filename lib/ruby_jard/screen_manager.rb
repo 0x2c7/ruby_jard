@@ -52,7 +52,6 @@ module RubyJard
 
       # Load configurations
       RubyJard.config
-      RubyJard::Console.start_alternative_terminal(@output)
       RubyJard::Console.clear_screen(@output)
 
       # rubocop:disable Lint/NestedMethodDefinition
@@ -83,13 +82,10 @@ module RubyJard
 
       @started = false
 
-      RubyJard::Console.stop_alternative_terminal(@output)
       RubyJard::Console.cooked!
       RubyJard::Console.enable_echo!
       RubyJard::Console.enable_cursor!
 
-      @output_storage.rewind
-      @output.write @output_storage.read until @output_storage.eof?
       @output_storage.close
       @output_storage.unlink
     end
@@ -98,6 +94,7 @@ module RubyJard
       start unless started?
       @updating = true
 
+      RubyJard::Console.clear_screen(@output)
       RubyJard::Console.disable_cursor!
       width, height = RubyJard::Console.screen_size(@output)
 
