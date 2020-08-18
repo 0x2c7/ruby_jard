@@ -31,6 +31,16 @@ RSpec.configure do |config|
     end
   end
 
+  config.retry_callback = proc do
+    puts '==== Tmux ===='
+    begin
+      puts `tmux list-window`
+    rescue StandardError
+      # Ignore
+    end
+    puts '==== End Tmux ===='
+  end
+
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
 
