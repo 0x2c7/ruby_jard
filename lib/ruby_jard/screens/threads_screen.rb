@@ -93,15 +93,15 @@ module RubyJard
 
         return unknown_thread_location if last_backtrace.nil?
 
-        decorated_path = decorate_path(last_backtrace.path, last_backtrace.lineno)
-        if decorated_path.gem?
+        path_decorator = RubyJard::Decorators::PathDecorator.new(last_backtrace.path, last_backtrace.lineno)
+        if path_decorator.source_tree? || path_decorator.unknown?
           RubyJard::Span.new(
-            content: "in #{decorated_path.gem} (#{decorated_path.gem_version})",
+            content: "at #{path_decorator.path_label}:#{path_decorator.lineno}",
             styles: :thread_location
           )
         else
           RubyJard::Span.new(
-            content: "at #{decorated_path.path}:#{decorated_path.lineno}",
+            content: "in #{path_decorator.path_label}",
             styles: :thread_location
           )
         end
@@ -142,8 +142,7 @@ module RubyJard
         thread == @current_thread
       end
 
-      def decorate_path(path, lineno)
-        RubyJard::Decorators::PathDecorator.new(path, lineno)
+      def create_path_decorator(path, lineno)
       end
 
       def thread_status_style(thread)

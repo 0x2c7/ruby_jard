@@ -51,7 +51,7 @@ module RubyJard
         frame_id_label = frame_id.to_s.rjust(@frames_count.to_s.length)
         if frame_id == @current_frame
           RubyJard::Span.new(
-            content: "➠ #{frame_id_label}",
+            content: "⮕ #{frame_id_label}",
             styles: :frame_id_highlighted
           )
         else
@@ -108,13 +108,15 @@ module RubyJard
       end
 
       def span_path(frame)
-        decorated_path = decorate_path(frame.frame_location.absolute_path, frame.frame_location.lineno)
+        path_decorator = RubyJard::Decorators::PathDecorator.new(
+          frame.frame_location.path, frame.frame_location.lineno
+        )
 
         path_label =
-          if decorated_path.gem?
-            "in #{decorated_path.gem} (#{decorated_path.gem_version})"
+          if path_decorator.source_tree? || path_decorator.unknown?
+            "at #{path_decorator.path_label}:#{path_decorator.lineno}"
           else
-            "at #{decorated_path.path}:#{decorated_path.lineno}"
+            "in #{path_decorator.path_label}"
           end
         RubyJard::Span.new(
           content: path_label,

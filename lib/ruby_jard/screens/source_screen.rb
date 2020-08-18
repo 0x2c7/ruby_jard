@@ -19,24 +19,20 @@ module RubyJard
         @selected = 0
       end
 
-      ANONYMOUS_SIGNATURES = [
-        '(eval)', '-e'
-      ].freeze
-
       def title
         return 'Source' if @frame_file.nil? || @frame_line.nil?
 
-        if @path_decorator.gem?
-          ['Source', "#{@path_decorator.gem} - #{@path_decorator.path}:#{@path_decorator.lineno}"]
+        if path_decorator.source_tree? || path_decorator.unknown?
+          ['Source', "#{path_decorator.path_label}:#{path_decorator.lineno}"]
         else
-          ['Source', "#{@path_decorator.path}:#{@path_decorator.lineno}"]
+          ['Source', path_decorator.path_label]
         end
       end
 
       def build
         return 'Source' if @frame_file.nil? || @frame_line.nil?
 
-        if ANONYMOUS_SIGNATURES.include? @frame_file
+        if path_decorator.evaluation?
           # (eval) is hard-coded in Ruby source code for in-code evaluation
           handle_anonymous_evaluation
         else
@@ -99,7 +95,7 @@ module RubyJard
       def span_mark(lineno)
         RubyJard::Span.new(
           margin_right: 1,
-          content: @frame_line == lineno ? '➠' : ' ',
+          content: @frame_line == lineno ? '⮕' : ' ',
           styles: :source_line_mark
         )
       end
@@ -117,6 +113,13 @@ module RubyJard
 
         spans, _tokens = @loc_decorator.decorate(loc, @frame_file)
         spans
+      end
+
+      def path_decorator
+        @path_decorator ||= RubyJard::Decorators::PathDecorator.new(
+          @session.current_frame.frame_file,
+          @session.current_frame.frame_line
+        )
       end
     end
   end
