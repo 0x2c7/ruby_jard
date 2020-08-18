@@ -88,6 +88,8 @@ RSpec/DescribeClass:
   Enabled: false
 RSpec/NestedGroups:
   Max: 4
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
 
 AllCops:
   TargetRubyVersion: 2.5
