@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'securerandom'
-
 class JardIntegrationTest
   def self.tests
     @tests ||= []
@@ -10,7 +8,7 @@ class JardIntegrationTest
   attr_reader :source
 
   def initialize(dir, command, width: 80, height: 24)
-    @target = "TestJard#{SecureRandom.uuid}"
+    @target = "TestJard#{rand(1..1000)}"
     @dir = dir
     @command = command
     @width = width
@@ -29,6 +27,7 @@ class JardIntegrationTest
       "-x #{@width}",
       "-y #{@height}"
     )
+    sleep 3 if ENV['CI']
     tmux(
       'new-window',
       '-c', @dir,
