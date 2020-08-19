@@ -11,7 +11,23 @@ module RubyJard
   # other processes. Therefore, an internal, jard-specific data mapping should
   # be built.
   class Session
-    attr_accessor :threads, :current_frame, :current_backtrace
+    class << self
+      extend Forwardable
+
+      def_delegators :instance,
+                     :attach, :lock, :update, :flush,
+                     :threads, :current_frame, :current_backtrace,
+                     :output_buffer, :append_output_buffer,
+                     :secondary_output_buffer, :append_secondary_output_buffer, :flush_secondary_output_buffer
+
+      def instance
+        @instance ||= new
+      end
+    end
+
+    OUTPUT_BUFFER_LENGTH = 10_000 # 10k lines
+
+    attr_accessor :threads, :current_frame, :current_backtrace, :output_buffer
 
     def initialize(options = {})
       @options = options
@@ -42,7 +58,15 @@ module RubyJard
           '*.rb'
         )
       )
+      at_exit { stop }
+
       @started = true
+    end
+
+    def stop
+      return unless started?
+
+      RubyJard::ScreenManager.stop
     end
 
     def started?

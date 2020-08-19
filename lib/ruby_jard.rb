@@ -43,10 +43,6 @@ require 'ruby_jard/version'
 module RubyJard
   class Error < StandardError; end
 
-  def self.current_session
-    @current_session ||= RubyJard::Session.new
-  end
-
   def self.benchmark(name)
     @benchmark_depth ||= 0
     @benchmark_depth += 1
@@ -94,7 +90,7 @@ end
 # Monkey-patch Kernel module to allow putting jard command anywhere.
 module Kernel
   def jard
-    RubyJard.current_session.attach
+    RubyJard::Session.instance.attach
   end
 
   if RubyJard.config.alias_to_debugger

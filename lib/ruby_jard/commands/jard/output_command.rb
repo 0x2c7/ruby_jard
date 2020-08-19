@@ -13,8 +13,9 @@ module RubyJard
         Usage: output
       BANNER
 
-      def self.output_storage
-        RubyJard::ScreenManager.instance.output_storage
+      def initialize(*args)
+        super(*args)
+        @session = (context[:session] || RubyJard::Session)
       end
 
       def process

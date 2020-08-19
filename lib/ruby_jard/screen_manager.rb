@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'tempfile'
 require 'ruby_jard/console'
 
 require 'ruby_jard/decorators/color_decorator'
@@ -30,7 +29,7 @@ module RubyJard
     class << self
       extend Forwardable
 
-      def_delegators :instance, :update, :puts, :draw_error, :started?, :updating?
+      def_delegators :instance, :update, :puts, :draw_error, :start, :stop, :started?, :updating?
 
       def instance
         @instance ||= new

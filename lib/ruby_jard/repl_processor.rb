@@ -45,7 +45,7 @@ module RubyJard
 
     def process_commands_with_lock
       allowing_other_threads do
-        RubyJard.current_session.lock do
+        RubyJard::Session.lock do
           process_commands
         end
       end
@@ -53,7 +53,7 @@ module RubyJard
 
     def process_commands(update = true)
       if update
-        RubyJard.current_session.update
+        RubyJard::Session.update
         RubyJard::ScreenManager.update
       end
       return_value = nil
