@@ -43,7 +43,6 @@ module RubyJard
       @screens = {}
       @started = false
       @updating = false
-      @output_storage = Tempfile.new('jard')
     end
 
     def start
@@ -53,18 +52,6 @@ module RubyJard
       RubyJard.config
       RubyJard::Console.clear_screen(@output)
 
-      # rubocop:disable Lint/NestedMethodDefinition
-      def $stdout.write(*string, from_jard: false)
-        # NOTE: `RubyJard::ScreenManager.instance` is a must. Jard doesn't work well with delegator
-        # TODO: Debug and fix the issues permanently
-        if !RubyJard::ScreenManager.instance.updating? && RubyJard::ScreenManager.instance.started? && !from_jard
-          RubyJard::ScreenManager.instance.output_storage.write(*string)
-        end
-        super(*string)
-      end
-      # rubocop:enable Lint/NestedMethodDefinition
-
-      at_exit { stop }
       @started = true
     end
 
@@ -84,9 +71,6 @@ module RubyJard
       RubyJard::Console.cooked!
       RubyJard::Console.enable_echo!
       RubyJard::Console.enable_cursor!
-
-      @output_storage.close
-      @output_storage.unlink
     end
 
     def update

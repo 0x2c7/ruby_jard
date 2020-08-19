@@ -34,7 +34,7 @@ RSpec.describe 'Output Integration tests', integration: true do
         ?
         ?
         ?
-        ?
+
         (END)
       SCREEN
     ensure

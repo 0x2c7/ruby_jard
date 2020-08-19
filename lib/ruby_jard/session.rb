@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'tempfile'
+
 module RubyJard
   ##
   # Centralized flow control and data storage to feed into screens. Each
@@ -34,6 +36,9 @@ module RubyJard
       @started = false
       @session_lock = Mutex.new
 
+      @output_buffer = []
+      @secondary_output_buffer = []
+
       @current_frame = nil
       @current_backtrace = []
       @threads = []
@@ -58,9 +63,50 @@ module RubyJard
           '*.rb'
         )
       )
+      # rubocop:disable Lint/NestedMethodDefinition
+      def $stdout.write(*string, from_jard: false)
+        # NOTE: `RubyJard::ScreenManager.instance` is a must. Jard doesn't work well with delegator
+        # TODO: Debug and fix the issues permanently
+        if from_jard
+          super(*string)
+          return
+        end
+        unless RubyJard::ScreenManager.instance.updating?
+          RubyJard::Session.instance.append_output_buffer(string)
+        end
+        if RubyJard::Session.instance.threads[Thread.current].nil?
+          # Newly spawn thread
+          super(*string)
+        elsif Thread.current == RubyJard::Session.instance.current_frame.thread
+          # Current paused threads
+          super(*string)
+        else
+          # Other concurrent thread. Move to secondary buffer
+          RubyJard::Session.instance.append_secondary_output_buffer(string)
+        end
+      end
+      # rubocop:enable Lint/NestedMethodDefinition
+
       at_exit { stop }
 
       @started = true
+    end
+
+    def append_output_buffer(string)
+      @output_buffer.shift if @output_buffer.length > OUTPUT_BUFFER_LENGTH
+      @output_buffer << string
+    end
+
+    def append_secondary_output_buffer(string)
+      @secondary_output_buffer.shift if @secondary_output_buffer.length > OUTPUT_BUFFER_LENGTH
+      @secondary_output_buffer << string
+    end
+
+    def flush_secondary_output_buffer
+      @secondary_output_buffer.each do |string|
+        STDOUT.write(*string, from_jard: true)
+      end
+      @secondary_output_buffer = []
     end
 
     def stop
