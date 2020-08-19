@@ -19,7 +19,11 @@ module RubyJard
       end
 
       def process
-        pry_instance.pager.open(force_open: true, pager_start_at_the_end: true) do |pager|
+        pry_instance.pager.open(
+          force_open: true,
+          pager_start_at_the_end: true,
+          prompt: 'Program output'
+        ) do |pager|
           @session.output_buffer.each do |string|
             string.each do |s|
               pager.write(s)

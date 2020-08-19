@@ -35,7 +35,7 @@ RSpec.describe 'Output Integration tests', integration: true do
         ?
         ?
 
-        (END)
+        Program output
       SCREEN
     ensure
       test.stop
@@ -75,7 +75,7 @@ RSpec.describe 'Output Integration tests', integration: true do
         10 | 7: abcdef
         10 | 8: abcdef
         10 | 9: abcdef
-        (END)
+        Program output
       SCREEN
     ensure
       test.stop
@@ -116,7 +116,7 @@ RSpec.describe 'Output Integration tests', integration: true do
         100 | 97: xyz
         100 | 98: xyz
         100 | 99: xyz
-        (END)
+        Program output
       SCREEN
 
       test.send_keys('k')
@@ -144,7 +144,7 @@ RSpec.describe 'Output Integration tests', integration: true do
         100 | 96: xyz
         100 | 97: xyz
         100 | 98: xyz
-        :
+        Program output
       SCREEN
 
       test.send_keys('g')
@@ -173,7 +173,7 @@ RSpec.describe 'Output Integration tests', integration: true do
         100 | 10: xyz
         100 | 11: xyz
         100 | 12: xyz
-        :
+        Program output
       SCREEN
 
       test.send_keys('q')
