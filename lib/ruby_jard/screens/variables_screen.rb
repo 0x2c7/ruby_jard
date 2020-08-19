@@ -154,6 +154,8 @@ module RubyJard
       private
 
       def fetch_local_variables
+        return [] if @session.current_frame.nil?
+
         variables = @session.current_frame.frame_binding.local_variables
         # Exclude Pry's sticky locals
         pry_sticky_locals =
@@ -171,6 +173,8 @@ module RubyJard
       end
 
       def fetch_instance_variables
+        return [] if @session.current_frame.nil?
+
         @session.current_frame.frame_self.instance_variables.map do |variable|
           [KIND_INS, variable, @session.current_frame.frame_self.instance_variable_get(variable)]
         rescue NameError
@@ -179,6 +183,8 @@ module RubyJard
       end
 
       def fetch_constants
+        return [] if @session.current_frame.nil?
+
         # Filter out truly constants (CONSTANT convention) only
         constant_source =
           if @session.current_frame.frame_class&.singleton_class?

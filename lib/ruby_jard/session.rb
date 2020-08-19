@@ -86,14 +86,12 @@ module RubyJard
       @current_backtrace = current_context.backtrace.map.with_index do |_frame, index|
         RubyJard::Frame.new(current_context, index)
       end
-      @threads =
-        Byebug
-        .contexts
-        .reject(&:ignored?)
-        .reject { |c| c.thread.name.to_s =~ /<<Jard:.*>>/ }
-        .map do |context|
-          RubyJard::Frame.new(context, 0)
-        end
+      threads =
+        Thread
+        .list
+        .select(&:alive?)
+        .reject { |t| t.name.to_s =~ /<<Jard:.*>>/ }
+      @threads = threads.each_with_object({}) { |t, hash| hash[t] = t }
     end
 
     def lock
