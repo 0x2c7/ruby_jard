@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+RubyJard::Layouts.add_layout(
+  'standalone-backtrace',
+  RubyJard::Templates::LayoutTemplate.new(
+    fill_height: false,
+    children: [
+      RubyJard::Templates::ScreenTemplate.new(
+        height_ratio: 90,
+        width_ratio: 100,
+        screen: :backtrace
+      )
+    ]
+  )
+)
+config.layout = 'standalone-backtrace'
