@@ -63,10 +63,10 @@ class JardIntegrationTest
       @content = tmux('capture-pane', '-J', '-p', '-t', @target)
       break if allow_duplication
       break if attempt <= 0
-      break if !@content.to_s.strip.empty? && @content != previous_content
+      break if @content != previous_content
 
       attempt -= 1
-      sleep 0.5 * (5 - attempt)
+      sleep 0.5
     end
     @content
   end
@@ -88,6 +88,7 @@ end
 
 RSpec::Matchers.define :match_screen do |expected|
   match do |actual|
+    @raw = actual
     actual =
       actual
       .split("\n")
@@ -114,6 +115,11 @@ RSpec::Matchers.define :match_screen do |expected|
       Actual screen:
       ###
       #{actual}
+      ###
+
+      Raw screen:
+      ###
+      #{@raw}
       ###
     SCREEN
   end
