@@ -88,6 +88,7 @@ module RubyJard
                 ]
               ),
               RubyJard::Column.new(
+                word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
                 spans: [
                   span_name(variable),
                   span_size(variable),
