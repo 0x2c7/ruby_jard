@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'ruby_jard'
 
 Thread.current.name = 'Main thread'
@@ -15,13 +17,13 @@ def spawn_threads
   end
 end
 
-t0 = Thread.new { thread_sleep }
+Thread.new { thread_sleep }
 
 sleep 0.5
 jard
 
-t1 = Thread.new { spawn_threads; sleep }
+Thread.new { spawn_threads and sleep }
 
 sleep 0.5
 jard
-a = 1
+1

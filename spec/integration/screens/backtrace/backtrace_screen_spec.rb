@@ -244,30 +244,4 @@ RSpec.describe 'Backtrace screen', integration: true do
       test.stop
     end
   end
-
-  context 'when jumping into an ERB file' do
-    let(:expected_output) do
-      <<~EXPECTED
-        ┌ Backtrace  7 frames ─────────────────────────────────────────────────────────┐
-        │➠ 0 Bitcoin in __pry__ (block) at ../../../examples/erb_evaluation.erb:6      │
-        │  1 [c] Array in each at ../../../examples/erb_evaluation.erb:4               │
-        │  2 Bitcoin in __pry__ at ../../../examples/erb_evaluation.erb:4              │
-        │  3 [c] Kernel in eval                                                        │
-        │    at ???????????????????????????????????????????????????????????????????????│
-        │  4 ERB in result                                                             │
-        │    at ???????????????????????????????????????????????????????????????????????│
-        │  5 ProductView in render at ../../../examples/erb_evaluation.rb:24           │
-        │  6 Object in <main> at ../../../examples/erb_evaluation.rb:28                │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
-    it 'displays correct backtrace' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/erb_evaluation.rb")
-      test.start
-      expect(test.screen_content).to match_screen(expected_output)
-    ensure
-      test.stop
-    end
-  end
 end

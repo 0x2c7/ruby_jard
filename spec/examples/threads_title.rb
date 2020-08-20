@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'ruby_jard'
 
 Thread.current.name = 'Main thread'
 
-t0 = Thread.new { sleep }
+Thread.new { sleep }
 t1 = Thread.new { sleep }
 t1.name = 'Test 1'
 t2 = Thread.new { sleep }
@@ -21,4 +23,4 @@ jard
 t1.name = 'Test 3'
 
 jard
-a = 1
+1

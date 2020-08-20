@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'ruby_jard'
 
-t = Thread.new { sleep }
-t2 = Thread.new('Test thead 1') { sleep }
+Thread.new { sleep }
+Thread.new('Test thead 1') { sleep }
 jard
-a = 1
+1

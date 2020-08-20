@@ -27,11 +27,11 @@ RSpec.describe 'Threads screen', integration: true do
       <<~EXPECTED
         ┌ Threads  3 threads ──────────────────────────────────────────────────────────┐
         │► Thread ?????????????? (run)   untitled                                      │
+        │                                at ../../../examples/threads_untitled.rb:8    │
+        │• Thread ?????????????? (sleep) untitled                                      │
+        │                                at ../../../examples/threads_untitled.rb:5    │
+        │• Thread ?????????????? (sleep) untitled                                      │
         │                                at ../../../examples/threads_untitled.rb:6    │
-        │• Thread ?????????????? (sleep) untitled                                      │
-        │                                at ../../../examples/threads_untitled.rb:3    │
-        │• Thread ?????????????? (sleep) untitled                                      │
-        │                                at ../../../examples/threads_untitled.rb:4    │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -50,11 +50,12 @@ RSpec.describe 'Threads screen', integration: true do
       <<~EXPECTED
         ┌ Threads  4 threads ──────────────────────────────────────────────────────────┐
         │► Thread ?????????????? (run)   Main thread                                   │
-        │                                at ../../../examples/threads_title.rb:15      │
-        │• Thread ?????????????? (sleep) Test 1 at ../../../examples/threads_title.rb:6│
-        │• Thread ?????????????? (sleep) Test 2 at ../../../examples/threads_title.rb:8│
+        │                                at ../../../examples/threads_title.rb:17      │
+        │• Thread ?????????????? (sleep) Test 1 at ../../../examples/threads_title.rb:8│
+        │• Thread ?????????????? (sleep) Test 2                                        │
+        │                                at ../../../examples/threads_title.rb:10      │
         │• Thread ?????????????? (sleep) untitled                                      │
-        │                                at ../../../examples/threads_title.rb:5       │
+        │                                at ../../../examples/threads_title.rb:7       │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -63,13 +64,14 @@ RSpec.describe 'Threads screen', integration: true do
       <<~EXPECTED
         ┌ Threads  5 threads ──────────────────────────────────────────────────────────┐
         │► Thread ?????????????? (run)   Main thread                                   │
-        │                                at ../../../examples/threads_title.rb:21      │
-        │• Thread ?????????????? (sleep) Test 1 at ../../../examples/threads_title.rb:6│
-        │• Thread ?????????????? (sleep) Test 2 at ../../../examples/threads_title.rb:8│
+        │                                at ../../../examples/threads_title.rb:23      │
+        │• Thread ?????????????? (sleep) Test 1 at ../../../examples/threads_title.rb:8│
+        │• Thread ?????????????? (sleep) Test 2                                        │
+        │                                at ../../../examples/threads_title.rb:10      │
         │• Thread ?????????????? (sleep) Test 3                                        │
-        │                                at ../../../examples/threads_title.rb:15      │
+        │                                at ../../../examples/threads_title.rb:17      │
         │• Thread ?????????????? (sleep) untitled                                      │
-        │                                at ../../../examples/threads_title.rb:5       │
+        │                                at ../../../examples/threads_title.rb:7       │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -78,13 +80,14 @@ RSpec.describe 'Threads screen', integration: true do
       <<~EXPECTED
         ┌ Threads  5 threads ──────────────────────────────────────────────────────────┐
         │► Thread ?????????????? (run)   Main thread                                   │
-        │                                at ../../../examples/threads_title.rb:24      │
-        │• Thread ?????????????? (sleep) Test 2 at ../../../examples/threads_title.rb:8│
+        │                                at ../../../examples/threads_title.rb:26      │
+        │• Thread ?????????????? (sleep) Test 2                                        │
+        │                                at ../../../examples/threads_title.rb:10      │
         │• Thread ?????????????? (sleep) Test 3                                        │
-        │                                at ../../../examples/threads_title.rb:15      │
-        │• Thread ?????????????? (sleep) Test 3 at ../../../examples/threads_title.rb:6│
+        │                                at ../../../examples/threads_title.rb:17      │
+        │• Thread ?????????????? (sleep) Test 3 at ../../../examples/threads_title.rb:8│
         │• Thread ?????????????? (sleep) untitled                                      │
-        │                                at ../../../examples/threads_title.rb:5       │
+        │                                at ../../../examples/threads_title.rb:7       │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -112,9 +115,9 @@ RSpec.describe 'Threads screen', integration: true do
       <<~EXPECTED
         ┌ Threads  2 threads ──────────────────────────────────────────────────────────┐
         │► Thread ?????????????? (run)   Main thread                                   │
-        │                                at ../../../examples/threads_dead.rb:18       │
+        │                                at ../../../examples/threads_dead.rb:20       │
         │• Thread ?????????????? (sleep) untitled                                      │
-        │                                at ../../../examples/threads_dead.rb:7        │
+        │                                at ../../../examples/threads_dead.rb:9        │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -123,7 +126,7 @@ RSpec.describe 'Threads screen', integration: true do
       <<~EXPECTED
         ┌ Threads  1 threads ──────────────────────────────────────────────────────────┐
         │► Thread ?????????????? (run) Main thread                                     │
-        │                              at ../../../examples/threads_dead.rb:22         │
+        │                              at ../../../examples/threads_dead.rb:24         │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -146,9 +149,9 @@ RSpec.describe 'Threads screen', integration: true do
       <<~EXPECTED
         ┌ Threads  2 threads ──────────────────────────────────────────────────────────┐
         │► Thread ?????????????? (run)   Main thread                                   │
-        │                                at ../../../examples/threads_spawn.rb:23      │
+        │                                at ../../../examples/threads_spawn.rb:25      │
         │• Thread ?????????????? (sleep) untitled                                      │
-        │                                at ../../../examples/threads_spawn.rb:8       │
+        │                                at ../../../examples/threads_spawn.rb:10      │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
@@ -157,17 +160,17 @@ RSpec.describe 'Threads screen', integration: true do
       <<~EXPECTED
         ┌ Threads  6 threads ──────────────────────────────────────────────────────────┐
         │► Thread ?????????????? (run)   Main thread                                   │
-        │                                at ../../../examples/threads_spawn.rb:27      │
+        │                                at ../../../examples/threads_spawn.rb:29      │
         │• Thread ?????????????? (sleep) New thread 0                                  │
-        │                                at ../../../examples/threads_spawn.rb:13      │
+        │                                at ../../../examples/threads_spawn.rb:15      │
         │• Thread ?????????????? (sleep) New thread 1                                  │
-        │                                at ../../../examples/threads_spawn.rb:13      │
+        │                                at ../../../examples/threads_spawn.rb:15      │
         │• Thread ?????????????? (sleep) New thread 2                                  │
-        │                                at ../../../examples/threads_spawn.rb:13      │
+        │                                at ../../../examples/threads_spawn.rb:15      │
         │• Thread ?????????????? (sleep) untitled                                      │
-        │                                at ../../../examples/threads_spawn.rb:23      │
+        │                                at ../../../examples/threads_spawn.rb:10      │
         │• Thread ?????????????? (sleep) untitled                                      │
-        │                                at ../../../examples/threads_spawn.rb:8       │
+        │                                at ../../../examples/threads_spawn.rb:25      │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end
