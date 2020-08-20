@@ -46,7 +46,7 @@ RSpec.configure do |config|
       puts `tmux kill-server`
       puts `tmux start-server`
       puts `tmux new-session -t dummy -d`
-      `bundle exec ruby spec/wait_for_tmux.rb`
+      `ruby spec/wait_for_tmux.rb`
       puts '==== End Tmux ===='
     end
   end

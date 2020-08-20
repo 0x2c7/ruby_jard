@@ -38,7 +38,7 @@ jobs:
     - name: Start dummy tmux session
       run: tmux new-session -t dummy -d
     - name: Wait for tmux
-      run: bundle exec ruby spec/wait_for_tmux.rb
+      run: ruby spec/wait_for_tmux.rb
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -61,7 +61,7 @@ jobs:
     - name: start dummy tmux session
       run: tmux new-session -t dummy -d
     - name: Wait for tmux
-      run: bundle exec ruby spec/wait_for_tmux.rb
+      run: ruby spec/wait_for_tmux.rb
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -86,7 +86,7 @@ jobs:
     - name: start dummy tmux session
       run: tmux new-session -t dummy -d
     - name: Wait for tmux
-      run: bundle exec ruby spec/wait_for_tmux.rb
+      run: ruby spec/wait_for_tmux.rb
     - name: Install dependencies
       run: bundle install
     - name: Run tests
