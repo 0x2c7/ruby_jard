@@ -115,11 +115,13 @@ module RubyJard
           [
             bool_to_int(current_thread?(a)),
             bool_to_int(b.name.nil?),
-            a.object_id
+            a.name,
+            a.backtrace_locations[0].to_s
           ] <=> [
             bool_to_int(current_thread?(b)),
             bool_to_int(a.name.nil?),
-            b.object_id
+            b.name,
+            b.backtrace_locations[0].to_s
           ]
         end
       end
