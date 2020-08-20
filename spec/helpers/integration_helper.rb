@@ -63,12 +63,26 @@ class JardIntegrationTest
     attempt = 5
     loop do
       @content = tmux('capture-pane', '-J', '-p', '-t', @target)
+      break if attempt <= 0
+      break unless @content.to_s.strip.empty?
+
+      attempt -= 1
+      sleep 0.5
+
+      puts 'Fai to capture pane. Retrying...'
+    end
+
+    attempt = 5
+    loop do
+      @content = tmux('capture-pane', '-J', '-p', '-t', @target)
       break if allow_duplication
       break if attempt <= 0
       break if @content != previous_content
 
       attempt -= 1
       sleep 0.5
+
+      puts 'Pane content seems to be different from previous capture. Retrying...'
     end
     @content
   end
@@ -117,11 +131,6 @@ RSpec::Matchers.define :match_screen do |expected|
       Actual screen:
       ###
       #{actual}
-      ###
-
-      Raw screen:
-      ###
-      #{@raw}
       ###
     SCREEN
   end

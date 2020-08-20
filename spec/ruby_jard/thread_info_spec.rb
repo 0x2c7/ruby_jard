@@ -221,7 +221,6 @@ RSpec.describe RubyJard::ThreadInfo do
         expect(thread_info.backtrace_locations).to eq([])
       end
     end
-
   end
 
   describe '#==' do
