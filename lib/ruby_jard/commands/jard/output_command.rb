@@ -13,14 +13,22 @@ module RubyJard
         Usage: output
       BANNER
 
-      def self.output_storage
-        RubyJard::ScreenManager.instance.output_storage
+      def initialize(*args)
+        super(*args)
+        @session = (context[:session] || RubyJard::Session)
       end
 
       def process
-        pry_instance.pager.open(force_open: true, pager_start_at_the_end: true) do |pager|
-          self.class.output_storage.rewind
-          pager.write self.class.output_storage.read_nonblock(2048) until self.class.output_storage.eof?
+        pry_instance.pager.open(
+          force_open: true,
+          pager_start_at_the_end: true,
+          prompt: 'Program output'
+        ) do |pager|
+          @session.output_buffer.each do |string|
+            string.each do |s|
+              pager.write(s)
+            end
+          end
         end
       end
     end

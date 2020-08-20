@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'tempfile'
 require 'ruby_jard/console'
 
 require 'ruby_jard/decorators/color_decorator'
@@ -30,7 +29,7 @@ module RubyJard
     class << self
       extend Forwardable
 
-      def_delegators :instance, :update, :puts, :draw_error, :started?, :updating?
+      def_delegators :instance, :update, :puts, :draw_error, :start, :stop, :started?, :updating?
 
       def instance
         @instance ||= new
@@ -44,7 +43,6 @@ module RubyJard
       @screens = {}
       @started = false
       @updating = false
-      @output_storage = Tempfile.new('jard')
     end
 
     def start
@@ -52,21 +50,8 @@ module RubyJard
 
       # Load configurations
       RubyJard.config
-      RubyJard::Console.start_alternative_terminal(@output)
       RubyJard::Console.clear_screen(@output)
 
-      # rubocop:disable Lint/NestedMethodDefinition
-      def $stdout.write(*string, from_jard: false)
-        # NOTE: `RubyJard::ScreenManager.instance` is a must. Jard doesn't work well with delegator
-        # TODO: Debug and fix the issues permanently
-        if !RubyJard::ScreenManager.instance.updating? && RubyJard::ScreenManager.instance.started? && !from_jard
-          RubyJard::ScreenManager.instance.output_storage.write(*string)
-        end
-        super(*string)
-      end
-      # rubocop:enable Lint/NestedMethodDefinition
-
-      at_exit { stop }
       @started = true
     end
 
@@ -83,21 +68,16 @@ module RubyJard
 
       @started = false
 
-      RubyJard::Console.stop_alternative_terminal(@output)
       RubyJard::Console.cooked!
       RubyJard::Console.enable_echo!
       RubyJard::Console.enable_cursor!
-
-      @output_storage.rewind
-      @output.write @output_storage.read until @output_storage.eof?
-      @output_storage.close
-      @output_storage.unlink
     end
 
     def update
       start unless started?
       @updating = true
 
+      RubyJard::Console.clear_screen(@output)
       RubyJard::Console.disable_cursor!
       width, height = RubyJard::Console.screen_size(@output)
 

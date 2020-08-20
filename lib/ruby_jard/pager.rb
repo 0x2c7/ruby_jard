@@ -32,12 +32,13 @@ module RubyJard
     ##
     # Pager using GNU Less
     class LessPager < Pry::Pager::NullPager
-      def initialize(pry_instance, force_open: false, pager_start_at_the_end: false)
+      def initialize(pry_instance, force_open: false, pager_start_at_the_end: false, prompt: nil)
         super(pry_instance.output)
         @pry_instance = pry_instance
         @buffer = ''
 
         @pager_start_at_the_end = pager_start_at_the_end
+        @prompt = prompt
 
         @tracker = Pry::Pager::PageTracker.new(height, width)
         @pager = force_open ? open_pager : nil
@@ -78,6 +79,7 @@ module RubyJard
       def open_pager
         @pry_instance.exec_hook :before_pager, self
         less_command = ['less', '-R', '-X']
+        less_command << "--prompt \"#{@prompt}\"" if @prompt
         less_command << '+G' if @pager_start_at_the_end
 
         IO.popen(

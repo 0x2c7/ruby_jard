@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'securerandom'
-
 class JardIntegrationTest
   def self.tests
     @tests ||= []
@@ -10,7 +8,7 @@ class JardIntegrationTest
   attr_reader :source
 
   def initialize(dir, command, width: 80, height: 24)
-    @target = "TestJard#{SecureRandom.uuid}"
+    @target = "TestJard#{rand(1..1000)}"
     @dir = dir
     @command = command
     @width = width
@@ -53,21 +51,15 @@ class JardIntegrationTest
       end
     end
     tmux('send-keys', '-t', @target, *args)
-    if ENV['CI']
-      sleep 3
-    else
-      sleep 0.5
-    end
+    sleep 0.5
   end
 
   def screen_content(allow_duplication = true)
-    if ENV['CI']
-      sleep 1
-    else
-      sleep 0.5
-    end
+    sleep 0.5
 
     previous_content = @content
+    sleep 3 if previous_content.nil? && ENV['CI']
+
     attempt = 5
     loop do
       @content = tmux('capture-pane', '-J', '-p', '-t', @target)
@@ -75,8 +67,8 @@ class JardIntegrationTest
       break if attempt <= 0
       break if @content != previous_content
 
-      sleep 0.5
       attempt -= 1
+      sleep 0.5
     end
     @content
   end
@@ -98,6 +90,7 @@ end
 
 RSpec::Matchers.define :match_screen do |expected|
   match do |actual|
+    @raw = actual
     actual =
       actual
       .split("\n")
@@ -124,6 +117,11 @@ RSpec::Matchers.define :match_screen do |expected|
       Actual screen:
       ###
       #{actual}
+      ###
+
+      Raw screen:
+      ###
+      #{@raw}
       ###
     SCREEN
   end

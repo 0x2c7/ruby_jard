@@ -16,10 +16,6 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.5
-    - name: Install tmux
-      run: sudo apt install -y tmux
-    - name: Start tmux
-      run: tmux start-server
     - name: Install dependencies
       run: bundle install
     - name: Checking offenses
@@ -39,6 +35,10 @@ jobs:
       run: sudo apt install -y tmux
     - name: Start tmux
       run: tmux start-server
+    - name: Start dummy tmux session
+      run: tmux new-session -t dummy -d
+    - name: Wait for tmux
+      run: ruby spec/wait_for_tmux.rb
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -58,6 +58,10 @@ jobs:
       run: brew install tmux
     - name: Start tmux
       run: tmux start-server
+    - name: start dummy tmux session
+      run: tmux new-session -t dummy -d
+    - name: Wait for tmux
+      run: ruby spec/wait_for_tmux.rb
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -79,6 +83,10 @@ jobs:
       run: sudo apt install -y tmux
     - name: Start tmux
       run: tmux start-server
+    - name: start dummy tmux session
+      run: tmux new-session -t dummy -d
+    - name: Wait for tmux
+      run: ruby spec/wait_for_tmux.rb
     - name: Install dependencies
       run: bundle install
     - name: Run tests

@@ -10,39 +10,38 @@ module RubyJard
       end
 
       def build
-        contexts = @session.threads.select { |c| c.thread.alive? }
-        contexts = sort_contexts(contexts)
-        @rows = contexts.map do |context|
+        threads = sort_threads(@session.threads.values)
+        @rows = threads.map do |thread|
           RubyJard::Row.new(
             line_limit: 2,
             columns: [
               RubyJard::Column.new(
                 spans: [
-                  span_mark(context),
-                  span_thread_id(context)
+                  span_mark(thread),
+                  span_thread_id(thread)
                 ]
               ),
               RubyJard::Column.new(
                 spans: [
-                  span_thread_status(context)
+                  span_thread_status(thread)
                 ]
               ),
               RubyJard::Column.new(
                 spans: [
-                  span_thread_name(context),
-                  span_thread_location(context)
+                  span_thread_name(thread),
+                  span_thread_location(thread)
                 ]
               )
             ]
           )
         end
-        @selected = contexts.index { |c| current_thread?(c) }
+        @selected = threads.index { |c| current_thread?(c) }
       end
 
       private
 
-      def span_mark(context)
-        style = thread_status_style(context.thread)
+      def span_mark(thread)
+        style = thread_status_style(thread)
         RubyJard::Span.new(
           margin_right: 1,
           content: style == :thread_status_run ? '►' : '•',
@@ -50,38 +49,38 @@ module RubyJard
         )
       end
 
-      def span_thread_id(context)
+      def span_thread_id(thread)
         RubyJard::Span.new(
-          content: "Thread #{context.thread.object_id}",
+          content: "Thread #{thread.object_id}",
           styles: :thread_id
         )
       end
 
-      def span_thread_status(context)
+      def span_thread_status(thread)
         RubyJard::Span.new(
-          content: "(#{context.thread.status})",
-          styles: thread_status_style(context.thread)
+          content: "(#{thread.status})",
+          styles: thread_status_style(thread)
         )
       end
 
-      def span_thread_name(context)
+      def span_thread_name(thread)
         RubyJard::Span.new(
           margin_right: 1,
-          content: context.thread.name.nil? ? 'untitled' : context.thread.name,
+          content: thread.name.nil? ? 'untitled' : thread.name,
           styles: :thread_name
         )
       end
 
-      def span_thread_location(context)
+      def span_thread_location(thread)
         return unknown_thread_location if
-          context.thread.backtrace_locations.nil? ||
+          thread.backtrace_locations.nil? ||
           @session.current_frame.frame_location.nil?
 
         last_backtrace =
-          if current_thread?(context)
+          if current_thread?(thread)
             @session.current_frame.frame_location
           else
-            context.thread.backtrace_locations[1]
+            thread.backtrace_locations[1]
           end
 
         return unknown_thread_location if last_backtrace.nil?
@@ -107,20 +106,20 @@ module RubyJard
         )
       end
 
-      def sort_contexts(contexts)
-        # Sort: current context first
-        # Sort: not debug context first
-        # Sort: not suspended context first
+      def sort_threads(threads)
+        # Sort: current thread first
+        # Sort: not debug thread first
+        # Sort: not suspended thread first
         # Sort: sort by thread num
-        contexts.sort do |a, b|
+        threads.sort do |a, b|
           [
             bool_to_int(current_thread?(a)),
-            bool_to_int(b.thread.name.nil?),
-            a.thread.object_id
+            bool_to_int(b.name.nil?),
+            a.object_id
           ] <=> [
             bool_to_int(current_thread?(b)),
-            bool_to_int(a.thread.name.nil?),
-            b.thread.object_id
+            bool_to_int(a.name.nil?),
+            b.object_id
           ]
         end
       end
@@ -129,8 +128,8 @@ module RubyJard
         bool == true ? -1 : 1
       end
 
-      def current_thread?(context)
-        context.thread == Thread.current
+      def current_thread?(thread)
+        thread == Thread.current
       end
 
       def decorate_path(path, lineno)
