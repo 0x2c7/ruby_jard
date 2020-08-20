@@ -16,12 +16,6 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.5
-    - name: Install tmux
-      run: sudo apt install -y tmux
-    - name: Start tmux
-      run: tmux start-server
-    - name: Test tmux
-      run: tmux new-session -t testing -d
     - name: Install dependencies
       run: bundle install
     - name: Checking offenses
@@ -39,6 +33,8 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
     - name: Install tmux
       run: sudo apt install -y tmux
+    - name: Update tmux setting:
+      run: tmux set -s exit-empty off
     - name: Start tmux
       run: tmux start-server
     - name: Test tmux
@@ -60,6 +56,8 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
     - name: Install tmux
       run: brew install tmux
+    - name: Update tmux setting:
+      run: tmux set -s exit-empty off
     - name: Start tmux
       run: tmux start-server
     - name: Test tmux
@@ -83,6 +81,8 @@ jobs:
         ruby-version: 2.5
     - name: Install tmux
       run: sudo apt install -y tmux
+    - name: Update tmux setting:
+      run: tmux set -s exit-empty off
     - name: Start tmux
       run: tmux start-server
     - name: Test tmux
