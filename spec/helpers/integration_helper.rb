@@ -58,7 +58,7 @@ class JardIntegrationTest
     sleep 0.5
 
     previous_content = @content
-    sleep 3 if previous_content.nil? && ENV['CI']
+    sleep 1 if previous_content.nil? && ENV['CI']
 
     attempt = 5
     loop do
