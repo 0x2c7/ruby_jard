@@ -35,10 +35,10 @@ jobs:
       run: sudo apt install -y tmux
     - name: Start tmux
       run: tmux start-server
-    - name: Update tmux setting
-      run: tmux set -s exit-empty off
-    - name: Test tmux
-      run: tmux new-session -t testing -d
+    - name: Start dummy tmux session
+      run: tmux new-session -t dummy -d
+    - name: Wait for tmux
+      run: bundle exec ruby spec/wait_for_tmux.rb
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -58,10 +58,10 @@ jobs:
       run: brew install tmux
     - name: Start tmux
       run: tmux start-server
-    - name: Update tmux setting
-      run: tmux set -s exit-empty off
-    - name: Test tmux
-      run: tmux new-session -t testing -d
+    - name: start dummy tmux session
+      run: tmux new-session -t dummy -d
+    - name: Wait for tmux
+      run: bundle exec ruby spec/wait_for_tmux.rb
     - name: Install dependencies
       run: bundle install
     - name: Run tests
@@ -83,10 +83,10 @@ jobs:
       run: sudo apt install -y tmux
     - name: Start tmux
       run: tmux start-server
-    - name: Update tmux setting
-      run: tmux set -s exit-empty off
-    - name: Test tmux
-      run: tmux new-session -t testing -d
+    - name: start dummy tmux session
+      run: tmux new-session -t dummy -d
+    - name: Wait for tmux
+      run: bundle exec ruby spec/wait_for_tmux.rb
     - name: Install dependencies
       run: bundle install
     - name: Run tests

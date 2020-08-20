@@ -34,14 +34,19 @@ RSpec.configure do |config|
   config.retry_callback = proc do
     if ENV['CI']
       puts '==== Tmux ===='
+      puts 'Windows:'
       begin
         puts `tmux list-window`
       rescue StandardError
         # Ignore
       end
+      puts 'Info:'
+      puts `tmux info`
       puts 'Restart Tmux...'
       puts `tmux kill-server`
       puts `tmux start-server`
+      puts `tmux new-session -t dummy -d`
+      `bundle exec ruby spec/wait_for_tmux.rb`
       puts '==== End Tmux ===='
     end
   end
