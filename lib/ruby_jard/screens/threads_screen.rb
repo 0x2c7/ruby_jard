@@ -18,7 +18,7 @@ module RubyJard
               RubyJard::Column.new(
                 spans: [
                   span_mark(thread),
-                  span_thread_id(thread)
+                  span_thread_label(thread)
                 ]
               ),
               RubyJard::Column.new(
@@ -49,9 +49,9 @@ module RubyJard
         )
       end
 
-      def span_thread_id(thread)
+      def span_thread_label(thread)
         RubyJard::Span.new(
-          content: "Thread #{thread.object_id}",
+          content: "Thread #{thread.label}",
           styles: :thread_id
         )
       end
@@ -131,7 +131,7 @@ module RubyJard
       end
 
       def current_thread?(thread)
-        thread == Thread.current
+        thread == @session.current_thread
       end
 
       def decorate_path(path, lineno)
