@@ -33,10 +33,10 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
     - name: Install tmux
       run: sudo apt install -y tmux
-    - name: Update tmux setting
-      run: tmux set -s exit-empty off
     - name: Start tmux
       run: tmux start-server
+    - name: Update tmux setting
+      run: tmux set -s exit-empty off
     - name: Test tmux
       run: tmux new-session -t testing -d
     - name: Install dependencies
@@ -56,10 +56,10 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
     - name: Install tmux
       run: brew install tmux
-    - name: Update tmux setting
-      run: tmux set -s exit-empty off
     - name: Start tmux
       run: tmux start-server
+    - name: Update tmux setting
+      run: tmux set -s exit-empty off
     - name: Test tmux
       run: tmux new-session -t testing -d
     - name: Install dependencies
@@ -81,10 +81,10 @@ jobs:
         ruby-version: 2.5
     - name: Install tmux
       run: sudo apt install -y tmux
-    - name: Update tmux setting
-      run: tmux set -s exit-empty off
     - name: Start tmux
       run: tmux start-server
+    - name: Update tmux setting
+      run: tmux set -s exit-empty off
     - name: Test tmux
       run: tmux new-session -t testing -d
     - name: Install dependencies
