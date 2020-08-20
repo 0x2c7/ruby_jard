@@ -19,6 +19,8 @@ jobs:
     - name: Install tmux
       run: sudo apt install -y tmux
     - name: Start tmux
+      run: tmux new-server
+    - name: Test tmux
       run: tmux new-session -t testing -d
     - name: Install dependencies
       run: bundle install
@@ -38,6 +40,8 @@ jobs:
     - name: Install tmux
       run: sudo apt install -y tmux
     - name: Start tmux
+      run: tmux new-server
+    - name: Test tmux
       run: tmux new-session -t testing -d
     - name: Install dependencies
       run: bundle install
@@ -57,6 +61,8 @@ jobs:
     - name: Install tmux
       run: brew install tmux
     - name: Start tmux
+      run: tmux new-server
+    - name: Test tmux
       run: tmux new-session -t testing -d
     - name: Install dependencies
       run: bundle install
@@ -78,6 +84,8 @@ jobs:
     - name: Install tmux
       run: sudo apt install -y tmux
     - name: Start tmux
+      run: tmux new-server
+    - name: Test tmux
       run: tmux new-session -t testing -d
     - name: Install dependencies
       run: bundle install

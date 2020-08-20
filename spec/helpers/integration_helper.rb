@@ -27,7 +27,6 @@ class JardIntegrationTest
       "-x #{@width}",
       "-y #{@height}"
     )
-    sleep 3 if ENV['CI']
     tmux(
       'new-window',
       '-c', @dir,
@@ -52,19 +51,11 @@ class JardIntegrationTest
       end
     end
     tmux('send-keys', '-t', @target, *args)
-    if ENV['CI']
-      sleep 3
-    else
-      sleep 0.5
-    end
+    sleep 0.5
   end
 
   def screen_content(allow_duplication = true)
-    if ENV['CI']
-      sleep 1
-    else
-      sleep 0.5
-    end
+    sleep 0.5
 
     previous_content = @content
     attempt = 5

@@ -32,13 +32,18 @@ RSpec.configure do |config|
   end
 
   config.retry_callback = proc do
-    puts '==== Tmux ===='
-    begin
-      puts `tmux list-window`
-    rescue StandardError
-      # Ignore
+    if ENV['CI']
+      puts '==== Tmux ===='
+      begin
+        puts `tmux list-window`
+      rescue StandardError
+        # Ignore
+      end
+      puts 'Restart Tmux...'
+      puts `tmux kill-server`
+      puts `tmux start-server`
+      puts '==== End Tmux ===='
     end
-    puts '==== End Tmux ===='
   end
 
   # Enable flags like --only-failures and --next-failure
