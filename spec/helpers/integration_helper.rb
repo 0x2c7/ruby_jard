@@ -63,10 +63,10 @@ class JardIntegrationTest
       @content = tmux('capture-pane', '-J', '-p', '-t', @target)
       break if allow_duplication
       break if attempt <= 0
-      break if @content != previous_content
+      break if !@content.to_s.strip.empty? && @content != previous_content
 
-      sleep 0.5
       attempt -= 1
+      sleep 0.5 * (5 - attempt)
     end
     @content
   end
