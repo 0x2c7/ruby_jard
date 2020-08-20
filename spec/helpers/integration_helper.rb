@@ -69,7 +69,7 @@ class JardIntegrationTest
       attempt -= 1
       sleep 0.5
 
-      puts 'Fai to capture pane. Retrying...'
+      puts "\t# Fai to capture pane. Retrying..."
     end
 
     attempt = 5
@@ -82,7 +82,7 @@ class JardIntegrationTest
       attempt -= 1
       sleep 0.5
 
-      puts 'Pane content seems to be different from previous capture. Retrying...'
+      puts "\t# Pane content seems to be different from previous capture. Retrying..."
     end
     @content
   end
