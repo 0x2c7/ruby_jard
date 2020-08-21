@@ -1,0 +1,55 @@
+### START SCREEN ###
+┌ Threads  2 threads ──────────────────────────────────────────────────────────┐
+│► Thread 1 (run)   Main thread at ../../../examples/threads_spawn.rb:25       │
+│• Thread 2 (sleep) untitled at ../../../examples/threads_spawn.rb:10          │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Threads  6 threads ──────────────────────────────────────────────────────────┐
+│► Thread 1 (run)   Main thread at ../../../examples/threads_spawn.rb:29       │
+│• Thread 4 (sleep) New thread 0 at ../../../examples/threads_spawn.rb:15      │
+│• Thread 5 (sleep) New thread 1 at ../../../examples/threads_spawn.rb:15      │
+│• Thread 6 (sleep) New thread 2 at ../../../examples/threads_spawn.rb:15      │
+│• Thread 2 (sleep) untitled at ../../../examples/threads_spawn.rb:10          │
+│• Thread 3 (sleep) untitled at ../../../examples/threads_spawn.rb:25          │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
