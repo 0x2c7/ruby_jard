@@ -1,0 +1,87 @@
+### START SCREEN ###
+┌ Backtrace  1 frames ─────────────────────────────────────────────────────────┐
+│➠ 0 Object in <main> at ../../../examples/evaluation_example.rb:21            │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  2 frames ─────────────────────────────────────────────────────────┐
+│➠ 0 Object in test1 at :2                                                     │
+│  1 Object in <main> at ../../../examples/evaluation_example.rb:21            │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step-out", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  2 frames ─────────────────────────────────────────────────────────┐
+│➠ 0 Object in test2 at ../../../examples/evaluation_example.rb:14             │
+│  1 Object in <main> at ../../../examples/evaluation_example.rb:22            │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###

@@ -1,0 +1,55 @@
+### START SCREEN ###
+┌ Backtrace  4 frames ─────────────────────────────────────────────────────────┐
+│➠ 0 DummyCalculator in calculate (block)                                      │
+│    at ../../../examples/end_of_method_example.rb:10                          │
+│  1 [c] Integer in times at ../../../examples/end_of_method_example.rb:7      │
+│  2 DummyCalculator in calculate                                              │
+│    at ../../../examples/end_of_method_example.rb:7                           │
+│  3 Object in <main> at ../../../examples/end_of_method_example.rb:15         │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  2 frames ─────────────────────────────────────────────────────────┐
+│➠ 0 DummyCalculator in calculate                                              │
+│    at ../../../examples/end_of_method_example.rb:12                          │
+│  1 Object in <main> at ../../../examples/end_of_method_example.rb:15         │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###

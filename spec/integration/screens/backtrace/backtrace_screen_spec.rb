@@ -4,54 +4,22 @@ RSpec.describe 'Backtrace screen', integration: true do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/screens/backtrace') }
 
   context 'when jard stops at top-level binding' do
-    let(:expected_output_1) do
-      <<~EXPECTED
-        ┌ Backtrace  1 frames ─────────────────────────────────────────────────────────┐
-        │➠ 0 Object in <main> at ../../../examples/top_level_2_example.rb:14           │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
-    let(:expected_output_2) do
-      <<~EXPECTED
-        ┌ Backtrace  2 frames ─────────────────────────────────────────────────────────┐
-        │➠ 0 Object in double at ../../../examples/top_level_2_example.rb:10           │
-        │  1 Object in <main> at ../../../examples/top_level_2_example.rb:15           │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
-    let(:expected_output_3) do
-      <<~EXPECTED
-        ┌ Backtrace  2 frames ─────────────────────────────────────────────────────────┐
-        │➠ 0 Object in quad at ../../../examples/top_level_2_example.rb:6              │
-        │  1 Object in <main> at ../../../examples/top_level_2_example.rb:16           │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
-    let(:expected_output_4) do
-      <<~EXPECTED
-        ┌ Backtrace  3 frames ─────────────────────────────────────────────────────────┐
-        │➠ 0 Object in double at ../../../examples/top_level_2_example.rb:10           │
-        │  1 Object in quad at ../../../examples/top_level_2_example.rb:6              │
-        │  2 Object in <main> at ../../../examples/top_level_2_example.rb:16           │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
     it 'displays top-level backtrace' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_2_example.rb")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'top_level.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_2_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output_1)
+      test.assert_screen(self)
       test.send_keys('next', :Enter)
       test.send_keys('step', :Enter)
-      expect(test.screen_content).to match_screen(expected_output_2)
+      test.assert_screen(self)
       test.send_keys('next', :Enter)
       test.send_keys('step', :Enter)
-      expect(test.screen_content).to match_screen(expected_output_3)
+      test.assert_screen(self)
       test.send_keys('step', :Enter)
-      expect(test.screen_content).to match_screen(expected_output_4)
+      test.assert_screen(self)
     ensure
       test.stop
     end
@@ -71,15 +39,19 @@ RSpec.describe 'Backtrace screen', integration: true do
     end
 
     it 'displays correct backtrace' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_example.rb")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'instance_method.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
       test.send_keys('continue', :Enter)
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
       test.send_keys('continue', :Enter)
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
       test.send_keys('continue', :Enter)
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
     ensure
       test.stop
     end
@@ -97,9 +69,13 @@ RSpec.describe 'Backtrace screen', integration: true do
     end
 
     it 'displays correct backtrace' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/class_method_example.rb")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'class_method.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/class_method_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
     ensure
       test.stop
     end
@@ -125,9 +101,13 @@ RSpec.describe 'Backtrace screen', integration: true do
     end
 
     it 'displays correct backtrace' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/nested_loop_example.rb")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'nested_method.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/nested_loop_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
     ensure
       test.stop
     end
@@ -143,9 +123,13 @@ RSpec.describe 'Backtrace screen', integration: true do
     end
 
     it 'displays correct backtrace' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/start_of_file_example.rb")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'end_of_file.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/start_of_file_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
     ensure
       test.stop
     end
@@ -179,14 +163,18 @@ RSpec.describe 'Backtrace screen', integration: true do
     end
 
     it 'displays correct backtrace' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/evaluation_example.rb")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'code_evaluation.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/evaluation_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output_1)
+      test.assert_screen(self)
       test.send_keys('step', :Enter)
-      expect(test.screen_content).to match_screen(expected_output_2)
+      test.assert_screen(self)
       test.send_keys('step-out', :Enter)
       test.send_keys('step', :Enter)
-      expect(test.screen_content).to match_screen(expected_output_3)
+      test.assert_screen(self)
     ensure
       test.stop
     end
@@ -217,11 +205,15 @@ RSpec.describe 'Backtrace screen', integration: true do
     end
 
     it 'displays correct backtrace' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/end_of_method_example.rb")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'end_of_method.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/end_of_method_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output_1)
+      test.assert_screen(self)
       test.send_keys('continue', :Enter)
-      expect(test.screen_content).to match_screen(expected_output_2)
+      test.assert_screen(self)
     ensure
       test.stop
     end
@@ -237,9 +229,13 @@ RSpec.describe 'Backtrace screen', integration: true do
     end
 
     it 'displays correct backtrace' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby -e \"require 'ruby_jard'\njard\na = 100 + 300\"")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'ruby_e.record',
+        "bundle exec ruby -e \"require 'ruby_jard'\njard\na = 100 + 300\""
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
     ensure
       test.stop
     end
