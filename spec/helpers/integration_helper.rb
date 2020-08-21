@@ -78,14 +78,14 @@ class JardIntegrationTest
   def send_keys(*args)
     record_actual_keys(args) if recording_actual?
 
-    args.map! do |key|
+    args.each do |key|
       if key.is_a?(String)
-        "\"#{key.gsub(/"/i, '\"')}\""
+        key = "\"#{key.gsub(/"/i, '\"')}\""
+        tmux('send-keys', '-t', @target, '-l', key)
       else
-        key.to_s
+        tmux('send-keys', '-t', @target, key.to_s)
       end
     end
-    tmux('send-keys', '-t', @target, *args)
   end
 
   def screen_content(allow_duplication = true)
