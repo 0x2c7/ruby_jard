@@ -63,15 +63,8 @@ class JardIntegrationTest
     if recording_actual?
       record_actual_screen(screen_content)
     else
-      @test.expect(screen_content).to @test.match_screen(@expected_record.shift.to_s)
-    end
-  end
-
-  def assert_repl
-    if recording_actual?
-      record_actual_screen(screen_content)
-    else
-      @test.expect(screen_content).to @test.match_screen(@expected_record.shift.to_s)
+      content, line = *(@expected_record.shift || [])
+      @test.expect(screen_content).to @test.match_screen(content.to_s, line)
     end
   end
 
@@ -160,7 +153,8 @@ class JardIntegrationTest
     state = nil
     buffer = []
     records = []
-    file.each_line do |line|
+    lineno = nil
+    file.each_line.with_index do |line, index|
       line = line.strip
       case line
       when '### START SEND_KEYS ###'
@@ -171,16 +165,20 @@ class JardIntegrationTest
         raise "Invalid file. End session :send_keys while in state #{state}" unless state == :send_keys
 
         state = nil
+        lineno = nil
       when '### START SCREEN ###'
         raise "Invalid file. Start new session while in state #{state}" unless state.nil?
 
         state = :screen
+        lineno = index + 1
       when '### END SCREEN ###'
         raise "Invalid file. End session :send_keys while in state #{state}" unless state == :screen
 
-        state = nil
-        records << buffer.join("\n")
+        records << [buffer.join("\n"), lineno]
         buffer = []
+
+        state = nil
+        lineno = nil
       else
         buffer << line if state == :screen
       end
@@ -189,8 +187,9 @@ class JardIntegrationTest
   end
 end
 
-RSpec::Matchers.define :match_screen do |expected|
+RSpec::Matchers.define :match_screen do |expected, line|
   match do |actual|
+    @line = line
     @actual =
       actual
       .split("\n")
@@ -212,7 +211,7 @@ RSpec::Matchers.define :match_screen do |expected|
 
   failure_message do |actual|
     <<~SCREEN
-      Expected screen:
+      Expected screen (line #{@line}):
       ###
       #{expected}
       ###
@@ -228,11 +227,6 @@ RSpec::Matchers.define :match_screen do |expected|
     actual_lines = actual.split("\n")
     expected_lines = expected.split("\n")
     return false unless actual_lines.length == expected_lines.length
-
-    actual_title = actual_lines.shift
-    expected_title = expected_lines.shift
-
-    return false unless match_title(expected_title, actual_title)
 
     matched_all = true
     expected_lines.each.with_index do |expected_line, index|
@@ -244,83 +238,6 @@ RSpec::Matchers.define :match_screen do |expected|
     matched_all
   end
 
-  def match_title(expected_title, actual_title)
-    box_lines.each do |char|
-      expected_title.to_s.gsub!(/#{char}/, ' ')
-      actual_title.to_s.gsub!(/#{char}/, ' ')
-    end
-    expected_title.strip == actual_title.strip
-  end
-
-  def match_line(expected_line, actual_line)
-    return false if expected_line.length != actual_line.length
-
-    expected_line.each_char.with_index do |char, index|
-      next if char == '?'
-
-      return false if char != actual_line[index]
-    end
-    true
-  end
-
-  def box_lines
-    [
-      RubyJard::BoxDrawer::NORMALS_CORNERS.values,
-      RubyJard::BoxDrawer::OVERLAPPED_CORNERS.values,
-      RubyJard::BoxDrawer::HORIZONTAL_LINE,
-      RubyJard::BoxDrawer::VERTICAL_LINE,
-      RubyJard::BoxDrawer::CROSS_CORNER
-    ].flatten
-  end
-
-  diffable
-end
-
-RSpec::Matchers.define :match_repl do |expected|
-  match do |actual|
-    actual =
-      actual
-      .split("\n")
-      .map(&:strip)
-      .join("\n")
-    @expected = expected.strip
-    @actual = actual.strip
-    if @expected != @actual
-      match_content(@expected, @actual)
-    else
-      true
-    end
-  end
-
-  failure_message do |actual|
-    <<~SCREEN
-      Expected screen:
-      ###
-      #{expected}
-      ###
-
-      Actual screen:
-      ###
-      #{actual}
-      ###
-    SCREEN
-  end
-
-  def match_content(expected, actual)
-    actual_lines = actual.split("\n")
-    expected_lines = expected.split("\n")
-    return false unless actual_lines.length == expected_lines.length
-
-    matched_all = true
-    expected_lines.each.with_index do |expected_line, index|
-      unless match_line(expected_line.strip, actual_lines[index].strip)
-        matched_all = false
-        break
-      end
-    end
-    matched_all
-  end
-
   def match_line(expected_line, actual_line)
     return false if expected_line.length != actual_line.length
 
@@ -333,4 +250,5 @@ RSpec::Matchers.define :match_repl do |expected|
   end
 
   diffable
+  attr_reader :actual, :expected
 end

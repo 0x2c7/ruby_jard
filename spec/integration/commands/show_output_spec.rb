@@ -11,9 +11,9 @@ RSpec.describe 'Output Integration tests', integration: true do
         "bundle exec ruby #{RSPEC_ROOT}/examples/program_output_example.rb"
       )
       test.start
-      test.assert_repl
+      test.assert_screen
       test.send_keys('jard output', :Enter)
-      test.assert_repl
+      test.assert_screen
     ensure
       test.stop
     end
@@ -27,10 +27,10 @@ RSpec.describe 'Output Integration tests', integration: true do
         "bundle exec ruby #{RSPEC_ROOT}/examples/program_output_example.rb"
       )
       test.start
-      test.assert_repl
+      test.assert_screen
       test.send_keys('next', :Enter)
       test.send_keys('jard output', :Enter)
-      test.assert_repl
+      test.assert_screen
     ensure
       test.stop
     end
@@ -44,23 +44,23 @@ RSpec.describe 'Output Integration tests', integration: true do
         "bundle exec ruby #{RSPEC_ROOT}/examples/program_output_example.rb"
       )
       test.start
-      test.assert_repl
+      test.assert_screen
 
       test.send_keys('next', :Enter)
       test.send_keys('next', :Enter)
       test.send_keys('jard output', :Enter)
-      test.assert_repl
+      test.assert_screen
 
       test.send_keys('k')
-      test.assert_repl
+      test.assert_screen
 
       test.send_keys('g')
       sleep 1
-      test.assert_repl
+      test.assert_screen
 
       test.send_keys('q')
       sleep 1
-      test.assert_repl
+      test.assert_screen
     ensure
       test.stop
     end
