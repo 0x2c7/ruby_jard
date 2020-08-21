@@ -1,0 +1,26 @@
+### START SCREEN ###
+┌ Backtrace  2 frames ─────────────────────────────────────────────────────────┐
+│➠ 0 FibonaciCalculator in calculate                                           │
+│    at ../../../examples/class_method_example.rb:19                           │
+│  1 Object in <main> at ../../../examples/class_method_example.rb:24          │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###

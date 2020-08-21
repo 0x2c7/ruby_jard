@@ -1,0 +1,55 @@
+### START SCREEN ###
+
+jard >>             
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["jard output", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+
+Program output      
+### END SCREEN ###

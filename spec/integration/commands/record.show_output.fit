@@ -1,0 +1,58 @@
+### START SCREEN ###
+
+jard >>             
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["next", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["jard output", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+10 | 0: abcdef      
+10 | 1: abcdef      
+10 | 2: abcdef      
+10 | 3: abcdef      
+10 | 4: abcdef      
+10 | 5: abcdef      
+10 | 6: abcdef      
+10 | 7: abcdef      
+10 | 8: abcdef      
+10 | 9: abcdef      
+Program output      
+### END SCREEN ###

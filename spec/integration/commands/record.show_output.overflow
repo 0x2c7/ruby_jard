@@ -1,0 +1,148 @@
+### START SCREEN ###
+
+jard >>             
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["next", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["next", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["jard output", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+100 | 77: xyz       
+100 | 78: xyz       
+100 | 79: xyz       
+100 | 80: xyz       
+100 | 81: xyz       
+100 | 82: xyz       
+100 | 83: xyz       
+100 | 84: xyz       
+100 | 85: xyz       
+100 | 86: xyz       
+100 | 87: xyz       
+100 | 88: xyz       
+100 | 89: xyz       
+100 | 90: xyz       
+100 | 91: xyz       
+100 | 92: xyz       
+100 | 93: xyz       
+100 | 94: xyz       
+100 | 95: xyz       
+100 | 96: xyz       
+100 | 97: xyz       
+100 | 98: xyz       
+100 | 99: xyz       
+Program output      
+### END SCREEN ###
+### START SEND_KEYS ###
+["k"]
+### END SEND_KEYS ###
+### START SCREEN ###
+100 | 76: xyz       
+100 | 77: xyz       
+100 | 78: xyz       
+100 | 79: xyz       
+100 | 80: xyz       
+100 | 81: xyz       
+100 | 82: xyz       
+100 | 83: xyz       
+100 | 84: xyz       
+100 | 85: xyz       
+100 | 86: xyz       
+100 | 87: xyz       
+100 | 88: xyz       
+100 | 89: xyz       
+100 | 90: xyz       
+100 | 91: xyz       
+100 | 92: xyz       
+100 | 93: xyz       
+100 | 94: xyz       
+100 | 95: xyz       
+100 | 96: xyz       
+100 | 97: xyz       
+100 | 98: xyz       
+Program output      
+### END SCREEN ###
+### START SEND_KEYS ###
+["g"]
+### END SEND_KEYS ###
+### START SCREEN ###
+10 | 0: abcdef      
+10 | 1: abcdef      
+10 | 2: abcdef      
+10 | 3: abcdef      
+10 | 4: abcdef      
+10 | 5: abcdef      
+10 | 6: abcdef      
+10 | 7: abcdef      
+10 | 8: abcdef      
+10 | 9: abcdef      
+100 | 0: xyz        
+100 | 1: xyz        
+100 | 2: xyz        
+100 | 3: xyz        
+100 | 4: xyz        
+100 | 5: xyz        
+100 | 6: xyz        
+100 | 7: xyz        
+100 | 8: xyz        
+100 | 9: xyz        
+100 | 10: xyz       
+100 | 11: xyz       
+100 | 12: xyz       
+Program output      
+### END SCREEN ###
+### START SEND_KEYS ###
+["q"]
+### END SEND_KEYS ###
+### START SCREEN ###
+10 | 1: abcdef      
+10 | 2: abcdef      
+10 | 3: abcdef      
+10 | 4: abcdef      
+10 | 5: abcdef      
+10 | 6: abcdef      
+10 | 7: abcdef      
+10 | 8: abcdef      
+10 | 9: abcdef      
+100 | 0: xyz        
+100 | 1: xyz        
+100 | 2: xyz        
+100 | 3: xyz        
+100 | 4: xyz        
+100 | 5: xyz        
+100 | 6: xyz        
+100 | 7: xyz        
+100 | 8: xyz        
+100 | 9: xyz        
+100 | 10: xyz       
+100 | 11: xyz       
+100 | 12: xyz       
+jard >> Tips: You can use `list` command to show back debugger screens          
+jard >>             
+### END SCREEN ###

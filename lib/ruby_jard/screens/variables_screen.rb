@@ -53,6 +53,20 @@ module RubyJard
       }.freeze
       INLINE_TOKEN_KINDS = INLINE_TOKEN_KIND_MAPS.values
 
+      def initialize(*args)
+        super
+
+        @frame_file = @session.current_frame&.frame_file
+        @frame_line = @session.current_frame&.frame_line
+        @frame_self = @session.current_frame&.frame_self
+        @frame_class = @session.current_frame&.frame_class
+        @frame_binding = @session.current_frame&.frame_binding
+
+        @inline_tokens = generate_inline_tokens(@frame_file, @frame_line)
+
+        @selected = 0
+      end
+
       def title
         'Variables'
       end
@@ -74,6 +88,7 @@ module RubyJard
                 ]
               ),
               RubyJard::Column.new(
+                word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
                 spans: [
                   span_name(variable),
                   span_size(variable),
@@ -84,7 +99,6 @@ module RubyJard
             ]
           )
         end
-        @selected = 0
       end
 
       def span_inline(variable)
@@ -154,43 +168,43 @@ module RubyJard
       private
 
       def fetch_local_variables
-        return [] if @session.current_frame.nil?
+        return [] if @frame_binding.nil?
 
-        variables = @session.current_frame.frame_binding.local_variables
+        variables = @frame_binding.local_variables
         # Exclude Pry's sticky locals
         pry_sticky_locals =
           if variables.include?(:pry_instance)
-            @session.current_frame.frame_binding.local_variable_get(:pry_instance).sticky_locals.keys
+            @frame_binding.local_variable_get(:pry_instance).sticky_locals.keys
           else
             []
           end
         variables -= pry_sticky_locals
         variables.map do |variable|
-          [KIND_LOC, variable, @session.current_frame.frame_binding.local_variable_get(variable)]
+          [KIND_LOC, variable, @frame_binding.local_variable_get(variable)]
         rescue NameError
           nil
         end.compact
       end
 
       def fetch_instance_variables
-        return [] if @session.current_frame.nil?
+        return [] if @frame_self.nil?
 
-        @session.current_frame.frame_self.instance_variables.map do |variable|
-          [KIND_INS, variable, @session.current_frame.frame_self.instance_variable_get(variable)]
+        @frame_self.instance_variables.map do |variable|
+          [KIND_INS, variable, @frame_self.instance_variable_get(variable)]
         rescue NameError
           nil
         end.compact
       end
 
       def fetch_constants
-        return [] if @session.current_frame.nil?
+        return [] if @frame_class.nil?
 
         # Filter out truly constants (CONSTANT convention) only
         constant_source =
-          if @session.current_frame.frame_class&.singleton_class?
-            @session.current_frame.frame_self
+          if @frame_class&.singleton_class?
+            @frame_self
           else
-            @session.current_frame.frame_class
+            @frame_class
           end
 
         return [] unless constant_source.respond_to?(:constants)
@@ -207,13 +221,13 @@ module RubyJard
       end
 
       def toplevel_binding?
-        @session.current_frame.frame_self == TOPLEVEL_BINDING.receiver
+        @frame_self == TOPLEVEL_BINDING.receiver
       rescue StandardError
         false
       end
 
       def self_variable
-        [[KIND_SELF, :self, @session.current_frame.frame_self]]
+        [[KIND_SELF, :self, @frame_self]]
       rescue StandardError
         []
       end
@@ -242,34 +256,29 @@ module RubyJard
       end
 
       def inline?(kind, name)
-        tokens = inline_tokens[INLINE_TOKEN_KIND_MAPS[kind]] || []
+        tokens = @inline_tokens[INLINE_TOKEN_KIND_MAPS[kind]] || []
         tokens.include?(name)
       end
 
-      def inline_tokens
-        return @inline_tokens if defined?(@inline_tokens)
+      def generate_inline_tokens(file, line)
+        return [] if file.nil? || line.nil?
 
-        current_file = @session.current_frame.frame_file
-        current_line = @session.current_frame.frame_line
-        source_decorator = RubyJard::Decorators::SourceDecorator.new(current_file, current_line, 1)
+        loc_decorator = RubyJard::Decorators::LocDecorator.new
+        source_decorator = RubyJard::Decorators::SourceDecorator.new(file, line, 1)
         _spans, tokens = loc_decorator.decorate(
-          source_decorator.codes[current_line - source_decorator.window_start],
-          current_file
+          source_decorator.codes[line - source_decorator.window_start],
+          file
         )
 
-        @inline_tokens = {}
+        inline_tokens = {}
         tokens.each_slice(2) do |token, kind|
           next unless INLINE_TOKEN_KINDS.include?(kind)
 
-          @inline_tokens[kind] ||= []
-          @inline_tokens[kind] << token.to_s.to_sym
+          inline_tokens[kind] ||= []
+          inline_tokens[kind] << token.to_s.to_sym
         end
 
-        @inline_tokens
-      end
-
-      def loc_decorator
-        @loc_decorator ||= RubyJard::Decorators::LocDecorator.new
+        inline_tokens
       end
     end
   end

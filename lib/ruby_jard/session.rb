@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
-require 'tempfile'
-
 module RubyJard
   ##
   # Centralized flow control and data storage to feed into screens. Each
   # process supposes to have only one instance of this class.
-  # TODO: If attachment event happens after any threads are created, race
-  # condition may happen. Should use a mutex to wrap around.
   # TODO: This class is created to store data, but byebug data structures are
   # leaked, and accessible from outside and this doesn't work if screens stay in
   # other processes. Therefore, an internal, jard-specific data mapping should
@@ -18,7 +14,7 @@ module RubyJard
 
       def_delegators :instance,
                      :attach, :lock, :update, :flush,
-                     :threads, :current_frame, :current_backtrace,
+                     :threads, :current_frame, :current_thread, :current_backtrace,
                      :output_buffer, :append_output_buffer,
                      :secondary_output_buffer, :append_secondary_output_buffer, :flush_secondary_output_buffer
 
@@ -29,7 +25,7 @@ module RubyJard
 
     OUTPUT_BUFFER_LENGTH = 10_000 # 10k lines
 
-    attr_accessor :threads, :current_frame, :current_backtrace, :output_buffer
+    attr_accessor :threads, :current_frame, :current_thread, :current_backtrace, :output_buffer
 
     def initialize(options = {})
       @options = options
@@ -74,10 +70,10 @@ module RubyJard
         unless RubyJard::ScreenManager.instance.updating?
           RubyJard::Session.instance.append_output_buffer(string)
         end
-        if RubyJard::Session.instance.threads[Thread.current].nil?
+        if RubyJard::Session.instance.threads[Thread.current.object_id].nil?
           # Newly spawn thread
           super(*string)
-        elsif Thread.current == RubyJard::Session.instance.current_frame.thread
+        elsif RubyJard::Session.instance.current_thread == Thread.current
           # Current paused threads
           super(*string)
         else
@@ -129,6 +125,7 @@ module RubyJard
     def update
       current_context = Byebug.current_context
       @current_frame = RubyJard::Frame.new(current_context, current_context.frame.pos)
+      @current_thread = RubyJard::ThreadInfo.new(current_context.thread)
       @current_backtrace = current_context.backtrace.map.with_index do |_frame, index|
         RubyJard::Frame.new(current_context, index)
       end
@@ -137,7 +134,8 @@ module RubyJard
         .list
         .select(&:alive?)
         .reject { |t| t.name.to_s =~ /<<Jard:.*>>/ }
-      @threads = threads.each_with_object({}) { |t, hash| hash[t] = t }
+        .map { |t| RubyJard::ThreadInfo.new(t) }
+      @threads = threads.each_with_object({}) { |t, hash| hash[t.id] = t }
     end
 
     def lock

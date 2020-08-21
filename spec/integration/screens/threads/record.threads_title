@@ -1,0 +1,84 @@
+### START SCREEN ###
+┌ Threads  4 threads ──────────────────────────────────────────────────────────┐
+│► Thread 1 (run)   Main thread at ../../../examples/threads_title.rb:17       │
+│• Thread 3 (sleep) Test 1 at ../../../examples/threads_title.rb:8             │
+│• Thread 4 (sleep) Test 2 at ../../../examples/threads_title.rb:10            │
+│• Thread 2 (sleep) untitled at ../../../examples/threads_title.rb:7           │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Threads  5 threads ──────────────────────────────────────────────────────────┐
+│► Thread 1 (run)   Main thread at ../../../examples/threads_title.rb:23       │
+│• Thread 3 (sleep) Test 1 at ../../../examples/threads_title.rb:8             │
+│• Thread 4 (sleep) Test 2 at ../../../examples/threads_title.rb:10            │
+│• Thread 5 (sleep) Test 3 at ../../../examples/threads_title.rb:17            │
+│• Thread 2 (sleep) untitled at ../../../examples/threads_title.rb:7           │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Threads  5 threads ──────────────────────────────────────────────────────────┐
+│► Thread 1 (run)   Main thread at ../../../examples/threads_title.rb:26       │
+│• Thread 4 (sleep) Test 2 at ../../../examples/threads_title.rb:10            │
+│• Thread 5 (sleep) Test 3 at ../../../examples/threads_title.rb:17            │
+│• Thread 3 (sleep) Test 3 at ../../../examples/threads_title.rb:8             │
+│• Thread 2 (sleep) untitled at ../../../examples/threads_title.rb:7           │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###

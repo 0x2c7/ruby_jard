@@ -1,6 +1,14 @@
 # Changelog
 
-## [0.2.3 - Alpha 4]
+## [0.3.0 - Beta 1]
+### UX/UI
+- Use Thread sequential label instead of Thread's object id
+- Defer side threads' output to prevent them from flooding debugging thread
+
+### Bug fixes
+- Solve program output performance degrade ([#21](https://github.com/nguyenquangminh0711/ruby_jard/pull/21))
+
+## [0.2.3 - Final Alpha]
 
 ### UX/UI
 - Add `gruvbox`, `256-light`, `one-half-dark`, and `one-half-light` color scheme
@@ -31,7 +39,7 @@
 - Lazily load screen data
 - Support byebug >= 9.1.0
 
-## [0.2.2 - Alpha 3]
+## [0.2.2 - Alpha 4]
 
 ### UX/UI
 - Add `wehereami` as an alias for `list` command
@@ -90,7 +98,7 @@
 - Implement ReplProxy to wrap around Pry instance.
 - Utility to debug and benchmark.
 
-## [0.1.0 - Alpha] - Alpha initial version
+## [0.1.0 - Alpha 1] - Alpha initial version
 **Release date**: July 1st 2020
 
 - Default Terminal UI, in which the layout and display are responsive to support different screen size.

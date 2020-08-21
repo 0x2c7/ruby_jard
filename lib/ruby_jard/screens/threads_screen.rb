@@ -5,12 +5,21 @@ module RubyJard
     ##
     # Display all current alive threads, excluding internal threads
     class ThreadsScreen < RubyJard::Screen
+      def initialize(*args)
+        super
+        @current_frame_location = @session.current_frame&.frame_location
+        @current_thread = @session.current_thread
+        @threads = @session.threads.values
+
+        @selected = @threads.index { |c| current_thread?(c) }
+      end
+
       def title
-        ['Threads', "#{@session.threads.length} threads"]
+        ['Threads', "#{@threads.length} threads"]
       end
 
       def build
-        threads = sort_threads(@session.threads.values)
+        threads = sort_threads(@threads)
         @rows = threads.map do |thread|
           RubyJard::Row.new(
             line_limit: 2,
@@ -18,7 +27,7 @@ module RubyJard
               RubyJard::Column.new(
                 spans: [
                   span_mark(thread),
-                  span_thread_id(thread)
+                  span_thread_label(thread)
                 ]
               ),
               RubyJard::Column.new(
@@ -35,7 +44,6 @@ module RubyJard
             ]
           )
         end
-        @selected = threads.index { |c| current_thread?(c) }
       end
 
       private
@@ -49,9 +57,9 @@ module RubyJard
         )
       end
 
-      def span_thread_id(thread)
+      def span_thread_label(thread)
         RubyJard::Span.new(
-          content: "Thread #{thread.object_id}",
+          content: "Thread #{thread.label}",
           styles: :thread_id
         )
       end
@@ -74,11 +82,11 @@ module RubyJard
       def span_thread_location(thread)
         return unknown_thread_location if
           thread.backtrace_locations.nil? ||
-          @session.current_frame.frame_location.nil?
+          @current_frame_location.nil?
 
         last_backtrace =
           if current_thread?(thread)
-            @session.current_frame.frame_location
+            @current_frame_location
           else
             thread.backtrace_locations[1]
           end
@@ -115,11 +123,13 @@ module RubyJard
           [
             bool_to_int(current_thread?(a)),
             bool_to_int(b.name.nil?),
-            a.object_id
+            a.name,
+            a.backtrace_locations[0].to_s
           ] <=> [
             bool_to_int(current_thread?(b)),
             bool_to_int(a.name.nil?),
-            b.object_id
+            b.name,
+            b.backtrace_locations[0].to_s
           ]
         end
       end
@@ -129,7 +139,7 @@ module RubyJard
       end
 
       def current_thread?(thread)
-        thread == Thread.current
+        thread == @current_thread
       end
 
       def decorate_path(path, lineno)

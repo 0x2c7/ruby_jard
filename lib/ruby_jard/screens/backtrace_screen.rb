@@ -5,12 +5,25 @@ module RubyJard
     ##
     # Backtrace screen implements the content to display current thread's backtrace to the user.
     class BacktraceScreen < RubyJard::Screen
+      def initialize(*args)
+        super(*args)
+        @current_frame =
+          if @session.current_frame.nil?
+            0
+          else
+            @session.current_frame.pos.to_i
+          end
+        @frames = @session.current_backtrace
+        @frames_count = @frames.length
+        @selected = @current_frame
+      end
+
       def title
-        ['Backtrace', "#{frames_count} frames"]
+        ['Backtrace', "#{@frames_count} frames"]
       end
 
       def build
-        @rows = @session.current_backtrace.map.with_index do |frame, frame_id|
+        @rows = @frames.map.with_index do |frame, frame_id|
           RubyJard::Row.new(
             line_limit: 2,
             columns: [
@@ -30,14 +43,13 @@ module RubyJard
             ]
           )
         end
-        @selected = current_frame
       end
 
       private
 
       def span_frame_id(frame_id)
-        frame_id_label = frame_id.to_s.rjust(frames_count.to_s.length)
-        if current_frame?(frame_id)
+        frame_id_label = frame_id.to_s.rjust(@frames_count.to_s.length)
+        if frame_id == @current_frame
           RubyJard::Span.new(
             content: "➠ #{frame_id_label}",
             styles: :frame_id_highlighted
@@ -110,23 +122,8 @@ module RubyJard
         )
       end
 
-      def current_frame?(frame_id)
-        frame_id == current_frame
-      end
-
-      def current_frame
-        if @session.current_frame.nil?
-          0
-        else
-          @session.current_frame.pos.to_i
-        end
-      end
-
-      def frames_count
-        @session.current_backtrace.length
-      end
-
       def decorate_path(path, lineno)
+        # TODO: Clean me up
         RubyJard::Decorators::PathDecorator.new(path, lineno)
       end
     end

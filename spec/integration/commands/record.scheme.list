@@ -1,0 +1,55 @@
+### START SCREEN ###
+
+jard >>             
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["jard color-scheme -l", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+
+jard >> jard color-scheme -l            
+256                 
+256-light           
+deep-space          
+gruvbox             
+one-half-dark       
+one-half-light      
+jard >>             
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### END SCREEN ###

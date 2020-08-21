@@ -1,0 +1,26 @@
+### START SCREEN ###
+┌ Source  ../../../examples/erb_evaluation.erb:6 ──────────────────────────────┐
+│   1 <% capitalized_name = @name.upcase %>                                    │
+│   2 <h1><%= capitalized_name %></h1>                                         │
+│   3 <ul>                                                                     │
+│   4   <% @prices.each do |price| %>                                          │
+│   5     <% jard %>                                                           │
+│➠  6     <li><%= price %></li>                                                │
+│   7   <% end %>                                                              │
+│   8 </ul>                                                                    │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###

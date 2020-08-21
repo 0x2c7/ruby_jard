@@ -1,0 +1,113 @@
+### START SCREEN ###
+┌ Backtrace  4 frames ─────────────────────────────────────────────────────────┐
+│➠ 0 Fibonaci in calculate (block)                                             │
+│    at ../../../examples/instance_method_example.rb:23                        │
+│  1 [c] Range in each at ../../../examples/instance_method_example.rb:20      │
+│  2 Fibonaci in calculate at ../../../examples/instance_method_example.rb:20  │
+│  3 Object in <main> at ../../../examples/instance_method_example.rb:32       │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  4 frames ─────────────────────────────────────────────────────────┐
+│➠ 0 Fibonaci in calculate (block)                                             │
+│    at ../../../examples/instance_method_example.rb:23                        │
+│  1 [c] Range in each at ../../../examples/instance_method_example.rb:20      │
+│  2 Fibonaci in calculate at ../../../examples/instance_method_example.rb:20  │
+│  3 Object in <main> at ../../../examples/instance_method_example.rb:32       │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  4 frames ─────────────────────────────────────────────────────────┐
+│➠ 0 Fibonaci in calculate (block)                                             │
+│    at ../../../examples/instance_method_example.rb:23                        │
+│  1 [c] Range in each at ../../../examples/instance_method_example.rb:20      │
+│  2 Fibonaci in calculate at ../../../examples/instance_method_example.rb:20  │
+│  3 Object in <main> at ../../../examples/instance_method_example.rb:32       │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  4 frames ─────────────────────────────────────────────────────────┐
+│➠ 0 Fibonaci in calculate (block)                                             │
+│    at ../../../examples/instance_method_example.rb:23                        │
+│  1 [c] Range in each at ../../../examples/instance_method_example.rb:20      │
+│  2 Fibonaci in calculate at ../../../examples/instance_method_example.rb:20  │
+│  3 Object in <main> at ../../../examples/instance_method_example.rb:32       │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###

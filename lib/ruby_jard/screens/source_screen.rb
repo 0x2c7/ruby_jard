@@ -5,38 +5,52 @@ module RubyJard
     ##
     # Display source code of current stopping line and surrounding lines
     class SourceScreen < RubyJard::Screen
+      def initialize(*args)
+        super
+        @frame_file = @session.current_frame&.frame_file
+        @frame_line = @session.current_frame&.frame_line
+
+        if !@frame_file.nil? && !@frame_line.nil?
+          @path_decorator = RubyJard::Decorators::PathDecorator.new(@frame_file, @frame_line)
+          @loc_decorator = RubyJard::Decorators::LocDecorator.new
+          @source_decorator = RubyJard::Decorators::SourceDecorator.new(@frame_file, @frame_line, @layout.height)
+        end
+
+        @selected = 0
+      end
+
       ANONYMOUS_SIGNATURES = [
         '(eval)', '-e'
       ].freeze
 
       def title
-        return 'Source' if @session.current_frame.nil?
+        return 'Source' if @frame_file.nil? || @frame_line.nil?
 
-        decorated_path = path_decorator(@session.current_frame.frame_file, @session.current_frame.frame_line)
-        if decorated_path.gem?
-          ['Source', "#{decorated_path.gem} - #{decorated_path.path}:#{decorated_path.lineno}"]
+        if @path_decorator.gem?
+          ['Source', "#{@path_decorator.gem} - #{@path_decorator.path}:#{@path_decorator.lineno}"]
         else
-          ['Source', "#{decorated_path.path}:#{decorated_path.lineno}"]
+          ['Source', "#{@path_decorator.path}:#{@path_decorator.lineno}"]
         end
       end
 
       def build
-        return if @session.current_frame.nil?
+        return 'Source' if @frame_file.nil? || @frame_line.nil?
 
-        if ANONYMOUS_SIGNATURES.include? @session.current_frame.frame_file
+        if ANONYMOUS_SIGNATURES.include? @frame_file
           # (eval) is hard-coded in Ruby source code for in-code evaluation
           handle_anonymous_evaluation
         else
           # TODO: screen now supports window.
-          codes = source_decorator.codes
+          codes = @source_decorator.codes
           @rows = codes.map.with_index do |loc, index|
+            lineno = @source_decorator.window_start + index
             RubyJard::Row.new(
               line_limit: 3,
               columns: [
                 RubyJard::Column.new(
                   spans: [
-                    span_mark(index),
-                    span_lineno(index)
+                    span_mark(lineno),
+                    span_lineno(lineno)
                   ]
                 ),
                 RubyJard::Column.new(
@@ -47,7 +61,6 @@ module RubyJard
             )
           end
         end
-        @selected = 0
       end
 
       private
@@ -83,44 +96,27 @@ module RubyJard
         ]
       end
 
-      def span_mark(index)
-        lineno = source_lineno(index)
+      def span_mark(lineno)
         RubyJard::Span.new(
           margin_right: 1,
-          content: @session.current_frame.frame_line == lineno ? '➠' : ' ',
+          content: @frame_line == lineno ? '➠' : ' ',
           styles: :source_line_mark
         )
       end
 
-      def span_lineno(index)
-        lineno = source_lineno(index).to_s.rjust(source_decorator.window_end.to_s.length)
+      def span_lineno(lineno)
+        padded_lineno = lineno.to_s.rjust(@source_decorator.window_end.to_s.length)
         RubyJard::Span.new(
-          content: lineno,
-          styles: @session.current_frame.frame_line == lineno ? :source_line_mark : :source_lineno
+          content: padded_lineno,
+          styles: @frame_line == lineno ? :source_line_mark : :source_lineno
         )
       end
 
       def loc_spans(loc)
-        spans, _tokens = loc_decorator.decorate(loc, @session.current_frame.frame_file)
+        return [] if @frame_file.nil?
+
+        spans, _tokens = @loc_decorator.decorate(loc, @frame_file)
         spans
-      end
-
-      def path_decorator(path, lineno)
-        @path_decorator ||= RubyJard::Decorators::PathDecorator.new(path, lineno)
-      end
-
-      def source_decorator
-        @source_decorator ||= RubyJard::Decorators::SourceDecorator.new(
-          @session.current_frame.frame_file, @session.current_frame.frame_line, @layout.height
-        )
-      end
-
-      def loc_decorator
-        @loc_decorator ||= RubyJard::Decorators::LocDecorator.new
-      end
-
-      def source_lineno(index)
-        source_decorator.window_start + index
       end
     end
   end
