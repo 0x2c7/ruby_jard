@@ -165,7 +165,6 @@ class JardIntegrationTest
         raise "Invalid file. End session :send_keys while in state #{state}" unless state == :send_keys
 
         state = nil
-        lineno = nil
       when '### START SCREEN ###'
         raise "Invalid file. Start new session while in state #{state}" unless state.nil?
 
@@ -178,7 +177,6 @@ class JardIntegrationTest
         buffer = []
 
         state = nil
-        lineno = nil
       else
         buffer << line if state == :screen
       end
