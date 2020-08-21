@@ -5,22 +5,15 @@ RSpec.describe 'color-scheme command', integration: true do
 
   context 'when list color schemes' do
     it 'displays list of schemes' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb")
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'record.scheme.list',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_repl(<<~SCREEN)
-        jard >>
-      SCREEN
+      test.assert_repl
       test.send_keys('jard color-scheme -l', :Enter)
-      expect(test.screen_content).to match_repl(<<~SCREEN)
-        jard >> jard color-scheme -l
-        256
-        256-light
-        deep-space
-        gruvbox
-        one-half-dark
-        one-half-light
-        jard >>
-      SCREEN
+      test.assert_repl
     ensure
       test.stop
     end
@@ -28,15 +21,15 @@ RSpec.describe 'color-scheme command', integration: true do
 
   context 'when switching to new scheme' do
     it 'displays no error' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb")
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'record.scheme.switch',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_repl(<<~SCREEN)
-        jard >>
-      SCREEN
+      test.assert_repl
       test.send_keys('jard color-scheme 256', :Enter)
-      expect(test.screen_content).to match_repl(<<~SCREEN)
-        jard >>
-      SCREEN
+      test.assert_repl
     ensure
       test.stop
     end
@@ -44,17 +37,15 @@ RSpec.describe 'color-scheme command', integration: true do
 
   context 'when switching to not-found scheme' do
     it 'displays error' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb")
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'record.scheme.switch_not_found',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_repl(<<~SCREEN)
-        jard >>
-      SCREEN
+      test.assert_repl
       test.send_keys('jard color-scheme NotExistedScheme', :Enter)
-      expect(test.screen_content).to match_repl(<<~SCREEN)
-        jard >> jard color-scheme NotExistedScheme
-        Error: Color scheme `NotExistedScheme` not found. Please use `color-scheme -l` to list all color schemes.
-        jard >>
-      SCREEN
+      test.assert_repl
     ensure
       test.stop
     end
