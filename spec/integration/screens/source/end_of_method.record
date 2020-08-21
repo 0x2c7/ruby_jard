@@ -1,0 +1,55 @@
+### START SCREEN ###
+┌ Source  ../../../examples/end_of_method_example.rb:10 ───────────────────────┐
+│   1 # frozen_string_literal: true                                            │
+│   2                                                                          │
+│   3 require 'ruby_jard'                                                      │
+│   4                                                                          │
+│   5 class DummyCalculator                                                    │
+│   6   def calculate(n)                                                       │
+│   7     1.times do |index_c|                                                 │
+│   8       n += index_c + 1                                                   │
+│   9       jard                                                               │
+│➠ 10     end                                                                  │
+│  11     jard                                                                 │
+│  12   end                                                                    │
+│  13 end                                                                      │
+│  14                                                                          │
+│  15 DummyCalculator.new.calculate(10)                                        │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../../examples/end_of_method_example.rb:12 ───────────────────────┐
+│   3 require 'ruby_jard'                                                      │
+│   4                                                                          │
+│   5 class DummyCalculator                                                    │
+│   6   def calculate(n)                                                       │
+│   7     1.times do |index_c|                                                 │
+│   8       n += index_c + 1                                                   │
+│   9       jard                                                               │
+│  10     end                                                                  │
+│  11     jard                                                                 │
+│➠ 12   end                                                                    │
+│  13 end                                                                      │
+│  14                                                                          │
+│  15 DummyCalculator.new.calculate(10)                                        │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###

@@ -4,359 +4,130 @@ RSpec.describe 'Source screen', integration: true do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/screens/source') }
 
   context 'when jard stops at top-level binding' do
-    let(:expected_output_1) do
-      <<~EXPECTED
-        ┌ Source  ../../../examples/top_level_example.rb:15 ───────────────────────────┐
-        │   6 var_b = 'hello world'                                                    │
-        │   7 var_c = ['Hello', 1, 2, 3]                                               │
-        │   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
-        │   9 variable_e = /Wait, what/i                                               │
-        │  10 variable_f = 1.1                                                         │
-        │  11 variable_g = 99..100                                                     │
-        │  12 variable_k = StandardError.new('A random error')                         │
-        │  13                                                                          │
-        │  14 jard                                                                     │
-        │➠ 15 variable_h = 15                                                          │
-        │  16                                                                          │
-        │  17 jard                                                                     │
-        │  18 1.times {}                                                               │
-        │  19                                                                          │
-        │  20 jard                                                                     │
-        │  21 var_a + variable_f + variable_h || 5                                     │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
-    let(:expected_output_2) do
-      <<~EXPECTED
-        ┌ Source  ../../../examples/top_level_example.rb:17 ───────────────────────────┐
-        │   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
-        │   9 variable_e = /Wait, what/i                                               │
-        │  10 variable_f = 1.1                                                         │
-        │  11 variable_g = 99..100                                                     │
-        │  12 variable_k = StandardError.new('A random error')                         │
-        │  13                                                                          │
-        │  14 jard                                                                     │
-        │  15 variable_h = 15                                                          │
-        │  16                                                                          │
-        │➠ 17 jard                                                                     │
-        │  18 1.times {}                                                               │
-        │  19                                                                          │
-        │  20 jard                                                                     │
-        │  21 var_a + variable_f + variable_h || 5                                     │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
-    let(:expected_output_3) do
-      <<~EXPECTED
-        ┌ Source  ../../../examples/top_level_example.rb:18 ───────────────────────────┐
-        │   9 variable_e = /Wait, what/i                                               │
-        │  10 variable_f = 1.1                                                         │
-        │  11 variable_g = 99..100                                                     │
-        │  12 variable_k = StandardError.new('A random error')                         │
-        │  13                                                                          │
-        │  14 jard                                                                     │
-        │  15 variable_h = 15                                                          │
-        │  16                                                                          │
-        │  17 jard                                                                     │
-        │➠ 18 1.times {}                                                               │
-        │  19                                                                          │
-        │  20 jard                                                                     │
-        │  21 var_a + variable_f + variable_h || 5                                     │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
-    let(:expected_output_4) do
-      <<~EXPECTED
-        ┌ Source  ../../../examples/top_level_example.rb:21 ───────────────────────────────┐
-        │  12 variable_k = StandardError.new('A random error')                         │
-        │  13                                                                          │
-        │  14 jard                                                                     │
-        │  15 variable_h = 15                                                          │
-        │  16                                                                          │
-        │  17 jard                                                                     │
-        │  18 1.times {}                                                               │
-        │  19                                                                          │
-        │  20 jard                                                                     │
-        │➠ 21 var_a + variable_f + variable_h || 5                                     │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb")
+      test = JardIntegrationTest.new(
+        work_dir, 'top_level_example.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output_1)
+      test.assert_screen(self)
       test.send_keys('next', :Enter)
-      expect(test.screen_content).to match_screen(expected_output_2)
+      test.assert_screen(self)
       test.send_keys('next', :Enter)
-      expect(test.screen_content).to match_screen(expected_output_3)
+      test.assert_screen(self)
       test.send_keys('continue', :Enter)
-      expect(test.screen_content).to match_screen(expected_output_4)
+      test.assert_screen(self)
     ensure
       test.stop
     end
   end
 
   context 'when jard stops inside an instance method' do
-    let(:expected_output) do
-      <<~EXPECTED
-        ┌ Source  ../../../examples/instance_method_example.rb:23 ─────────────────────┐
-        │  14   def calculate(n)                                                       │
-        │  15     raise 'Exceeded support max' if n > MAX_SUPPORTED                    │
-        │  16                                                                          │
-        │  17     return @a if n == 1                                                  │
-        │  18     return @b if n == 2                                                  │
-        │  19                                                                          │
-        │  20     (3..n).each do |index|                                               │
-        │  21       puts index                                                         │
-        │  22       jard                                                               │
-        │➠ 23       k = @a + @b                                                        │
-        │  24       @a = @b                                                            │
-        │  25       @b = k                                                             │
-        │  26     end                                                                  │
-        │  27                                                                          │
-        │  28     @b                                                                   │
-        │  29   end                                                                    │
-        │  30 end                                                                      │
-        │  31                                                                          │
-        │  32 Fibonaci.new.calculate(50)                                               │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_example.rb")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'instance_method.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
       test.send_keys('continue', :Enter)
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
       test.send_keys('continue', :Enter)
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
       test.send_keys('continue', :Enter)
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
     ensure
       test.stop
     end
   end
 
   context 'when jard stops within a nested method' do
-    let(:expected_output) do
-      <<~EXPECTED
-        ┌ Source  ../../../examples/nested_loop_example.rb:13 ─────────────────────────┐
-        │   4                                                                          │
-        │   5 class DummyCalculator                                                    │
-        │   6   def calculate(n)                                                       │
-        │   7     10.times do |index_a|                                                │
-        │   8       a = 10                                                             │
-        │   9       5.times do |index_b|                                               │
-        │  10         b = 'This is sparta'                                             │
-        │  11         1.times do |index_c|                                             │
-        │  12           jard                                                           │
-        │➠ 13           c = n + index_a + index_b + index_c                            │
-        │  14         end                                                              │
-        │  15       end                                                                │
-        │  16     end                                                                  │
-        │  17   end                                                                    │
-        │  18 end                                                                      │
-        │  19                                                                          │
-        │  20 DummyCalculator.new.calculate(10)                                        │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/nested_loop_example.rb")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'nested_method.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/nested_loop_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
     ensure
       test.stop
     end
   end
 
   context 'when jard stops at the beginning of file or at the end of file' do
-    let(:expected_output) do
-      <<~EXPECTED
-        ┌ Source  ../../../examples/start_of_file_example.rb:2 ────────────────────────┐
-        │   1 require 'ruby_jard'; jard                                                │
-        │➠  2 123                                                                      │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/start_of_file_example.rb")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'end_of_file.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/start_of_file_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
     ensure
       test.stop
     end
   end
 
   context 'when jard steps into a code evaluation' do
-    let(:expected_output_1) do
-      <<~EXPECTED
-        ┌ Source  ../../../examples/evaluation_example.rb:21 ──────────────────────────┐
-        │  12   <<~CODE, nil, __FILE__, __LINE__ + 1                                   │
-        │  13     def test2(a, b)                                                      │
-        │  14       c = a + b                                                          │
-        │  15       c * 3                                                              │
-        │  16     end                                                                  │
-        │  17   CODE                                                                   │
-        │  18 )                                                                        │
-        │  19                                                                          │
-        │  20 jard                                                                     │
-        │➠ 21 test1(1, 2)                                                              │
-        │  22 test2(3, 4)                                                              │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
-    let(:expected_output_2) do
-      <<~EXPECTED
-        ┌ Source  (eval):2 ────────────────────────────────────────────────────────────┐
-        │This section is anonymous!                                                    │
-        │Maybe it is dynamically evaluated, or called via ruby-e, without file informat│
-        │ion.                                                                          │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
-    let(:expected_output_3) do
-      <<~'EXPECTED'
-        ┌ Source  ../../../examples/evaluation_example.rb:14 ──────────────────────────┐
-        │   5     def test1(a, b)                                                      │
-        │   6       c = a + b                                                          │
-        │   7       c * 2                                                              │
-        │   8     end                                                                  │
-        │   9   CODE                                                                   │
-        │  10 )                                                                        │
-        │  11 eval(                                                                    │
-        │  12   <<~CODE, nil, __FILE__, __LINE__ + 1                                   │
-        │  13     def test2(a, b)                                                      │
-        │➠ 14       c = a + b                                                          │
-        │  15       c * 3                                                              │
-        │  16     end                                                                  │
-        │  17   CODE                                                                   │
-        │  18 )                                                                        │
-        │  19                                                                          │
-        │  20 jard                                                                     │
-        │  21 test1(1, 2)                                                              │
-        │  22 test2(3, 4)                                                              │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/evaluation_example.rb")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'code_evaluation.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/evaluation_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output_1)
+      test.assert_screen(self)
       test.send_keys('step', :Enter)
-      expect(test.screen_content).to match_screen(expected_output_2)
+      test.assert_screen(self)
       test.send_keys('step-out', :Enter)
       test.send_keys('step', :Enter)
-      expect(test.screen_content).to match_screen(expected_output_3)
+      test.assert_screen(self)
     ensure
       test.stop
     end
   end
 
   context 'when stop at the end of a method' do
-    let(:expected_output_1) do
-      <<~EXPECTED
-        ┌ Source  ../../../examples/end_of_method_example.rb:10 ───────────────────────┐
-        │   1 # frozen_string_literal: true                                            │
-        │   2                                                                          │
-        │   3 require 'ruby_jard'                                                      │
-        │   4                                                                          │
-        │   5 class DummyCalculator                                                    │
-        │   6   def calculate(n)                                                       │
-        │   7     1.times do |index_c|                                                 │
-        │   8       n += index_c + 1                                                   │
-        │   9       jard                                                               │
-        │➠ 10     end                                                                  │
-        │  11     jard                                                                 │
-        │  12   end                                                                    │
-        │  13 end                                                                      │
-        │  14                                                                          │
-        │  15 DummyCalculator.new.calculate(10)                                        │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
-    let(:expected_output_2) do
-      <<~EXPECTED
-        ┌ Source  ../../../examples/end_of_method_example.rb:12 ───────────────────────┐
-        │   3 require 'ruby_jard'                                                      │
-        │   4                                                                          │
-        │   5 class DummyCalculator                                                    │
-        │   6   def calculate(n)                                                       │
-        │   7     1.times do |index_c|                                                 │
-        │   8       n += index_c + 1                                                   │
-        │   9       jard                                                               │
-        │  10     end                                                                  │
-        │  11     jard                                                                 │
-        │➠ 12   end                                                                    │
-        │  13 end                                                                      │
-        │  14                                                                          │
-        │  15 DummyCalculator.new.calculate(10)                                        │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/end_of_method_example.rb")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'end_of_method.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/end_of_method_example.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output_1)
+      test.assert_screen(self)
       test.send_keys('continue', :Enter)
-      expect(test.screen_content).to match_screen(expected_output_2)
+      test.assert_screen(self)
     ensure
       test.stop
     end
   end
 
   context 'when use jard with ruby -e' do
-    let(:expected_output) do
-      <<~EXPECTED
-        ┌ Source  -e:3 ────────────────────────────────────────────────────────────────┐
-        │This section is anonymous!                                                    │
-        │Maybe it is dynamically evaluated, or called via ruby-e, without file informat│
-        │ion.                                                                          │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby -e \"require 'ruby_jard'\njard\na = 100 + 300\"")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'ruby_e.record',
+        "bundle exec ruby -e \"require 'ruby_jard'\njard\na = 100 + 300\""
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
     ensure
       test.stop
     end
   end
 
   context 'when jumping into an ERB file' do
-    let(:expected_output) do
-      <<~EXPECTED
-        ┌ Source  ../../../examples/erb_evaluation.erb:6 ──────────────────────────────┐
-        │   1 <% capitalized_name = @name.upcase %>                                    │
-        │   2 <h1><%= capitalized_name %></h1>                                         │
-        │   3 <ul>                                                                     │
-        │   4   <% @prices.each do |price| %>                                          │
-        │   5     <% jard %>                                                           │
-        │➠  6     <li><%= price %></li>                                                │
-        │   7   <% end %>                                                              │
-        │   8 </ul>                                                                    │
-        └──────────────────────────────────────────────────────────────────────────────┘
-      EXPECTED
-    end
-
     it 'displays correct line' do
-      test = JardIntegrationTest.new(work_dir, "bundle exec ruby #{RSPEC_ROOT}/examples/erb_evaluation.rb")
+      test = JardIntegrationTest.new(
+        work_dir,
+        'erb.record',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/erb_evaluation.rb"
+      )
       test.start
-      expect(test.screen_content).to match_screen(expected_output)
+      test.assert_screen(self)
     ensure
       test.stop
     end

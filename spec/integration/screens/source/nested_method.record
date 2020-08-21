@@ -1,0 +1,26 @@
+### START SCREEN ###
+┌ Source  ../../../examples/nested_loop_example.rb:13 ─────────────────────────┐
+│   4                                                                          │
+│   5 class DummyCalculator                                                    │
+│   6   def calculate(n)                                                       │
+│   7     10.times do |index_a|                                                │
+│   8       a = 10                                                             │
+│   9       5.times do |index_b|                                               │
+│  10         b = 'This is sparta'                                             │
+│  11         1.times do |index_c|                                             │
+│  12           jard                                                           │
+│➠ 13           c = n + index_a + index_b + index_c                            │
+│  14         end                                                              │
+│  15       end                                                                │
+│  16     end                                                                  │
+│  17   end                                                                    │
+│  18 end                                                                      │
+│  19                                                                          │
+│  20 DummyCalculator.new.calculate(10)                                        │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
