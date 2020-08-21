@@ -7,13 +7,23 @@ class JardIntegrationTest
 
   attr_reader :source
 
-  def initialize(dir, command, width: 80, height: 24)
+  def initialize(dir, expected_record_file, command, width: 80, height: 24)
     @target = "TestJard#{rand(1..1000)}"
+    @source = caller[0]
+
     @dir = dir
     @command = command
+
     @width = width
     @height = height
-    @source = caller[0]
+
+    @expected_record_file = File.join(@dir, expected_record_file)
+    @expected_record = parse_expected_record(@expected_record_file)
+
+    if recording_actual?
+      @actual_record_file = File.open(File.join(@dir, "#{expected_record_file}.actual"), 'w')
+    end
+
     JardIntegrationTest.tests << self
   end
 
@@ -39,10 +49,29 @@ class JardIntegrationTest
 
   def stop
     tmux('kill-session', '-t', @target)
+    @actual_record_file.close if recording_actual?
     JardIntegrationTest.tests.delete(self)
   end
 
+  def assert_screen(test)
+    if recording_actual?
+      record_actual_screen(screen_content)
+    else
+      test.expect(screen_content).to test.match_screen(@expected_record.shift.to_s)
+    end
+  end
+
+  def assert_repl(test)
+    if recording_actual?
+      record_actual_screen(screen_content)
+    else
+      test.expect(screen_content).to test.match_screen(@expected_record.shift.to_s)
+    end
+  end
+
   def send_keys(*args)
+    record_actual_keys(args) if recording_actual?
+
     args.map! do |key|
       if key.is_a?(String)
         "\"#{key.gsub(/"/i, '\"')}\""
@@ -51,7 +80,6 @@ class JardIntegrationTest
       end
     end
     tmux('send-keys', '-t', @target, *args)
-    sleep 0.5
   end
 
   def screen_content(allow_duplication = true)
@@ -100,20 +128,73 @@ class JardIntegrationTest
   rescue StandardError => e
     "Fail to call `#{command}`. Error: #{e}"
   end
+
+  def recording_actual?
+    !ENV['RECORD_ACTUAL'].nil?
+  end
+
+  def record_actual_keys(keys)
+    @actual_record_file.puts '### START SEND_KEYS ###'
+    @actual_record_file.puts keys.inspect
+    @actual_record_file.puts '### END SEND_KEYS ###'
+  end
+
+  def record_actual_screen(screen)
+    @actual_record_file.puts '### START SCREEN ###'
+    @actual_record_file.puts screen
+    @actual_record_file.puts '### END SCREEN ###'
+  end
+
+  def parse_expected_record(path)
+    return [] if recording_actual?
+
+    file = File.open(path)
+    state = nil
+    buffer = []
+    records = []
+    file.each_line do |line|
+      line = line.strip
+      case line
+      when '### START SEND_KEYS ###'
+        raise "Invalid file. Start new session while in state #{state}" unless state.nil?
+
+        state = :send_keys
+      when '### END SEND_KEYS ###'
+        raise "Invalid file. End session :send_keys while in state #{state}" unless state == :send_keys
+
+        state = nil
+      when '### START SCREEN ###'
+        raise "Invalid file. Start new session while in state #{state}" unless state.nil?
+
+        state = :screen
+      when '### END SCREEN ###'
+        raise "Invalid file. End session :send_keys while in state #{state}" unless state == :screen
+
+        state = nil
+        records << buffer.join("\n")
+        buffer = []
+      else
+        buffer << line if state == :screen
+      end
+    end
+    records
+  end
 end
 
 RSpec::Matchers.define :match_screen do |expected|
   match do |actual|
-    @raw = actual
-    actual =
+    @actual =
       actual
       .split("\n")
-      .reject { |line| line.strip.include?('jard >>') }
-      .reject { |line| line[1..line.length - 2]&.strip&.empty? }
+      .map(&:strip)
       .join("\n")
 
-    @expected = expected.strip
-    @actual = actual.strip
+    @expected =
+      expected
+      .split("\n")
+      .map(&:strip)
+      .join("\n")
+
     if @expected != @actual
       match_content(@expected, @actual)
     else
