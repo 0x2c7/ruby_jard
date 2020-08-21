@@ -145,7 +145,7 @@ RSpec.describe 'Variable screen', integration: true do
     it 'displays correct line' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.erb',
+        'record.erb_file',
         "bundle exec ruby #{RSPEC_ROOT}/examples/erb_evaluation.rb"
       )
       test.start
