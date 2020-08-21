@@ -7,8 +7,9 @@ class JardIntegrationTest
 
   attr_reader :source
 
-  def initialize(dir, expected_record_file, command, width: 80, height: 24)
+  def initialize(test, dir, expected_record_file, command, width: 80, height: 24)
     @target = "TestJard#{rand(1..1000)}"
+    @test = test
     @source = caller[0]
 
     @dir = dir
@@ -51,21 +52,26 @@ class JardIntegrationTest
     tmux('kill-session', '-t', @target)
     @actual_record_file.close if recording_actual?
     JardIntegrationTest.tests.delete(self)
-  end
 
-  def assert_screen(test)
     if recording_actual?
-      record_actual_screen(screen_content)
-    else
-      test.expect(screen_content).to test.match_screen(@expected_record.shift.to_s)
+      @test.pending
+      @test.send :fail, 'Recording actual screen...'
     end
   end
 
-  def assert_repl(test)
+  def assert_screen
     if recording_actual?
       record_actual_screen(screen_content)
     else
-      test.expect(screen_content).to test.match_screen(@expected_record.shift.to_s)
+      @test.expect(screen_content).to @test.match_screen(@expected_record.shift.to_s)
+    end
+  end
+
+  def assert_repl
+    if recording_actual?
+      record_actual_screen(screen_content)
+    else
+      @test.expect(screen_content).to @test.match_screen(@expected_record.shift.to_s)
     end
   end
 
