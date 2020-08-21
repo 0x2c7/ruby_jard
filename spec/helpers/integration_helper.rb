@@ -86,6 +86,8 @@ class JardIntegrationTest
         tmux('send-keys', '-t', @target, key.to_s)
       end
     end
+
+    sleep 0.5
   end
 
   def screen_content(allow_duplication = true)
