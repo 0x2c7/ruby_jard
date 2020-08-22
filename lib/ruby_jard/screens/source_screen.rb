@@ -11,7 +11,7 @@ module RubyJard
         @frame_line = @session.current_frame&.frame_line
 
         if !@frame_file.nil? && !@frame_line.nil?
-          @path_decorator = RubyJard::Decorators::PathDecorator.new(@frame_file, @frame_line)
+          @path_decorator = RubyJard::Decorators::PathDecorator.new
           @loc_decorator = RubyJard::Decorators::LocDecorator.new
           @source_decorator = RubyJard::Decorators::SourceDecorator.new(@frame_file, @frame_line, @layout.height)
         end
@@ -22,36 +22,32 @@ module RubyJard
       def title
         return 'Source' if @frame_file.nil? || @frame_line.nil?
 
-        ['Source', path_decorator.module_path]
+        _, path_label = @path_decorator.decorate(@frame_file, @frame_line)
+        ['Source', path_label]
       end
 
       def build
         return 'Source' if @frame_file.nil? || @frame_line.nil?
 
-        if path_decorator.evaluation?
-          # (eval) is hard-coded in Ruby source code for in-code evaluation
-          handle_anonymous_evaluation
-        else
-          # TODO: screen now supports window.
-          codes = @source_decorator.codes
-          @rows = codes.map.with_index do |loc, index|
-            lineno = @source_decorator.window_start + index
-            RubyJard::Row.new(
-              line_limit: 3,
-              columns: [
-                RubyJard::Column.new(
-                  spans: [
-                    span_mark(lineno),
-                    span_lineno(lineno)
-                  ]
-                ),
-                RubyJard::Column.new(
-                  word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
-                  spans: loc_spans(loc)
-                )
-              ]
-            )
-          end
+        # TODO: screen now supports window.
+        codes = @source_decorator.codes
+        @rows = codes.map.with_index do |loc, index|
+          lineno = @source_decorator.window_start + index
+          RubyJard::Row.new(
+            line_limit: 3,
+            columns: [
+              RubyJard::Column.new(
+                spans: [
+                  span_mark(lineno),
+                  span_lineno(lineno)
+                ]
+              ),
+              RubyJard::Column.new(
+                word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
+                spans: loc_spans(loc)
+              )
+            ]
+          )
         end
       end
 
@@ -109,13 +105,6 @@ module RubyJard
 
         spans, _tokens = @loc_decorator.decorate(loc, @frame_file)
         spans
-      end
-
-      def path_decorator
-        @path_decorator ||= RubyJard::Decorators::PathDecorator.new(
-          @session.current_frame.frame_file,
-          @session.current_frame.frame_line
-        )
       end
     end
   end

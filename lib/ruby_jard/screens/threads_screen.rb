@@ -12,6 +12,7 @@ module RubyJard
         @threads = @session.threads.values
 
         @selected = @threads.index { |c| current_thread?(c) }
+        @path_decorator = RubyJard::Decorators::PathDecorator.new
       end
 
       def title
@@ -80,36 +81,21 @@ module RubyJard
       end
 
       def span_thread_location(thread)
-        return unknown_thread_location if
-          thread.backtrace_locations.nil? ||
-          @current_frame_location.nil?
-
-        last_backtrace =
+        path_label, =
           if current_thread?(thread)
-            @current_frame_location
+            @path_decorator.decorate(
+              @current_frame_location.path,
+              @current_frame_location.lineno
+            )
           else
-            thread.backtrace_locations[1]
+            @path_decorator.decorate(
+              thread.backtrace_locations[1]&.path,
+              thread.backtrace_locations[1]&.lineno
+            )
           end
 
-        return unknown_thread_location if last_backtrace.nil?
-
-        path_decorator = RubyJard::Decorators::PathDecorator.new(last_backtrace.path, last_backtrace.lineno)
-        if path_decorator.source_tree? || path_decorator.unknown?
-          RubyJard::Span.new(
-            content: "at #{path_decorator.module_path}",
-            styles: :thread_location
-          )
-        else
-          RubyJard::Span.new(
-            content: "in #{path_decorator.module_label}",
-            styles: :thread_location
-          )
-        end
-      end
-
-      def unknown_thread_location
         RubyJard::Span.new(
-          content: 'at ???',
+          content: path_label,
           styles: :thread_location
         )
       end
@@ -140,9 +126,6 @@ module RubyJard
 
       def current_thread?(thread)
         thread == @current_thread
-      end
-
-      def create_path_decorator(path, lineno)
       end
 
       def thread_status_style(thread)

@@ -16,6 +16,8 @@ module RubyJard
         @frames = @session.current_backtrace
         @frames_count = @frames.length
         @selected = @current_frame
+
+        @path_decorator = RubyJard::Decorators::PathDecorator.new
       end
 
       def title
@@ -108,25 +110,13 @@ module RubyJard
       end
 
       def span_path(frame)
-        path_decorator = RubyJard::Decorators::PathDecorator.new(
+        path_label, = @path_decorator.decorate(
           frame.frame_location.path, frame.frame_location.lineno
         )
-
-        module_label =
-          if path_decorator.source_tree? || path_decorator.unknown?
-            "at #{path_decorator.module_path}"
-          else
-            "in #{path_decorator.module_label}"
-          end
         RubyJard::Span.new(
-          content: module_label,
+          content: path_label,
           styles: :frame_location
         )
-      end
-
-      def decorate_path(path, lineno)
-        # TODO: Clean me up
-        RubyJard::Decorators::PathDecorator.new(path, lineno)
       end
     end
   end
