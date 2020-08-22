@@ -112,14 +112,14 @@ module RubyJard
           frame.frame_location.path, frame.frame_location.lineno
         )
 
-        path_label =
+        module_label =
           if path_decorator.source_tree? || path_decorator.unknown?
-            "at #{path_decorator.path_label}:#{path_decorator.lineno}"
+            "at #{path_decorator.module_path}"
           else
-            "in #{path_decorator.path_label}"
+            "in #{path_decorator.module_label}"
           end
         RubyJard::Span.new(
-          content: path_label,
+          content: module_label,
           styles: :frame_location
         )
       end

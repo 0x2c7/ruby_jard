@@ -11,7 +11,8 @@ module RubyJard
     # location of the file.
     # If it's from the current working dir, strip the working dir.
     class PathDecorator
-      EVALUATION_SIGNATURES = ['(eval)', '-e'].freeze
+      EVALUATION_SIGNATURE = '(eval)'
+      RUBY_SCRIPT_SIGNATURE = '-e'
       STDLIB_PATTERN = /(.*)\.rb$/.freeze
       INTERNAL_PATTERN = /<internal:[^>]+>/.freeze
       GEM_PATTERN = /(.*)-(\d+\.\d+[.\d]*[.\d]*[-.\w]*)/i.freeze
@@ -24,19 +25,21 @@ module RubyJard
         TYPE_EVALUATION = :evaluation
       ].freeze
 
-      attr_reader :path, :lineno, :path_label
+      attr_reader :path, :module_label, :module_path
 
       def initialize(path, lineno)
         @path = path.to_s
         @lineno = lineno
-        @path_label = ''
+        @module_label = ''
+        @module_path = ''
         @type = TYPE_UNKNOWN
 
         decorate
       end
 
       def decorate
-        @path_label = @path
+        @module_label = @path
+        @module_path = @path
 
         try_classify_gem
         return if gem?
@@ -91,15 +94,16 @@ module RubyJard
             @path[gem_path.length..-1]
             .split('/')
             .reject(&:empty?)
-          gem_name = splitted_path.first
+          gem_name = splitted_path.shift
           match = GEM_PATTERN.match(gem_name)
           if match
             gem_name = match[1]
             gem_version = match[2]
-            @path_label = "<#{gem_name} #{gem_version}>"
+            @module_label = "<#{gem_name} #{gem_version}>"
           else
-            @path_label = "<#{gem_name}>"
+            @module_label = "<#{gem_name}>"
           end
+          @module_path = "<#{gem_name}:#{splitted_path.join('/')}:#{@lineno}>"
 
           break
         end
@@ -110,7 +114,8 @@ module RubyJard
         return unless @path =~ INTERNAL_PATTERN
 
         @type = TYPE_INTERNAL
-        @path_label = @path
+        @module_label = @path
+        @module_path = @path
       end
 
       def try_classify_stdlib
@@ -121,39 +126,47 @@ module RubyJard
 
         @type = TYPE_STDLIB
 
-        lib_name =
+        splitted_path =
           @path[lib_dir.length..-1]
           .split('/')
           .reject(&:empty?)
-          .first
-
+        lib_name = splitted_path.first
         match = STDLIB_PATTERN.match(lib_name)
         lib_name = match[1] if match
 
-        @path_label = "<stdlib:#{lib_name}>"
+        @module_label = "<stdlib:#{lib_name}>"
+        @module_path = "<stdlib:#{splitted_path.join('/')}:#{@lineno}>"
       rescue NameError
         # RbConfig is not available
       end
 
       def try_classify_evaluation
-        return unless EVALUATION_SIGNATURES.include?(@path)
-
-        @type = TYPE_EVALUATION
-        @path_label = @path
+        case @path
+        when EVALUATION_SIGNATURE
+          @type = TYPE_EVALUATION
+          @module_label = EVALUATION_SIGNATURE
+          @module_path = EVALUATION_SIGNATURE
+        when RUBY_SCRIPT_SIGNATURE
+          @type = TYPE_EVALUATION
+          @module_label = '(-e ruby script)'
+          @module_path = '(-e ruby script)'
+        end
       end
 
       def try_classify_source_tree
         return unless @path.start_with?(Dir.pwd)
 
         @type = TYPE_SOURCE_TREE
-        @path_label = @path[Dir.pwd.length..-1]
-        @path_label = @path_label[1..-1] if @path_label.start_with?('/')
+        @module_label = @path[Dir.pwd.length..-1]
+        @module_label = @module_label[1..-1] if @module_label.start_with?('/')
+        @module_path = "#{@module_label}:#{@lineno}"
       end
 
       def compact_with_relative_path
         relative_path = Pathname.new(@path).relative_path_from(Pathname.pwd).to_s
         if relative_path.length < @path.length
-          @path_label = relative_path
+          @module_label = relative_path
+          @module_path = "#{relative_path}:#{@lineno}"
         end
       rescue ArgumentError
         # Fail to get relative path, ignore

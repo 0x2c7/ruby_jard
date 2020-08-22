@@ -96,12 +96,12 @@ module RubyJard
         path_decorator = RubyJard::Decorators::PathDecorator.new(last_backtrace.path, last_backtrace.lineno)
         if path_decorator.source_tree? || path_decorator.unknown?
           RubyJard::Span.new(
-            content: "at #{path_decorator.path_label}:#{path_decorator.lineno}",
+            content: "at #{path_decorator.module_path}",
             styles: :thread_location
           )
         else
           RubyJard::Span.new(
-            content: "in #{path_decorator.path_label}",
+            content: "in #{path_decorator.module_label}",
             styles: :thread_location
           )
         end

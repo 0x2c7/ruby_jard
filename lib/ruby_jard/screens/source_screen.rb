@@ -22,11 +22,7 @@ module RubyJard
       def title
         return 'Source' if @frame_file.nil? || @frame_line.nil?
 
-        if path_decorator.source_tree? || path_decorator.unknown?
-          ['Source', "#{path_decorator.path_label}:#{path_decorator.lineno}"]
-        else
-          ['Source', path_decorator.path_label]
-        end
+        ['Source', path_decorator.module_path]
       end
 
       def build
