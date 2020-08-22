@@ -6,6 +6,8 @@ require 'rbconfig'
 module RubyJard
   ##
   # Classify a particular path by its orign such as stdlib, gem, evaluation, etc.
+  # Usage
+  #   type, *info = PathClassifier.new.class('lib/abc')
   class PathClassifier
     GEM_PATTERN = /(.*)-(\d+\.\d+[.\d]*[.\d]*[-.\w]*)/i.freeze
     STDLIB_PATTERN = /(.*)\.rb$/.freeze
@@ -24,17 +26,19 @@ module RubyJard
     ].freeze
 
     def classify(path)
+      return TYPE_UNKNOWN if path.nil?
+
       [
-        TYPE_SOURCE_TREE,
-        TYPE_GEM,
-        TYPE_STDLIB,
         TYPE_INTERNAL,
         TYPE_EVALUATION,
-        TYPE_RUBY_SCRIPT
+        TYPE_RUBY_SCRIPT,
+        TYPE_SOURCE_TREE,
+        TYPE_GEM,
+        TYPE_STDLIB
       ].each do |type|
         matched, *info = send("try_classify_#{type}".to_sym, path)
 
-        return type, info if matched
+        return type, *info if matched
       end
 
       TYPE_UNKNOWN
@@ -99,7 +103,7 @@ module RubyJard
     end
 
     def try_classify_source_tree(path)
-      path.start_with?(Dir.pwd)
+      File.expand_path(path).start_with?(Dir.pwd)
     end
 
     def gem_paths

@@ -17,10 +17,11 @@ module RubyJard
       def decorate(path, lineno)
         return ['at ???', 'at ???'] if path.nil?
 
-        type, info = @path_classifier.classify(path)
+        type, *info = @path_classifier.classify(path)
 
         case type
         when RubyJard::PathClassifier::TYPE_SOURCE_TREE
+          path = File.expand_path(path)
           decorate_source_tree(path, lineno)
         when RubyJard::PathClassifier::TYPE_GEM
           decorate_gem(path, lineno, info)
