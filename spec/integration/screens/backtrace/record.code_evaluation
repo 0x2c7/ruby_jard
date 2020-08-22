@@ -29,7 +29,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Backtrace  2 frames ─────────────────────────────────────────────────────────┐
-│⮕ 0 Object in test1 in (eval)                                                 │
+│⮕ 0 Object in test1 at (eval)                                                 │
 │  1 Object in <main> at ../../../examples/evaluation_example.rb:21            │
 │                                                                              │
 │                                                                              │
