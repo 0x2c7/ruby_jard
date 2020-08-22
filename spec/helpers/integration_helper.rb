@@ -49,11 +49,24 @@ class JardIntegrationTest
   end
 
   def stop
-    tmux('kill-session', '-t', @target)
-    @actual_record_file.close if recording_actual?
+    # Kill active pid in the pane to prevent trashing the system after rspec finishes
+    begin
+      pids = tmux('list-panes', '-t', @target, '-F', '\\#\{pane_pid\}')
+      pids.split("\n").map(&:strip).each { |pid| `kill #{pid}` }
+    rescue StandardError => e
+      puts "Fail to kill spawn processes: #{e.message}. Let's use ps kill them manually."
+    end
+
+    begin
+      tmux('kill-session', '-t', @target)
+    rescue StandardError => e
+      puts "Fail to kill tmux session: #{e.message}. Let's use tmux to kill them manually."
+    end
+
     JardIntegrationTest.tests.delete(self)
 
     if recording_actual?
+      @actual_record_file.close
       @test.pending
       @test.send :fail, 'Recording actual screen...'
     end
