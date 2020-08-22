@@ -9,7 +9,7 @@
 │  10         b = 'This is sparta'                                             │
 │  11         1.times do |index_c|                                             │
 │  12           jard                                                           │
-│➠ 13           c = n + index_a + index_b + index_c                            │
+│⮕ 13           c = n + index_a + index_b + index_c                            │
 │  14         end                                                              │
 │  15       end                                                                │
 │  16     end                                                                  │
@@ -20,7 +20,7 @@
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###

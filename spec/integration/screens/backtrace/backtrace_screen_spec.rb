@@ -126,7 +126,7 @@ RSpec.describe 'Backtrace screen', integration: true do
     let(:expected_output) do
       <<~EXPECTED
         ┌ Backtrace  1 frames ─────────────────────────────────────────────────────────┐
-        │➠ 0 Object in <main> at :3                                                    │
+        │⮕ 0 Object in <main> at :3                                                    │
         └──────────────────────────────────────────────────────────────────────────────┘
       EXPECTED
     end

@@ -1,6 +1,6 @@
 ### START SCREEN ###
 ┌ Backtrace  8 frames ─────────────────────────────────────────────────────────┐
-│➠ 0 DummyCalculator in calculate (block)                                      │
+│⮕ 0 DummyCalculator in calculate (block)                                      │
 │    at ../../../examples/nested_loop_example.rb:13                            │
 │  1 [c] Integer in times at ../../../examples/nested_loop_example.rb:11       │
 │  2 DummyCalculator in calculate (block)                                      │
@@ -20,7 +20,7 @@
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###

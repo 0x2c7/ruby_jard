@@ -1,6 +1,6 @@
 ### START SCREEN ###
 ┌ Backtrace  1 frames ─────────────────────────────────────────────────────────┐
-│➠ 0 Object in <main> at ../../../examples/top_level_2_example.rb:14           │
+│⮕ 0 Object in <main> at ../../../examples/top_level_2_example.rb:14           │
 │                                                                              │
 │                                                                              │
 │                                                                              │
@@ -20,7 +20,7 @@
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###
@@ -32,7 +32,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Backtrace  2 frames ─────────────────────────────────────────────────────────┐
-│➠ 0 Object in double at ../../../examples/top_level_2_example.rb:10           │
+│⮕ 0 Object in double at ../../../examples/top_level_2_example.rb:10           │
 │  1 Object in <main> at ../../../examples/top_level_2_example.rb:15           │
 │                                                                              │
 │                                                                              │
@@ -52,7 +52,7 @@ jard >>
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###
@@ -64,7 +64,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Backtrace  2 frames ─────────────────────────────────────────────────────────┐
-│➠ 0 Object in quad at ../../../examples/top_level_2_example.rb:6              │
+│⮕ 0 Object in quad at ../../../examples/top_level_2_example.rb:6              │
 │  1 Object in <main> at ../../../examples/top_level_2_example.rb:16           │
 │                                                                              │
 │                                                                              │
@@ -84,7 +84,7 @@ jard >>
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###
@@ -93,7 +93,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Backtrace  3 frames ─────────────────────────────────────────────────────────┐
-│➠ 0 Object in double at ../../../examples/top_level_2_example.rb:10           │
+│⮕ 0 Object in double at ../../../examples/top_level_2_example.rb:10           │
 │  1 Object in quad at ../../../examples/top_level_2_example.rb:6              │
 │  2 Object in <main> at ../../../examples/top_level_2_example.rb:16           │
 │                                                                              │
@@ -113,7 +113,7 @@ jard >>
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###

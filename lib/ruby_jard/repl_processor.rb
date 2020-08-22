@@ -45,7 +45,7 @@ module RubyJard
     private
 
     def process_commands_with_lock
-      if bypassed?(Byebug.current_context)
+      unless debuggable?(Byebug.current_context)
         handle_flow(@previous_flow)
         return
       end
@@ -59,16 +59,11 @@ module RubyJard
       RubyJard::Session.flush_secondary_output_buffer
     end
 
-    def bypassed?(context)
+    def debuggable?(context)
       file = context.frame_file
       lineno = context.frame_line
       decorator = RubyJard::Decorators::PathDecorator.new(file, lineno)
-      if decorator.gem?
-        RubyJard.debug("Bypassed #{file}:#{lineno}")
-      else
-        RubyJard.debug("[Gem? #{decorator.gem?}] Stopped at #{file}:#{lineno}")
-      end
-      !decorator.source_tree?
+      true
     end
 
     def process_commands(update = true)
