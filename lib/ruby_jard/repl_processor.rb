@@ -60,9 +60,6 @@ module RubyJard
     end
 
     def debuggable?(context)
-      file = context.frame_file
-      lineno = context.frame_line
-      decorator = RubyJard::Decorators::PathDecorator.new(file, lineno)
       true
     end
 
