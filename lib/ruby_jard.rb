@@ -6,6 +6,7 @@ require 'byebug/attacher'
 require 'forwardable'
 require 'benchmark'
 
+require 'ruby_jard/path_classifier'
 require 'ruby_jard/control_flow'
 require 'ruby_jard/config'
 require 'ruby_jard/keys'
