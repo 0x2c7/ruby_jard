@@ -3,7 +3,7 @@
 RSpec.describe 'Scenario 1: Debug a simple sorting algorithm' do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/scenario_1') }
 
-  it 'is correct' do
+  it 'runs as expected' do
     test = JardIntegrationTest.new(
       self, work_dir,
       'record.scenario_1',

@@ -1,6 +1,6 @@
 ### START SCREEN ###
 ┌ Backtrace  1 frames ─────────────────────────────────────────────────────────┐
-│⮕ 0 Object in <main> at (-e ruby script)                                      │
+│⮕ 0 Object in <main> at (-e ruby script):3                                    │
 │                                                                              │
 │                                                                              │
 │                                                                              │

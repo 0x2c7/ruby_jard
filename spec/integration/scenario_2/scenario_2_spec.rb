@@ -3,7 +3,7 @@
 RSpec.describe 'Scenario 2: Debug a simple gem' do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/scenario_2') }
 
-  it 'is correct' do
+  it 'runs as expected' do
     test = JardIntegrationTest.new(
       self, work_dir,
       'record.scenario_2',
