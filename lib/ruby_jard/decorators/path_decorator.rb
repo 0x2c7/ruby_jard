@@ -14,10 +14,12 @@ module RubyJard
         @path_classifier = path_classifier || RubyJard::PathClassifier.new
       end
 
-      def decorate(path, lineno)
+      def decorate(path, lineno = nil)
         return ['at ???', 'at ???'] if path.nil?
 
         type, *info = @path_classifier.classify(path)
+
+        lineno = ":#{lineno}" unless lineno.nil?
 
         case type
         when RubyJard::PathClassifier::TYPE_SOURCE_TREE
@@ -30,12 +32,12 @@ module RubyJard
         when RubyJard::PathClassifier::TYPE_INTERNAL
           ["in #{path}", path]
         when RubyJard::PathClassifier::TYPE_EVALUATION
-          ["at #{path}", path]
+          ["at #{path}#{lineno}", "#{path}#{lineno}"]
         when RubyJard::PathClassifier::TYPE_RUBY_SCRIPT
-          ['at (-e ruby script)', '(-e ruby script)']
+          ["at (-e ruby script)#{lineno}", "(-e ruby script)#{lineno}"]
         else
           path = compact_with_relative_path(path)
-          ["at #{path}:#{lineno}", "#{path}:#{lineno}"]
+          ["at #{path}#{lineno}", "#{path}#{lineno}"]
         end
       end
 
@@ -44,7 +46,7 @@ module RubyJard
       def decorate_source_tree(path, lineno)
         path = path[Dir.pwd.length..-1]
         path = path[1..-1] if path.start_with?('/')
-        path = "#{path}:#{lineno}"
+        path = "#{path}#{lineno}"
         ["at #{path}", path]
       end
 
@@ -56,14 +58,14 @@ module RubyJard
           else
             "<#{gem_name} #{gem_version}>"
           end
-        detail = "<#{gem_name}:#{relative_path}:#{lineno}>"
+        detail = "<#{gem_name}:#{relative_path}#{lineno}>"
         ["in #{overview}", detail]
       end
 
       def decorate_stdlib(_path, lineno, info)
         lib_name, relative_path = info
 
-        ["in <stdlib:#{lib_name}>", "<stdlib:#{relative_path}:#{lineno}>"]
+        ["in <stdlib:#{lib_name}>", "<stdlib:#{relative_path}#{lineno}>"]
       end
 
       def compact_with_relative_path(path)
