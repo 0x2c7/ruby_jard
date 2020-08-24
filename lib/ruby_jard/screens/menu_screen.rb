@@ -5,6 +5,14 @@ module RubyJard
     ##
     # Display key binding guidelines and shortcuts.
     class MenuScreen < RubyJard::Screen
+      def initialize(*args)
+        super(*args)
+        @filter = RubyJard.config.filter
+        @filter_inclusion = RubyJard.config.filter_inclusion
+        @filter_exclusion = RubyJard.config.filter_exclusion
+        @selected = 0
+      end
+
       def build
         left_spans = generate_left_spans
         right_spans = generate_right_spans
@@ -21,45 +29,37 @@ module RubyJard
             )
           ]
         )]
-        @selected = 0
       end
 
       private
 
       def generate_left_spans
-        [
-          RubyJard::Span.new(
-            content: ' REPL ',
-            styles: :title_highlighted
+        filter_mode_span = RubyJard::Span.new(
+          content: "Filter (F2): #{@filter.to_s.gsub(/_/, ' ').capitalize}",
+          styles: :menu_mode
+        )
+        filter_details =
+          @filter_inclusion.map { |f| "+#{f}" } +
+          @filter_exclusion.map { |f| "-#{f}" }
+        if filter_details.empty?
+          [filter_mode_span]
+        else
+          filter_exceprt = filter_details.first(3).join(' ')
+          filter_more = filter_details.length > 3 ? " (#{filter_details.length - 3} more...)" : nil
+          filter_details_span = RubyJard::Span.new(
+            content: "#{filter_exceprt}#{filter_more}",
+            styles: :menu_tips,
+            margin_left: 1
           )
-        ]
-        # [
-        #   RubyJard::Span.new(
-        #     content: ' Mode (F2) ',
-        #     styles: :title_highlighted
-        #   ),
-        #   RubyJard::Span.new(
-        #     margin_left: 1,
-        #     content: 'All gems',
-        #     styles: :menu_mode
-        #   ),
-        #   RubyJard::Span.new(
-        #     margin_left: 1,
-        #     content: '|',
-        #     styles: :menu_tips
-        #   ),
-        #   RubyJard::Span.new(
-        #     margin_left: 1,
-        #     content: 'Application only',
-        #     styles: :menu_tips
-        #   )
-        # ]
+          [
+            filter_mode_span,
+            filter_details_span
+          ]
+        end
       end
 
       def generate_right_spans
         [
-          'Up (F6)',
-          'Down (Shift+F6)',
           'Step (F7)',
           'Step Out (Shift+F7)',
           'Next (F8)',
