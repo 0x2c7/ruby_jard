@@ -4,6 +4,7 @@ require 'ruby_jard/commands/jard/show_command'
 require 'ruby_jard/commands/jard/hide_command'
 require 'ruby_jard/commands/jard/color_scheme_command'
 require 'ruby_jard/commands/jard/output_command'
+require 'ruby_jard/commands/jard/filter_command'
 
 module RubyJard
   module Commands
@@ -22,7 +23,8 @@ module RubyJard
         'show' => RubyJard::Commands::ShowCommand,
         'hide' => RubyJard::Commands::HideCommand,
         'color-scheme' => RubyJard::Commands::ColorSchemeCommand,
-        'output' => RubyJard::Commands::OutputCommand
+        'output' => RubyJard::Commands::OutputCommand,
+        'filter' => RubyJard::Commands::FilterCommand
       }.freeze
 
       def subcommands(cmd)
