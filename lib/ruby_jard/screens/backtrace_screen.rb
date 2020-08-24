@@ -54,12 +54,12 @@ module RubyJard
         if frame_id == @current_frame
           RubyJard::Span.new(
             content: "⮕ #{frame_id_label}",
-            styles: :frame_id_highlighted
+            styles: :text_selected
           )
         else
           RubyJard::Span.new(
             content: "  #{frame_id_label}",
-            styles: :frame_id
+            styles: :text_dim
           )
         end
       end
@@ -91,7 +91,7 @@ module RubyJard
         RubyJard::Span.new(
           content: 'in',
           margin_right: 1,
-          styles: :frame_location
+          styles: :text_secondary
         )
       end
 
@@ -115,7 +115,7 @@ module RubyJard
         )
         RubyJard::Span.new(
           content: path_label,
-          styles: :frame_location
+          styles: :text_secondary
         )
       end
     end

@@ -50,18 +50,17 @@ module RubyJard
       private
 
       def span_mark(thread)
-        style = thread_status_style(thread)
         RubyJard::Span.new(
           margin_right: 1,
-          content: style == :thread_status_run ? '►' : '•',
-          styles: style
+          content: thread.status == 'run' ? '►' : '•',
+          styles: thread_status_style(thread)
         )
       end
 
       def span_thread_label(thread)
         RubyJard::Span.new(
           content: "Thread #{thread.label}",
-          styles: :thread_id
+          styles: :text_highlighted
         )
       end
 
@@ -76,7 +75,7 @@ module RubyJard
         RubyJard::Span.new(
           margin_right: 1,
           content: thread.name.nil? ? 'untitled' : thread.name,
-          styles: :thread_name
+          styles: :text_primary
         )
       end
 
@@ -96,7 +95,7 @@ module RubyJard
 
         RubyJard::Span.new(
           content: path_label,
-          styles: :thread_location
+          styles: :text_secondary
         )
       end
 
@@ -129,13 +128,10 @@ module RubyJard
       end
 
       def thread_status_style(thread)
-        case thread.status
-        when 'run'
-          :thread_status_run
-        when 'sleep'
-          :thread_status_sleep
+        if thread.status == 'run'
+          :text_selected
         else
-          :thread_status_other
+          :text_dim
         end
       end
     end

@@ -88,7 +88,7 @@ module RubyJard
         RubyJard::Span.new(
           margin_right: 1,
           content: @frame_line == lineno ? '⮕' : ' ',
-          styles: :source_line_mark
+          styles: :text_selected
         )
       end
 
@@ -96,7 +96,7 @@ module RubyJard
         padded_lineno = lineno.to_s.rjust(@source_decorator.window_end.to_s.length)
         RubyJard::Span.new(
           content: padded_lineno,
-          styles: @frame_line == lineno ? :source_line_mark : :source_lineno
+          styles: @frame_line == lineno ? :text_selected : :text_dim
         )
       end
 

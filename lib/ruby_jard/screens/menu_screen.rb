@@ -36,7 +36,7 @@ module RubyJard
       def generate_left_spans
         filter_mode_span = RubyJard::Span.new(
           content: "Filter (F2): #{@filter.to_s.gsub(/_/, ' ').capitalize}",
-          styles: :menu_mode
+          styles: :text_special
         )
         filter_details =
           @filter_inclusion.map { |f| "+#{f}" } +
@@ -48,7 +48,7 @@ module RubyJard
           filter_more = filter_details.length > 3 ? " (#{filter_details.length - 3} more...)" : nil
           filter_details_span = RubyJard::Span.new(
             content: "#{filter_exceprt}#{filter_more}",
-            styles: :menu_tips,
+            styles: :text_secondary,
             margin_left: 1
           )
           [
@@ -68,7 +68,7 @@ module RubyJard
           RubyJard::Span.new(
             content: menu_item,
             margin_left: 3,
-            styles: :menu_tips
+            styles: :text_secondary
           )
         end
       end
