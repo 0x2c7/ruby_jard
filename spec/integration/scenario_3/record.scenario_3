@@ -1,0 +1,439 @@
+### START SCREEN ###
+┌ Source  main_example.rb:7 ─────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
+│   1 require 'ruby_jard'                                    │  self = main                                                 │
+│   2 require 'jard_merge_sort'                              │  heap = nil                                                  │
+│   3 require 'securerandom'                                 │  result_a = nil                                              │
+│   4 require_relative '../../examples/dummy_heap.rb'        │  result_b = nil                                              │
+│   5                                                        │  result_c = nil                                              │
+│   6 jard                                                   │  result_d = nil                                              │
+│⮕  7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │  result_e = nil                                              │
+│   8 result_a = sorter.sort { |a, b| a < b }                │• sorter = nil                                                │
+│   9 result_b = sorter.sort { |a, b| a > b }                │                                                              │
+│  10 result_c = sorter.sort { |a, b| a < b }                │                                                              │
+│  11 result_d = sorter.sort { |a, b| SecureRandom.uuid  < Se│                                                              │
+│     cureRandom.uuid }                                      │                                                              │
+│  12 result_e = sorter.sort { |a, b| SecureRandom.uuid  < Se│                                                              │
+│     cureRandom.uuid }                                      │                                                              │
+│  13 heap = Heap.new                                        │                                                              │
+│  14 heap.push(1)                                           │                                                              │
+│  15 heap.push(2)                                           │                                                              │
+│  16 heap.push(3)                                           │                                                              │
+├ Backtrace  1 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
+│⮕ 0 Object in <main> at main_example.rb:7                   │► Thread 1 (run) untitled at main_example.rb:7                │
+│                                                            │                                                              │
+│                                                            │                                                              │
+├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  main_example.rb:8 ─────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
+│   1 require 'ruby_jard'                                    │  self = main                                                 │
+│   2 require 'jard_merge_sort'                              │  heap = nil                                                  │
+│   3 require 'securerandom'                                 │• result_a = nil                                              │
+│   4 require_relative '../../examples/dummy_heap.rb'        │  result_b = nil                                              │
+│   5                                                        │  result_c = nil                                              │
+│   6 jard                                                   │  result_d = nil                                              │
+│   7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │  result_e = nil                                              │
+│⮕  8 result_a = sorter.sort { |a, b| a < b }                │• sorter = ???????????????????????????????????????????????????│
+│   9 result_b = sorter.sort { |a, b| a > b }                │  ????????????????????????????????????????????????????????????│
+│  10 result_c = sorter.sort { |a, b| a < b }                │  ????????????????????????????????????????????????????????????│
+│  11 result_d = sorter.sort { |a, b| SecureRandom.uuid  < Se│                                                              │
+│     cureRandom.uuid }                                      │                                                              │
+│  12 result_e = sorter.sort { |a, b| SecureRandom.uuid  < Se│                                                              │
+│     cureRandom.uuid }                                      │                                                              │
+│  13 heap = Heap.new                                        │                                                              │
+│  14 heap.push(1)                                           │                                                              │
+│  15 heap.push(2)                                           │                                                              │
+│  16 heap.push(3)                                           │                                                              │
+├ Backtrace  1 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
+│⮕ 0 Object in <main> at main_example.rb:8                   │► Thread 1 (run) untitled at main_example.rb:8                │
+│                                                            │                                                              │
+│                                                            │                                                              │
+├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["jard filter gems", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  <jard_merge_sort:lib/jard_merge_sort.rb:16> ───────┬ Variables ───────────────────────────────────────────────────┐
+│   7   ##                                                   │  self = ?????????????????????????????????????????????????????│
+│   8   # Entry point for merge sort algorithm               │• less = ?????????????????????????????????????????????????????│
+│   9   class Sorter                                         │  ????????????????????????????????????????????????????        │
+│  10     def initialize(array)                              │• @array (len:5) = [1, 2, 3, 4, 5]                            │
+│  11       @array = array                                   │  @merger = ??????????????????????????????????????????????????│
+│  12       @merger = JardMergeSort::Merger.new              │                                                              │
+│  13     end                                                │                                                              │
+│  14                                                        │                                                              │
+│  15     def sort(&less)                                    │                                                              │
+│⮕ 16       do_sort(@array, less)                            │                                                              │
+│  17     end                                                │                                                              │
+│  18                                                        │                                                              │
+│  19     private                                            │                                                              │
+│  20                                                        │                                                              │
+│  21     def do_sort(array, less)                           │                                                              │
+│  22       return [] if array.empty?                        │                                                              │
+│  23       return [array.first] if array.length == 1        │                                                              │
+│  24                                                        │                                                              │
+├ Backtrace  2 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
+│⮕ 0 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│  1 Object in <main> at main_example.rb:8                   │                                                              │
+│                                                            │                                                              │
+├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step-out", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["jard filter application", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["jard filter include jard_merge_sort", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  <jard_merge_sort:lib/jard_merge_sort.rb:16> ───────┬ Variables ───────────────────────────────────────────────────┐
+│   7   ##                                                   │  self = #<JardMergeSort::Sorter:??????????????????>          │
+│   8   # Entry point for merge sort algorithm               │• less = ?????????????????????????????????????????????????????│
+│   9   class Sorter                                         │  ????????????????????????????????????????????????????????????│
+│  10     def initialize(array)                              │• @array (len:5) = [1, 2, 3, 4, 5]                            │
+│  11       @array = array                                   │  @merger = ??????????????????????????????????????????????????│
+│  12       @merger = JardMergeSort::Merger.new              │                                                              │
+│  13     end                                                │                                                              │
+│  14                                                        │                                                              │
+│  15     def sort(&less)                                    │                                                              │
+│⮕ 16       do_sort(@array, less)                            │                                                              │
+│  17     end                                                │                                                              │
+│  18                                                        │                                                              │
+│  19     private                                            │                                                              │
+│  20                                                        │                                                              │
+│  21     def do_sort(array, less)                           │                                                              │
+│  22       return [] if array.empty?                        │                                                              │
+│  23       return [array.first] if array.length == 1        │                                                              │
+│  24                                                        │                                                              │
+├ Backtrace  2 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
+│⮕ 0 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│  1 Object in <main> at main_example.rb:9                   │                                                              │
+│                                                            │                                                              │
+├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
+│Filter (F2): Application +jard_merge_sort                       Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step-out", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["jard filter clear", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  main_example.rb:10 ────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
+│   3 require 'securerandom'                                 │  self = main                                                 │
+│   4 require_relative '../../examples/dummy_heap.rb'        │• a = ?                                                       │
+│   5                                                        │• b = ?                                                       │
+│   6 jard                                                   │  heap = nil                                                  │
+│   7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │  result_a (len:5) = [1, 2, 3, 4, 5]                          │
+│   8 result_a = sorter.sort { |a, b| a < b }                │  result_b (len:5) = [5, 4, 3, 2, 1]                          │
+│   9 result_b = sorter.sort { |a, b| a > b }                │• result_c = nil                                              │
+│⮕ 10 result_c = sorter.sort { |a, b| a < b }                │  result_d = nil                                              │
+│  11 result_d = sorter.sort { |a, b| SecureRandom.uuid  < Se│  result_e = nil                                              │
+│     cureRandom.uuid }                                      │• sorter = ???????????????????????????????????????????????????│
+│  12 result_e = sorter.sort { |a, b| SecureRandom.uuid  < Se│  ????????????????????????????????????????????????????????????│
+│     cureRandom.uuid }                                      │  ????????????????????????????????????????????????????????????│
+│  13 heap = Heap.new                                        │                                                              │
+│  14 heap.push(1)                                           │                                                              │
+├ Backtrace  6 frames ───────────────────────────────────────┤                                                              │
+│⮕ 0 Object in <main> (block) at main_example.rb:10          │                                                              │
+│  1 JardMergeSort::Merger in merge                          │                                                              │
+│    in <jard_merge_sort 0.1.0>                              │                                                              │
+│  2 JardMergeSort::Sorter in do_sort                        ├ Threads  1 threads ──────────────────────────────────────────┤
+│    in <jard_merge_sort 0.1.0>                              │► Thread 1 (run) untitled at main_example.rb:10               │
+│  3 JardMergeSort::Sorter in do_sort                        │                                                              │
+│    in <jard_merge_sort 0.1.0>                              │                                                              │
+├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  main_example.rb:10 ────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
+│   3 require 'securerandom'                                 │  self = main                                                 │
+│   4 require_relative '../../examples/dummy_heap.rb'        │• a = ?                                                       │
+│   5                                                        │• b = ?                                                       │
+│   6 jard                                                   │  heap = nil                                                  │
+│   7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │  result_a (len:5) = [1, 2, 3, 4, 5]                          │
+│   8 result_a = sorter.sort { |a, b| a < b }                │  result_b (len:5) = [5, 4, 3, 2, 1]                          │
+│   9 result_b = sorter.sort { |a, b| a > b }                │• result_c = nil                                              │
+│⮕ 10 result_c = sorter.sort { |a, b| a < b }                │  result_d = nil                                              │
+│  11 result_d = sorter.sort { |a, b| SecureRandom.uuid  < Se│  result_e = nil                                              │
+│     cureRandom.uuid }                                      │• sorter = ???????????????????????????????????????????????????│
+│  12 result_e = sorter.sort { |a, b| SecureRandom.uuid  < Se│  ????????????????????????????????????????????????????????????│
+│     cureRandom.uuid }                                      │  ????????????????????????????????????????????????????????????│
+│  13 heap = Heap.new                                        │                                                              │
+│  14 heap.push(1)                                           │                                                              │
+├ Backtrace  7 frames ───────────────────────────────────────┤                                                              │
+│⮕ 0 Object in <main> (block) at main_example.rb:10          │                                                              │
+│  1 JardMergeSort::Merger in merge                          │                                                              │
+│    in <jard_merge_sort 0.1.0>                              │                                                              │
+│  2 JardMergeSort::Sorter in do_sort                        ├ Threads  1 threads ──────────────────────────────────────────┤
+│    in <jard_merge_sort 0.1.0>                              │► Thread 1 (run) untitled at main_example.rb:10               │
+│  3 JardMergeSort::Sorter in do_sort                        │                                                              │
+│    in <jard_merge_sort 0.1.0>                              │                                                              │
+├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step-out", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["jard filter include securerandom", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  <stdlib:securerandom.rb:???> ──────────────────────┬ Variables ───────────────────────────────────────────────────┐
+│????????????????????????????????????????????????????????????│  self = SecureRandom                                         │
+│????????????????????????????????????????????????????????????│??????????????????????????????????????????????????????????????│
+│????????????????????????????????????????????????????????????│??????????????????????????????????????????????????????????????│
+│????????????????????????????????????????????????????????????│??????????????????????????????????????????????????????????????│
+│????????????????????????????????????????????????????????????│??????????????????????????????????????????????????????????????│
+│????????????????????????????????????????????????????????????│??????????????????????????????????????????????????????????????│
+│????????????????????????????????????????????????????????????│??????????????????????????????????????????????????????????????│
+│????????????????????????????????????????????????????????????│??????????????????????????????????????????????????????????????│
+│????????????????????????????????????????????????????????????│??????????????????????????????????????????????????????????????│
+│????????????????????????????????????????????????????????????│??????????????????????????????????????????????????????????????│
+│????????????????????????????????????????????????????????????│??????????????????????????????????????????????????????????????│
+│????????????????????????????????????????????????????????????│??????????????????????????????????????????????????????????????│
+│????????????????????????????????????????????????????????????│??????????????????????????????????????????????????????????????│
+│????????????????????????????????????????????????????????????│??????????????????????????????????????????????????????????????│
+├ Backtrace  7 frames ───────────────────────────────────────┤??????????????????????????????????????????????????????????????│
+│⮕ 0 Random::Formatter in uuid in <stdlib:securerandom>      │??????????????????????????????????????????????????????????????│
+│  1 Object in <main> (block) at main_example.rb:11          │??????????????????????????????????????????????????????????????│
+│  2 JardMergeSort::Merger in merge                          │??????????????????????????????????????????????????????????????│
+│    in <jard_merge_sort 0.1.0>                              ├ Threads  1 threads ──────────────────────────────────────────┤
+│  3 JardMergeSort::Sorter in do_sort                        │► Thread 1 (run) untitled in <stdlib:securerandom>            │
+│    in <jard_merge_sort 0.1.0>                              │                                                              │
+│  4 JardMergeSort::Sorter in do_sort                        │                                                              │
+├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
+│Filter (F2): Application +securerandom                          Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step-out", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["jard filter exclude securerandom", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  main_example.rb:12 ────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
+│   5                                                        │  self = main                                                 │
+│   6 jard                                                   │• a = ?                                                       │
+│   7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │• b = ?                                                       │
+│   8 result_a = sorter.sort { |a, b| a < b }                │  heap = nil                                                  │
+│   9 result_b = sorter.sort { |a, b| a > b }                │  result_a (len:5) = [1, 2, 3, 4, 5]                          │
+│  10 result_c = sorter.sort { |a, b| a < b }                │  result_b (len:5) = [5, 4, 3, 2, 1]                          │
+│  11 result_d = sorter.sort { |a, b| SecureRandom.uuid  < Se│  result_c (len:5) = [1, 2, 3, 4, 5]                          │
+│     cureRandom.uuid }                                      │  result_d (len:5) = ???????????????                          │
+│⮕ 12 result_e = sorter.sort { |a, b| SecureRandom.uuid  < Se│• result_e = nil                                              │
+│     cureRandom.uuid }                                      │• sorter = ???????????????????????????????????????????????????│
+│  13 heap = Heap.new                                        │  ????????????????????????????????????????????????????????????│
+│  14 heap.push(1)                                           │  ????????????????????????????????????????????????????????????│
+│  15 heap.push(2)                                           │                                                              │
+│  16 heap.push(3)                                           │                                                              │
+├ Backtrace  6 frames ───────────────────────────────────────┤                                                              │
+│⮕ 0 Object in <main> (block) at main_example.rb:12          │                                                              │
+│  1 JardMergeSort::Merger in merge                          │                                                              │
+│    in <jard_merge_sort 0.1.0>                              │                                                              │
+│  2 JardMergeSort::Sorter in do_sort                        ├ Threads  1 threads ──────────────────────────────────────────┤
+│    in <jard_merge_sort 0.1.0>                              │► Thread 1 (run) untitled at main_example.rb:12               │
+│  3 JardMergeSort::Sorter in do_sort                        │                                                              │
+│    in <jard_merge_sort 0.1.0>                              │                                                              │
+├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
+│Filter (F2): Application -securerandom                          Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step-out", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["next", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/dummy_heap.rb:13 ───────────────────┬ Variables ───────────────────────────────────────────────────┐
+│   4   def initialize                                       │  self = ??????????????????????????                           │
+│   5     @storage = []                                      │• node = 1                                                    │
+│   6   end                                                  │• @storage = []                                               │
+│   7                                                        │                                                              │
+│   8   def pop                                              │                                                              │
+│   9     @storage.shift                                     │                                                              │
+│  10   end                                                  │                                                              │
+│  11                                                        │                                                              │
+│  12   def push(node)                                       │                                                              │
+│⮕ 13     @storage.unshift(node)                             │                                                              │
+│  14   end                                                  │                                                              │
+│  15 end                                                    │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+├ Backtrace  2 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
+│⮕ 0 Heap in push at ../../examples/dummy_heap.rb:13         │► Thread 1 (run) untitled at ../../examples/dummy_heap.rb:13  │
+│  1 Object in <main> at main_example.rb:14                  │                                                              │
+│                                                            │                                                              │
+├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
+│Filter (F2): Application -securerandom                          Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step-out", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["jard filter source_tree", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  main_example.rb:17 ────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
+│   8 result_a = sorter.sort { |a, b| a < b }                │  self = main                                                 │
+│   9 result_b = sorter.sort { |a, b| a > b }                │• heap = #<Heap:?????????????????? @storage=[3, 2, 1]>        │
+│  10 result_c = sorter.sort { |a, b| a < b }                │  result_a (len:5) = [1, 2, 3, 4, 5]                          │
+│  11 result_d = sorter.sort { |a, b| SecureRandom.uuid  < Se│  result_b (len:5) = [5, 4, 3, 2, 1]                          │
+│     cureRandom.uuid }                                      │  result_c (len:5) = [1, 2, 3, 4, 5]                          │
+│  12 result_e = sorter.sort { |a, b| SecureRandom.uuid  < Se│  result_d (len:5) = ???????????????                          │
+│     cureRandom.uuid }                                      │  result_e (len:5) = ???????????????                          │
+│  13 heap = Heap.new                                        │  sorter = ???????????????????????????????????????????????????│
+│  14 heap.push(1)                                           │  ????????????????????????????????????????????????????????????│
+│  15 heap.push(2)                                           │  ????????????????????????????????????????????????????????????│
+│  16 heap.push(3)                                           │                                                              │
+│⮕ 17 heap.push(SecureRandom.uuid)                           │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+├ Backtrace  1 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
+│⮕ 0 Object in <main> at main_example.rb:17                  │► Thread 1 (run) untitled at main_example.rb:17               │
+│                                                            │                                                              │
+│                                                            │                                                              │
+├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
+│Filter (F2): Source tree -securerandom                          Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["jard filter include ../../examples/dummy_heap.rb", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/dummy_heap.rb:13 ───────────────────┬ Variables ───────────────────────────────────────────────────┐
+│   4   def initialize                                       │  self = ??????????????????????????                           │
+│   5     @storage = []                                      │• node (len:36) = "????????????????????????????????????"      │
+│   6   end                                                  │• @storage (len:3) = [3, 2, 1]                                │
+│   7                                                        │                                                              │
+│   8   def pop                                              │                                                              │
+│   9     @storage.shift                                     │                                                              │
+│  10   end                                                  │                                                              │
+│  11                                                        │                                                              │
+│  12   def push(node)                                       │                                                              │
+│⮕ 13     @storage.unshift(node)                             │                                                              │
+│  14   end                                                  │                                                              │
+│  15 end                                                    │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+│                                                            │                                                              │
+├ Backtrace  2 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
+│⮕ 0 Heap in push at ../../examples/dummy_heap.rb:13         │► Thread 1 (run) untitled at ../../examples/dummy_heap.rb:13  │
+│  1 Object in <main> at main_example.rb:17                  │                                                              │
+│                                                            │                                                              │
+├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
+│Filter (F2): Source tree +../../examples/dummy_heap.rb -securerandom   Step (F7)   Step Out (Shift+F7)   Next (F8)   Cont »│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+
+### END SCREEN ###
