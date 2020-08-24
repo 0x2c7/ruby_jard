@@ -24,6 +24,7 @@ module RubyJard
   class ReplProcessor < Byebug::CommandProcessor
     def initialize(context, *args)
       super(context, *args)
+      @path_filter = RubyJard::PathFilter.new
       @repl_proxy = RubyJard::ReplProxy.new(
         key_bindings: RubyJard.global_key_bindings
       )
@@ -60,7 +61,7 @@ module RubyJard
     end
 
     def debuggable?(context)
-      true
+      @path_filter.match?(context.frame_file)
     end
 
     def process_commands(update = true)
