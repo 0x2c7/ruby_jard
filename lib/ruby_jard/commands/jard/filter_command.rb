@@ -5,6 +5,8 @@ module RubyJard
     ##
     # Control filter, inclusion and exclusion
     class FilterCommand < Pry::ClassCommand
+      include RubyJard::Commands::ColorHelpers
+
       group 'RubyJard'
       description 'Filter to keep only relevant location when you debugging'
 
@@ -20,13 +22,9 @@ module RubyJard
         @config = context[:config] || RubyJard.config
       end
 
-      def options(opt)
-        opt.on :l, :list, 'List all available color schemes'
-      end
-
       def process
-        if opts[:l] || (opts.empty? && args.empty?)
-          pry_instance.output.puts filter_list_msg
+        if args.empty?
+          print_current_filter
           return
         end
 
@@ -44,21 +42,36 @@ module RubyJard
           handle_clear
         else
           raise Pry::CommandError,
-                "Invalid filter `#{sub_command}`. #{filter_list_msg}. Or type `jard filter --help` for more information"
+                "Invalid filter '#{secondary(sub_command)}'."\
+                "Please type `#{highlight('jard filter --help')}` for more information"
         end
-      end
-
-      def filter_list_msg
-        filter_output = @filters.map(&:to_s).join(', ')
-        "Please input one of the following filter: #{filter_output}"
       end
 
       private
 
+      def print_current_filter
+        pry_instance.output.puts
+        pry_instance.output.puts highlight('Filter mode')
+        pry_instance.output.puts "  #{@config.filter}"
+        pry_instance.output.puts highlight("Included (#{@config.filter_inclusion.length})")
+        @config.filter_inclusion.each do |inclusion|
+          pry_instance.output.puts "  +#{inclusion}"
+        end
+
+        pry_instance.output.puts highlight("Excluded (#{@config.filter_exclusion.length})")
+        @config.filter_exclusion.each do |exclusion|
+          pry_instance.output.puts "  -#{exclusion}"
+        end
+        pry_instance.output.puts
+        pry_instance.output.puts "Please type `#{highlight('jard filter --help')}` for more information"
+        pry_instance.output.puts
+      end
+
       def handle_inclusion
         if args.empty?
           raise Pry::CommandError,
-                'Invalid command. Please type `jard filter --help` for more information'
+                'Wrong number of arguments! '\
+                "Please type `#{highlight('jard filter --help')}` for more information"
         end
         filters = args.map(&:strip)
         @config.filter_inclusion.append(*filters)
@@ -72,7 +85,8 @@ module RubyJard
       def handle_exclusion
         if args.empty?
           raise Pry::CommandError,
-                'Invalid command. Please type `jard filter --help` for more information'
+                'Wrong number of arguments!'\
+                "Please type `#{highlight('jard filter --help')}` for more information"
         end
         filters = args.map(&:strip)
         @config.filter_exclusion.append(*filters)
