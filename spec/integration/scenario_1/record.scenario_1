@@ -23,7 +23,7 @@
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -58,7 +58,7 @@ jard >>
 │  1 Object in <main> at main_example.rb:36                  │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -96,7 +96,7 @@ jard >>
 │  1 Object in <main> at main_example.rb:36                  │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -143,7 +143,7 @@ jard >>
 │  2 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  3 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -178,7 +178,7 @@ jard >>
 │  2 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  3 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >> node.val
 => 1
@@ -218,7 +218,7 @@ jard >>
 │  2 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  3 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >> final_head
 => #<ListNode:?????????????????? @next=nil, @val=1>
@@ -272,7 +272,7 @@ jard >>
 │  2 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  3 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -310,7 +310,7 @@ jard >>
 │  2 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  3 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >> final_tail
 => #<ListNode:?????????????????? @next=nil, @val=2>
@@ -345,7 +345,7 @@ jard >>
 │  3 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  4 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -389,7 +389,7 @@ jard >>
 │  4 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  5 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -427,7 +427,7 @@ jard >>
 │  4 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  5 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -462,7 +462,7 @@ jard >>
 │  4 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  5 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -497,7 +497,7 @@ jard >>
 │  2 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  3 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Application                                        Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 

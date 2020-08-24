@@ -23,7 +23,7 @@
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -64,7 +64,7 @@ jard >>
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -99,7 +99,7 @@ jard >>
 │  1 Object in <main> at main_example.rb:6                   │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -143,7 +143,7 @@ jard >>
 │  1 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 │  2 Object in <main> at main_example.rb:6                   │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -190,7 +190,7 @@ jard >>
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 │  3 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -228,7 +228,7 @@ jard >>
 │  2 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 │  3 Object in <main> at main_example.rb:6                   │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -268,7 +268,7 @@ jard >>
 │  2 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 │  3 Object in <main> at main_example.rb:6                   │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >> array
 => [1, 2, 3, 4, 5]
@@ -307,7 +307,7 @@ jard >>
 │  2 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 │  3 Object in <main> at main_example.rb:6                   │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -351,7 +351,7 @@ jard >>
 │  1 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 │  2 Object in <main> at main_example.rb:6                   │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -404,7 +404,7 @@ jard >>
 │  2 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 │  3 Object in <main> at main_example.rb:6                   │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -439,7 +439,7 @@ jard >>
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
@@ -479,7 +479,7 @@ jard >>
 │  1 Object in <main> at main_example.rb:7                   │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >> less.call(1, 3)
 => false
@@ -515,7 +515,7 @@ jard >>
 │  1 Object in <main> at main_example.rb:7                   │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
-│ REPL                               Up (F6)   Down (Shift+F6)   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+│Filter (F2): Gems                                               Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 jard >>
 
