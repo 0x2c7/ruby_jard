@@ -1,5 +1,6 @@
 ### START SCREEN ###
 ┌ Source  ../../examples/top_level_example.rb:15 ──────────────────────────────┐
+│   7 var_c = ['Hello', 1, 2, 3]                                               │
 │   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
 │   9 variable_e = /Wait, what/i                                               │
 │  10 variable_f = 1.1                                                         │
@@ -15,10 +16,9 @@
 │  20 jard                                                                     │
 │  21 var_a + variable_f + variable_h || 5                                     │
 │                                                                              │
+│                                                                              │
 ├──────────────────────────────────────────────────────────────────────────────┤
 │Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
-│                                                                              │
-│                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
 jard >>             
 
@@ -29,6 +29,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Source  ../../examples/top_level_example.rb:15 ──────────────────────────────┐
+│   7 var_c = ['Hello', 1, 2, 3]                                               │
 │   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
 │   9 variable_e = /Wait, what/i                                               │
 │  10 variable_f = 1.1                                                         │
@@ -44,10 +45,9 @@ jard >>
 │  20 jard                                                                     │
 │  21 var_a + variable_f + variable_h || 5                                     │
 │                                                                              │
+│                                                                              │
 ├──────────────────────────────────────────────────────────────────────────────┤
 │Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
-│                                                                              │
-│                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
 jard >>             
 
@@ -58,6 +58,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Source  ../../examples/top_level_example.rb:15 ──────────────────────────────┐
+│   7 var_c = ['Hello', 1, 2, 3]                                               │
 │   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
 │   9 variable_e = /Wait, what/i                                               │
 │  10 variable_f = 1.1                                                         │
@@ -73,10 +74,9 @@ jard >>
 │  20 jard                                                                     │
 │  21 var_a + variable_f + variable_h || 5                                     │
 │                                                                              │
+│                                                                              │
 ├──────────────────────────────────────────────────────────────────────────────┤
 │Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
-│                                                                              │
-│                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
 jard >>             
 
@@ -87,6 +87,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Source  ../../examples/top_level_example.rb:15 ──────────────────────────────┐
+│   7 var_c = ['Hello', 1, 2, 3]                                               │
 │   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
 │   9 variable_e = /Wait, what/i                                               │
 │  10 variable_f = 1.1                                                         │
@@ -102,10 +103,9 @@ jard >>
 │  20 jard                                                                     │
 │  21 var_a + variable_f + variable_h || 5                                     │
 │                                                                              │
+│                                                                              │
 ├──────────────────────────────────────────────────────────────────────────────┤
 │Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
-│                                                                              │
-│                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
 jard >>             
 
