@@ -53,18 +53,18 @@ RSpec.describe RubyJard::Decorators::PathDecorator do
 
   context 'when input path is a gem' do
     let(:dir) { Gem.path.first }
-    let(:path) { "#{dir}/gems/did_you_mean-1.2.0/lib/did_you_mean/spell_checker.rb" }
+    let(:path) { "#{dir}/gems/jard_merge_sort-0.1.0/lib/jard_merge_sort/spell_checker.rb" }
 
     context 'when gem has version' do
       before do
         allow(classifier).to receive(:classify).and_return(
-          [:gem, 'did_you_mean', '1.2.0', 'lib/did_you_mean/spell_checker.rb']
+          [:gem, 'jard_merge_sort', '1.2.0', 'lib/jard_merge_sort/spell_checker.rb']
         )
       end
 
       it do
         expect(decorator.decorate(path, 123)).to eql(
-          ['in <did_you_mean 1.2.0>', '<did_you_mean:lib/did_you_mean/spell_checker.rb:123>']
+          ['in <jard_merge_sort 1.2.0>', '<jard_merge_sort:lib/jard_merge_sort/spell_checker.rb:123>']
         )
       end
     end
@@ -72,13 +72,13 @@ RSpec.describe RubyJard::Decorators::PathDecorator do
     context 'when input line is absent' do
       before do
         allow(classifier).to receive(:classify).and_return(
-          [:gem, 'did_you_mean', '1.2.0', 'lib/did_you_mean/spell_checker.rb']
+          [:gem, 'jard_merge_sort', '1.2.0', 'lib/jard_merge_sort/spell_checker.rb']
         )
       end
 
       it do
         expect(decorator.decorate(path)).to eql(
-          ['in <did_you_mean 1.2.0>', '<did_you_mean:lib/did_you_mean/spell_checker.rb>']
+          ['in <jard_merge_sort 1.2.0>', '<jard_merge_sort:lib/jard_merge_sort/spell_checker.rb>']
         )
       end
     end
@@ -86,13 +86,13 @@ RSpec.describe RubyJard::Decorators::PathDecorator do
     context 'when gem version is absent' do
       before do
         allow(classifier).to receive(:classify).and_return(
-          [:gem, 'did_you_mean', nil, 'lib/did_you_mean/spell_checker.rb']
+          [:gem, 'jard_merge_sort', nil, 'lib/jard_merge_sort/spell_checker.rb']
         )
       end
 
       it do
         expect(decorator.decorate(path, 123)).to eql(
-          ['in <did_you_mean>', '<did_you_mean:lib/did_you_mean/spell_checker.rb:123>']
+          ['in <jard_merge_sort>', '<jard_merge_sort:lib/jard_merge_sort/spell_checker.rb:123>']
         )
       end
     end
@@ -100,13 +100,13 @@ RSpec.describe RubyJard::Decorators::PathDecorator do
     context 'when gem version is absent and input line is absent' do
       before do
         allow(classifier).to receive(:classify).and_return(
-          [:gem, 'did_you_mean', nil, 'lib/did_you_mean/spell_checker.rb']
+          [:gem, 'jard_merge_sort', nil, 'lib/jard_merge_sort/spell_checker.rb']
         )
       end
 
       it do
         expect(decorator.decorate(path)).to eql(
-          ['in <did_you_mean>', '<did_you_mean:lib/did_you_mean/spell_checker.rb>']
+          ['in <jard_merge_sort>', '<jard_merge_sort:lib/jard_merge_sort/spell_checker.rb>']
         )
       end
     end

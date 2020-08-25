@@ -72,9 +72,15 @@ RSpec.describe RubyJard::PathClassifier do
   end
 
   context 'when input path is a gem' do
+    let(:path) do
+      command = "#{RbConfig.ruby} -e "\
+        "\"require 'jard_merge_sort'; puts JardMergeSort::Merger.instance_method(:merge).source_location[0]\""
+      `#{command}`
+    end
+
     it 'returns gem, version, and relative path' do
-      expect(classifier.classify(DidYouMean::JaroWinkler.method(:distance).source_location.first)).to eq(
-        [:gem, 'did_you_mean', DidYouMean::VERSION, 'lib/did_you_mean/jaro_winkler.rb']
+      expect(classifier.classify(path.strip)).to eq(
+        [:gem, 'jard_merge_sort', '0.1.0', 'lib/jard_merge_sort/merger.rb']
       )
     end
   end
