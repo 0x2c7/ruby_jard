@@ -4,7 +4,7 @@ RSpec.describe 'Default key bindings', integration: true do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/key_bindings') }
 
   context 'with switch filter binding' do
-    it 'strecthes the lower screens' do
+    it 'matches expected screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
         'record.filter_key_bindings',
@@ -26,7 +26,7 @@ RSpec.describe 'Default key bindings', integration: true do
   end
 
   context 'with next and step bindings' do
-    it 'strecthes the lower screens' do
+    it 'matches expected screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
         'record.next_step_key_bindings',
@@ -48,7 +48,7 @@ RSpec.describe 'Default key bindings', integration: true do
   end
 
   context 'with step/step-out bindings' do
-    it 'strecthes the lower screens' do
+    it 'matches expected screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
         'record.step_step_out_key_bindings',
@@ -70,7 +70,7 @@ RSpec.describe 'Default key bindings', integration: true do
   end
 
   context 'with up/down bindings' do
-    it 'strecthes the lower screens' do
+    it 'matches expected screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
         'record.up_down_key_bindings',
@@ -96,7 +96,7 @@ RSpec.describe 'Default key bindings', integration: true do
   end
 
   context 'with continue bindings' do
-    it 'strecthes the lower screens' do
+    it 'matches expected screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
         'record.continue_key_bindings',
@@ -112,7 +112,7 @@ RSpec.describe 'Default key bindings', integration: true do
   end
 
   context 'with list bindings' do
-    it 'strecthes the lower screens' do
+    it 'matches expected screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
         'record.list_key_bindings',
