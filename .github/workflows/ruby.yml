@@ -22,6 +22,7 @@ jobs:
       run: bundle exec rubocop
   test-ubuntu:
     strategy:
+      fail-fast: false
       matrix:
         ruby: [2.5, 2.6, 2.7.1]
     runs-on: ubuntu-latest
@@ -45,6 +46,7 @@ jobs:
       run: bundle exec rspec
   test-macos:
     strategy:
+      fail-fast: false
       matrix:
         ruby: [2.5, 2.6, 2.7.1]
     runs-on: macos-latest
@@ -69,6 +71,7 @@ jobs:
   test-previous-byebug:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         byebug: [9.1.0, 10.0.2]
     env:
