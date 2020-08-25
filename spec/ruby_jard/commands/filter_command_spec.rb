@@ -37,8 +37,8 @@ RSpec.describe RubyJard::Commands::FilterCommand do
     context 'when somes filters are available' do
       before do
         config.filter = :everything
-        config.filter_inclusion = ['rails', 'sidekiq', 'active*']
-        config.filter_exclusion = ['tests', '~/ruby/**/*.rb']
+        config.filter_included = ['rails', 'sidekiq', 'active*']
+        config.filter_excluded = ['tests', '~/ruby/**/*.rb']
       end
 
       it 'returns current filter mode and list of filters' do
@@ -140,7 +140,7 @@ RSpec.describe RubyJard::Commands::FilterCommand do
           flow = RubyJard::ControlFlow.listen do
             command_object.process_line 'filter include rails'
           end
-        end.to change(config, :filter_inclusion).from([]).to(['rails'])
+        end.to change(config, :filter_included).from([]).to(['rails'])
         expect(flow).to be_a(::RubyJard::ControlFlow)
         expect(flow.command).to be(:list)
       end
@@ -148,7 +148,7 @@ RSpec.describe RubyJard::Commands::FilterCommand do
 
     context 'when filter is already added' do
       before do
-        config.filter_inclusion = ['rails']
+        config.filter_included = ['rails']
       end
 
       it 'ignores filter and dispatch a flow' do
@@ -157,27 +157,27 @@ RSpec.describe RubyJard::Commands::FilterCommand do
           flow = RubyJard::ControlFlow.listen do
             command_object.process_line 'filter include rails'
           end
-        end.not_to change(config, :filter_inclusion)
+        end.not_to change(config, :filter_included)
         expect(flow).to be_a(::RubyJard::ControlFlow)
         expect(flow.command).to be(:list)
       end
     end
 
-    context 'when filter is already in exclusion' do
+    context 'when filter is already in excluded' do
       before do
-        config.filter_exclusion = ['rails']
+        config.filter_excluded = ['rails']
       end
 
-      it 'remove filter from exclusion, add to inclusion, and dispatch a flow' do
+      it 'remove filter from excluded, add to included, and dispatch a flow' do
         flow = nil
         expect do
           flow = RubyJard::ControlFlow.listen do
             command_object.process_line 'filter include rails'
           end
         end
-          .to change(config, :filter_inclusion)
+          .to change(config, :filter_included)
           .from([]).to(['rails'])
-          .and change(config, :filter_exclusion)
+          .and change(config, :filter_excluded)
           .from(['rails']).to([])
 
         expect(flow).to be_a(::RubyJard::ControlFlow)
@@ -202,7 +202,7 @@ RSpec.describe RubyJard::Commands::FilterCommand do
           flow = RubyJard::ControlFlow.listen do
             command_object.process_line 'filter exclude rails'
           end
-        end.to change(config, :filter_exclusion).from([]).to(['rails'])
+        end.to change(config, :filter_excluded).from([]).to(['rails'])
         expect(flow).to be_a(::RubyJard::ControlFlow)
         expect(flow.command).to be(:list)
       end
@@ -210,7 +210,7 @@ RSpec.describe RubyJard::Commands::FilterCommand do
 
     context 'when filter is already added' do
       before do
-        config.filter_exclusion = ['rails']
+        config.filter_excluded = ['rails']
       end
 
       it 'ignores filter and dispatch a flow' do
@@ -219,27 +219,27 @@ RSpec.describe RubyJard::Commands::FilterCommand do
           flow = RubyJard::ControlFlow.listen do
             command_object.process_line 'filter exclude rails'
           end
-        end.not_to change(config, :filter_exclusion)
+        end.not_to change(config, :filter_excluded)
         expect(flow).to be_a(::RubyJard::ControlFlow)
         expect(flow.command).to be(:list)
       end
     end
 
-    context 'when filter is already in exclusion' do
+    context 'when filter is already in excluded' do
       before do
-        config.filter_inclusion = ['rails']
+        config.filter_included = ['rails']
       end
 
-      it 'remove filter from exclusion, add to inclusion, and dispatch a flow' do
+      it 'remove filter from excluded, add to included, and dispatch a flow' do
         flow = nil
         expect do
           flow = RubyJard::ControlFlow.listen do
             command_object.process_line 'filter exclude rails'
           end
         end
-          .to change(config, :filter_exclusion)
+          .to change(config, :filter_excluded)
           .from([]).to(['rails'])
-          .and change(config, :filter_inclusion)
+          .and change(config, :filter_included)
           .from(['rails']).to([])
 
         expect(flow).to be_a(::RubyJard::ControlFlow)

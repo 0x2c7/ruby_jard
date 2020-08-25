@@ -3,7 +3,7 @@
 module RubyJard
   module Commands
     ##
-    # Control filter, inclusion and exclusion
+    # Control filter, included and excluded
     class FilterCommand < Pry::ClassCommand
       include RubyJard::Commands::ColorHelpers
 
@@ -35,9 +35,9 @@ module RubyJard
           @config.filter = sub_command
           RubyJard::ControlFlow.dispatch(:list)
         when :include
-          handle_inclusion
+          handle_included
         when :exclude
-          handle_exclusion
+          handle_excluded
         when :clear
           handle_clear
         else
@@ -53,53 +53,53 @@ module RubyJard
         pry_instance.output.puts
         pry_instance.output.puts highlight('Filter mode')
         pry_instance.output.puts "  #{@config.filter}"
-        pry_instance.output.puts highlight("Included (#{@config.filter_inclusion.length})")
-        @config.filter_inclusion.each do |inclusion|
-          pry_instance.output.puts "  +#{inclusion}"
+        pry_instance.output.puts highlight("Included (#{@config.filter_included.length})")
+        @config.filter_included.each do |included|
+          pry_instance.output.puts "  +#{included}"
         end
 
-        pry_instance.output.puts highlight("Excluded (#{@config.filter_exclusion.length})")
-        @config.filter_exclusion.each do |exclusion|
-          pry_instance.output.puts "  -#{exclusion}"
+        pry_instance.output.puts highlight("Excluded (#{@config.filter_excluded.length})")
+        @config.filter_excluded.each do |excluded|
+          pry_instance.output.puts "  -#{excluded}"
         end
         pry_instance.output.puts
         pry_instance.output.puts "Please type `#{highlight('jard filter --help')}` for more information"
         pry_instance.output.puts
       end
 
-      def handle_inclusion
+      def handle_included
         if args.empty?
           raise Pry::CommandError,
                 'Wrong number of arguments! '\
                 "Please type `#{highlight('jard filter --help')}` for more information"
         end
         filters = args.map(&:strip)
-        @config.filter_inclusion.append(*filters)
-        @config.filter_inclusion.uniq!
+        @config.filter_included.append(*filters)
+        @config.filter_included.uniq!
         filters.each do |filter|
-          @config.filter_exclusion.delete(filter) if @config.filter_exclusion.include?(filter)
+          @config.filter_excluded.delete(filter) if @config.filter_excluded.include?(filter)
         end
         RubyJard::ControlFlow.dispatch(:list)
       end
 
-      def handle_exclusion
+      def handle_excluded
         if args.empty?
           raise Pry::CommandError,
                 'Wrong number of arguments!'\
                 "Please type `#{highlight('jard filter --help')}` for more information"
         end
         filters = args.map(&:strip)
-        @config.filter_exclusion.append(*filters)
-        @config.filter_exclusion.uniq!
+        @config.filter_excluded.append(*filters)
+        @config.filter_excluded.uniq!
         filters.each do |filter|
-          @config.filter_inclusion.delete(filter) if @config.filter_inclusion.include?(filter)
+          @config.filter_included.delete(filter) if @config.filter_included.include?(filter)
         end
         RubyJard::ControlFlow.dispatch(:list)
       end
 
       def handle_clear
-        @config.filter_exclusion.clear
-        @config.filter_inclusion.clear
+        @config.filter_excluded.clear
+        @config.filter_included.clear
         RubyJard::ControlFlow.dispatch(:list)
       end
     end

@@ -4,7 +4,7 @@ module RubyJard
   ##
   # Check whether a particular path should be passed when debugging.
   # Filtering is based on path classification (from PathClassifier),
-  # program's current filter mode, and filter inclusion, exclusion.
+  # program's current filter mode, and filter included, excluded.
   class PathFilter
     FILTERS = [
       FILTER_EVERYTHING = :everything,
@@ -33,10 +33,10 @@ module RubyJard
     private
 
     def match_everything?(path)
-      return true if @config.filter_exclusion.empty?
+      return true if @config.filter_excluded.empty?
 
-      # Always return true, unless path is explicitly mentioned in exclusion list
-      !match_exclusion?(path)
+      # Always return true, unless path is explicitly mentioned in excluded list
+      !match_excluded?(path)
     end
 
     def match_gems?(path)
@@ -44,11 +44,11 @@ module RubyJard
 
       case type
       when RubyJard::PathClassifier::TYPE_SOURCE_TREE, RubyJard::PathClassifier::TYPE_UNKNOWN
-        !match_exclusion?(path)
+        !match_excluded?(path)
       when RubyJard::PathClassifier::TYPE_GEM
-        !match_exclusion?(info[0], expand_path: false) && !match_exclusion?(path)
+        !match_excluded?(info[0], expand_path: false) && !match_excluded?(path)
       when RubyJard::PathClassifier::TYPE_STDLIB
-        match_inclusion?(info[0], expand_path: false) || match_inclusion?(path)
+        match_included?(info[0], expand_path: false) || match_included?(path)
       when RubyJard::PathClassifier::TYPE_RUBY_SCRIPT, RubyJard::PathClassifier::TYPE_EVALUATION
         true
       when RubyJard::PathClassifier::TYPE_INTERNAL
@@ -61,9 +61,9 @@ module RubyJard
 
       case type
       when RubyJard::PathClassifier::TYPE_SOURCE_TREE, RubyJard::PathClassifier::TYPE_UNKNOWN
-        !match_exclusion?(path)
+        !match_excluded?(path)
       when RubyJard::PathClassifier::TYPE_GEM, RubyJard::PathClassifier::TYPE_STDLIB
-        match_inclusion?(info[0], expand_path: false) || match_inclusion?(path)
+        match_included?(info[0], expand_path: false) || match_included?(path)
       when RubyJard::PathClassifier::TYPE_RUBY_SCRIPT, RubyJard::PathClassifier::TYPE_EVALUATION
         true
       when RubyJard::PathClassifier::TYPE_INTERNAL
@@ -76,11 +76,11 @@ module RubyJard
 
       case type
       when RubyJard::PathClassifier::TYPE_SOURCE_TREE
-        !match_exclusion?(path)
+        !match_excluded?(path)
       when RubyJard::PathClassifier::TYPE_UNKNOWN
-        match_inclusion?(path)
+        match_included?(path)
       when RubyJard::PathClassifier::TYPE_GEM, RubyJard::PathClassifier::TYPE_STDLIB
-        match_inclusion?(info[0], expand_path: false) || match_inclusion?(path)
+        match_included?(info[0], expand_path: false) || match_included?(path)
       when RubyJard::PathClassifier::TYPE_RUBY_SCRIPT, RubyJard::PathClassifier::TYPE_EVALUATION
         true
       when RubyJard::PathClassifier::TYPE_INTERNAL
@@ -88,22 +88,22 @@ module RubyJard
       end
     end
 
-    def match_exclusion?(path, expand_path: true)
-      @config.filter_exclusion.any? do |exclusion|
+    def match_excluded?(path, expand_path: true)
+      @config.filter_excluded.any? do |excluded|
         if expand_path
-          File.fnmatch(File.expand_path(exclusion), path)
+          File.fnmatch(File.expand_path(excluded), path)
         else
-          File.fnmatch(exclusion, path)
+          File.fnmatch(excluded, path)
         end
       end
     end
 
-    def match_inclusion?(path, expand_path: true)
-      @config.filter_inclusion.any? do |inclusion|
+    def match_included?(path, expand_path: true)
+      @config.filter_included.any? do |included|
         if expand_path
-          File.fnmatch(File.expand_path(inclusion), path)
+          File.fnmatch(File.expand_path(included), path)
         else
-          File.fnmatch(inclusion, path)
+          File.fnmatch(included, path)
         end
       end
     end

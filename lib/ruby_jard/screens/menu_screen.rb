@@ -8,8 +8,8 @@ module RubyJard
       def initialize(*args)
         super(*args)
         @filter = RubyJard.config.filter
-        @filter_inclusion = RubyJard.config.filter_inclusion
-        @filter_exclusion = RubyJard.config.filter_exclusion
+        @filter_included = RubyJard.config.filter_included
+        @filter_excluded = RubyJard.config.filter_excluded
         @selected = 0
       end
 
@@ -39,8 +39,8 @@ module RubyJard
           styles: :text_special
         )
         filter_details =
-          @filter_inclusion.map { |f| "+#{f}" } +
-          @filter_exclusion.map { |f| "-#{f}" }
+          @filter_included.map { |f| "+#{f}" } +
+          @filter_excluded.map { |f| "-#{f}" }
         if filter_details.empty?
           [filter_mode_span]
         else
