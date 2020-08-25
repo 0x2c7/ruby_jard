@@ -1,0 +1,113 @@
+### START SCREEN ###
+┌ Source  ../../examples/top_level_example.rb:15 ──────────────────────────────┐
+│   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
+│   9 variable_e = /Wait, what/i                                               │
+│  10 variable_f = 1.1                                                         │
+│  11 variable_g = 99..100                                                     │
+│  12 variable_k = StandardError.new('A random error')                         │
+│  13                                                                          │
+│  14 jard                                                                     │
+│⮕ 15 variable_h = 15                                                          │
+│  16                                                                          │
+│  17 jard                                                                     │
+│  18 1.times {}                                                               │
+│  19                                                                          │
+│  20 jard                                                                     │
+│  21 var_a + variable_f + variable_h || 5                                     │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+[:F5]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/top_level_example.rb:15 ──────────────────────────────┐
+│   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
+│   9 variable_e = /Wait, what/i                                               │
+│  10 variable_f = 1.1                                                         │
+│  11 variable_g = 99..100                                                     │
+│  12 variable_k = StandardError.new('A random error')                         │
+│  13                                                                          │
+│  14 jard                                                                     │
+│⮕ 15 variable_h = 15                                                          │
+│  16                                                                          │
+│  17 jard                                                                     │
+│  18 1.times {}                                                               │
+│  19                                                                          │
+│  20 jard                                                                     │
+│  21 var_a + variable_f + variable_h || 5                                     │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+[:F5]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/top_level_example.rb:15 ──────────────────────────────┐
+│   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
+│   9 variable_e = /Wait, what/i                                               │
+│  10 variable_f = 1.1                                                         │
+│  11 variable_g = 99..100                                                     │
+│  12 variable_k = StandardError.new('A random error')                         │
+│  13                                                                          │
+│  14 jard                                                                     │
+│⮕ 15 variable_h = 15                                                          │
+│  16                                                                          │
+│  17 jard                                                                     │
+│  18 1.times {}                                                               │
+│  19                                                                          │
+│  20 jard                                                                     │
+│  21 var_a + variable_f + variable_h || 5                                     │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+[:F5]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/top_level_example.rb:15 ──────────────────────────────┐
+│   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
+│   9 variable_e = /Wait, what/i                                               │
+│  10 variable_f = 1.1                                                         │
+│  11 variable_g = 99..100                                                     │
+│  12 variable_k = StandardError.new('A random error')                         │
+│  13                                                                          │
+│  14 jard                                                                     │
+│⮕ 15 variable_h = 15                                                          │
+│  16                                                                          │
+│  17 jard                                                                     │
+│  18 1.times {}                                                               │
+│  19                                                                          │
+│  20 jard                                                                     │
+│  21 var_a + variable_f + variable_h || 5                                     │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###

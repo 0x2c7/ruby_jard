@@ -1,0 +1,20 @@
+# frozen_string_literal: true
+
+RubyJard::Layouts.add_layout(
+  'source-menu',
+  RubyJard::Templates::LayoutTemplate.new(
+    fill_height: false,
+    children: [
+      RubyJard::Templates::ScreenTemplate.new(
+        height_ratio: 80,
+        width_ratio: 100,
+        screen: :source
+      ),
+      RubyJard::Templates::ScreenTemplate.new(
+        height: 2,
+        screen: :menu
+      )
+    ]
+  )
+)
+config.layout = 'source-menu'

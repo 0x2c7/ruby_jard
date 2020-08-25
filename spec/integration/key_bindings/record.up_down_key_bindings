@@ -1,0 +1,200 @@
+### START SCREEN ###
+┌ Source  ../../examples/nested_loop_example.rb:13 ────────────────────────────┐
+│   5 class DummyCalculator                                                    │
+│   6   def calculate(n)                                                       │
+│   7     10.times do |index_a|                                                │
+│   8       a = 10                                                             │
+│   9       5.times do |index_b|                                               │
+│  10         b = 'This is sparta'                                             │
+│  11         1.times do |index_c|                                             │
+│  12           jard                                                           │
+│⮕ 13           c = n + index_a + index_b + index_c                            │
+│  14         end                                                              │
+│  15       end                                                                │
+│  16     end                                                                  │
+│  17   end                                                                    │
+│  18 end                                                                      │
+│  19                                                                          │
+│  20 DummyCalculator.new.calculate(10)                                        │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+[:F7]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/nested_loop_example.rb:10 ────────────────────────────┐
+│   2                                                                          │
+│   3 require 'ruby_jard'                                                      │
+│   4                                                                          │
+│   5 class DummyCalculator                                                    │
+│   6   def calculate(n)                                                       │
+│   7     10.times do |index_a|                                                │
+│   8       a = 10                                                             │
+│   9       5.times do |index_b|                                               │
+│⮕ 10         b = 'This is sparta'                                             │
+│  11         1.times do |index_c|                                             │
+│  12           jard                                                           │
+│  13           c = n + index_a + index_b + index_c                            │
+│  14         end                                                              │
+│  15       end                                                                │
+│  16     end                                                                  │
+│  17   end                                                                    │
+│  18 end                                                                      │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+[:F6]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/nested_loop_example.rb:9 ─────────────────────────────┐
+│   1 # frozen_string_literal: true                                            │
+│   2                                                                          │
+│   3 require 'ruby_jard'                                                      │
+│   4                                                                          │
+│   5 class DummyCalculator                                                    │
+│   6   def calculate(n)                                                       │
+│   7     10.times do |index_a|                                                │
+│   8       a = 10                                                             │
+│⮕  9       5.times do |index_b|                                               │
+│  10         b = 'This is sparta'                                             │
+│  11         1.times do |index_c|                                             │
+│  12           jard                                                           │
+│  13           c = n + index_a + index_b + index_c                            │
+│  14         end                                                              │
+│  15       end                                                                │
+│  16     end                                                                  │
+│  17   end                                                                    │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+[:F6]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/nested_loop_example.rb:7 ─────────────────────────────┐
+│   1 # frozen_string_literal: true                                            │
+│   2                                                                          │
+│   3 require 'ruby_jard'                                                      │
+│   4                                                                          │
+│   5 class DummyCalculator                                                    │
+│   6   def calculate(n)                                                       │
+│⮕  7     10.times do |index_a|                                                │
+│   8       a = 10                                                             │
+│   9       5.times do |index_b|                                               │
+│  10         b = 'This is sparta'                                             │
+│  11         1.times do |index_c|                                             │
+│  12           jard                                                           │
+│  13           c = n + index_a + index_b + index_c                            │
+│  14         end                                                              │
+│  15       end                                                                │
+│  16     end                                                                  │
+│  17   end                                                                    │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+[:"S-F6"]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/nested_loop_example.rb:9 ─────────────────────────────┐
+│   1 # frozen_string_literal: true                                            │
+│   2                                                                          │
+│   3 require 'ruby_jard'                                                      │
+│   4                                                                          │
+│   5 class DummyCalculator                                                    │
+│   6   def calculate(n)                                                       │
+│   7     10.times do |index_a|                                                │
+│   8       a = 10                                                             │
+│⮕  9       5.times do |index_b|                                               │
+│  10         b = 'This is sparta'                                             │
+│  11         1.times do |index_c|                                             │
+│  12           jard                                                           │
+│  13           c = n + index_a + index_b + index_c                            │
+│  14         end                                                              │
+│  15       end                                                                │
+│  16     end                                                                  │
+│  17   end                                                                    │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+[:"S-F6"]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/nested_loop_example.rb:10 ────────────────────────────┐
+│   2                                                                          │
+│   3 require 'ruby_jard'                                                      │
+│   4                                                                          │
+│   5 class DummyCalculator                                                    │
+│   6   def calculate(n)                                                       │
+│   7     10.times do |index_a|                                                │
+│   8       a = 10                                                             │
+│   9       5.times do |index_b|                                               │
+│⮕ 10         b = 'This is sparta'                                             │
+│  11         1.times do |index_c|                                             │
+│  12           jard                                                           │
+│  13           c = n + index_a + index_b + index_c                            │
+│  14         end                                                              │
+│  15       end                                                                │
+│  16     end                                                                  │
+│  17   end                                                                    │
+│  18 end                                                                      │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+[:F8]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/nested_loop_example.rb:11 ────────────────────────────┐
+│   3 require 'ruby_jard'                                                      │
+│   4                                                                          │
+│   5 class DummyCalculator                                                    │
+│   6   def calculate(n)                                                       │
+│   7     10.times do |index_a|                                                │
+│   8       a = 10                                                             │
+│   9       5.times do |index_b|                                               │
+│  10         b = 'This is sparta'                                             │
+│⮕ 11         1.times do |index_c|                                             │
+│  12           jard                                                           │
+│  13           c = n + index_a + index_b + index_c                            │
+│  14         end                                                              │
+│  15       end                                                                │
+│  16     end                                                                  │
+│  17   end                                                                    │
+│  18 end                                                                      │
+│  19                                                                          │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
