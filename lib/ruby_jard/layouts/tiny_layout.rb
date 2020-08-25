@@ -17,6 +17,10 @@ module RubyJard
               height_ratio: 100
             )
           ]
+        ),
+        RubyJard::Templates::ScreenTemplate.new(
+          height: 2,
+          screen: :menu
         )
       ]
     )
