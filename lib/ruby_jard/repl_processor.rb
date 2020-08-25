@@ -25,6 +25,7 @@ module RubyJard
   class ReplProcessor < Byebug::CommandProcessor
     def initialize(context, *args)
       super(context, *args)
+      @config = RubyJard.config
       @path_filter = RubyJard::PathFilter.new
       @repl_proxy = RubyJard::ReplProxy.new(
         key_bindings: RubyJard.global_key_bindings
@@ -161,6 +162,14 @@ module RubyJard
     end
 
     def handle_list_command(_options = {})
+      process_commands
+    end
+
+    def handle_switch_filter_command(_options = {})
+      index = RubyJard::PathFilter::FILTERS.index(@config.filter) || -1
+      index = (index + 1) % RubyJard::PathFilter::FILTERS.length
+      @config.filter = RubyJard::PathFilter::FILTERS[index]
+
       process_commands
     end
 

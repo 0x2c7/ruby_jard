@@ -7,10 +7,10 @@ module RubyJard
   # program's current filter mode, and filter included, excluded.
   class PathFilter
     FILTERS = [
-      FILTER_EVERYTHING = :everything,
-      FILTER_GEMS = :gems,
+      FILTER_SOURCE_TREE = :source_tree,
       FILTER_APPLICATION = :application,
-      FILTER_SOURCE_TREE = :source_tree
+      FILTER_GEMS = :gems,
+      FILTER_EVERYTHING = :everything
     ].freeze
     def initialize(config: nil, classifier: nil)
       @config = config || RubyJard.config
