@@ -63,9 +63,9 @@ module RubyJard
           scheme = @color_schemes[name]
           decorator = RubyJard::Decorators::ColorDecorator.new(scheme.new)
           pallete = scheme.const_get(:STYLES).keys.map do |style|
-            decorator.decorate(style, '⬤')
+            decorator.decorate(style, '⬤ ')
           end.join(' ')
-          pry_instance.output.puts "#{name.ljust(padding)} | #{pallete}"
+          pry_instance.output.puts "#{name.ljust(padding)} #{pallete}"
           pry_instance.output.puts
         end
       end

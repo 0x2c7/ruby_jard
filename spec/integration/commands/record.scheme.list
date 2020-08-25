@@ -1,6 +1,6 @@
 ### START SCREEN ###
 
-jard >>             
+jard >>
 
 
 
@@ -29,14 +29,23 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 
-jard >> jard color-scheme -l            
-256                 
-256-light           
-deep-space          
-gruvbox             
-one-half-dark       
-one-half-light      
-jard >>             
+jard >> jard color-scheme -l
+
+6 available color schemes
+
+256            ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤
+
+256-light      ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤
+
+deep-space     ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤
+
+gruvbox        ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤
+
+one-half-dark  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤
+
+one-half-light ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤  ⬤
+
+jard >>
 
 
 

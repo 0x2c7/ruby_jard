@@ -38,17 +38,17 @@ RSpec.describe RubyJard::Commands::ColorSchemeCommand do
 
       it 'returns a list of color scheme' do
         command_object.process_line 'color-scheme -l'
-        expect(output.string.strip).to eql(
+        expect(output.string.strip.split("\n").map(&:strip).join("\n")).to eql(
           <<~OUTPUT.strip
             4 available color schemes
 
-            256        | ⬤
+            256        ⬤
 
-            deep-space | ⬤
+            deep-space ⬤
 
-            gruvbox    | ⬤
+            gruvbox    ⬤
 
-            monokai    | ⬤
+            monokai    ⬤
           OUTPUT
         )
       end
