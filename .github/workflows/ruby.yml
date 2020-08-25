@@ -43,7 +43,7 @@ jobs:
     - name: Install dependencies
       run: bundle install
     - name: Run tests
-      run: bundle exec rspec
+      run: bundle exec parallel_rspec spec/
   test-macos:
     strategy:
       fail-fast: false
@@ -67,7 +67,7 @@ jobs:
     - name: Install dependencies
       run: bundle install
     - name: Run tests
-      run: bundle exec rspec
+      run: bundle exec parallel_rspec spec/
   test-previous-byebug:
     runs-on: ubuntu-latest
     strategy:
@@ -93,4 +93,4 @@ jobs:
     - name: Install dependencies
       run: bundle install
     - name: Run tests
-      run: bundle exec rspec
+      run: bundle exec parallel_rspec spec/
