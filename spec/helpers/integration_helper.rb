@@ -205,12 +205,14 @@ RSpec::Matchers.define :match_screen do |expected, line|
       actual
       .split("\n")
       .map(&:strip)
+      .reject(&:empty?)
       .join("\n")
 
     @expected =
       expected
       .split("\n")
       .map(&:strip)
+      .reject(&:empty?)
       .join("\n")
 
     if @expected != @actual
