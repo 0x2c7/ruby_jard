@@ -8,10 +8,10 @@ sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])
 result_a = sorter.sort { |a, b| a < b }
 result_b = sorter.sort { |a, b| a > b }
 result_c = sorter.sort { |a, b| a < b }
-result_d = sorter.sort { |a, b| SecureRandom.uuid  < SecureRandom.uuid }
-result_e = sorter.sort { |a, b| SecureRandom.uuid  < SecureRandom.uuid }
+result_d = sorter.sort { |a, b| SecureRandom.random_bytes  < SecureRandom.random_bytes }
+result_e = sorter.sort { |a, b| SecureRandom.random_bytes  < SecureRandom.random_bytes }
 heap = Heap.new
 heap.push(1)
 heap.push(2)
 heap.push(3)
-heap.push(SecureRandom.uuid)
+heap.push(SecureRandom.random_bytes(1))
