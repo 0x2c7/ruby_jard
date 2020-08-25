@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'securerandom'
+
 class JardIntegrationTest
   def self.tests
     @tests ||= []
@@ -8,7 +10,7 @@ class JardIntegrationTest
   attr_reader :source
 
   def initialize(test, dir, expected_record_file, command, width: 80, height: 24)
-    @target = "TestJard#{rand(1..1000)}"
+    @target = "TestJard#{SecureRandom.uuid}"
     @test = test
     @source = caller[0]
 
