@@ -10,7 +10,7 @@ module RubyJard
       group 'RubyJard'
       description 'Filter to keep only relevant location when you debugging'
 
-      match 'output'
+      match 'filter'
 
       banner <<-BANNER
         Usage: output
