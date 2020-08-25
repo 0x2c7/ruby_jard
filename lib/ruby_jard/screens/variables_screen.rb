@@ -92,7 +92,7 @@ module RubyJard
                 spans: [
                   span_name(variable),
                   span_size(variable),
-                  RubyJard::Span.new(margin_right: 1, content: '=', styles: :variable_assignment),
+                  RubyJard::Span.new(margin_right: 1, content: '=', styles: :text_secondary),
                   span_inspection(variable)
                 ]
               )
@@ -105,12 +105,12 @@ module RubyJard
         if inline?(variable[0], variable[1])
           RubyJard::Span.new(
             content: '•',
-            styles: :variable_mark_inline
+            styles: :text_selected
           )
         else
           RubyJard::Span.new(
             content: ' ',
-            styles: :variable_mark
+            styles: :text_dim
           )
         end
       end
@@ -136,7 +136,7 @@ module RubyJard
         RubyJard::Span.new(
           margin_right: 1,
           content: size_label,
-          styles: :variable_size
+          styles: :text_secondary
         )
       end
 
@@ -156,7 +156,7 @@ module RubyJard
         end
         RubyJard::Span.new(
           content: inspection,
-          styles: :variable_inspection
+          styles: :text_dim
         )
       rescue StandardError
         RubyJard::Span.new(

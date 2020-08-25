@@ -1,6 +1,6 @@
 ### START SCREEN ###
 ┌ Backtrace  1 frames ─────────────────────────────────────────────────────────┐
-│➠ 0 Object in <main> at ../../../examples/start_of_file_example.rb:2          │
+│⮕ 0 Object in <main> at ../../../examples/start_of_file_example.rb:2          │
 │                                                                              │
 │                                                                              │
 │                                                                              │
@@ -20,7 +20,7 @@
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###

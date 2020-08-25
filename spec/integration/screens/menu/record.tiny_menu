@@ -1,0 +1,33 @@
+### START SCREEN ###
+┌────────────────────────────────────────────────┐
+│Filter (F2): Application   Step (F7)   Step Ou »│
+└────────────────────────────────────────────────┘
+jard >>     
+
+
+
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["jard filter include rails", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["jard filter exclude spec*", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["jard filter exclude some_thing*", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌────────────────────────────────────────────────┐
+│Filter (F2): Application +rails -spec* -some_t »│
+└────────────────────────────────────────────────┘
+jard >>     
+
+
+
+
+
+
+### END SCREEN ###

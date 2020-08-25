@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'ruby_jard/commands/validation_helpers'
+require 'ruby_jard/commands/color_helpers'
 require 'ruby_jard/commands/continue_command'
 require 'ruby_jard/commands/exit_command'
 require 'ruby_jard/commands/up_command'
@@ -24,9 +25,12 @@ module RubyJard
   class ReplProcessor < Byebug::CommandProcessor
     def initialize(context, *args)
       super(context, *args)
+      @config = RubyJard.config
+      @path_filter = RubyJard::PathFilter.new
       @repl_proxy = RubyJard::ReplProxy.new(
         key_bindings: RubyJard.global_key_bindings
       )
+      @previous_flow = nil
     end
 
     def at_line
@@ -44,6 +48,11 @@ module RubyJard
     private
 
     def process_commands_with_lock
+      unless debuggable?(Byebug.current_context)
+        handle_flow(@previous_flow)
+        return
+      end
+
       allowing_other_threads do
         RubyJard::Session.lock do
           process_commands
@@ -51,6 +60,10 @@ module RubyJard
       end
     ensure
       RubyJard::Session.flush_secondary_output_buffer
+    end
+
+    def debuggable?(context)
+      @path_filter.match?(context.frame_file)
     end
 
     def process_commands(update = true)
@@ -64,15 +77,20 @@ module RubyJard
         return_value = @repl_proxy.repl(frame._binding)
       end
 
-      unless flow.nil?
-        command = flow.command
-        send("handle_#{command}_command", flow.arguments)
-      end
+      handle_flow(flow)
 
       return_value
     rescue StandardError => e
       RubyJard::ScreenManager.draw_error(e)
       raise
+    end
+
+    def handle_flow(flow)
+      return if flow.nil?
+
+      @previous_flow = flow
+      command = flow.command
+      send("handle_#{command}_command", flow.arguments)
     end
 
     def handle_next_command(options = {})
@@ -144,6 +162,14 @@ module RubyJard
     end
 
     def handle_list_command(_options = {})
+      process_commands
+    end
+
+    def handle_switch_filter_command(_options = {})
+      index = RubyJard::PathFilter::FILTERS.index(@config.filter) || -1
+      index = (index + 1) % RubyJard::PathFilter::FILTERS.length
+      @config.filter = RubyJard::PathFilter::FILTERS[index]
+
       process_commands
     end
 

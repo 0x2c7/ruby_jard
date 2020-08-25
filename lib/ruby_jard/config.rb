@@ -31,13 +31,17 @@ module RubyJard
       end
     end
 
-    attr_accessor :color_scheme, :alias_to_debugger, :layout, :enabled_screens
+    attr_accessor :color_scheme, :alias_to_debugger, :layout, :enabled_screens,
+                  :filter, :filter_included, :filter_excluded
 
     CONFIG_FILE_NAME = '.jardrc'
     DEFAULTS = [
       DEFAULT_COLOR_SCHEME = '256',
       DEFAULT_ALIAS_TO_DEBUGGER = false,
-      DEFAULT_LAYOUT = nil # Pick layout automatically
+      DEFAULT_LAYOUT = nil, # Pick layout automatically
+      DEFAULT_FILTER = RubyJard::PathFilter::FILTER_APPLICATION,
+      DEFAULT_FILTER_INCLUDED = [].freeze,
+      DEFAULT_FILTER_EXCLUDED = [].freeze
     ].freeze
 
     def initialize
@@ -45,6 +49,9 @@ module RubyJard
       @alias_to_debugger = DEFAULT_ALIAS_TO_DEBUGGER
       @layout = DEFAULT_LAYOUT
       @enabled_screens = RubyJard::Screens.names
+      @filter = DEFAULT_FILTER
+      @filter_included = DEFAULT_FILTER_INCLUDED.dup
+      @filter_excluded = DEFAULT_FILTER_EXCLUDED.dup
     end
 
     def config

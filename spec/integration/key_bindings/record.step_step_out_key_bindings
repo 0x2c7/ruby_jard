@@ -1,0 +1,142 @@
+### START SCREEN ###
+┌ Source  ../../examples/top_level_2_example.rb:14 ────────────────────────────┐
+│   6   double(variable)                                                       │
+│   7 end                                                                      │
+│   8                                                                          │
+│   9 def double(variable)                                                     │
+│  10   variable * 2                                                           │
+│  11 end                                                                      │
+│  12                                                                          │
+│  13 jard                                                                     │
+│⮕ 14 a = 1                                                                    │
+│  15 b = double(a)                                                            │
+│  16 c = quad(a)                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+[:F7]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/top_level_2_example.rb:15 ────────────────────────────┐
+│   7 end                                                                      │
+│   8                                                                          │
+│   9 def double(variable)                                                     │
+│  10   variable * 2                                                           │
+│  11 end                                                                      │
+│  12                                                                          │
+│  13 jard                                                                     │
+│  14 a = 1                                                                    │
+│⮕ 15 b = double(a)                                                            │
+│  16 c = quad(a)                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+[:F7]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/top_level_2_example.rb:10 ────────────────────────────┐
+│   2                                                                          │
+│   3 require 'ruby_jard'                                                      │
+│   4                                                                          │
+│   5 def quad(variable)                                                       │
+│   6   double(variable)                                                       │
+│   7 end                                                                      │
+│   8                                                                          │
+│   9 def double(variable)                                                     │
+│⮕ 10   variable * 2                                                           │
+│  11 end                                                                      │
+│  12                                                                          │
+│  13 jard                                                                     │
+│  14 a = 1                                                                    │
+│  15 b = double(a)                                                            │
+│  16 c = quad(a)                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+[:"S-F7"]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/top_level_2_example.rb:16 ────────────────────────────┐
+│   8                                                                          │
+│   9 def double(variable)                                                     │
+│  10   variable * 2                                                           │
+│  11 end                                                                      │
+│  12                                                                          │
+│  13 jard                                                                     │
+│  14 a = 1                                                                    │
+│  15 b = double(a)                                                            │
+│⮕ 16 c = quad(a)                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+[:F7]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/top_level_2_example.rb:6 ─────────────────────────────┐
+│   1 # frozen_string_literal: true                                            │
+│   2                                                                          │
+│   3 require 'ruby_jard'                                                      │
+│   4                                                                          │
+│   5 def quad(variable)                                                       │
+│⮕  6   double(variable)                                                       │
+│   7 end                                                                      │
+│   8                                                                          │
+│   9 def double(variable)                                                     │
+│  10   variable * 2                                                           │
+│  11 end                                                                      │
+│  12                                                                          │
+│  13 jard                                                                     │
+│  14 a = 1                                                                    │
+│  15 b = double(a)                                                            │
+│  16 c = quad(a)                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###

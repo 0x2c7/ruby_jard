@@ -6,6 +6,8 @@ require 'byebug/attacher'
 require 'forwardable'
 require 'benchmark'
 
+require 'ruby_jard/path_classifier'
+require 'ruby_jard/path_filter'
 require 'ruby_jard/control_flow'
 require 'ruby_jard/config'
 require 'ruby_jard/keys'
@@ -62,6 +64,16 @@ module RubyJard
         f.puts line
       end
     end
+  end
+
+  def self.error(exception)
+    File.open('./jard_errors.txt', 'a') do |f|
+      f.puts '--- Error ---'
+      f.puts exception.message
+      f.puts exception.backtrace
+    end
+  rescue StandardError
+    # Ignore
   end
 
   def self.debug_info

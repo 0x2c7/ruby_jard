@@ -1,100 +1,83 @@
 # frozen_string_literal: true
 
 require 'pathname'
+require 'rbconfig'
 
 module RubyJard
   module Decorators
     ##
     # Simplify and generate labels to indicate the location of a path.
-    # If it's from gem, strip Gem paths, or Bundler paths to expose relative
-    # location of the file.
-    # If it's from the current working dir, strip the working dir.
+    # The return value is an array of two elements. The first one is overview,
+    # the second is detailed path location.
     class PathDecorator
-      GEM_PATTERN = /(.*)-(\d+\.\d+[.\d]*[.\d]*[-.\w]*)/i.freeze
-      PATH_TYPES = [
-        TYPE_UNKNOWN = :unknown,
-        TYPE_PWD = :pwd,
-        TYPE_GEM = :gem
-      ].freeze
-
-      attr_reader :path, :lineno, :gem, :gem_version
-
-      def initialize(path, lineno)
-        @gem = nil
-        @gem_version = nil
-        @path = path.to_s
-        @lineno = lineno
-        @type = TYPE_UNKNOWN
-
-        decorate
+      def initialize(path_classifier: nil)
+        @path_classifier = path_classifier || RubyJard::PathClassifier.new
       end
 
-      def decorate
-        try_parse_gem_path
-        return if gem?
+      def decorate(path, lineno = nil)
+        return ['at ???', 'at ???'] if path.nil?
 
-        @type = TYPE_PWD
-        if @path.start_with?(Dir.pwd)
-          @path = @path[Dir.pwd.length..-1]
-          @path = @path[1..-1] if @path.start_with?('/')
+        type, *info = @path_classifier.classify(path)
+
+        lineno = ":#{lineno}" unless lineno.nil?
+
+        case type
+        when RubyJard::PathClassifier::TYPE_SOURCE_TREE
+          path = File.expand_path(path)
+          decorate_source_tree(path, lineno)
+        when RubyJard::PathClassifier::TYPE_GEM
+          decorate_gem(path, lineno, info)
+        when RubyJard::PathClassifier::TYPE_STDLIB
+          decorate_stdlib(path, lineno, info)
+        when RubyJard::PathClassifier::TYPE_INTERNAL
+          ["in #{path}", path]
+        when RubyJard::PathClassifier::TYPE_EVALUATION
+          ["at #{path}#{lineno}", "#{path}#{lineno}"]
+        when RubyJard::PathClassifier::TYPE_RUBY_SCRIPT
+          ["at (-e ruby script)#{lineno}", "(-e ruby script)#{lineno}"]
         else
-          try_relative_path
+          path = compact_with_relative_path(path)
+          ["at #{path}#{lineno}", "#{path}#{lineno}"]
         end
-      end
-
-      def gem?
-        @type == TYPE_GEM
       end
 
       private
 
-      def try_parse_gem_path
-        gem_paths.each do |gem_path|
-          next unless path.start_with?(gem_path)
-
-          @type = TYPE_GEM
-          splitted_path =
-            @path[gem_path.length..-1]
-            .split('/')
-            .reject(&:empty?)
-          @path = splitted_path[1..-1].join('/')
-          @gem = splitted_path.first
-          match = GEM_PATTERN.match(@gem)
-          if match
-            @gem = match[1]
-            @gem_version = match[2]
-          end
-
-          break
-        end
+      def decorate_source_tree(path, lineno)
+        path = path[Dir.pwd.length..-1]
+        path = path[1..-1] if path.start_with?('/')
+        path = "#{path}#{lineno}"
+        ["at #{path}", path]
       end
 
-      def try_relative_path
-        relative_path = Pathname.new(@path).relative_path_from(Pathname.pwd).to_s
-        if relative_path.length < @path.length
-          @path = relative_path
+      def decorate_gem(_path, lineno, info)
+        gem_name, gem_version, relative_path = info
+        overview =
+          if gem_version.nil?
+            "<#{gem_name}>"
+          else
+            "<#{gem_name} #{gem_version}>"
+          end
+        detail = "<#{gem_name}:#{relative_path}#{lineno}>"
+        ["in #{overview}", detail]
+      end
+
+      def decorate_stdlib(_path, lineno, info)
+        lib_name, relative_path = info
+
+        ["in <stdlib:#{lib_name}>", "<stdlib:#{relative_path}#{lineno}>"]
+      end
+
+      def compact_with_relative_path(path)
+        relative_path = Pathname.new(path).relative_path_from(Pathname.pwd).to_s
+        if relative_path.length < path.length
+          relative_path
+        else
+          path
         end
       rescue ArgumentError
         # Fail to get relative path, ignore
-      end
-
-      def gem_paths
-        paths = []
-
-        if defined?(Gem)
-          Gem.path.each do |gem_path|
-            paths << File.join(gem_path, 'gems')
-            paths << gem_path
-          end
-        end
-
-        if defined?(Bundler)
-          bundle_path = Bundler.bundle_path.to_s
-          paths << File.join(bundle_path, 'gems')
-          paths << bundle_path
-        end
-
-        paths
+        path
       end
     end
   end

@@ -119,6 +119,7 @@ module RubyJard
         @output.puts exception.backtrace.first(10)
       end
       @output.puts '-------------'
+      RubyJard.error(exception)
     end
 
     def puts(content)

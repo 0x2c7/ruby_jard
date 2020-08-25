@@ -1,6 +1,6 @@
 ### START SCREEN ###
 ┌ Backtrace  4 frames ─────────────────────────────────────────────────────────┐
-│➠ 0 Fibonaci in calculate (block)                                             │
+│⮕ 0 Fibonaci in calculate (block)                                             │
 │    at ../../../examples/instance_method_example.rb:23                        │
 │  1 [c] Range in each at ../../../examples/instance_method_example.rb:20      │
 │  2 Fibonaci in calculate at ../../../examples/instance_method_example.rb:20  │
@@ -20,7 +20,7 @@
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###
@@ -29,7 +29,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Backtrace  4 frames ─────────────────────────────────────────────────────────┐
-│➠ 0 Fibonaci in calculate (block)                                             │
+│⮕ 0 Fibonaci in calculate (block)                                             │
 │    at ../../../examples/instance_method_example.rb:23                        │
 │  1 [c] Range in each at ../../../examples/instance_method_example.rb:20      │
 │  2 Fibonaci in calculate at ../../../examples/instance_method_example.rb:20  │
@@ -49,7 +49,7 @@ jard >>
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###
@@ -58,7 +58,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Backtrace  4 frames ─────────────────────────────────────────────────────────┐
-│➠ 0 Fibonaci in calculate (block)                                             │
+│⮕ 0 Fibonaci in calculate (block)                                             │
 │    at ../../../examples/instance_method_example.rb:23                        │
 │  1 [c] Range in each at ../../../examples/instance_method_example.rb:20      │
 │  2 Fibonaci in calculate at ../../../examples/instance_method_example.rb:20  │
@@ -78,7 +78,7 @@ jard >>
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###
@@ -87,7 +87,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Backtrace  4 frames ─────────────────────────────────────────────────────────┐
-│➠ 0 Fibonaci in calculate (block)                                             │
+│⮕ 0 Fibonaci in calculate (block)                                             │
 │    at ../../../examples/instance_method_example.rb:23                        │
 │  1 [c] Range in each at ../../../examples/instance_method_example.rb:20      │
 │  2 Fibonaci in calculate at ../../../examples/instance_method_example.rb:20  │
@@ -107,7 +107,7 @@ jard >>
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###

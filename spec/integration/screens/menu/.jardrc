@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+RubyJard::Layouts.add_layout(
+  'standalone-menu',
+  RubyJard::Templates::LayoutTemplate.new(
+    fill_height: false,
+    children: [
+      RubyJard::Templates::ScreenTemplate.new(
+        height: 3,
+        screen: :menu
+      )
+    ]
+  )
+)
+config.layout = 'standalone-menu'

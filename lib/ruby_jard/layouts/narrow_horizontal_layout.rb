@@ -20,6 +20,10 @@ module RubyJard
               width_ratio: 40
             )
           ]
+        ),
+        RubyJard::Templates::ScreenTemplate.new(
+          height: 2,
+          screen: :menu
         )
       ]
     )

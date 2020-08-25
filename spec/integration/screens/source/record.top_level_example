@@ -9,7 +9,7 @@
 │  12 variable_k = StandardError.new('A random error')                         │
 │  13                                                                          │
 │  14 jard                                                                     │
-│➠ 15 variable_h = 15                                                          │
+│⮕ 15 variable_h = 15                                                          │
 │  16                                                                          │
 │  17 jard                                                                     │
 │  18 1.times {}                                                               │
@@ -38,7 +38,7 @@ jard >>
 │  14 jard                                                                     │
 │  15 variable_h = 15                                                          │
 │  16                                                                          │
-│➠ 17 jard                                                                     │
+│⮕ 17 jard                                                                     │
 │  18 1.times {}                                                               │
 │  19                                                                          │
 │  20 jard                                                                     │
@@ -67,7 +67,7 @@ jard >>
 │  15 variable_h = 15                                                          │
 │  16                                                                          │
 │  17 jard                                                                     │
-│➠ 18 1.times {}                                                               │
+│⮕ 18 1.times {}                                                               │
 │  19                                                                          │
 │  20 jard                                                                     │
 │  21 var_a + variable_f + variable_h || 5                                     │
@@ -96,7 +96,7 @@ jard >>
 │  18 1.times {}                                                               │
 │  19                                                                          │
 │  20 jard                                                                     │
-│➠ 21 var_a + variable_f + variable_h || 5                                     │
+│⮕ 21 var_a + variable_f + variable_h || 5                                     │
 │                                                                              │
 │                                                                              │
 │                                                                              │

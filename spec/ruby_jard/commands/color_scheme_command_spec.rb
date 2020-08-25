@@ -10,6 +10,12 @@ RSpec.describe RubyJard::Commands::ColorSchemeCommand do
     )
   end
 
+  let(:scheme_class) do
+    Class.new(RubyJard::ColorScheme) do
+      const_set(:STYLES, { text_normal: [] })
+    end
+  end
+
   let(:output) { StringIO.new }
   let(:pry_instance) { Pry.new(output: output) }
   let(:color_schemes) { RubyJard::ColorSchemes.new }
@@ -26,18 +32,23 @@ RSpec.describe RubyJard::Commands::ColorSchemeCommand do
     context 'when some themes are available' do
       before do
         %w[256 deep-space gruvbox monokai].each do |scheme|
-          color_schemes.add_color_scheme(scheme, Class.new(RubyJard::ColorScheme))
+          color_schemes.add_color_scheme(scheme, scheme_class)
         end
       end
 
       it 'returns a list of color scheme' do
         command_object.process_line 'color-scheme -l'
-        expect(output.string).to eql(
-          <<~OUTPUT
-            256
-            deep-space
-            gruvbox
-            monokai
+        expect(output.string.strip.split("\n").map(&:strip).join("\n")).to eql(
+          <<~OUTPUT.strip
+            4 available color schemes
+
+            256        ⬤
+
+            deep-space ⬤
+
+            gruvbox    ⬤
+
+            monokai    ⬤
           OUTPUT
         )
       end
@@ -47,7 +58,7 @@ RSpec.describe RubyJard::Commands::ColorSchemeCommand do
   context 'with `color-scheme`' do
     before do
       %w[256 deep-space gruvbox monokai].each do |scheme|
-        color_schemes.add_color_scheme(scheme, Class.new(RubyJard::ColorScheme))
+        color_schemes.add_color_scheme(scheme, scheme_class)
       end
     end
 

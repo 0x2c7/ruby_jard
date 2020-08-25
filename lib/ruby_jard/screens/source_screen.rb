@@ -11,7 +11,7 @@ module RubyJard
         @frame_line = @session.current_frame&.frame_line
 
         if !@frame_file.nil? && !@frame_line.nil?
-          @path_decorator = RubyJard::Decorators::PathDecorator.new(@frame_file, @frame_line)
+          @path_decorator = RubyJard::Decorators::PathDecorator.new
           @loc_decorator = RubyJard::Decorators::LocDecorator.new
           @source_decorator = RubyJard::Decorators::SourceDecorator.new(@frame_file, @frame_line, @layout.height)
         end
@@ -19,47 +19,35 @@ module RubyJard
         @selected = 0
       end
 
-      ANONYMOUS_SIGNATURES = [
-        '(eval)', '-e'
-      ].freeze
-
       def title
         return 'Source' if @frame_file.nil? || @frame_line.nil?
 
-        if @path_decorator.gem?
-          ['Source', "#{@path_decorator.gem} - #{@path_decorator.path}:#{@path_decorator.lineno}"]
-        else
-          ['Source', "#{@path_decorator.path}:#{@path_decorator.lineno}"]
-        end
+        _, path_label = @path_decorator.decorate(@frame_file, @frame_line)
+        ['Source', path_label]
       end
 
       def build
         return 'Source' if @frame_file.nil? || @frame_line.nil?
 
-        if ANONYMOUS_SIGNATURES.include? @frame_file
-          # (eval) is hard-coded in Ruby source code for in-code evaluation
-          handle_anonymous_evaluation
-        else
-          # TODO: screen now supports window.
-          codes = @source_decorator.codes
-          @rows = codes.map.with_index do |loc, index|
-            lineno = @source_decorator.window_start + index
-            RubyJard::Row.new(
-              line_limit: 3,
-              columns: [
-                RubyJard::Column.new(
-                  spans: [
-                    span_mark(lineno),
-                    span_lineno(lineno)
-                  ]
-                ),
-                RubyJard::Column.new(
-                  word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
-                  spans: loc_spans(loc)
-                )
-              ]
-            )
-          end
+        # TODO: screen now supports window.
+        codes = @source_decorator.codes
+        @rows = codes.map.with_index do |loc, index|
+          lineno = @source_decorator.window_start + index
+          RubyJard::Row.new(
+            line_limit: 3,
+            columns: [
+              RubyJard::Column.new(
+                spans: [
+                  span_mark(lineno),
+                  span_lineno(lineno)
+                ]
+              ),
+              RubyJard::Column.new(
+                word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
+                spans: loc_spans(loc)
+              )
+            ]
+          )
         end
       end
 
@@ -99,8 +87,8 @@ module RubyJard
       def span_mark(lineno)
         RubyJard::Span.new(
           margin_right: 1,
-          content: @frame_line == lineno ? '➠' : ' ',
-          styles: :source_line_mark
+          content: @frame_line == lineno ? '⮕' : ' ',
+          styles: :text_selected
         )
       end
 
@@ -108,7 +96,7 @@ module RubyJard
         padded_lineno = lineno.to_s.rjust(@source_decorator.window_end.to_s.length)
         RubyJard::Span.new(
           content: padded_lineno,
-          styles: @frame_line == lineno ? :source_line_mark : :source_lineno
+          styles: @frame_line == lineno ? :text_selected : :text_dim
         )
       end
 

@@ -8,7 +8,7 @@ module RubyJard
   class ColorSchemes
     class << self
       extend Forwardable
-      def_delegators :instance, :add_color_scheme, :[], :get, :names
+      def_delegators :instance, :add_color_scheme, :[], :get, :names, :each, :length
 
       def instance
         @instance ||= new
@@ -34,6 +34,14 @@ module RubyJard
 
     def names
       @color_scheme_registry.keys.sort.dup
+    end
+
+    def length
+      @color_scheme_registry.length
+    end
+
+    def each(&block)
+      @color_scheme_registry.each(&block)
     end
   end
 end

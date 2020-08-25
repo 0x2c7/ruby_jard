@@ -16,6 +16,8 @@ module RubyJard
         @frames = @session.current_backtrace
         @frames_count = @frames.length
         @selected = @current_frame
+
+        @path_decorator = RubyJard::Decorators::PathDecorator.new
       end
 
       def title
@@ -51,13 +53,13 @@ module RubyJard
         frame_id_label = frame_id.to_s.rjust(@frames_count.to_s.length)
         if frame_id == @current_frame
           RubyJard::Span.new(
-            content: "➠ #{frame_id_label}",
-            styles: :frame_id_highlighted
+            content: "⮕ #{frame_id_label}",
+            styles: :text_selected
           )
         else
           RubyJard::Span.new(
             content: "  #{frame_id_label}",
-            styles: :frame_id
+            styles: :text_dim
           )
         end
       end
@@ -89,7 +91,7 @@ module RubyJard
         RubyJard::Span.new(
           content: 'in',
           margin_right: 1,
-          styles: :frame_location
+          styles: :text_secondary
         )
       end
 
@@ -108,23 +110,13 @@ module RubyJard
       end
 
       def span_path(frame)
-        decorated_path = decorate_path(frame.frame_location.absolute_path, frame.frame_location.lineno)
-
-        path_label =
-          if decorated_path.gem?
-            "in #{decorated_path.gem} (#{decorated_path.gem_version})"
-          else
-            "at #{decorated_path.path}:#{decorated_path.lineno}"
-          end
+        path_label, = @path_decorator.decorate(
+          frame.frame_location.path, frame.frame_location.lineno
+        )
         RubyJard::Span.new(
           content: path_label,
-          styles: :frame_location
+          styles: :text_secondary
         )
-      end
-
-      def decorate_path(path, lineno)
-        # TODO: Clean me up
-        RubyJard::Decorators::PathDecorator.new(path, lineno)
       end
     end
   end

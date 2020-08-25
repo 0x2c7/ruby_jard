@@ -1,6 +1,6 @@
 ### START SCREEN ###
 
-jard >>             
+jard >>
 
 
 
@@ -29,9 +29,9 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 
-jard >> jard color-scheme NotExistedScheme                                      
-Error: Color scheme `NotExistedScheme` not found. Please use `color-scheme -l` to list all color schemes.               
-jard >>             
+jard >> jard color-scheme NotExistedScheme
+Error: Color scheme `NotExistedScheme` not found. Please use `jard color-scheme -l` to list all color schemes.
+jard >>
 
 
 

@@ -33,7 +33,6 @@ module RubyJard
         @color_scheme = color_scheme
       end
 
-      # TODO: rename and replace #decorate by this method
       def decorate(element, content)
         styles = @color_scheme.styles_for(element) || []
         foreground = translate_color(styles.shift, true)

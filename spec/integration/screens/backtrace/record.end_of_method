@@ -1,6 +1,6 @@
 ### START SCREEN ###
 ┌ Backtrace  4 frames ─────────────────────────────────────────────────────────┐
-│➠ 0 DummyCalculator in calculate (block)                                      │
+│⮕ 0 DummyCalculator in calculate (block)                                      │
 │    at ../../../examples/end_of_method_example.rb:10                          │
 │  1 [c] Integer in times at ../../../examples/end_of_method_example.rb:7      │
 │  2 DummyCalculator in calculate                                              │
@@ -20,7 +20,7 @@
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###
@@ -29,7 +29,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Backtrace  2 frames ─────────────────────────────────────────────────────────┐
-│➠ 0 DummyCalculator in calculate                                              │
+│⮕ 0 DummyCalculator in calculate                                              │
 │    at ../../../examples/end_of_method_example.rb:12                          │
 │  1 Object in <main> at ../../../examples/end_of_method_example.rb:15         │
 │                                                                              │
@@ -49,7 +49,7 @@ jard >>
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###

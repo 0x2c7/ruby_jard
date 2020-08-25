@@ -1,7 +1,7 @@
 ### START SCREEN ###
 ┌ Source  ../../../examples/start_of_file_example.rb:2 ────────────────────────┐
 │   1 require 'ruby_jard'; jard                                                │
-│➠  2 123                                                                      │
+│⮕  2 123                                                                      │
 │                                                                              │
 │                                                                              │
 │                                                                              │
