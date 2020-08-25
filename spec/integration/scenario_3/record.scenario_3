@@ -159,8 +159,8 @@ jard >>
 ### START SCREEN ###
 ┌ Source  main_example.rb:10 ────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
 │   3 require 'securerandom'                                 │  self = main                                                 │
-│   4 require_relative '../../examples/dummy_heap.rb'        │• a = 1                                                       │
-│   5                                                        │• b = 2                                                       │
+│   4 require_relative '../../examples/dummy_heap.rb'        │• a = ?                                                       │
+│   5                                                        │• b = ?                                                       │
 │   6 jard                                                   │  heap = nil                                                  │
 │   7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │  result_a (len:5) = [1, 2, 3, 4, 5]                          │
 │   8 result_a = sorter.sort { |a, b| a < b }                │  result_b (len:5) = [5, 4, 3, 2, 1]                          │
@@ -194,8 +194,8 @@ jard >>
 ### START SCREEN ###
 ┌ Source  main_example.rb:10 ────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
 │   3 require 'securerandom'                                 │  self = main                                                 │
-│   4 require_relative '../../examples/dummy_heap.rb'        │• a = 4                                                       │
-│   5                                                        │• b = 5                                                       │
+│   4 require_relative '../../examples/dummy_heap.rb'        │• a = ?                                                       │
+│   5                                                        │• b = ?                                                       │
 │   6 jard                                                   │  heap = nil                                                  │
 │   7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │  result_a (len:5) = [1, 2, 3, 4, 5]                          │
 │   8 result_a = sorter.sort { |a, b| a < b }                │  result_b (len:5) = [5, 4, 3, 2, 1]                          │
@@ -285,8 +285,8 @@ jard >>
 ### START SCREEN ###
 ┌ Source  main_example.rb:12 ────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
 │   5                                                        │  self = main                                                 │
-│   6 jard                                                   │• a = 3                                                       │
-│   7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │• b = 5                                                       │
+│   6 jard                                                   │• a = ?                                                       │
+│   7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │• b = ?                                                       │
 │   8 result_a = sorter.sort { |a, b| a < b }                │  heap = nil                                                  │
 │   9 result_b = sorter.sort { |a, b| a > b }                │  result_a (len:5) = [1, 2, 3, 4, 5]                          │
 │  10 result_c = sorter.sort { |a, b| a < b }                │  result_b (len:5) = [5, 4, 3, 2, 1]                          │
