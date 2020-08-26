@@ -26,32 +26,37 @@ module RubyJard
       DEFAULT_TYPE_SYMBOL = :var
 
       KINDS = [
+        KIND_SELF = :self,
         KIND_LOC  = :local_variable,
         KIND_INS  = :instance_variable,
         KIND_CON  = :constant,
-        KIND_SELF = :self
+        KIND_GLOB = :global_variable
       ].freeze
 
       KIND_STYLES = {
+        KIND_SELF => :constant,
         KIND_LOC  => :local_variable,
         KIND_INS  => :instance_variable,
         KIND_CON  => :constant,
-        KIND_SELF => :constant
+        KIND_GLOB => :instance_variable
       }.freeze
 
       KIND_PRIORITIES = {
         KIND_SELF => 0,
-        KIND_LOC => 1,
-        KIND_INS => 2,
-        KIND_CON => 3
+        KIND_LOC  => 1,
+        KIND_INS  => 2,
+        KIND_CON  => 3,
+        KIND_GLOB => 4
       }.freeze
 
-      INLINE_TOKEN_KIND_MAPS = {
-        KIND_LOC => :ident,
-        KIND_INS => :instance_variable,
-        KIND_CON => :constant
+      TOKEN_KIND_MAPS = {
+        ident: KIND_LOC,
+        instance_variable: KIND_INS,
+        constant: KIND_CON,
+        predefined_constant: KIND_CON,
+        global_variable: KIND_GLOB
       }.freeze
-      INLINE_TOKEN_KINDS = INLINE_TOKEN_KIND_MAPS.values
+      TOKEN_KINDS = TOKEN_KIND_MAPS.keys.flatten
 
       def initialize(*args)
         super
@@ -63,6 +68,7 @@ module RubyJard
         @frame_binding = @session.current_frame&.frame_binding
 
         @inline_tokens = generate_inline_tokens(@frame_file, @frame_line)
+        @file_tokens = generate_file_tokens(@frame_file)
 
         @selected = 0
       end
@@ -76,7 +82,8 @@ module RubyJard
           self_variable +
           fetch_local_variables +
           fetch_instance_variables +
-          fetch_constants
+          fetch_constants +
+          fetch_global_variables
         variables = sort_variables(variables)
         @rows = variables.map do |variable|
           RubyJard::Row.new(
@@ -102,7 +109,7 @@ module RubyJard
       end
 
       def span_inline(variable)
-        if inline?(variable[0], variable[1])
+        if inline?(variable[1])
           RubyJard::Span.new(
             content: '•',
             styles: :text_selected
@@ -169,12 +176,14 @@ module RubyJard
 
       def fetch_local_variables
         return [] if @frame_binding.nil?
+        return [] if !@frame_binding.respond_to?(:local_variables) ||
+                     !@frame_binding.respond_to?(:local_variable_get)
 
         variables = @frame_binding.local_variables
         # Exclude Pry's sticky locals
         pry_sticky_locals =
           if variables.include?(:pry_instance)
-            @frame_binding.local_variable_get(:pry_instance).sticky_locals.keys
+            @frame_binding.local_variable_get(:pry_instance)&.sticky_locals&.keys || []
           else
             []
           end
@@ -188,8 +197,15 @@ module RubyJard
 
       def fetch_instance_variables
         return [] if @frame_self.nil?
+        return [] if !@frame_self.respond_to?(:instance_variables) ||
+                     !@frame_self.respond_to?(:instance_variable_get)
 
-        @frame_self.instance_variables.map do |variable|
+        instance_variables =
+          @frame_self
+          .instance_variables
+          .select { |v| relevant?(KIND_INS, v) }
+
+        instance_variables.map do |variable|
           [KIND_INS, variable, @frame_self.instance_variable_get(variable)]
         rescue NameError
           nil
@@ -207,23 +223,41 @@ module RubyJard
             @frame_class
           end
 
-        return [] unless constant_source.respond_to?(:constants)
-        return [] if toplevel_binding?
+        return [] if !constant_source.respond_to?(:const_get) ||
+                     !constant_source.respond_to?(:const_defined?)
 
-        constants = constant_source.constants.select { |v| v.to_s.upcase == v.to_s }
-        constants.map do |variable|
-          next if %w[NIL TRUE FALSE].include?(variable.to_s)
-
-          [KIND_CON, variable, constant_source.const_get(variable)]
-        rescue NameError
-          nil
-        end.compact
+        (@file_tokens[KIND_CON] || {})
+          .keys
+          .select { |c| c.upcase == c }
+          .uniq
+          .map { |const| fetch_constant(constant_source, const) }
+          .compact
       end
 
-      def toplevel_binding?
-        @frame_self == TOPLEVEL_BINDING.receiver
-      rescue StandardError
-        false
+      def fetch_constant(constant_source, const)
+        return nil if %w[NIL TRUE FALSE].include?(const.to_s)
+        return nil unless constant_source.const_defined?(const)
+
+        [KIND_CON, const, constant_source.const_get(const)]
+      rescue NameError
+        nil
+      end
+
+      def fetch_global_variables
+        return [] if @frame_self.nil?
+        return [] if !@frame_self.respond_to?(:global_variables, true) ||
+                     !@frame_self.respond_to?(:instance_eval)
+
+        variables =
+          @frame_self
+          .__send__(:global_variables)
+          .select { |v| relevant?(KIND_GLOB, v) }
+        variables.map do |variable|
+          [KIND_GLOB, variable, @frame_self.instance_eval(variable.to_s)]
+        rescue NameError => e
+          RubyJard.debug(e)
+          # Ignore
+        end.compact
       end
 
       def self_variable
@@ -255,9 +289,12 @@ module RubyJard
         end
       end
 
-      def inline?(kind, name)
-        tokens = @inline_tokens[INLINE_TOKEN_KIND_MAPS[kind]] || []
-        tokens.include?(name)
+      def inline?(name)
+        @inline_tokens[name]
+      end
+
+      def relevant?(kind, name)
+        !@file_tokens[kind].nil? && @file_tokens[kind][name]
       end
 
       def generate_inline_tokens(file, line)
@@ -272,13 +309,29 @@ module RubyJard
 
         inline_tokens = {}
         tokens.each_slice(2) do |token, kind|
-          next unless INLINE_TOKEN_KINDS.include?(kind)
+          next if TOKEN_KIND_MAPS[kind].nil?
 
-          inline_tokens[kind] ||= []
-          inline_tokens[kind] << token.to_s.to_sym
+          inline_tokens[token.to_s.to_sym] = true
         end
-
         inline_tokens
+      end
+
+      def generate_file_tokens(file)
+        return [] if file.nil?
+
+        loc_decorator = RubyJard::Decorators::LocDecorator.new
+        # TODO: This is a mess
+        source_decorator = RubyJard::Decorators::SourceDecorator.new(file, 1, 10_000)
+        _spans, tokens = loc_decorator.decorate(source_decorator.codes.join("\n"), file)
+
+        file_tokens = {}
+        tokens.each_slice(2) do |token, kind|
+          next if TOKEN_KIND_MAPS[kind].nil?
+
+          file_tokens[TOKEN_KIND_MAPS[kind]] ||= {}
+          file_tokens[TOKEN_KIND_MAPS[kind]][token.to_s.to_sym] = true
+        end
+        file_tokens
       end
     end
   end
