@@ -52,7 +52,7 @@ module RubyJard
       def span_mark(thread)
         RubyJard::Span.new(
           margin_right: 1,
-          content: thread.status == 'run' ? '►' : '•',
+          content: thread.status == 'run' ? '▸' : '•',
           styles: thread_status_style(thread)
         )
       end
