@@ -172,4 +172,28 @@ RSpec.describe 'Variable screen', integration: true do
       test.stop
     end
   end
+
+  context 'when instance variables come from different sources' do
+    it 'display relevant instance variables' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'record.complicated_instance',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/complicated_instance_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
 end
