@@ -1,0 +1,84 @@
+### START SCREEN ###
+┌ Variables ───────────────────────────────────────────────────────────────────┐
+│  self = #<ModuleX::ClassA:??????????????????>                                │
+│• a (len:24) = "constant_parent_a_called"                                     │
+│  CONSTANT_CLASS_A = "constant_1"                                             │
+│  CONSTANT_MODULE_Y_CALLED (len:24) = "constant_module_y_called"              │
+│  CONSTANT_MODULE_Z_CALLED (len:24) = "constant_module_z_called"              │
+│  CONSTANT_PARENT_A_CALLED (len:24) = "constant_parent_a_called"              │
+│  GLOBAL_CONSTANT_CALLED (len:22) = "global_constant_called"                  │
+│  STDOUT = #<IO:<STDOUT>>                                                     │
+│  TOPLEVEL_BINDING = #<Binding:??????????????????>                            │
+│  $global1 = "global1"                                                        │
+│  $global2 = "global2"                                                        │
+│  $stdout = #<IO:<STDOUT>>                                                    │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Variables ───────────────────────────────────────────────────────────────────┐
+│  self = #<ModuleX::ClassA:??????????????????>                                │
+│  a = "global2"                                                               │
+│  CONSTANT_CLASS_A = "constant_1"                                             │
+│  CONSTANT_MODULE_Y_CALLED (len:24) = "constant_module_y_called"              │
+│  CONSTANT_MODULE_Z_CALLED (len:24) = "constant_module_z_called"              │
+│  CONSTANT_PARENT_A_CALLED (len:24) = "constant_parent_a_called"              │
+│  GLOBAL_CONSTANT_CALLED (len:22) = "global_constant_called"                  │
+│  STDOUT = #<IO:<STDOUT>>                                                     │
+│  TOPLEVEL_BINDING = #<Binding:0x????????????????>                            │
+│  $global1 = "global1"                                                        │
+│  $global2 = "global2"                                                        │
+│  $stdout = #<IO:<STDOUT>>                                                    │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Variables ───────────────────────────────────────────────────────────────────┐
+│  self = ModuleX::ClassA                                                      │
+│  CONSTANT_CLASS_A = "constant_1"                                             │
+│  CONSTANT_MODULE_Y_CALLED (len:24) = "constant_module_y_called"              │
+│  CONSTANT_MODULE_Z_CALLED (len:24) = "constant_module_z_called"              │
+│  CONSTANT_PARENT_A_CALLED (len:24) = "constant_parent_a_called"              │
+│  GLOBAL_CONSTANT_CALLED (len:22) = "global_constant_called"                  │
+│  STDOUT = #<IO:<STDOUT>>                                                     │
+│  TOPLEVEL_BINDING = #<Binding:??????????????????>                            │
+│  $global1 = "global1"                                                        │
+│  $global2 = "global2"                                                        │
+│  $stdout = #<IO:<STDOUT>>                                                    │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>
+
+
+### END SCREEN ###
