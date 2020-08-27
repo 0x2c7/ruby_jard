@@ -19,7 +19,7 @@
 │  42 end                                                    │                                                              │
 │  43                                                        │                                                              │
 ├ Backtrace  1 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 Object in <main> at main_example.rb:36                  │► Thread 1 (run) untitled at main_example.rb:36               │
+│⮕ 0 Object in <main> at main_example.rb:36                  │▸ Thread 1 (run) untitled at main_example.rb:36               │
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -54,7 +54,7 @@ jard >>
 │  17     loop do                                            │                                                              │
 │  18       jard                                             │                                                              │
 ├ Backtrace  2 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 MergeKSortedList in call at merge_k_sorted_list.rb:9    │► Thread 1 (run) untitled at merge_k_sorted_list.rb:9         │
+│⮕ 0 MergeKSortedList in call at merge_k_sorted_list.rb:9    │▸ Thread 1 (run) untitled at merge_k_sorted_list.rb:9         │
 │  1 Object in <main> at main_example.rb:36                  │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -92,7 +92,7 @@ jard >>
 │  21                                                        │                                                              │
 │  22       heap.push(node.next) if node.next                │                                                              │
 ├ Backtrace  2 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 MergeKSortedList in call at merge_k_sorted_list.rb:14   │► Thread 1 (run) untitled at merge_k_sorted_list.rb:14        │
+│⮕ 0 MergeKSortedList in call at merge_k_sorted_list.rb:14   │▸ Thread 1 (run) untitled at merge_k_sorted_list.rb:14        │
 │  1 Object in <main> at main_example.rb:36                  │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -139,7 +139,7 @@ jard >>
 ├ Backtrace  4 frames ───────────────────────────────────────┤                                                              │
 │⮕ 0 MergeKSortedList in call (block)                        │                                                              │
 │    at merge_k_sorted_list.rb:25                            ├ Threads  1 threads ──────────────────────────────────────────┤
-│  1 [c] Kernel in loop at merge_k_sorted_list.rb:17         │► Thread 1 (run) untitled at merge_k_sorted_list.rb:25        │
+│  1 [c] Kernel in loop at merge_k_sorted_list.rb:17         │▸ Thread 1 (run) untitled at merge_k_sorted_list.rb:25        │
 │  2 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  3 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -174,7 +174,7 @@ jard >>
 ├ Backtrace  4 frames ───────────────────────────────────────┤                                                              │
 │⮕ 0 MergeKSortedList in call (block)                        │                                                              │
 │    at merge_k_sorted_list.rb:25                            ├ Threads  1 threads ──────────────────────────────────────────┤
-│  1 [c] Kernel in loop at merge_k_sorted_list.rb:17         │► Thread 1 (run) untitled at merge_k_sorted_list.rb:25        │
+│  1 [c] Kernel in loop at merge_k_sorted_list.rb:17         │▸ Thread 1 (run) untitled at merge_k_sorted_list.rb:25        │
 │  2 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  3 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -214,7 +214,7 @@ jard >>
 ├ Backtrace  4 frames ───────────────────────────────────────┤                                                              │
 │⮕ 0 MergeKSortedList in call (block)                        │                                                              │
 │    at merge_k_sorted_list.rb:18                            ├ Threads  1 threads ──────────────────────────────────────────┤
-│  1 [c] Kernel in loop at merge_k_sorted_list.rb:17         │► Thread 1 (run) untitled at merge_k_sorted_list.rb:18        │
+│  1 [c] Kernel in loop at merge_k_sorted_list.rb:17         │▸ Thread 1 (run) untitled at merge_k_sorted_list.rb:18        │
 │  2 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  3 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -268,7 +268,7 @@ jard >>
 ├ Backtrace  4 frames ───────────────────────────────────────┤                                                              │
 │⮕ 0 MergeKSortedList in call (block)                        │                                                              │
 │    at merge_k_sorted_list.rb:29                            ├ Threads  1 threads ──────────────────────────────────────────┤
-│  1 [c] Kernel in loop at merge_k_sorted_list.rb:17         │► Thread 1 (run) untitled at merge_k_sorted_list.rb:29        │
+│  1 [c] Kernel in loop at merge_k_sorted_list.rb:17         │▸ Thread 1 (run) untitled at merge_k_sorted_list.rb:29        │
 │  2 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  3 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -306,7 +306,7 @@ jard >>
 ├ Backtrace  4 frames ───────────────────────────────────────┤                                                              │
 │⮕ 0 MergeKSortedList in call (block)                        │                                                              │
 │    at merge_k_sorted_list.rb:19                            ├ Threads  1 threads ──────────────────────────────────────────┤
-│  1 [c] Kernel in loop at merge_k_sorted_list.rb:17         │► Thread 1 (run) untitled at merge_k_sorted_list.rb:19        │
+│  1 [c] Kernel in loop at merge_k_sorted_list.rb:17         │▸ Thread 1 (run) untitled at merge_k_sorted_list.rb:19        │
 │  2 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  3 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -341,7 +341,7 @@ jard >>
 │⮕ 0 Heap in pop at heap.rb:10                               │                                                              │
 │  1 MergeKSortedList in call (block)                        │                                                              │
 │    at merge_k_sorted_list.rb:19                            ├ Threads  1 threads ──────────────────────────────────────────┤
-│  2 [c] Kernel in loop at merge_k_sorted_list.rb:17         │► Thread 1 (run) untitled at heap.rb:10                       │
+│  2 [c] Kernel in loop at merge_k_sorted_list.rb:17         │▸ Thread 1 (run) untitled at heap.rb:10                       │
 │  3 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  4 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -385,7 +385,7 @@ jard >>
 │  1 Heap in pop at heap.rb:14                               │                                                              │
 │  2 MergeKSortedList in call (block)                        │                                                              │
 │    at merge_k_sorted_list.rb:19                            ├ Threads  1 threads ──────────────────────────────────────────┤
-│  3 [c] Kernel in loop at merge_k_sorted_list.rb:17         │► Thread 1 (run) untitled at heap.rb:25                       │
+│  3 [c] Kernel in loop at merge_k_sorted_list.rb:17         │▸ Thread 1 (run) untitled at heap.rb:25                       │
 │  4 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  5 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -423,7 +423,7 @@ jard >>
 │  1 Heap in pop at heap.rb:14                               │                                                              │
 │⮕ 2 MergeKSortedList in call (block)                        │                                                              │
 │    at merge_k_sorted_list.rb:19                            ├ Threads  1 threads ──────────────────────────────────────────┤
-│  3 [c] Kernel in loop at merge_k_sorted_list.rb:17         │► Thread 1 (run) untitled at merge_k_sorted_list.rb:19        │
+│  3 [c] Kernel in loop at merge_k_sorted_list.rb:17         │▸ Thread 1 (run) untitled at merge_k_sorted_list.rb:19        │
 │  4 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  5 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -458,7 +458,7 @@ jard >>
 │⮕ 1 Heap in pop at heap.rb:14                               │                                                              │
 │  2 MergeKSortedList in call (block)                        │                                                              │
 │    at merge_k_sorted_list.rb:19                            ├ Threads  1 threads ──────────────────────────────────────────┤
-│  3 [c] Kernel in loop at merge_k_sorted_list.rb:17         │► Thread 1 (run) untitled at heap.rb:14                       │
+│  3 [c] Kernel in loop at merge_k_sorted_list.rb:17         │▸ Thread 1 (run) untitled at heap.rb:14                       │
 │  4 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  5 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -493,7 +493,7 @@ jard >>
 ├ Backtrace  4 frames ───────────────────────────────────────┤                                                              │
 │⮕ 0 MergeKSortedList in call (block)                        │                                                              │
 │    at merge_k_sorted_list.rb:20                            ├ Threads  1 threads ──────────────────────────────────────────┤
-│  1 [c] Kernel in loop at merge_k_sorted_list.rb:17         │► Thread 1 (run) untitled at merge_k_sorted_list.rb:20        │
+│  1 [c] Kernel in loop at merge_k_sorted_list.rb:17         │▸ Thread 1 (run) untitled at merge_k_sorted_list.rb:20        │
 │  2 MergeKSortedList in call at merge_k_sorted_list.rb:17   │                                                              │
 │  3 Object in <main> at main_example.rb:36                  │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤

@@ -19,7 +19,7 @@
 │  15 heap.push(2)                                           │                                                              │
 │  16 heap.push(3)                                           │                                                              │
 ├ Backtrace  1 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 Object in <main> at main_example.rb:7                   │► Thread 1 (run) untitled at main_example.rb:7                │
+│⮕ 0 Object in <main> at main_example.rb:7                   │▸ Thread 1 (run) untitled at main_example.rb:7                │
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -54,7 +54,7 @@ jard >>
 │  15 heap.push(2)                                           │                                                              │
 │  16 heap.push(3)                                           │                                                              │
 ├ Backtrace  1 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 Object in <main> at main_example.rb:8                   │► Thread 1 (run) untitled at main_example.rb:8                │
+│⮕ 0 Object in <main> at main_example.rb:8                   │▸ Thread 1 (run) untitled at main_example.rb:8                │
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -92,7 +92,7 @@ jard >>
 │  23       return [array.first] if array.length == 1        │                                                              │
 │  24                                                        │                                                              │
 ├ Backtrace  2 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│⮕ 0 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│▸ Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
 │  1 Object in <main> at main_example.rb:8                   │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -136,7 +136,7 @@ jard >>
 │  23       return [array.first] if array.length == 1        │                                                              │
 │  24                                                        │                                                              │
 ├ Backtrace  2 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│⮕ 0 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│▸ Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
 │  1 Object in <main> at main_example.rb:9                   │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -177,7 +177,7 @@ jard >>
 │  1 JardMergeSort::Merger in merge                          │                                                              │
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 │  2 JardMergeSort::Sorter in do_sort                        ├ Threads  1 threads ──────────────────────────────────────────┤
-│    in <jard_merge_sort 0.1.0>                              │► Thread 1 (run) untitled at main_example.rb:10               │
+│    in <jard_merge_sort 0.1.0>                              │▸ Thread 1 (run) untitled at main_example.rb:10               │
 │  3 JardMergeSort::Sorter in do_sort                        │                                                              │
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -212,7 +212,7 @@ jard >>
 │  1 JardMergeSort::Merger in merge                          │                                                              │
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 │  2 JardMergeSort::Sorter in do_sort                        ├ Threads  1 threads ──────────────────────────────────────────┤
-│    in <jard_merge_sort 0.1.0>                              │► Thread 1 (run) untitled at main_example.rb:10               │
+│    in <jard_merge_sort 0.1.0>                              │▸ Thread 1 (run) untitled at main_example.rb:10               │
 │  3 JardMergeSort::Sorter in do_sort                        │                                                              │
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -256,7 +256,7 @@ jard >>
 │    in <stdlib:securerandom>                                │??????????????????????????????????????????????????????????????│
 │  1 Object in <main> (block) at main_example.rb:11          │??????????????????????????????????????????????????????????????│
 │  2 JardMergeSort::Merger in merge                          ├ Threads  1 threads ──────────────────────────────────────────┤
-│    in <jard_merge_sort 0.1.0>                              │► Thread 1 (run) untitled in <stdlib:securerandom>            │
+│    in <jard_merge_sort 0.1.0>                              │▸ Thread 1 (run) untitled in <stdlib:securerandom>            │
 │  3 JardMergeSort::Sorter in do_sort                        │                                                              │
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -303,7 +303,7 @@ jard >>
 │  1 JardMergeSort::Merger in merge                          │                                                              │
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 │  2 JardMergeSort::Sorter in do_sort                        ├ Threads  1 threads ──────────────────────────────────────────┤
-│    in <jard_merge_sort 0.1.0>                              │► Thread 1 (run) untitled at main_example.rb:12               │
+│    in <jard_merge_sort 0.1.0>                              │▸ Thread 1 (run) untitled at main_example.rb:12               │
 │  3 JardMergeSort::Sorter in do_sort                        │                                                              │
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -344,7 +344,7 @@ jard >>
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├ Backtrace  2 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 Heap in push at ../../examples/dummy_heap.rb:13         │► Thread 1 (run) untitled at ../../examples/dummy_heap.rb:13  │
+│⮕ 0 Heap in push at ../../examples/dummy_heap.rb:13         │▸ Thread 1 (run) untitled at ../../examples/dummy_heap.rb:13  │
 │  1 Object in <main> at main_example.rb:14                  │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -388,7 +388,7 @@ jard >>
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├ Backtrace  1 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 Object in <main> at main_example.rb:17                  │► Thread 1 (run) untitled at main_example.rb:17               │
+│⮕ 0 Object in <main> at main_example.rb:17                  │▸ Thread 1 (run) untitled at main_example.rb:17               │
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -426,7 +426,7 @@ jard >>
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├ Backtrace  2 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 Heap in push at ../../examples/dummy_heap.rb:13         │► Thread 1 (run) untitled at ../../examples/dummy_heap.rb:13  │
+│⮕ 0 Heap in push at ../../examples/dummy_heap.rb:13         │▸ Thread 1 (run) untitled at ../../examples/dummy_heap.rb:13  │
 │  1 Object in <main> at main_example.rb:17                  │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
