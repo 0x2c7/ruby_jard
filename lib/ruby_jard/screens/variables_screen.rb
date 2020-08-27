@@ -5,26 +5,6 @@ module RubyJard
     ##
     # Display the relevant variables and constants of current context, scopes
     class VariablesScreen < RubyJard::Screen
-      TYPE_SYMBOLS = {
-        # Intertal classes for those values may differ between Ruby versions
-        # For example: Bignum is renamed to Integer
-        # So, it's safer to use discrete value's class as the key for this mapping.
-        true.class => :bool,
-        false.class => :bool,
-        1.class => :int,
-        1.1.class => :flt,
-        1.to_r.class => :rat, # Rational: (1/1)
-        1.to_c.class => :com, # Complex: (1+0i)
-        ''.class => :str,
-        :sym.class => :sym,
-        [].class => :arr,
-        {}.class => :hash,
-        //.class => :reg,
-        (0..0).class => :rng,
-        Class => :cls # Sorry, I lied, Class will never change
-      }.freeze
-      DEFAULT_TYPE_SYMBOL = :var
-
       KINDS = [
         KIND_SELF = :self,
         KIND_LOC  = :local_variable,
@@ -70,6 +50,8 @@ module RubyJard
         @inline_tokens = generate_inline_tokens(@frame_file, @frame_line)
         @file_tokens = generate_file_tokens(@frame_file)
 
+        @inspection_decorator = RubyJard::InspectionDecorator.new
+
         @selected = 0
       end
 
@@ -96,12 +78,7 @@ module RubyJard
               ),
               RubyJard::Column.new(
                 word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
-                spans: [
-                  span_name(variable),
-                  span_size(variable),
-                  RubyJard::Span.new(margin_right: 1, content: '=', styles: :text_secondary),
-                  span_inspection(variable)
-                ]
+                spans: span_content(variable)
               )
             ]
           )
@@ -111,15 +88,37 @@ module RubyJard
       def span_inline(variable)
         if inline?(variable[1])
           RubyJard::Span.new(
-            content: '•',
+            content: '▸',
             styles: :text_selected
           )
         else
+          symbol =
+            if variable[2].is_a?(Array)
+              '◫'
+            elsif variable[2].is_a?(Hash)
+              '◳'
+            elsif variable[2].is_a?(String)
+              ' '
+            elsif @inspection_decorator.primitive?(variable[2])
+              ' '
+            else
+              '☰'
+            end
           RubyJard::Span.new(
-            content: ' ',
+            content: symbol,
             styles: :text_dim
           )
         end
+      end
+
+      def span_content(variable)
+        name = span_name(variable)
+        size = span_size(variable)
+        assignment = RubyJard::Span.new(margin_right: 1, content: '=', styles: :text_secondary)
+        hard_limit =
+          (@layout.width - 2) * 3 - name.content_length - size.content_length - assignment.content_length
+        inspection = span_inspection(variable, hard_limit)
+        [name, size, assignment, inspection].flatten
       end
 
       def span_name(variable)
@@ -147,27 +146,16 @@ module RubyJard
         )
       end
 
-      def span_inspection(variable)
-        inspection =
-          case variable[0]
-          when KIND_SELF
-            variable[2].to_s
-          else
-            variable[2].inspect
-          end
-        # Hard limit: screen area
-        inspection = inspection[0..@layout.height * @layout.width]
-        # TODO: This is just a workable. Should write a decorator to inspect objects accurately
-        ["\n", "\r", "\r\n"].each do |esc|
-          inspection.gsub!(esc, esc.inspect)
+      def span_inspection(variable, hard_limit)
+        case variable[0]
+        when KIND_SELF
+          @inspection_decorator.decorate_object(variable[2], hard_limit)
+        else
+          @inspection_decorator.decorate(variable[2], hard_limit)
         end
+      rescue StandardError => e
         RubyJard::Span.new(
-          content: inspection,
-          styles: :text_dim
-        )
-      rescue StandardError
-        RubyJard::Span.new(
-          content: '<Fail to inspect>',
+          content: "<#{e}>",
           styles: :variable_inspection
         )
       end
