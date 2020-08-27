@@ -92,20 +92,8 @@ module RubyJard
             styles: :text_selected
           )
         else
-          symbol =
-            if variable[2].is_a?(Array)
-              '◫'
-            elsif variable[2].is_a?(Hash)
-              '◳'
-            elsif variable[2].is_a?(String)
-              ' '
-            elsif @inspection_decorator.primitive?(variable[2])
-              ' '
-            else
-              '☰'
-            end
           RubyJard::Span.new(
-            content: symbol,
+            content: @inspection_decorator.decorate_symbol(variable[2]),
             styles: :text_dim
           )
         end

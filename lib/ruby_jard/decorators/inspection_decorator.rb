@@ -168,6 +168,20 @@ module RubyJard
       end
     end
 
+    def decorate_symbol(variable)
+      if variable.is_a?(Array)
+        '◫'
+      elsif variable.is_a?(Hash)
+        '◳'
+      elsif variable.is_a?(String)
+        '⍺'
+      elsif primitive?(variable)
+        ' '
+      else
+        '☰'
+      end
+    end
+
     private
 
     def content_length(spans)
