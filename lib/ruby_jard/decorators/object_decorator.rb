@@ -6,6 +6,7 @@ module RubyJard
 
     def initialize(general_decorator)
       @general_decorator = general_decorator
+      @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(general_decorator)
     end
 
     def decorate_singleline(variable, line_limit:)
@@ -49,15 +50,9 @@ module RubyJard
 
       item_count = 0
       variable.instance_variables.each do |instance_variable|
-        spans << (
-          [
-            RubyJard::Span.new(content: '▸', margin_right: 1, margin_left: 2, styles: :text_dim),
-            RubyJard::Span.new(content: instance_variable.to_s, margin_right: 1, styles: :text_secondary),
-            RubyJard::Span.new(content: '=', margin_right: 1, styles: :text_secondary)
-          ] + @general_decorator.decorate_singleline(
-            variable.instance_variable_get(instance_variable),
-            line_limit: line_limit - instance_variable.to_s.length - 7
-          )
+        spans << @attributes_decorator.pair(
+          instance_variable, instance_variable_get(instance_variable),
+          line_limit: line_limit, process_key: false
         )
 
         item_count += 1

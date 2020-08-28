@@ -5,6 +5,7 @@ require 'ruby_jard/decorators/string_decorator'
 require 'ruby_jard/decorators/hash_decorator'
 require 'ruby_jard/decorators/struct_decorator'
 require 'ruby_jard/decorators/object_decorator'
+require 'ruby_jard/decorators/attributes_decorator'
 
 module RubyJard
   ##

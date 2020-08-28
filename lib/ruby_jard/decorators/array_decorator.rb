@@ -4,31 +4,15 @@ module RubyJard
   class ArrayDecorator
     def initialize(inspection_decorator)
       @inspection_decorator = inspection_decorator
+      @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(inspection_decorator)
     end
 
     def decorate_singleline(variable, line_limit:)
-      spans = [RubyJard::Span.new(content: '[', styles: :text_secondary)]
-
-      width = 1
-      variable.each_with_index do |item, index|
-        item_limit = [line_limit / variable.length, 30].max
-
-        inspection = @inspection_decorator.decorate_singleline(item, line_limit: item_limit)
-        inspection_length = inspection.map(&:content_length).sum
-
-        if index > 0
-          spans << RubyJard::Span.new(content: ',', margin_right: 1, styles: :text_secondary)
-          width += 2
-        end
-
-        if width + inspection_length + 2 >= line_limit
-          spans << RubyJard::Span.new(content: '…', styles: :text_dim)
-          break
-        end
-
-        spans += inspection
-        width += inspection_length
-      end
+      spans = []
+      spans << RubyJard::Span.new(content: '[', styles: :text_secondary)
+      spans += @attributes_decorator.inline_values(
+        variable.each_with_index, total: variable.length, line_limit: line_limit - 2
+      )
       spans << RubyJard::Span.new(content: ']', styles: :text_secondary)
 
       spans
@@ -42,14 +26,8 @@ module RubyJard
         spans = [[RubyJard::Span.new(content: '[', styles: :text_secondary)]]
 
         item_count = 0
-        variable.each_with_index do |item, index|
-          spans << (
-            [
-              RubyJard::Span.new(content: '▸', margin_right: 1, margin_left: 2, styles: :text_dim)
-            ] + @inspection_decorator.decorate_singleline(
-              item, line_limit: line_limit - 4
-            )
-          )
+        variable.each_with_index do |value, index|
+          spans << @attributes_decorator.value(value, line_limit: line_limit)
 
           item_count += 1
           break if index >= lines - 2
