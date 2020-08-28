@@ -51,7 +51,7 @@ module RubyJard
       item_count = 0
       variable.instance_variables.each do |instance_variable|
         spans << @attributes_decorator.pair(
-          instance_variable, instance_variable_get(instance_variable),
+          instance_variable, variable.instance_variable_get(instance_variable),
           line_limit: line_limit, process_key: false
         )
 
