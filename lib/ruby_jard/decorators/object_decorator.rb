@@ -8,86 +8,72 @@ module RubyJard
       @general_decorator = general_decorator
     end
 
-    def decorate(variable, multiline: true, inline_limit:, height:, width:)
-      spans = [object_address(variable, multiline: multiline, inline_limit: inline_limit)]
-
-      if multiline
-        item_count = 0
-        variable.instance_variables.each do |instance_variable|
-          spans << [
-            RubyJard::Span.new(content: '▸', margin_right: 1, margin_left: 2, styles: :text_dim),
-            RubyJard::Span.new(content: instance_variable.to_s, margin_right: 1, styles: :text_secondary),
-            RubyJard::Span.new(content: '=', margin_right: 1, margin_left: 1, styles: :text_secondary),
-            @general_decorator.decorate(
-              variable.instance_variable_get(instance_variable),
-              multiline: false, inline_limit: width - instance_variable.to_s.length - 6,
-              height: height, width: width - 4
-            )
-          ].flatten
-
-          item_count += 1
-          break if item_count > height - 3
-        end
-
-        if variable.instance_variables.length > item_count
-          spans << [
-            RubyJard::Span.new(
-              content: "▸ #{variable.instance_variables.length - item_count} more...",
-              margin_left: 2, styles: :text_dim
-            )
-          ]
-        end
-      end
-      spans
-    end
-
-    private
-
-    def object_address(variable, multiline:, inline_limit:)
+    def decorate_singleline(variable, line_limit:)
       object_address = variable.to_s
       match = object_address.match(OBJECT_ADDRESS_PATTERN)
       if match
-        overview = match[1]
         detail =
-          if match[2].length < inline_limit - overview.length - 3
+          if match[2].length < line_limit - match[1].length - 3
             match[2]
           else
-            match[2][0..inline_limit - overview.length - 6] + '...'
+            match[2][0..line_limit - match[1].length - 4] + '…'
           end
-        style = multiline ? :text_secondary : :text_dim
         [
-          RubyJard::Span.new(
-            content: '#<',
-            styles: style
-          ),
-          RubyJard::Span.new(
-            content: overview,
-            styles: style
-          ),
-          RubyJard::Span.new(
-            content: detail,
-            styles: style
-          ),
-          RubyJard::Span.new(
-            content: '>',
-            styles: style
-          )
+          RubyJard::Span.new(content: '#<', styles: :text_secondary),
+          RubyJard::Span.new(content: match[1], styles: :text_secondary),
+          RubyJard::Span.new(content: detail, styles: :text_secondary),
+          RubyJard::Span.new(content: '>', styles: :text_secondary)
         ]
-      elsif object_address.length <= inline_limit
+      elsif object_address.length <= line_limit
         [
           RubyJard::Span.new(
-            content: object_address[0..inline_limit],
+            content: object_address[0..line_limit],
             styles: :text_secondary
           )
         ]
       else
         [
           RubyJard::Span.new(
-            content: object_address[0..inline_limit - 3] + '...',
+            content: object_address[0..line_limit - 3] + '…>',
             styles: :text_secondary
           )
         ]
       end
+    end
+
+    def decorate_multiline(variable, first_line_limit:, lines:, line_limit:)
+      spans = [decorate_singleline(variable, line_limit: first_line_limit)]
+
+      return spans if !variable.respond_to?(:instance_variables) ||
+                      !variable.respond_to?(:instance_variable_get)
+
+      item_count = 0
+      variable.instance_variables.each do |instance_variable|
+        spans << (
+          [
+            RubyJard::Span.new(content: '▸', margin_right: 1, margin_left: 2, styles: :text_dim),
+            RubyJard::Span.new(content: instance_variable.to_s, margin_right: 1, styles: :text_secondary),
+            RubyJard::Span.new(content: '=', margin_right: 1, styles: :text_secondary)
+          ] + @general_decorator.decorate_singleline(
+            variable.instance_variable_get(instance_variable),
+            line_limit: line_limit - instance_variable.to_s.length - 7
+          )
+        )
+
+        item_count += 1
+        break if item_count >= lines - 2
+      end
+
+      if variable.instance_variables.length > item_count
+        spans << [
+          RubyJard::Span.new(
+            content: "▸ #{variable.instance_variables.length - item_count} more...",
+            margin_left: 2, styles: :text_dim
+          )
+        ]
+      end
+
+      spans
     end
   end
 end

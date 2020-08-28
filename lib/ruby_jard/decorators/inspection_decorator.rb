@@ -34,61 +34,59 @@ module RubyJard
     }.freeze
 
     def initialize
-      @array_decorator = ArrayDecorator.new(self)
-      @string_decorator = StringDecorator.new(self)
-      @hash_decorator = HashDecorator.new(self)
-      @struct_decorator = StructDecorator.new(self)
+      @klass_decorators = [
+        @array_decorator = ArrayDecorator.new(self),
+        @string_decorator = StringDecorator.new(self),
+        @hash_decorator = HashDecorator.new(self),
+        @struct_decorator = StructDecorator.new(self)
+      ]
       @object_decorator = ObjectDecorator.new(self)
     end
 
-    def decorate(variable, multiline: true, inline_limit:, height:, width:)
+    def decorate_singleline(variable, line_limit:)
       if primitive?(variable)
-        [
-          [
-            RubyJard::Span.new(
-              content: variable.inspect[0..inline_limit],
-              styles: PRIMITIVE_TYPES[variable.class.name]
-            )
-          ]
+        return [
+          RubyJard::Span.new(
+            content: variable.inspect[0..line_limit - 1],
+            styles: PRIMITIVE_TYPES[variable.class.name]
+          )
         ]
-      elsif variable.is_a?(Array)
-        @array_decorator.decorate(
+      end
+
+      @klass_decorators.each do |klass_decorator|
+        next unless klass_decorator.match?(variable)
+
+        return klass_decorator.decorate_singleline(variable, line_limit: line_limit)
+      end
+      @object_decorator.decorate_singleline(variable, line_limit: line_limit)
+    end
+
+    def decorate_multiline(variable, first_line_limit:, lines:, line_limit:)
+      if primitive?(variable)
+        return [[
+          RubyJard::Span.new(
+            content: variable.inspect[0..first_line_limit - 1],
+            styles: PRIMITIVE_TYPES[variable.class.name]
+          )
+        ]]
+      end
+
+      @klass_decorators.each do |klass_decorator|
+        next unless klass_decorator.match?(variable)
+
+        return klass_decorator.decorate_multiline(
           variable,
-          multiline: multiline,
-          inline_limit: inline_limit,
-          height: height,
-          width: width
-        )
-      elsif variable.is_a?(Hash)
-        @hash_decorator.decorate(
-          variable,
-          multiline: multiline,
-          inline_limit: inline_limit,
-          height: height,
-          width: width
-        )
-      elsif variable.is_a?(Struct)
-        @struct_decorator.decorate(
-          variable,
-          multiline: multiline,
-          inline_limit: inline_limit,
-          height: height,
-          width: width
-        )
-      elsif variable.is_a?(String)
-        @string_decorator.decorate(
-          variable,
-          inline_limit: inline_limit
-        )
-      else
-        @object_decorator.decorate(
-          variable,
-          multiline: multiline,
-          inline_limit: inline_limit,
-          height: height,
-          width: width
+          first_line_limit: first_line_limit,
+          lines: lines,
+          line_limit: line_limit
         )
       end
+      @object_decorator.decorate_multiline(
+        variable,
+        first_line_limit: first_line_limit,
+        lines: lines,
+        line_limit: line_limit
+      )
     end
 
     private

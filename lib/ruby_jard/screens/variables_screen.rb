@@ -66,9 +66,9 @@ module RubyJard
           size = span_size(variable)
           assignment = RubyJard::Span.new(margin_right: 1, content: '=', styles: :text_secondary)
           inline_limit =
-            (@layout.width - 2) * 3 - name.content_length - size.content_length - assignment.content_length
-          inspections = @inspection_decorator.decorate(
-            variable[2], width: @layout.width - 2, height: 7, inline_limit: inline_limit
+            (@layout.width - 3) * 3 - name.content_length - size.content_length - assignment.content_length
+          inspections = @inspection_decorator.decorate_multiline(
+            variable[2], first_line_limit: inline_limit, line_limit: @layout.width - 3, lines: 7
           )
           base_inspection = inspections.shift
           mark = span_mark(variable, inspections)

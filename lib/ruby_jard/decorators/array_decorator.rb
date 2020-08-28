@@ -2,70 +2,82 @@
 
 module RubyJard
   class ArrayDecorator
-    def initialize(general_decorator)
-      @general_decorator = general_decorator
+    def initialize(inspection_decorator)
+      @inspection_decorator = inspection_decorator
     end
 
-    def decorate(variable, multiline: true, inline_limit:, height:, width:)
-      inline = decorate_inline(variable, inline_limit: inline_limit, height: height, width: width)
-      if inline.map(&:content_length).sum < width
-        [inline]
-      elsif multiline
-        decorate_multiline(variable, height: height, width: width)
-      else
-        [inline]
-      end
-    end
+    def decorate_singleline(variable, line_limit:)
+      spans = [RubyJard::Span.new(content: '[', styles: :text_secondary)]
 
-    private
-
-    def decorate_multiline(variable, height:, width:)
-      spans = [[RubyJard::Span.new(content: '[', styles: :text_dim)]]
-
-      item_count = 0
+      width = 1
       variable.each_with_index do |item, index|
-        spans << [
-          RubyJard::Span.new(content: '▸', margin_right: 1, margin_left: 2, styles: :text_dim),
-          @general_decorator.decorate(
-            item, multiline: false, height: height, width: width - 4, inline_limit: width - 4
-          )
-        ].flatten
-        item_count += 1
-        break if index >= height - 2
+        item_limit = [line_limit / variable.length, 30].max
+
+        inspection = @inspection_decorator.decorate_singleline(item, line_limit: item_limit)
+        inspection_length = inspection.map(&:content_length).sum
+
+        if index > 0
+          spans << RubyJard::Span.new(content: ',', margin_right: 1, styles: :text_secondary)
+          width += 2
+        end
+
+        if width + inspection_length + 2 >= line_limit
+          spans << RubyJard::Span.new(content: '…', styles: :text_dim)
+          break
+        end
+
+        spans += inspection
+        width += inspection_length
       end
-      if variable.length > item_count
-        spans << [
-          RubyJard::Span.new(
-            content: "▸ #{variable.length - item_count} more...]",
-            margin_left: 2, styles: :text_dim
-          )
-        ]
-      end
+      spans << RubyJard::Span.new(content: ']', styles: :text_secondary)
 
       spans
     end
 
-    def decorate_inline(variable, inline_limit:, height:, width:)
-      spans = [RubyJard::Span.new(content: '[', styles: :text_dim)]
-      current_width = 1
-      variable.each_with_index do |item, index|
-        item_limit = [inline_limit / variable.length, 30].max
-        inspection = @general_decorator.decorate(
-          item, multiline: false, inline_limit: item_limit, height: height, width: width
-        )
-        if current_width + inspection.flatten.map(&:content_length).sum > inline_limit - 3
-          spans << RubyJard::Span.new(content: '...', styles: :text_dim)
-          break
+    def decorate_multiline(variable, first_line_limit:, lines:, line_limit:)
+      singleline = decorate_singleline(variable, line_limit: first_line_limit)
+      if singleline.map(&:content_length).sum < line_limit || variable.length <= 1
+        [singleline]
+      else
+        spans = [[RubyJard::Span.new(content: '[', styles: :text_secondary)]]
+
+        item_count = 0
+        variable.each_with_index do |item, index|
+          spans << (
+            [
+              RubyJard::Span.new(content: '▸', margin_right: 1, margin_left: 2, styles: :text_dim)
+            ] + @inspection_decorator.decorate_singleline(
+              item, line_limit: line_limit - 4
+            )
+          )
+
+          item_count += 1
+          break if index >= lines - 2
         end
-        spans << inspection
-        current_width += inspection.flatten.map(&:content_length).sum
-        if index < variable.length - 1
-          spans << RubyJard::Span.new(content: ',', margin_right: 1, styles: :text_dim)
-          current_width += 2
-        end
+
+        spans << last_line(variable.length, item_count)
       end
-      spans << RubyJard::Span.new(content: ']', styles: :text_dim)
-      spans.flatten
+    end
+
+    def match?(variable)
+      variable.is_a?(Array)
+    end
+
+    def last_line(total, item_count)
+      if total > item_count
+        [
+          RubyJard::Span.new(
+            content: "▸ #{total - item_count} more...",
+            margin_left: 2, styles: :text_dim
+          ),
+          RubyJard::Span.new(
+            content: ']',
+            styles: :text_secondary
+          )
+        ]
+      else
+        [RubyJard::Span.new(content: ']', styles: :text_secondary)]
+      end
     end
   end
 end
