@@ -19,11 +19,12 @@ module RubyJard
     # rubocop:enable Lint/UnusedMethodArgument
 
     def decorate_singleline(variable, line_limit:)
+      inspection = variable.inspect[1..-1].chomp!('"')
       str =
-        if variable.length <= line_limit - 2
-          variable
+        if inspection.length < line_limit - 2
+          inspection
         else
-          variable[0..line_limit - 3].inspect[1..-1].chomp!('"')[0..line_limit - 3] + '»'
+          inspection[0..line_limit - 5] + ' »'
         end
       [
 

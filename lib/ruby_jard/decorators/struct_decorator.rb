@@ -39,7 +39,7 @@ module RubyJard
         spans << RubyJard::Span.new(content: '→', margin_right: 1, styles: :text_highlighted)
         width += 3
 
-        spans << value_inspection
+        spans += value_inspection
         width += value_inspection_length
       end
 
@@ -61,9 +61,9 @@ module RubyJard
           member_label = member.to_s
           line << RubyJard::Span.new(content: '▸', margin_right: 1, margin_left: 2, styles: :text_dim)
           line << RubyJard::Span.new(content: member_label, margin_right: 1, styles: :text_secondary)
-          line << RubyJard::Span.new(content: '→', margin_right: 1, margin_left: 1, styles: :text_highlighted)
+          line << RubyJard::Span.new(content: '→', margin_right: 1, styles: :text_highlighted)
           line += @general_decorator.decorate_singleline(
-            variable[member], line_limit: line_limit - 4 - member_label.length
+            variable[member], line_limit: line_limit - 6 - member_label.length
           )
 
           spans << line
@@ -79,7 +79,7 @@ module RubyJard
     def struct_label_spans(variable)
       spans = [RubyJard::Span.new(content: '#<struct ', styles: :text_secondary)]
       unless variable.class.name.nil?
-        spans << RubyJard::Span.new(content: variable.class.name.to_s, styles: :text_dim)
+        spans << RubyJard::Span.new(content: variable.class.name.to_s, styles: :text_secondary)
       end
       spans
     end
