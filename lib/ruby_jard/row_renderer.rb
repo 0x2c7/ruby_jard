@@ -30,7 +30,8 @@ module RubyJard
         @drawing_lines = 1
 
         column.spans.each do |span|
-          render_span(column, span)
+          to_continue = render_span(column, span)
+          break unless to_continue
         end
 
         @original_x += column.width
@@ -61,7 +62,7 @@ module RubyJard
             @x = @original_x
           end
         elsif column.content_width - @drawing_width <= 0
-          return
+          return false
         end
         drawing_content = line_content[0..column.content_width - @drawing_width - 1]
         line_content = line_content[column.content_width - @drawing_width..-1]
@@ -73,11 +74,12 @@ module RubyJard
            !line_content.empty?
           drawing_content[drawing_content.length - ELLIPSIS.length..-1] = ELLIPSIS
           draw_content(drawing_content, span.styles)
-          return
+          return false
         else
           draw_content(drawing_content, span.styles)
         end
       end
+      true
     end
     # rubocop:enable Metrics/MethodLength
 

@@ -144,7 +144,7 @@ module RubyJard
     end
 
     def handle_continue_command(_options = {})
-      RubyJard::ScreenManager.puts '▸ ▸ Program resumed ▸ ▸'
+      RubyJard::ScreenManager.puts '▸▸ Program resumed ▸▸'
     end
 
     def handle_exit_command(_options = {})

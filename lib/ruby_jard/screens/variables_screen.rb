@@ -60,53 +60,77 @@ module RubyJard
       end
 
       def build
-        variables =
+        variables = fetch_relevant_variables
+        @rows = variables.map do |variable|
+          name = span_name(variable)
+          size = span_size(variable)
+          assignment = RubyJard::Span.new(margin_right: 1, content: '=', styles: :text_secondary)
+          inline_limit =
+            (@layout.width - 2) * 3 - name.content_length - size.content_length - assignment.content_length
+          inspections = @inspection_decorator.decorate(
+            variable[2], width: @layout.width - 2, height: 7, inline_limit: inline_limit
+          )
+          base_inspection = inspections.shift
+          mark = span_mark(variable, inspections)
+          [
+            base_row(name, size, assignment, mark, base_inspection),
+            nested_rows(variable, inspections)
+          ]
+        end.flatten.compact
+      end
+
+      def fetch_relevant_variables
+        sort_variables(
           self_variable +
           fetch_local_variables +
           fetch_instance_variables +
           fetch_constants +
           fetch_global_variables
-        variables = sort_variables(variables)
-        @rows = variables.map do |variable|
+        )
+      end
+
+      def base_row(name, size, assignment, mark, base_inspection)
+        RubyJard::Row.new(
+          line_limit: 3,
+          columns: [
+            RubyJard::Column.new(spans: [mark]),
+            RubyJard::Column.new(
+              word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
+              spans: [name, size, assignment, base_inspection].flatten.compact
+            )
+          ]
+        )
+      end
+
+      def nested_rows(variable, nested_inspections)
+        return nil if nested_inspections.empty? || variable[0] == KIND_SELF
+
+        nested_inspections.map do |spans|
           RubyJard::Row.new(
-            line_limit: 3,
+            line_limit: 1,
             columns: [
-              RubyJard::Column.new(
-                spans: [
-                  span_inline(variable)
-                ]
-              ),
+              RubyJard::Column.new,
               RubyJard::Column.new(
                 word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
-                spans: span_content(variable)
+                spans: spans
               )
             ]
           )
         end
       end
 
-      def span_inline(variable)
-        if inline?(variable[1])
+      def span_mark(variable, nested_inspections)
+        if variable[0] == KIND_SELF || nested_inspections.empty?
           RubyJard::Span.new(
-            content: '▸',
-            styles: :text_selected
+            content: ' ',
+            styles: :text_dim
           )
         else
           RubyJard::Span.new(
-            content: @inspection_decorator.decorate_symbol(variable[2]),
+            content: '▾',
             styles: :text_dim
           )
         end
-      end
-
-      def span_content(variable)
-        name = span_name(variable)
-        size = span_size(variable)
-        assignment = RubyJard::Span.new(margin_right: 1, content: '=', styles: :text_secondary)
-        hard_limit =
-          (@layout.width - 2) * 3 - name.content_length - size.content_length - assignment.content_length
-        inspection = span_inspection(variable, hard_limit)
-        [name, size, assignment, inspection].flatten
       end
 
       def span_name(variable)
@@ -135,15 +159,10 @@ module RubyJard
       end
 
       def span_inspection(variable, hard_limit)
-        case variable[0]
-        when KIND_SELF
-          @inspection_decorator.decorate_object(variable[2], hard_limit)
-        else
-          @inspection_decorator.decorate(variable[2], hard_limit)
-        end
-      rescue StandardError => e
+        @inspection_decorator.decorate(variable[2], hard_limit)
+      rescue StandardError
         RubyJard::Span.new(
-          content: "<#{e}>",
+          content: '<Fail to inspect variable>',
           styles: :variable_inspection
         )
       end
@@ -230,9 +249,8 @@ module RubyJard
           .select { |v| relevant?(KIND_GLOB, v) }
         variables.map do |variable|
           [KIND_GLOB, variable, @frame_self.instance_eval(variable.to_s)]
-        rescue NameError => e
-          RubyJard.debug(e)
-          # Ignore
+        rescue NameError
+          nil
         end.compact
       end
 

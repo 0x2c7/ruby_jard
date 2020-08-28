@@ -25,7 +25,7 @@ module RubyJard
     def calculate_content_lengths
       @screen.rows.each do |row|
         row.columns.each do |column|
-          column.content_length = column.spans.map(&:content_length).inject(&:+)
+          column.content_length = column.spans.map(&:content_length).inject(&:+) || 0
         end
       end
     end
