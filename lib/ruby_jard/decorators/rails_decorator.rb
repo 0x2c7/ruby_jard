@@ -15,9 +15,9 @@ module RubyJard
       # Individual Active Record object is trivial. The object is a mapping from a DB
       # entity to Ruby object. It is always in the memory.
       class ActiveRecordBaseDecorator
-        def initialize(general_decorator)
-          @general_decorator = general_decorator
-          @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(general_decorator)
+        def initialize(generic_decorator)
+          @generic_decorator = generic_decorator
+          @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
         end
 
         def match?(variable)
@@ -68,9 +68,9 @@ module RubyJard
       # to_ary events. It is required to check for records loaded before recursively display
       # its children. Hint if the relation is not loaded yet.
       class ActiveRecordRelationDecorator
-        def initialize(general_decorator)
-          @general_decorator = general_decorator
-          @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(general_decorator)
+        def initialize(generic_decorator)
+          @generic_decorator = generic_decorator
+          @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
         end
 
         def match?(variable)
@@ -132,11 +132,11 @@ module RubyJard
         end
       end
 
-      def initialize(general_decorator)
-        @general_decorator = general_decorator
+      def initialize(generic_decorator)
+        @generic_decorator = generic_decorator
         @sub_decorators = [
-          @active_record_base_decorator = ActiveRecordBaseDecorator.new(general_decorator),
-          @active_record_relation_decorator = ActiveRecordRelationDecorator.new(general_decorator)
+          @active_record_base_decorator = ActiveRecordBaseDecorator.new(generic_decorator),
+          @active_record_relation_decorator = ActiveRecordRelationDecorator.new(generic_decorator)
         ]
       end
 

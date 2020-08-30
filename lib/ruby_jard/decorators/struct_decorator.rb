@@ -6,9 +6,9 @@ module RubyJard
     # Decorator for Struct.
     # TODO: This one should handle Open Struct too
     class StructDecorator
-      def initialize(general_decorator)
-        @general_decorator = general_decorator
-        @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(general_decorator)
+      def initialize(generic_decorator)
+        @generic_decorator = generic_decorator
+        @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
       end
 
       def match?(variable)

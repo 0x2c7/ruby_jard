@@ -5,8 +5,8 @@ module RubyJard
     ##
     # A light decorator for a string. String should be escaped, and cut off.
     class StringDecorator
-      def initialize(general_decorator)
-        @general_decorator = general_decorator
+      def initialize(generic_decorator)
+        @generic_decorator = generic_decorator
       end
 
       def match?(variable)

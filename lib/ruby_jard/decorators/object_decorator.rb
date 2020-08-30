@@ -10,9 +10,9 @@ module RubyJard
     class ObjectDecorator
       DEFAULT_INSPECTION_PATTERN = /#<(.*:0x[0-9a-z]+)(.*)>/i.freeze
 
-      def initialize(general_decorator)
-        @general_decorator = general_decorator
-        @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(general_decorator)
+      def initialize(generic_decorator)
+        @generic_decorator = generic_decorator
+        @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
       end
 
       def decorate_singleline(variable, line_limit:)

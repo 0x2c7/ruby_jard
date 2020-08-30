@@ -5,9 +5,9 @@ module RubyJard
     ##
     # Decorate Array data structure, supports singleline and multiline form.
     class ArrayDecorator
-      def initialize(inspection_decorator)
-        @inspection_decorator = inspection_decorator
-        @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(inspection_decorator)
+      def initialize(generic_decorator)
+        @generic_decorator = generic_decorator
+        @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
       end
 
       def decorate_singleline(variable, line_limit:)

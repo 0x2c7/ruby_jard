@@ -10,8 +10,8 @@ module RubyJard
     # - Individual pair
     # This decorator should not be used directly.
     class AttributesDecorator
-      def initialize(general_decorator)
-        @general_decorator = general_decorator
+      def initialize(generic_decorator)
+        @generic_decorator = generic_decorator
       end
 
       def inline_pairs(enum, total:, line_limit:, process_key:, value_proc: nil)
@@ -23,7 +23,7 @@ module RubyJard
           key_inspection = inspect_key(key, item_limit, process_key: process_key)
           key_inspection_length = key_inspection.map(&:content_length).sum
 
-          value_inspection = @general_decorator.decorate_singleline(
+          value_inspection = @generic_decorator.decorate_singleline(
             value_proc.nil? ? value : value_proc.call(key), line_limit: [item_limit - key_inspection_length, 30].max
           )
           value_inspection_length = value_inspection.map(&:content_length).sum
@@ -57,7 +57,7 @@ module RubyJard
         item_limit = total == 0 ? 0 : [line_limit / total / 2, 30].max
 
         enum.each do |value, index|
-          value_inspection = @general_decorator.decorate_singleline(
+          value_inspection = @generic_decorator.decorate_singleline(
             value, line_limit: [item_limit, 30].max
           )
           value_inspection_length = value_inspection.map(&:content_length).sum
@@ -84,7 +84,7 @@ module RubyJard
         spans << indent_span
         width = indent_span.content_length
 
-        value_inspection = @general_decorator.decorate_singleline(
+        value_inspection = @generic_decorator.decorate_singleline(
           value, line_limit: [line_limit - width, 30].max
         )
 
@@ -105,7 +105,7 @@ module RubyJard
         spans << arrow_span
         width += 3
 
-        value_inspection = @general_decorator.decorate_singleline(
+        value_inspection = @generic_decorator.decorate_singleline(
           value, line_limit: [line_limit - width, 30].max
         )
 
@@ -116,7 +116,7 @@ module RubyJard
 
       def inspect_key(key, item_limit, process_key:)
         if process_key
-          @general_decorator.decorate_singleline(key, line_limit: item_limit)
+          @generic_decorator.decorate_singleline(key, line_limit: item_limit)
         else
           [RubyJard::Span.new(content: key.to_s, styles: :text_secondary)]
         end
