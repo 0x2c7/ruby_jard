@@ -61,7 +61,7 @@ jard >>
 │  self = #<ModuleX::ClassA:??????????????????>                                │
 │  @instance_1 = 1                                                             │
 │  @instance_2 = 2                                                             │
-│• @instance_4 = 3                                                             │
+│  @instance_4 = 3                                                             │
 │                                                                              │
 │                                                                              │
 │                                                                              │

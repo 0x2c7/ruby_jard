@@ -7,7 +7,7 @@
 │   5                                                        │  result_c = nil                                              │
 │   6 jard                                                   │  result_d = nil                                              │
 │⮕  7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │  result_e = nil                                              │
-│   8 result_a = sorter.sort { |a, b| a < b }                │• sorter = nil                                                │
+│   8 result_a = sorter.sort { |a, b| a < b }                │  sorter = nil                                                │
 │   9 result_b = sorter.sort { |a, b| a > b }                │                                                              │
 │  10 result_c = sorter.sort { |a, b| a < b }                │                                                              │
 │  11 result_d = sorter.sort { |a, b| SecureRandom.random_byt│                                                              │
@@ -37,14 +37,14 @@ jard >>
 ┌ Source  main_example.rb:8 ─────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
 │   1 require 'ruby_jard'                                    │  self = main                                                 │
 │   2 require 'jard_merge_sort'                              │  heap = nil                                                  │
-│   3 require 'securerandom'                                 │• result_a = nil                                              │
+│   3 require 'securerandom'                                 │  result_a = nil                                              │
 │   4 require_relative '../../examples/dummy_heap.rb'        │  result_b = nil                                              │
 │   5                                                        │  result_c = nil                                              │
 │   6 jard                                                   │  result_d = nil                                              │
 │   7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │  result_e = nil                                              │
-│⮕  8 result_a = sorter.sort { |a, b| a < b }                │• sorter = ???????????????????????????????????????????????????│
-│   9 result_b = sorter.sort { |a, b| a > b }                │  ????????????????????????????????????????????????????????????│
-│  10 result_c = sorter.sort { |a, b| a < b }                │  ????????????????????????????????????????????????????????????│
+│⮕  8 result_a = sorter.sort { |a, b| a < b }                │▾ sorter = #<JardMergeSort::Sorter:??????????????????>        │
+│   9 result_b = sorter.sort { |a, b| a > b }                │    ▸ @array → [1, 2, 3, 4, 5]                                │
+│  10 result_c = sorter.sort { |a, b| a < b }                │    ▸ @merger → #<JardMergeSort::Merger:??????????????????>   │
 │  11 result_d = sorter.sort { |a, b| SecureRandom.random_byt│                                                              │
 │     es  < SecureRandom.random_bytes }                      │                                                              │
 │  12 result_e = sorter.sort { |a, b| SecureRandom.random_byt│                                                              │
@@ -73,11 +73,11 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Source  <jard_merge_sort:lib/jard_merge_sort.rb:16> ───────┬ Variables ───────────────────────────────────────────────────┐
-│   7   ##                                                   │  self = ?????????????????????????????????????????????????????│
-│   8   # Entry point for merge sort algorithm               │• less = ?????????????????????????????????????????????????????│
-│   9   class Sorter                                         │  ????????????????????????????????????????????????????????????│
-│  10     def initialize(array)                              │• @array (len:5) = [1, 2, 3, 4, 5]                            │
-│  11       @array = array                                   │  @merger = ??????????????????????????????????????????????????│
+│   7   ##                                                   │  self = #<JardMergeSort::Sorter:??????????????????>          │
+│   8   # Entry point for merge sort algorithm               │  less = #<Proc:?????????????????? /home/darkwing0711/www/ruby│
+│   9   class Sorter                                         │  _jard/spec/integration/scenario_3/main_example.rb:8>        │
+│  10     def initialize(array)                              │  @array (len:5) = [1, 2, 3, 4, 5]                            │
+│  11       @array = array                                   │  @merger = #<JardMergeSort::Merger:??????????????????>       │
 │  12       @merger = JardMergeSort::Merger.new              │                                                              │
 │  13     end                                                │                                                              │
 │  14                                                        │                                                              │
@@ -117,11 +117,11 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Source  <jard_merge_sort:lib/jard_merge_sort.rb:16> ───────┬ Variables ───────────────────────────────────────────────────┐
-│   7   ##                                                   │  self = ?????????????????????????????????????????????????????│
-│   8   # Entry point for merge sort algorithm               │• less = ?????????????????????????????????????????????????????│
-│   9   class Sorter                                         │  ????????????????????????????????????????????????????????????│
-│  10     def initialize(array)                              │• @array (len:5) = [1, 2, 3, 4, 5]                            │
-│  11       @array = array                                   │  @merger = ??????????????????????????????????????????????????│
+│   7   ##                                                   │  self = #<JardMergeSort::Sorter:??????????????????>          │
+│   8   # Entry point for merge sort algorithm               │  less = #<Proc:?????????????????? /home/darkwing0711/www/ruby│
+│   9   class Sorter                                         │  _jard/spec/integration/scenario_3/main_example.rb:9>        │
+│  10     def initialize(array)                              │  @array (len:5) = [1, 2, 3, 4, 5]                            │
+│  11       @array = array                                   │  @merger = #<JardMergeSort::Merger:??????????????????>       │
 │  12       @merger = JardMergeSort::Merger.new              │                                                              │
 │  13     end                                                │                                                              │
 │  14                                                        │                                                              │
@@ -159,17 +159,17 @@ jard >>
 ### START SCREEN ###
 ┌ Source  main_example.rb:10 ────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
 │   3 require 'securerandom'                                 │  self = main                                                 │
-│   4 require_relative '../../examples/dummy_heap.rb'        │• a = ?                                                       │
-│   5                                                        │• b = ?                                                       │
+│   4 require_relative '../../examples/dummy_heap.rb'        │  a = 1                                                       │
+│   5                                                        │  b = 2                                                       │
 │   6 jard                                                   │  heap = nil                                                  │
 │   7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │  result_a (len:5) = [1, 2, 3, 4, 5]                          │
 │   8 result_a = sorter.sort { |a, b| a < b }                │  result_b (len:5) = [5, 4, 3, 2, 1]                          │
-│   9 result_b = sorter.sort { |a, b| a > b }                │• result_c = nil                                              │
+│   9 result_b = sorter.sort { |a, b| a > b }                │  result_c = nil                                              │
 │⮕ 10 result_c = sorter.sort { |a, b| a < b }                │  result_d = nil                                              │
 │  11 result_d = sorter.sort { |a, b| SecureRandom.random_byt│  result_e = nil                                              │
-│     es  < SecureRandom.random_bytes }                      │• sorter = ???????????????????????????????????????????????????│
-│  12 result_e = sorter.sort { |a, b| SecureRandom.random_byt│  ????????????????????????????????????????????????????????????│
-│     es  < SecureRandom.random_bytes }                      │  ????????????????????????????????????????????????????????????│
+│     es  < SecureRandom.random_bytes }                      │▾ sorter = #<JardMergeSort::Sorter:??????????????????>        │
+│  12 result_e = sorter.sort { |a, b| SecureRandom.random_byt│    ▸ @array → [1, 2, 3, 4, 5]                                │
+│     es  < SecureRandom.random_bytes }                      │    ▸ @merger → #<JardMergeSort::Merger:??????????????????>   │
 │  13 heap = Heap.new                                        │                                                              │
 │  14 heap.push(1)                                           │                                                              │
 ├ Backtrace  6 frames ───────────────────────────────────────┤                                                              │
@@ -194,17 +194,17 @@ jard >>
 ### START SCREEN ###
 ┌ Source  main_example.rb:10 ────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
 │   3 require 'securerandom'                                 │  self = main                                                 │
-│   4 require_relative '../../examples/dummy_heap.rb'        │• a = ?                                                       │
-│   5                                                        │• b = ?                                                       │
+│   4 require_relative '../../examples/dummy_heap.rb'        │  a = 4                                                       │
+│   5                                                        │  b = 5                                                       │
 │   6 jard                                                   │  heap = nil                                                  │
 │   7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │  result_a (len:5) = [1, 2, 3, 4, 5]                          │
 │   8 result_a = sorter.sort { |a, b| a < b }                │  result_b (len:5) = [5, 4, 3, 2, 1]                          │
-│   9 result_b = sorter.sort { |a, b| a > b }                │• result_c = nil                                              │
+│   9 result_b = sorter.sort { |a, b| a > b }                │  result_c = nil                                              │
 │⮕ 10 result_c = sorter.sort { |a, b| a < b }                │  result_d = nil                                              │
 │  11 result_d = sorter.sort { |a, b| SecureRandom.random_byt│  result_e = nil                                              │
-│     es  < SecureRandom.random_bytes }                      │• sorter = ???????????????????????????????????????????????????│
-│  12 result_e = sorter.sort { |a, b| SecureRandom.random_byt│  ????????????????????????????????????????????????????????????│
-│     es  < SecureRandom.random_bytes }                      │  ????????????????????????????????????????????????????????????│
+│     es  < SecureRandom.random_bytes }                      │▾ sorter = #<JardMergeSort::Sorter:??????????????????>        │
+│  12 result_e = sorter.sort { |a, b| SecureRandom.random_byt│    ▸ @array → [1, 2, 3, 4, 5]                                │
+│     es  < SecureRandom.random_bytes }                      │    ▸ @merger → #<JardMergeSort::Merger:??????????????????>   │
 │  13 heap = Heap.new                                        │                                                              │
 │  14 heap.push(1)                                           │                                                              │
 ├ Backtrace  7 frames ───────────────────────────────────────┤                                                              │
@@ -285,17 +285,17 @@ jard >>
 ### START SCREEN ###
 ┌ Source  main_example.rb:12 ────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
 │   5                                                        │  self = main                                                 │
-│   6 jard                                                   │• a = ?                                                       │
-│   7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │• b = ?                                                       │
+│   6 jard                                                   │  a = ?                                                       │
+│   7 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │  b = ?                                                       │
 │   8 result_a = sorter.sort { |a, b| a < b }                │  heap = nil                                                  │
 │   9 result_b = sorter.sort { |a, b| a > b }                │  result_a (len:5) = [1, 2, 3, 4, 5]                          │
 │  10 result_c = sorter.sort { |a, b| a < b }                │  result_b (len:5) = [5, 4, 3, 2, 1]                          │
 │  11 result_d = sorter.sort { |a, b| SecureRandom.random_byt│  result_c (len:5) = [1, 2, 3, 4, 5]                          │
 │     es  < SecureRandom.random_bytes }                      │  result_d (len:5) = ???????????????                          │
-│⮕ 12 result_e = sorter.sort { |a, b| SecureRandom.random_byt│• result_e = nil                                              │
-│     es  < SecureRandom.random_bytes }                      │• sorter = ???????????????????????????????????????????????????│
-│  13 heap = Heap.new                                        │  ????????????????????????????????????????????????????????????│
-│  14 heap.push(1)                                           │  ????????????????????????????????????????????????????????????│
+│⮕ 12 result_e = sorter.sort { |a, b| SecureRandom.random_byt│  result_e = nil                                              │
+│     es  < SecureRandom.random_bytes }                      │▾ sorter = #<JardMergeSort::Sorter:??????????????????>        │
+│  13 heap = Heap.new                                        │    ▸ @array → [1, 2, 3, 4, 5]                                │
+│  14 heap.push(1)                                           │    ▸ @merger → #<JardMergeSort::Merger:??????????????????>   │
 │  15 heap.push(2)                                           │                                                              │
 │  16 heap.push(3)                                           │                                                              │
 ├ Backtrace  6 frames ───────────────────────────────────────┤                                                              │
@@ -325,9 +325,9 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Source  ../../examples/dummy_heap.rb:13 ───────────────────┬ Variables ───────────────────────────────────────────────────┐
-│   4   def initialize                                       │  self = ??????????????????????????                           │
-│   5     @storage = []                                      │• node = 1                                                    │
-│   6   end                                                  │• @storage = []                                               │
+│   4   def initialize                                       │  self = #<Heap:?????????????????? @storage → []>             │
+│   5     @storage = []                                      │  node = 1                                                    │
+│   6   end                                                  │  @storage = []                                               │
 │   7                                                        │                                                              │
 │   8   def pop                                              │                                                              │
 │   9     @storage.shift                                     │                                                              │
@@ -370,15 +370,15 @@ jard >>
 ### START SCREEN ###
 ┌ Source  main_example.rb:17 ────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
 │   8 result_a = sorter.sort { |a, b| a < b }                │  self = main                                                 │
-│   9 result_b = sorter.sort { |a, b| a > b }                │• heap = ?????????????????????????????????????????????        │
+│   9 result_b = sorter.sort { |a, b| a > b }                │  heap = #<Heap:?????????????????? @storage → [3, 2, 1]>      │
 │  10 result_c = sorter.sort { |a, b| a < b }                │  result_a (len:5) = [1, 2, 3, 4, 5]                          │
 │  11 result_d = sorter.sort { |a, b| SecureRandom.random_byt│  result_b (len:5) = [5, 4, 3, 2, 1]                          │
 │     es  < SecureRandom.random_bytes }                      │  result_c (len:5) = [1, 2, 3, 4, 5]                          │
 │  12 result_e = sorter.sort { |a, b| SecureRandom.random_byt│  result_d (len:5) = ???????????????                          │
 │     es  < SecureRandom.random_bytes }                      │  result_e (len:5) = ???????????????                          │
-│  13 heap = Heap.new                                        │  sorter = ???????????????????????????????????????????????????│
-│  14 heap.push(1)                                           │  ????????????????????????????????????????????????????????????│
-│  15 heap.push(2)                                           │  ????????????????????????????????????????????????????????????│
+│  13 heap = Heap.new                                        │▾ sorter = #<JardMergeSort::Sorter:??????????????????>        │
+│  14 heap.push(1)                                           │    ▸ @array → [1, 2, 3, 4, 5]                                │
+│  15 heap.push(2)                                           │    ▸ @merger → #<JardMergeSort::Merger:??????????????????>   │
 │  16 heap.push(3)                                           │                                                              │
 │⮕ 17 heap.push(SecureRandom.random_bytes(1))                │                                                              │
 │                                                            │                                                              │
@@ -407,9 +407,9 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Source  ../../examples/dummy_heap.rb:13 ───────────────────┬ Variables ───────────────────────────────────────────────────┐
-│   4   def initialize                                       │  self = ?????????????????????????????????????????????????????│
-│   5     @storage = []                                      │• node = ?????????????????????????????????????????????????????│
-│   6   end                                                  │• @storage (len:3) = [3, 2, 1]                                │
+│   4   def initialize                                       │  self = #<Heap:?????????????????? @storage → [3, 2, 1]>      │
+│   5     @storage = []                                      │  node = ?????????????????????????????????????????????????????│
+│   6   end                                                  │  @storage (len:3) = [3, 2, 1]                                │
 │   7                                                        │                                                              │
 │   8   def pop                                              │                                                              │
 │   9     @storage.shift                                     │                                                              │

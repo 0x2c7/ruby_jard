@@ -1,11 +1,11 @@
 ### START SCREEN ###
 ┌ Variables ───────────────────────────────────────────────────────────────────┐
-│  self = #<Fibonaci:0x????????????????>                                       │
+│  self = #<Fibonaci:?????????????????? @a → 1, @b → 1, @other → 5>            │
 │  index = 3                                                                   │
-│• k = nil                                                                     │
+│  k = nil                                                                     │
 │  n = 50                                                                      │
-│• @a = 1                                                                      │
-│• @b = 1                                                                      │
+│  @a = 1                                                                      │
+│  @b = 1                                                                      │
 │  @other = 5                                                                  │
 │  MAX_SUPPORTED = 64                                                          │
 │                                                                              │
@@ -29,12 +29,12 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Variables ───────────────────────────────────────────────────────────────────┐
-│  self = #<Fibonaci:0x????????????????>                                       │
+│  self = #<Fibonaci:?????????????????? @a → 1, @b → 2, @other → 5>            │
 │  index = 4                                                                   │
-│• k = nil                                                                     │
+│  k = nil                                                                     │
 │  n = 50                                                                      │
-│• @a = 1                                                                      │
-│• @b = 2                                                                      │
+│  @a = 1                                                                      │
+│  @b = 2                                                                      │
 │  @other = 5                                                                  │
 │  MAX_SUPPORTED = 64                                                          │
 │                                                                              │
@@ -58,12 +58,12 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Variables ───────────────────────────────────────────────────────────────────┐
-│  self = #<Fibonaci:0x????????????????>                                       │
+│  self = #<Fibonaci:?????????????????? @a → 2, @b → 3, @other → 5>            │
 │  index = 5                                                                   │
-│• k = nil                                                                     │
+│  k = nil                                                                     │
 │  n = 50                                                                      │
-│• @a = 2                                                                      │
-│• @b = 3                                                                      │
+│  @a = 2                                                                      │
+│  @b = 3                                                                      │
 │  @other = 5                                                                  │
 │  MAX_SUPPORTED = 64                                                          │
 │                                                                              │

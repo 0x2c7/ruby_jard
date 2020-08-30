@@ -2,7 +2,7 @@
 ┌ Variables ───────────────────────────────────────────────────────────────────┐
 │  self = #<ProductView::ProductObject:0x????????????????>                     │
 │  capitalized_name = "BITCOIN"                                                │
-│• price = 5710                                                                │
+│  price = 5710                                                                │
 │  _erbout (len:39) = "\n<h1>BITCOIN</h1>\n<ul>\n  \n    \n    <li>"           │
 │  @name = "Bitcoin"                                                           │
 │  @prices (len:2) = [5710, 5810]                                              │
