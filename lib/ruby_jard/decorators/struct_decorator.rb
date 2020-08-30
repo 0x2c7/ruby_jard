@@ -30,11 +30,13 @@ module RubyJard
       if singleline.map(&:content_length).sum < line_limit || variable.length <= 1
         [singleline]
       else
-        spans = [RubyJard::Span.new(content: '#<struct ', styles: :text_secondary)]
+        spans = []
+        start = [RubyJard::Span.new(content: '#<struct ', styles: :text_secondary)]
         unless variable.class.name.nil?
-          spans << RubyJard::Span.new(content: variable.class.name.to_s, styles: :text_secondary)
+          start << RubyJard::Span.new(content: variable.class.name.to_s, styles: :text_secondary)
         end
-        spans << RubyJard::Span.new(content: '>', styles: :text_secondary)
+        start << RubyJard::Span.new(content: '>', styles: :text_secondary)
+        spans << start
 
         item_count = 0
         variable.members.each_with_index do |member, index|
