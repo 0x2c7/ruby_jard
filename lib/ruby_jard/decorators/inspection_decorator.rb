@@ -6,6 +6,7 @@ require 'ruby_jard/decorators/hash_decorator'
 require 'ruby_jard/decorators/struct_decorator'
 require 'ruby_jard/decorators/object_decorator'
 require 'ruby_jard/decorators/attributes_decorator'
+require 'ruby_jard/decorators/rails_decorator'
 
 module RubyJard
   ##
@@ -39,7 +40,8 @@ module RubyJard
         @array_decorator = ArrayDecorator.new(self),
         @string_decorator = StringDecorator.new(self),
         @hash_decorator = HashDecorator.new(self),
-        @struct_decorator = StructDecorator.new(self)
+        @struct_decorator = StructDecorator.new(self),
+        @rails_decorator = RailsDecorator.new(self)
       ]
       @object_decorator = ObjectDecorator.new(self)
     end
@@ -57,7 +59,8 @@ module RubyJard
       @klass_decorators.each do |klass_decorator|
         next unless klass_decorator.match?(variable)
 
-        return klass_decorator.decorate_singleline(variable, line_limit: line_limit)
+        spans = klass_decorator.decorate_singleline(variable, line_limit: line_limit)
+        return spans unless spans.nil?
       end
       @object_decorator.decorate_singleline(variable, line_limit: line_limit)
     end
@@ -75,12 +78,13 @@ module RubyJard
       @klass_decorators.each do |klass_decorator|
         next unless klass_decorator.match?(variable)
 
-        return klass_decorator.decorate_multiline(
+        spans = klass_decorator.decorate_multiline(
           variable,
           first_line_limit: first_line_limit,
           lines: lines,
           line_limit: line_limit
         )
+        return spans unless spans.nil?
       end
       @object_decorator.decorate_multiline(
         variable,
