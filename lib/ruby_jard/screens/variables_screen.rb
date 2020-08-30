@@ -158,15 +158,6 @@ module RubyJard
         )
       end
 
-      def span_inspection(variable, hard_limit)
-        @inspection_decorator.decorate(variable[2], hard_limit)
-      rescue StandardError
-        RubyJard::Span.new(
-          content: '<Fail to inspect variable>',
-          styles: :variable_inspection
-        )
-      end
-
       private
 
       def fetch_local_variables

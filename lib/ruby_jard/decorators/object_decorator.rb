@@ -2,7 +2,7 @@
 
 module RubyJard
   class ObjectDecorator
-    OBJECT_ADDRESS_PATTERN = /#<(.*)(:0x[0-9]+.*)>/i.freeze
+    RAW_INSPECTION_PATTERN = /#<(.*)(:0x[0-9]+.*)>/i.freeze
 
     def initialize(general_decorator)
       @general_decorator = general_decorator
@@ -10,8 +10,8 @@ module RubyJard
     end
 
     def decorate_singleline(variable, line_limit:)
-      object_address = variable.to_s
-      match = object_address.match(OBJECT_ADDRESS_PATTERN)
+      raw_inspection = inspect_object(variable)
+      match = raw_inspection.match(RAW_INSPECTION_PATTERN)
       if match
         detail =
           if match[2].length < line_limit - match[1].length - 3
@@ -25,17 +25,17 @@ module RubyJard
           RubyJard::Span.new(content: detail, styles: :text_secondary),
           RubyJard::Span.new(content: '>', styles: :text_secondary)
         ]
-      elsif object_address.length <= line_limit
+      elsif raw_inspection.length <= line_limit
         [
           RubyJard::Span.new(
-            content: object_address[0..line_limit],
+            content: raw_inspection[0..line_limit],
             styles: :text_secondary
           )
         ]
       else
         [
           RubyJard::Span.new(
-            content: object_address[0..line_limit - 3] + '…>',
+            content: raw_inspection[0..line_limit - 3] + '…>',
             styles: :text_secondary
           )
         ]
@@ -69,6 +69,17 @@ module RubyJard
       end
 
       spans
+    end
+
+    private
+
+    def inspect_object(variable)
+      if Kernel.method(:method).unbind.bind(variable).call(:inspect).owner == ::Kernel
+        variable.to_s
+      else
+        # Respect custom inspect implementation
+        variable.inspect
+      end
     end
   end
 end
