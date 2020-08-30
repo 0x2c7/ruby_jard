@@ -1,5 +1,14 @@
+# frozen_string_literal: true
+
 module RubyJard
   module Decorators
+    ##
+    # Decorate collection data structure. Support:
+    # - Collection of values
+    # - Collection of key-value pairs
+    # - Individual value
+    # - Individual pair
+    # This decorator should not be used directly.
     class AttributesDecorator
       def initialize(general_decorator)
         @general_decorator = general_decorator

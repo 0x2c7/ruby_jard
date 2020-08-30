@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module RubyJard
+  ##
+  # A light decorator for a string. String should be escaped, and cut off.
   class StringDecorator
     def initialize(general_decorator)
       @general_decorator = general_decorator

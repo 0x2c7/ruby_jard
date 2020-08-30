@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module RubyJard
+  ##
+  # Default decorator for non-primitive data structure. It is aimed to replace default `inspect`.
+  # If a variable re-implement `#inspect`, it hornors this decision, but still try to
+  # parse the result.
+  # Otherwise, it use `Kernel#to_s`, and try to push instance variables into the result.
   class ObjectDecorator
     DEFAULT_INSPECTION_PATTERN = /#<(.*:0x[0-9a-z]+)(.*)>/i.freeze
 

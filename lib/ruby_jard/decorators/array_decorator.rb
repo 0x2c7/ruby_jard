@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module RubyJard
+  ##
+  # Decorate Array data structure, supports singleline and multiline form.
   class ArrayDecorator
     def initialize(inspection_decorator)
       @inspection_decorator = inspection_decorator

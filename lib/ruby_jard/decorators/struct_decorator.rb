@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module RubyJard
+  ##
+  # Decorator for Struct.
+  # TODO: This one should handle Open Struct too
   class StructDecorator
     def initialize(general_decorator)
       @general_decorator = general_decorator

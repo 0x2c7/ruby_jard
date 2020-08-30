@@ -1,7 +1,18 @@
 # frozen_string_literal: true
 
 module RubyJard
+  ##
+  # A collection of rails-specific decorators.
+  # Why?
+  # Because Rails is magic, and it is like stepping on a minefield. Rails objects
+  # can trigger side-effects (like calling database queries, or even API queries).
+  # And from the end-user perspective, Rails' internal variables are useless. They
+  # care more about database attributes, which requires some extra steps to display
+  # if I don't want to use `#inspect`.
   class RailsDecorator
+    ##
+    # Individual Active Record object is trivial. The object is a mapping from a DB
+    # entity to Ruby object. It is always in the memory.
     class ActiveRecordBaseDecorator
       def initialize(general_decorator)
         @general_decorator = general_decorator
@@ -51,6 +62,10 @@ module RubyJard
       end
     end
 
+    ##
+    # When creating an active record relation, Rails won't trigger any SQL query, until
+    # to_ary events. It is required to check for records loaded before recursively display
+    # its children. Hint if the relation is not loaded yet.
     class ActiveRecordRelationDecorator
       def initialize(general_decorator)
         @general_decorator = general_decorator
