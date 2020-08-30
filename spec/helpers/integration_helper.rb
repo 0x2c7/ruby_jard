@@ -157,8 +157,12 @@ class JardIntegrationTest
 
   def record_actual_screen(screen)
     @actual_record_file.puts '### START SCREEN ###'
-    @actual_record_file.puts screen
+    @actual_record_file.puts mark_screen(screen)
     @actual_record_file.puts '### END SCREEN ###'
+  end
+
+  def mark_screen(screen)
+    screen.gsub(/0x[0-9a-z]{10,}/i) { |found| '?' * found.length }
   end
 
   def parse_expected_record(path)
