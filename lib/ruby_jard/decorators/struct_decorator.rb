@@ -12,10 +12,13 @@ module RubyJard
     end
 
     def decorate_singleline(variable, line_limit:)
-      spans = struct_label_spans(variable)
+      spans = [RubyJard::Span.new(content: '#<struct ', styles: :text_secondary)]
+      unless variable.class.name.nil?
+        spans << RubyJard::Span.new(content: variable.class.name.to_s, styles: :text_secondary)
+      end
       spans += @attributes_decorator.inline_pairs(
         variable.members.each_with_index,
-        total: variable.length, line_limit: line_limit - 2, process_key: false,
+        total: variable.length, line_limit: line_limit - spans.map(&:content_length).sum - 1, process_key: false,
         value_proc: ->(key) { variable[key] }
       )
       spans << RubyJard::Span.new(content: '>', styles: :text_secondary)
@@ -27,7 +30,11 @@ module RubyJard
       if singleline.map(&:content_length).sum < line_limit || variable.length <= 1
         [singleline]
       else
-        spans = [struct_label_spans(variable)]
+        spans = [RubyJard::Span.new(content: '#<struct ', styles: :text_secondary)]
+        unless variable.class.name.nil?
+          spans << RubyJard::Span.new(content: variable.class.name.to_s, styles: :text_secondary)
+        end
+        spans << RubyJard::Span.new(content: '>', styles: :text_secondary)
 
         item_count = 0
         variable.members.each_with_index do |member, index|
@@ -43,15 +50,6 @@ module RubyJard
     end
 
     private
-
-    def struct_label_spans(variable)
-      spans = [RubyJard::Span.new(content: '#<struct ', styles: :text_secondary)]
-      unless variable.class.name.nil?
-        spans << RubyJard::Span.new(content: variable.class.name.to_s, styles: :text_secondary)
-      end
-      spans << RubyJard::Span.new(content: '>', styles: :text_secondary)
-      spans
-    end
 
     def last_line(total, item_count)
       [
