@@ -105,7 +105,7 @@ module RubyJard
         [
           RubyJard::Span.new(content: '#<', styles: :text_secondary),
           RubyJard::Span.new(content: match[1], styles: :text_secondary),
-          RubyJard::Span.new(content: detail, styles: :text_secondary),
+          RubyJard::Span.new(content: detail, styles: :text_dim),
           RubyJard::Span.new(content: '>', styles: :text_secondary)
         ]
       elsif raw_inspection.length <= line_limit

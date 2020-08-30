@@ -12,7 +12,7 @@ module RubyJard
     end
 
     def decorate_singleline(variable, line_limit:)
-      spans = [RubyJard::Span.new(content: '#<struct ', styles: :text_secondary)]
+      spans = [RubyJard::Span.new(content: '#<struct ', styles: :text_dim)]
       unless variable.class.name.nil?
         spans << RubyJard::Span.new(content: variable.class.name.to_s, styles: :text_secondary)
       end
@@ -21,7 +21,7 @@ module RubyJard
         total: variable.length, line_limit: line_limit - spans.map(&:content_length).sum - 1, process_key: false,
         value_proc: ->(key) { variable[key] }
       )
-      spans << RubyJard::Span.new(content: '>', styles: :text_secondary)
+      spans << RubyJard::Span.new(content: '>', styles: :text_dim)
     end
 
     def decorate_multiline(variable, first_line_limit:, lines:, line_limit:)
@@ -31,11 +31,11 @@ module RubyJard
         [singleline]
       else
         spans = []
-        start = [RubyJard::Span.new(content: '#<struct ', styles: :text_secondary)]
+        start = [RubyJard::Span.new(content: '#<struct ', styles: :text_dim)]
         unless variable.class.name.nil?
           start << RubyJard::Span.new(content: variable.class.name.to_s, styles: :text_secondary)
         end
-        start << RubyJard::Span.new(content: '>', styles: :text_secondary)
+        start << RubyJard::Span.new(content: '>', styles: :text_dim)
         spans << start
 
         item_count = 0
