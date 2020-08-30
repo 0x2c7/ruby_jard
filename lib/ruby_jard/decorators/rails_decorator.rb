@@ -40,7 +40,12 @@ module RubyJard
             item_count += 1
             break if index >= lines - 2
           end
-          spans << last_line(variable.length, item_count) if variable.attributes.length > item_count
+          if variable.attributes.length > item_count
+            spans << [RubyJard::Span.new(
+              content: "▸ #{variable.attributes.length - item_count} more...",
+              margin_left: 2, styles: :text_dim
+            )]
+          end
           spans
         end
       end
