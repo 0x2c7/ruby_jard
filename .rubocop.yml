@@ -79,6 +79,10 @@ Style/Alias:
   EnforcedStyle: prefer_alias_method
 Style/EvalWithLocation:
   Enabled: false
+Style/NilComparison:
+  Enabled: false
+Style/NonNilCheck:
+  Enabled: false
 
 RSpec/MultipleExpectations:
   Enabled: false
