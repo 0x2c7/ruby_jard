@@ -27,7 +27,7 @@ module RubyJard
         singleline = decorate_singleline(variable, line_limit: first_line_limit)
         return [singleline] if singleline.map(&:content_length).sum < line_limit
 
-        spans = [excerpt(call_to_s(variable), line_limit: first_line_limit)]
+        spans = [decorate_native_inspection(variable, line_limit: first_line_limit, with_children: false)]
 
         item_count = 0
         instance_variables = RubyJard::Reflection.call_instance_variables(variable)
@@ -55,36 +55,30 @@ module RubyJard
 
       private
 
-      def call_to_s(variable)
-        if RubyJard::Reflection.call_respond_to?(variable, :to_s)
-          variable.to_s
-        else
-          RubyJard::Reflection.call_to_s(variable)
-        end
-      end
-
       def native_inspect?(variable)
         return true unless RubyJard::Reflection.call_respond_to?(variable, :inspect)
 
         RubyJard::Reflection.bind_call(::Kernel, :method, variable, :inspect).owner == ::Kernel
       end
 
-      def decorate_native_inspection(variable, line_limit:)
+      def decorate_native_inspection(variable, line_limit:, with_children: true)
         raw_inspection = RubyJard::Reflection.call_to_s(variable)
         match = raw_inspection.match(DEFAULT_INSPECTION_PATTERN)
 
         if match
           instance_variables = RubyJard::Reflection.call_instance_variables(variable)
-          padding = instance_variables.empty? ? 0 : 1
           spans = [
             RubyJard::Span.new(content: '#<', styles: :text_secondary),
-            RubyJard::Span.new(content: match[1], margin_right: padding, styles: :text_secondary)
+            RubyJard::Span.new(content: match[1], styles: :text_secondary)
           ]
-          spans += @attributes_decorator.inline_pairs(
-            instance_variables.each_with_index, total: instance_variables.length,
-            line_limit: line_limit - spans.map(&:content_length).sum - 1,
-            process_key: false, value_proc: ->(key) { RubyJard::Reflection.call_instance_variable_get(variable, key) }
-          )
+          if with_children && !instance_variables.empty?
+            spans << RubyJard::Span.new(content: ' ', styles: :text_secondary)
+            spans += @attributes_decorator.inline_pairs(
+              instance_variables.each_with_index, total: instance_variables.length,
+              line_limit: line_limit - spans.map(&:content_length).sum - 1,
+              process_key: false, value_proc: ->(key) { RubyJard::Reflection.call_instance_variable_get(variable, key) }
+            )
+          end
           spans << RubyJard::Span.new(content: '>', styles: :text_secondary)
           spans
         elsif raw_inspection.length <= line_limit
@@ -95,10 +89,7 @@ module RubyJard
       end
 
       def decorate_custom_inspection(variable, line_limit:)
-        excerpt(variable.inspect, line_limit: line_limit)
-      end
-
-      def excerpt(raw_inspection, line_limit:)
+        raw_inspection = variable.inspect
         match = raw_inspection.match(DEFAULT_INSPECTION_PATTERN)
         if match
           detail =
@@ -114,19 +105,9 @@ module RubyJard
             RubyJard::Span.new(content: '>', styles: :text_secondary)
           ]
         elsif raw_inspection.length <= line_limit
-          [
-            RubyJard::Span.new(
-              content: raw_inspection[0..line_limit],
-              styles: :text_secondary
-            )
-          ]
+          [RubyJard::Span.new(content: raw_inspection[0..line_limit], styles: :text_secondary)]
         else
-          [
-            RubyJard::Span.new(
-              content: raw_inspection[0..line_limit - 3] + '…>',
-              styles: :text_secondary
-            )
-          ]
+          [RubyJard::Span.new(content: raw_inspection[0..line_limit - 3] + '…>', styles: :text_secondary)]
         end
       end
     end
