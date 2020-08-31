@@ -1,0 +1,87 @@
+### START SCREEN ###
+┌ Backtrace  1 frames ─────────────────────────────────────────────────────────┐
+│⮕ 0 Object in <main> at ../../../examples/basic_object_example.rb:22          │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  2 frames ─────────────────────────────────────────────────────────┐
+│⮕ 0 Proxy in method at ../../../examples/basic_object_example.rb:12           │
+│  1 Object in <main> at ../../../examples/basic_object_example.rb:22          │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  2 frames ─────────────────────────────────────────────────────────┐
+│⮕ 0 Proxy in uri at ../../../examples/basic_object_example.rb:16              │
+│  1 Object in <main> at ../../../examples/basic_object_example.rb:23          │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###

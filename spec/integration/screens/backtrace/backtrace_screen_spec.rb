@@ -143,4 +143,23 @@ RSpec.describe 'Backtrace screen', integration: true do
       test.stop
     end
   end
+
+  context 'when working with Basic Object' do
+    it 'display correct backtrace inside basic object' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'record.basic_object',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/basic_object_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('step', :Enter)
+      test.assert_screen
+      test.send_keys('step', :Enter)
+      test.send_keys('step', :Enter)
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
 end
