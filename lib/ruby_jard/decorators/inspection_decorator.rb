@@ -30,11 +30,11 @@ module RubyJard
         1.to_r.class.name => :literal, # Rational: (1/1)
         1.to_c.class.name => :literal, # Complex: (1+0i)
         :sym.class.name => :literal,
-        //.class.name => :literal,
+        //.class.name => :literal, # TODO: create a new class to handle range
         (0..0).class.name => :literal,
         nil.class.name => :text_dim,
         Class.class.name => :text_secondary, # Sorry, I lied, Class will never change
-        Proc.name => :text_secondary
+        Proc.name => :text_secondary # TODO: create a new class to handle proc.
       }.freeze
 
       def initialize
@@ -50,9 +50,11 @@ module RubyJard
 
       def decorate_singleline(variable, line_limit:)
         if primitive?(variable)
+          inspection = variable.inspect
+          inspection = inspection[0..line_limit - 2] + '…' if inspection.length >= line_limit
           return [
             RubyJard::Span.new(
-              content: variable.inspect[0..line_limit - 1],
+              content: inspection,
               styles: PRIMITIVE_TYPES[RubyJard::Reflection.call_class(variable).name]
             )
           ]
