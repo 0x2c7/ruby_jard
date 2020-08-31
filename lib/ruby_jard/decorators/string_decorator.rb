@@ -10,7 +10,7 @@ module RubyJard
       end
 
       def match?(variable)
-        variable.is_a?(String)
+        RubyJard::Reflection.call_is_a?(variable, String)
       end
 
       # rubocop:disable Lint/UnusedMethodArgument

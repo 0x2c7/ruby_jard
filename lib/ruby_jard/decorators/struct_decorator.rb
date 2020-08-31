@@ -12,7 +12,7 @@ module RubyJard
       end
 
       def match?(variable)
-        variable.is_a?(Struct)
+        RubyJard::Reflection.call_is_a?(variable, Struct)
       end
 
       def decorate_singleline(variable, line_limit:)

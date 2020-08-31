@@ -39,7 +39,7 @@ module RubyJard
       end
 
       def match?(variable)
-        variable.is_a?(Hash)
+        RubyJard::Reflection.call_is_a?(variable, Hash)
       end
 
       def last_line(total, item_count)

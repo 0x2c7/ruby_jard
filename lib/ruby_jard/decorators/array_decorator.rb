@@ -41,7 +41,7 @@ module RubyJard
       end
 
       def match?(variable)
-        variable.is_a?(Array)
+        RubyJard::Reflection.call_is_a?(variable, Array)
       end
 
       def last_line(total, item_count)

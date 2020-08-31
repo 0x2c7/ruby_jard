@@ -52,7 +52,7 @@ module RubyJard
           return [
             RubyJard::Span.new(
               content: variable.inspect[0..line_limit - 1],
-              styles: PRIMITIVE_TYPES[variable.class.name]
+              styles: PRIMITIVE_TYPES[RubyJard::Reflection.call_class(variable).name]
             )
           ]
         end
@@ -71,7 +71,7 @@ module RubyJard
           return [[
             RubyJard::Span.new(
               content: variable.inspect[0..first_line_limit - 1],
-              styles: PRIMITIVE_TYPES[variable.class.name]
+              styles: PRIMITIVE_TYPES[RubyJard::Reflection.call_class(variable).name]
             )
           ]]
         end
@@ -98,7 +98,7 @@ module RubyJard
       private
 
       def primitive?(variable)
-        !PRIMITIVE_TYPES[variable.class.name].nil?
+        !PRIMITIVE_TYPES[RubyJard::Reflection.call_class(variable).name].nil?
       end
     end
   end

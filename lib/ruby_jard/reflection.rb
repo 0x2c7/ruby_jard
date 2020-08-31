@@ -9,6 +9,22 @@ module RubyJard
   # in Object's context.
   class Reflection
     class << self
+      def call_class(object)
+        if call_is_a?(object, Module)
+          bind_call(Kernel, :class, object)
+        else
+          instance_bind_call(Kernel, :class, object)
+        end
+      end
+
+      def call_respond_to?(object, method_name)
+        if call_is_a?(object, Module)
+          bind_call(Kernel, :respond_to?, object, method_name)
+        else
+          instance_bind_call(Kernel, :respond_to?, object, method_name)
+        end
+      end
+
       def call_instance_variables(object)
         bind_call(Kernel, :instance_variables, object)
       end
@@ -35,6 +51,14 @@ module RubyJard
 
       def call_is_a?(object, comparing_class)
         bind_call(Kernel, :is_a?, object, comparing_class)
+      end
+
+      def call_const_get(object, const_name)
+        bind_call(Kernel, :const_get, object, const_name)
+      end
+
+      def call_const_defined?(object, const_name)
+        bind_call(Kernel, :const_defined?, object, const_name)
       end
 
       def bind_call(owner, method_name, object, *args)

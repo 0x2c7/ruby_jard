@@ -23,7 +23,7 @@ module RubyJard
         def match?(variable)
           return false unless defined?(ActiveRecord::Base)
 
-          variable.is_a?(ActiveRecord::Base)
+          RubyJard::Reflection.call_is_a?(variable, ActiveRecord::Base)
         end
 
         def decorate_singleline(variable, line_limit:)
@@ -76,7 +76,7 @@ module RubyJard
         def match?(variable)
           return false unless defined?(ActiveRecord::Relation)
 
-          variable.class < ActiveRecord::Relation
+          RubyJard::Reflection.call_class(variable) < ActiveRecord::Relation
         rescue StandardError
           false
         end

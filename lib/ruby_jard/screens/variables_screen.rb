@@ -144,11 +144,11 @@ module RubyJard
       def span_size(variable)
         value = variable[2]
         size_label =
-          if value.is_a?(Array) && !value.empty?
+          if RubyJard::Reflection.call_is_a?(value, Array) && !value.empty?
             "(len:#{value.length})"
-          elsif value.is_a?(String) && value.length > 20
+          elsif RubyJard::Reflection.call_is_a?(value, String) && value.length > 20
             "(len:#{value.length})"
-          elsif value.is_a?(Hash) && !value.empty?
+          elsif RubyJard::Reflection.call_is_a?(value, Hash) && !value.empty?
             "(size:#{value.length})"
           end
         RubyJard::Span.new(
@@ -161,9 +161,8 @@ module RubyJard
       private
 
       def fetch_local_variables
-        return [] if @frame_binding.nil?
-        return [] if !@frame_binding.respond_to?(:local_variables) ||
-                     !@frame_binding.respond_to?(:local_variable_get)
+        return [] if @frame_binding == nil
+        return [] unless RubyJard::Reflection.call_is_a?(@frame_binding, ::Binding)
 
         variables = @frame_binding.local_variables
         # Exclude Pry's sticky locals
@@ -182,24 +181,22 @@ module RubyJard
       end
 
       def fetch_instance_variables
-        return [] if @frame_self.nil?
-        return [] if !@frame_self.respond_to?(:instance_variables) ||
-                     !@frame_self.respond_to?(:instance_variable_get)
+        return [] if @frame_self == nil
 
         instance_variables =
-          @frame_self
-          .instance_variables
+          RubyJard::Reflection
+          .call_instance_variables(@frame_self)
           .select { |v| relevant?(KIND_INS, v) }
 
         instance_variables.map do |variable|
-          [KIND_INS, variable, @frame_self.instance_variable_get(variable)]
+          [KIND_INS, variable, RubyJard::Reflection.call_instance_variable_get(@frame_self, variable)]
         rescue NameError
           nil
         end.compact
       end
 
       def fetch_constants
-        return [] if @frame_class.nil?
+        return [] if @frame_class == nil
 
         # Filter out truly constants (CONSTANT convention) only
         constant_source =
@@ -208,9 +205,6 @@ module RubyJard
           else
             @frame_class
           end
-
-        return [] if !constant_source.respond_to?(:const_get) ||
-                     !constant_source.respond_to?(:const_defined?)
 
         (@file_tokens[KIND_CON] || {})
           .keys
@@ -222,24 +216,22 @@ module RubyJard
 
       def fetch_constant(constant_source, const)
         return nil if %w[NIL TRUE FALSE].include?(const.to_s)
-        return nil unless constant_source.const_defined?(const)
+        return nil unless RubyJard::Reflection.call_const_defined?(constant_source, const)
 
-        [KIND_CON, const, constant_source.const_get(const)]
+        [KIND_CON, const, RubyJard::Reflection.call_const_get(constant_source, const)]
       rescue NameError
         nil
       end
 
       def fetch_global_variables
-        return [] if @frame_self.nil?
-        return [] if !@frame_self.respond_to?(:global_variables, true) ||
-                     !@frame_self.respond_to?(:instance_eval)
+        return [] if @frame_self == nil
 
         variables =
-          @frame_self
-          .__send__(:global_variables)
+          ::Kernel
+          .global_variables
           .select { |v| relevant?(KIND_GLOB, v) }
         variables.map do |variable|
-          [KIND_GLOB, variable, @frame_self.instance_eval(variable.to_s)]
+          [KIND_GLOB, variable, ::Kernel.instance_eval(variable.to_s)]
         rescue NameError
           nil
         end.compact
@@ -279,11 +271,11 @@ module RubyJard
       end
 
       def relevant?(kind, name)
-        !@file_tokens[kind].nil? && @file_tokens[kind][name]
+        @file_tokens[kind] != nil && @file_tokens[kind][name]
       end
 
       def generate_inline_tokens(file, line)
-        return [] if file.nil? || line.nil?
+        return [] if file == nil || line == nil
 
         loc_decorator = RubyJard::Decorators::LocDecorator.new
         source_decorator = RubyJard::Decorators::SourceDecorator.new(file, line, 1)
@@ -294,7 +286,7 @@ module RubyJard
 
         inline_tokens = {}
         tokens.each_slice(2) do |token, kind|
-          next if TOKEN_KIND_MAPS[kind].nil?
+          next if TOKEN_KIND_MAPS[kind] == nil
 
           inline_tokens[token.to_s.to_sym] = true
         end
@@ -302,7 +294,7 @@ module RubyJard
       end
 
       def generate_file_tokens(file)
-        return [] if file.nil?
+        return [] if file == nil
 
         loc_decorator = RubyJard::Decorators::LocDecorator.new
         # TODO: This is a mess
@@ -311,7 +303,7 @@ module RubyJard
 
         file_tokens = {}
         tokens.each_slice(2) do |token, kind|
-          next if TOKEN_KIND_MAPS[kind].nil?
+          next if TOKEN_KIND_MAPS[kind] == nil
 
           file_tokens[TOKEN_KIND_MAPS[kind]] ||= {}
           file_tokens[TOKEN_KIND_MAPS[kind]][token.to_s.to_sym] = true
