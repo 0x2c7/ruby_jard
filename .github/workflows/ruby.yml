@@ -73,7 +73,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        byebug: [9.1.0, 10.0.2]
+        byebug: [9.1.0, 10.0.2, 11.1.0]
     env:
       BUNDLE_GEMFILE: "./spec/gemfiles/Gemfile-byebug-${{ matrix.byebug }}"
     steps:
