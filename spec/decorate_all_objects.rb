@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+#rubocop:disable all
 # Fetch all objects from ObjectSpace, and decorate them, compare with the native inspection
 def decorate_all_objects
   $objects = {}
@@ -31,3 +34,4 @@ def decorate_all_objects
   end
   nil
 end
+#rubocop:enable all

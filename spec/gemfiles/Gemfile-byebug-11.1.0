@@ -2,7 +2,7 @@
 
 source 'http://rubygems.org'
 
-gemspec
+gemspec path: File.expand_path(File.dirname(__FILE__) + '/../../')
 
 if Gem.path.all? { |path| Dir[File.join(path, 'gems/jard_merge_sort*')].empty? }
   puts '[HACK] Install jard_merge_sort'
