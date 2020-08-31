@@ -68,7 +68,7 @@ jobs:
       run: bundle install
     - name: Run tests
       run: bundle exec parallel_rspec -n 2 spec/
-  test-previous-byebug:
+  test-byebug:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
