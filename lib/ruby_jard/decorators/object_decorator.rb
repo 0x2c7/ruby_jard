@@ -61,6 +61,12 @@ module RubyJard
         RubyJard::Reflection.bind_call(::Kernel, :method, variable, :inspect).owner == ::Kernel
       end
 
+      def call_inspect(variable)
+        variable.inspect
+      rescue StandardError
+        RubyJard::Reflection.call_to_s(variable)
+      end
+
       def decorate_native_inspection(variable, line_limit:, depth: 0, with_children: true)
         raw_inspection = RubyJard::Reflection.call_to_s(variable)
         match = raw_inspection.match(DEFAULT_INSPECTION_PATTERN)
@@ -90,7 +96,7 @@ module RubyJard
       end
 
       def decorate_custom_inspection(variable, line_limit:)
-        raw_inspection = variable.inspect
+        raw_inspection = call_inspect(variable)
         match = raw_inspection.match(DEFAULT_INSPECTION_PATTERN)
         if match
           detail =
