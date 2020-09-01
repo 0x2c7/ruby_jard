@@ -167,6 +167,38 @@ RSpec.describe RubyJard::Decorators::InspectionDecorator do
     it {
       expect(
         decorator.decorate_singleline(
+          { movies: [{ name: 'Inception', director: 'Nolan' }, { name: 'Interstella', director: 'Nolan' }] },
+          line_limit: line_limit
+        )
+      ).to match_spans(<<~SPANS)
+        {:movies → [{:name → "Inception", …}, {:name → "Interstella", …}]}
+      SPANS
+    }
+
+    it {
+      expect(
+        decorator.decorate_singleline(
+          { var_a: 1, var_b: 2, var_c: 'longggggggggggggggggggggg', var_d: :this_is_a_really_long_symbol },
+          line_limit: line_limit
+        )
+      ).to match_spans(<<~SPANS)
+        {:var_a → 1, :var_b → 2, :var_c → "longgggggggggggggggggg…", …}
+      SPANS
+    }
+
+    it {
+      hash = { other_1: 1, other_2: 2 }
+      hash[:self] = hash
+      expect(
+        decorator.decorate_singleline(hash, line_limit: line_limit)
+      ).to match_spans(<<~SPANS)
+        {:other_1 → 1, :other_2 → 2, :self → {:other_1 → 1, …}}
+      SPANS
+    }
+
+    it {
+      expect(
+        decorator.decorate_singleline(
           { level_1: { level_2: { level_3: { level_4: { level_5: 'core' } } } } },
           line_limit: line_limit
         )
@@ -435,7 +467,7 @@ RSpec.describe RubyJard::Decorators::InspectionDecorator do
       a = [1, 2, 3]
       a << a
       expect(
-        decorator.decorate_singleline(a, line_limit: 100)
+        decorator.decorate_singleline(a, line_limit: line_limit)
       ).to match_spans(<<~SPANS)
         [1, 2, 3, [1, 2, 3, [1, 2, 3, […]]]]
       SPANS
@@ -453,6 +485,23 @@ RSpec.describe RubyJard::Decorators::InspectionDecorator do
         decorator.decorate_singleline(a, line_limit: 100)
       ).to match_spans(<<~SPANS)
         #<J1X:?????????????????? @var_b → #<J1X:?????????????????? @var_c → #<J1X:?????????????????? …>>>
+      SPANS
+    }
+
+    it {
+      stub_const('MyError', Class.new(StandardError))
+      expect(
+        decorator.decorate_singleline(MyError.new('This is my fault'), line_limit: line_limit)
+      ).to match_spans(<<~SPANS)
+        #<MyError: This is my fault>
+      SPANS
+    }
+
+    it {
+      expect(
+        decorator.decorate_singleline(decorator, line_limit: 150)
+      ).to match_spans(<<~SPANS)
+        #<RubyJard::Decorators::InspectionDecorator:?????????????????? @array_decorator → #<RubyJard::Decorators::ArrayDecorator:?????????????????? …>, …>
       SPANS
     }
   end
