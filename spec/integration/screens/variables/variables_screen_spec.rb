@@ -88,7 +88,7 @@ RSpec.describe 'Variable screen', integration: true do
   end
 
   context 'when jard steps into a code evaluation' do
-    it 'displays correct line' do
+    it 'display relevant variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
         'record.code_evaluation',
@@ -107,7 +107,7 @@ RSpec.describe 'Variable screen', integration: true do
   end
 
   context 'when jard stops at the end of a method' do
-    it 'displays correct line' do
+    it 'display relevant variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
         'record.end_of_method',
@@ -123,7 +123,7 @@ RSpec.describe 'Variable screen', integration: true do
   end
 
   context 'when use jard with ruby -e' do
-    it 'displays correct line' do
+    it 'display relevant variables' do
       code = <<~CODE
         bundle exec ruby -e \"require 'ruby_jard'\njard\na = 100 + 300\nb = a + 1\"
       CODE
@@ -142,13 +142,90 @@ RSpec.describe 'Variable screen', integration: true do
   end
 
   context 'when jumping into an ERB file' do
-    it 'displays correct line' do
+    it 'display relevant variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
         'record.erb_file',
         "bundle exec ruby #{RSPEC_ROOT}/examples/erb_evaluation.rb"
       )
       test.start
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
+
+  context 'when constants come from different sources' do
+    it 'display relevant constant and global variables' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'record.complicated_constant',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/complicated_constant_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
+
+  context 'when instance variables come from different sources' do
+    it 'display relevant instance variables' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'record.complicated_instance',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/complicated_instance_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
+
+  context 'when working with Basic Object' do
+    it 'display relevant instance variables' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'record.basic_object',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/basic_object_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('step', :Enter)
+      test.assert_screen
+      test.send_keys('step', :Enter)
+      test.send_keys('step', :Enter)
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
+
+  context 'when working with circular reference object' do
+    it 'display relevant instance variables' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'record.circular_reference',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/circular_reference_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('continue', :Enter)
       test.assert_screen
     ensure
       test.stop

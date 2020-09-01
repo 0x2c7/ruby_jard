@@ -1,6 +1,6 @@
 ### START SCREEN ###
 ┌ Threads  2 threads ──────────────────────────────────────────────────────────┐
-│► Thread 1 (run)   Main thread at ../../../examples/threads_dead.rb:20        │
+│▸ Thread 1 (run)   Main thread at ../../../examples/threads_dead.rb:20        │
 │• Thread 2 (sleep) untitled at ../../../examples/threads_dead.rb:9            │
 │                                                                              │
 │                                                                              │
@@ -20,7 +20,7 @@
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###
@@ -29,7 +29,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Threads  1 threads ──────────────────────────────────────────────────────────┐
-│► Thread 1 (run) Main thread at ../../../examples/threads_dead.rb:24          │
+│▸ Thread 1 (run) Main thread at ../../../examples/threads_dead.rb:24          │
 │                                                                              │
 │                                                                              │
 │                                                                              │
@@ -49,7 +49,7 @@ jard >>
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###

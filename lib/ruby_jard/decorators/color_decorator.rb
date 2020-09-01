@@ -23,21 +23,29 @@ module RubyJard
 
       CSI_ITALIC = "\e[3m"
       CSI_UNDERLINE = "\e[4m"
+      CSI_BOLD = "\e[1m"
 
       STYLES_CSI_MAP = {
         underline: CSI_UNDERLINE,
-        italic: CSI_ITALIC
+        italic: CSI_ITALIC,
+        bold: CSI_BOLD
       }.freeze
 
       def initialize(color_scheme)
         @color_scheme = color_scheme
       end
 
-      def decorate(element, content)
-        styles = @color_scheme.styles_for(element) || []
+      def decorate(style_names, content)
+        attributes = nil
+        if style_names.is_a?(Symbol)
+          styles = @color_scheme.styles_for(style_names)
+        else
+          attributes = translate_styles(style_names)
+          styles = @color_scheme.styles_for(style_names.shift)
+        end
         foreground = translate_color(styles.shift, true)
         background = translate_color(styles.shift, false)
-        "#{foreground}#{background}#{translate_styles(styles)}#{content}#{CSI_RESET}"
+        "#{foreground}#{background}#{attributes}#{content}#{CSI_RESET}"
       end
 
       def translate_color(color, foreground)

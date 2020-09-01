@@ -1,6 +1,6 @@
 ### START SCREEN ###
 ┌ Threads  1 threads ──────────────────────────────────────────────────────────┐
-│► Thread 1 (run) untitled at ../../../examples/top_level_example.rb:15        │
+│▸ Thread 1 (run) untitled at ../../../examples/top_level_example.rb:15        │
 │                                                                              │
 │                                                                              │
 │                                                                              │
@@ -20,7 +20,7 @@
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###

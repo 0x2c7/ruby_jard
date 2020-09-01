@@ -34,8 +34,6 @@ RSpec.configure do |config|
   config.retry_callback = proc do
     if ENV['CI']
       puts '==== Tmux ===='
-      puts 'Info:'
-      puts `tmux info`
       puts 'Restart Tmux...'
       `tmux kill-server`
       `tmux start-server`

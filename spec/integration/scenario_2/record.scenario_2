@@ -3,7 +3,7 @@
 │   1 require 'ruby_jard'                                    │  self = main                                                 │
 │   2 require 'jard_merge_sort'                              │  result_a = nil                                              │
 │   3                                                        │  result_b = nil                                              │
-│   4 jard                                                   │• sorter = nil                                                │
+│   4 jard                                                   │  sorter = nil                                                │
 │⮕  5 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │                                                              │
 │   6 result_a = sorter.sort { |a, b| a < b }                │                                                              │
 │   7 result_b = sorter.sort { |a, b| a > b }                │                                                              │
@@ -19,7 +19,7 @@
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├ Backtrace  1 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 Object in <main> at main_example.rb:5                   │► Thread 1 (run) untitled at main_example.rb:5                │
+│⮕ 0 Object in <main> at main_example.rb:5                   │▸ Thread 1 (run) untitled at main_example.rb:5                │
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -42,11 +42,11 @@ jard >>
 ### START SCREEN ###
 ┌ Source  main_example.rb:6 ─────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
 │   1 require 'ruby_jard'                                    │  self = main                                                 │
-│   2 require 'jard_merge_sort'                              │• result_a = nil                                              │
+│   2 require 'jard_merge_sort'                              │  result_a = nil                                              │
 │   3                                                        │  result_b = nil                                              │
-│   4 jard                                                   │• sorter = #<JardMergeSort::Sorter:?????????????????? @array=[│
-│   5 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │  1, 2, 3, 4, 5], @merger=#<JardMergeSort::Merger:????????????│
-│⮕  6 result_a = sorter.sort { |a, b| a < b }                │  ??????>>                                                    │
+│   4 jard                                                   │▾ sorter = #<JardMergeSort::Sorter:??????????????????>        │
+│   5 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │    ▸ @array → [1, 2, 3, 4, 5]                                │
+│⮕  6 result_a = sorter.sort { |a, b| a < b }                │    ▸ @merger → #<JardMergeSort::Merger:??????????????????>   │
 │   7 result_b = sorter.sort { |a, b| a > b }                │                                                              │
 │   8 puts result_a                                          │                                                              │
 │   9 puts result_b                                          │                                                              │
@@ -60,7 +60,7 @@ jard >>
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├ Backtrace  1 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 Object in <main> at main_example.rb:6                   │► Thread 1 (run) untitled at main_example.rb:6                │
+│⮕ 0 Object in <main> at main_example.rb:6                   │▸ Thread 1 (run) untitled at main_example.rb:6                │
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -77,9 +77,9 @@ jard >>
 ### START SCREEN ###
 ┌ Source  <jard_merge_sort:lib/jard_merge_sort.rb:16> ───────┬ Variables ───────────────────────────────────────────────────┐
 │   7   ##                                                   │  self = #<JardMergeSort::Sorter:??????????????????>          │
-│   8   # Entry point for merge sort algorithm               │• less = #<Proc:??????????????????????????????????????????????│
+│   8   # Entry point for merge sort algorithm               │  less = #<Proc:??????????????????????????????????????????????│
 │   9   class Sorter                                         │  ????????????????????????????????????????????????????????????│
-│  10     def initialize(array)                              │• @array (len:5) = [1, 2, 3, 4, 5]                            │
+│  10     def initialize(array)                              │  @array (len:5) = [1, 2, 3, 4, 5]                            │
 │  11       @array = array                                   │  @merger = #<JardMergeSort::Merger:??????????????????>       │
 │  12       @merger = JardMergeSort::Merger.new              │                                                              │
 │  13     end                                                │                                                              │
@@ -95,7 +95,7 @@ jard >>
 │  23       return [array.first] if array.length == 1        │                                                              │
 │  24                                                        │                                                              │
 ├ Backtrace  2 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│⮕ 0 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│▸ Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
 │  1 Object in <main> at main_example.rb:6                   │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -121,11 +121,11 @@ jard >>
 ### START SCREEN ###
 ┌ Source  <jard_merge_sort:lib/jard_merge_sort.rb:26> ───────┬ Variables ───────────────────────────────────────────────────┐
 │  18                                                        │  self = #<JardMergeSort::Sorter:??????????????????>          │
-│  19     private                                            │• array (len:5) = [1, 2, 3, 4, 5]                             │
-│  20                                                        │• less = #<Proc:??????????????????????????????????????????????│
+│  19     private                                            │  array (len:5) = [1, 2, 3, 4, 5]                             │
+│  20                                                        │  less = #<Proc:??????????????????????????????????????????????│
 │  21     def do_sort(array, less)                           │  ????????????????????????????????????????????????????????????│
-│  22       return [] if array.empty?                        │• mid = 2                                                     │
-│  23       return [array.first] if array.length == 1        │• sorted_left = nil                                           │
+│  22       return [] if array.empty?                        │  mid = 2                                                     │
+│  23       return [array.first] if array.length == 1        │  sorted_left = nil                                           │
 │  24                                                        │  sorted_right = nil                                          │
 │  25       mid = array.length / 2                           │  @array (len:5) = [1, 2, 3, 4, 5]                            │
 │⮕ 26       sorted_left = do_sort(array[0..mid - 1], less)   │  @merger = #<JardMergeSort::Merger:??????????????????>       │
@@ -139,7 +139,7 @@ jard >>
 │                                                            │                                                              │
 ├ Backtrace  3 frames ───────────────────────────────────────┤                                                              │
 │⮕ 0 JardMergeSort::Sorter in do_sort                        ├ Threads  1 threads ──────────────────────────────────────────┤
-│    in <jard_merge_sort 0.1.0>                              │► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│    in <jard_merge_sort 0.1.0>                              │▸ Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
 │  1 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 │  2 Object in <main> at main_example.rb:6                   │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -168,7 +168,7 @@ jard >>
 ### START SCREEN ###
 ┌ Source  <jard_merge_sort:lib/jard_merge_sort.rb:22> ───────┬ Variables ───────────────────────────────────────────────────┐
 │  15     def sort(&less)                                    │  self = #<JardMergeSort::Sorter:??????????????????>          │
-│  16       do_sort(@array, less)                            │• array (len:1) = [1]                                         │
+│  16       do_sort(@array, less)                            │  array (len:1) = [1]                                         │
 │  17     end                                                │  less = #<Proc:??????????????????????????????????????????????│
 │  18                                                        │  ????????????????????????????????????????????????????????????│
 │  19     private                                            │  mid = nil                                                   │
@@ -186,7 +186,7 @@ jard >>
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 │  1 JardMergeSort::Sorter in do_sort                        │                                                              │
 │    in <jard_merge_sort 0.1.0>                              ├ Threads  1 threads ──────────────────────────────────────────┤
-│  2 JardMergeSort::Sorter in do_sort                        │► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│  2 JardMergeSort::Sorter in do_sort                        │▸ Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 │  3 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -206,12 +206,12 @@ jard >>
 ### START SCREEN ###
 ┌ Source  <jard_merge_sort:lib/jard_merge_sort.rb:27> ───────┬ Variables ───────────────────────────────────────────────────┐
 │  20                                                        │  self = #<JardMergeSort::Sorter:??????????????????>          │
-│  21     def do_sort(array, less)                           │• array (len:2) = [1, 2]                                      │
-│  22       return [] if array.empty?                        │• less = #<Proc:??????????????????????????????????????????????│
+│  21     def do_sort(array, less)                           │  array (len:2) = [1, 2]                                      │
+│  22       return [] if array.empty?                        │  less = #<Proc:??????????????????????????????????????????????│
 │  23       return [array.first] if array.length == 1        │  ????????????????????????????????????????????????????????????│
-│  24                                                        │• mid = 1                                                     │
+│  24                                                        │  mid = 1                                                     │
 │  25       mid = array.length / 2                           │  sorted_left (len:1) = [1]                                   │
-│  26       sorted_left = do_sort(array[0..mid - 1], less)   │• sorted_right = nil                                          │
+│  26       sorted_left = do_sort(array[0..mid - 1], less)   │  sorted_right = nil                                          │
 │⮕ 27       sorted_right = do_sort(array[mid..array.length - │  @array (len:5) = [1, 2, 3, 4, 5]                            │
 │     1], less)                                              │  @merger = #<JardMergeSort::Merger:??????????????????>       │
 │  28       @merger.merge(sorted_left, sorted_right, less)   │                                                              │
@@ -224,7 +224,7 @@ jard >>
 │⮕ 0 JardMergeSort::Sorter in do_sort                        │                                                              │
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 │  1 JardMergeSort::Sorter in do_sort                        ├ Threads  1 threads ──────────────────────────────────────────┤
-│    in <jard_merge_sort 0.1.0>                              │► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│    in <jard_merge_sort 0.1.0>                              │▸ Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
 │  2 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 │  3 Object in <main> at main_example.rb:6                   │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -246,11 +246,11 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 │  19     private                                            │  self = #<JardMergeSort::Sorter:??????????????????>          │
-│  20                                                        │• array (len:5) = [1, 2, 3, 4, 5]                             │
-│  21     def do_sort(array, less)                           │• less = #<Proc:??????????????????????????????????????????????│
+│  20                                                        │  array (len:5) = [1, 2, 3, 4, 5]                             │
+│  21     def do_sort(array, less)                           │  less = #<Proc:??????????????????????????????????????????????│
 │  22       return [] if array.empty?                        │  ????????????????????????????????????????????????????????????│
-│  23       return [array.first] if array.length == 1        │• mid = 2                                                     │
-│  24                                                        │• sorted_left = nil                                           │
+│  23       return [array.first] if array.length == 1        │  mid = 2                                                     │
+│  24                                                        │  sorted_left = nil                                           │
 │  25       mid = array.length / 2                           │  sorted_right = nil                                          │
 │⮕ 26       sorted_left = do_sort(array[0..mid - 1], less)   │  @array (len:5) = [1, 2, 3, 4, 5]                            │
 │  27       sorted_right = do_sort(array[mid..array.length - │  @merger = #<JardMergeSort::Merger:??????????????????>       │
@@ -264,7 +264,7 @@ jard >>
 │  0 JardMergeSort::Sorter in do_sort                        │                                                              │
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 │⮕ 1 JardMergeSort::Sorter in do_sort                        ├ Threads  1 threads ──────────────────────────────────────────┤
-│    in <jard_merge_sort 0.1.0>                              │► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│    in <jard_merge_sort 0.1.0>                              │▸ Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
 │  2 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 │  3 Object in <main> at main_example.rb:6                   │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -286,13 +286,13 @@ jard >>
 ┌ Source  <jard_merge_sort:lib/jard_merge_sort.rb:28> ───────┬ Variables ───────────────────────────────────────────────────┐
 │  21     def do_sort(array, less)                           │  self = #<JardMergeSort::Sorter:??????????????????>          │
 │  22       return [] if array.empty?                        │  array (len:2) = [1, 2]                                      │
-│  23       return [array.first] if array.length == 1        │• less = #<Proc:??????????????????????????????????????????????│
+│  23       return [array.first] if array.length == 1        │  less = #<Proc:??????????????????????????????????????????????│
 │  24                                                        │  ????????????????????????????????????????????????????????????│
 │  25       mid = array.length / 2                           │  mid = 1                                                     │
-│  26       sorted_left = do_sort(array[0..mid - 1], less)   │• sorted_left (len:1) = [1]                                   │
-│  27       sorted_right = do_sort(array[mid..array.length - │• sorted_right (len:1) = [2]                                  │
+│  26       sorted_left = do_sort(array[0..mid - 1], less)   │  sorted_left (len:1) = [1]                                   │
+│  27       sorted_right = do_sort(array[mid..array.length - │  sorted_right (len:1) = [2]                                  │
 │     1], less)                                              │  @array (len:5) = [1, 2, 3, 4, 5]                            │
-│⮕ 28       @merger.merge(sorted_left, sorted_right, less)   │• @merger = #<JardMergeSort::Merger:??????????????????>       │
+│⮕ 28       @merger.merge(sorted_left, sorted_right, less)   │  @merger = #<JardMergeSort::Merger:??????????????????>       │
 │  29     end                                                │                                                              │
 │  30   end                                                  │                                                              │
 │  31 end                                                    │                                                              │
@@ -303,7 +303,7 @@ jard >>
 │⮕ 0 JardMergeSort::Sorter in do_sort                        │                                                              │
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 │  1 JardMergeSort::Sorter in do_sort                        ├ Threads  1 threads ──────────────────────────────────────────┤
-│    in <jard_merge_sort 0.1.0>                              │► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│    in <jard_merge_sort 0.1.0>                              │▸ Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
 │  2 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 │  3 Object in <main> at main_example.rb:6                   │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -329,12 +329,12 @@ jard >>
 ### START SCREEN ###
 ┌ Source  <jard_merge_sort:lib/jard_merge_sort.rb:27> ───────┬ Variables ───────────────────────────────────────────────────┐
 │  19     private                                            │  self = #<JardMergeSort::Sorter:??????????????????>          │
-│  20                                                        │• array (len:5) = [1, 2, 3, 4, 5]                             │
-│  21     def do_sort(array, less)                           │• less = #<Proc:??????????????????????????????????????????????│
+│  20                                                        │  array (len:5) = [1, 2, 3, 4, 5]                             │
+│  21     def do_sort(array, less)                           │  less = #<Proc:??????????????????????????????????????????????│
 │  22       return [] if array.empty?                        │  ????????????????????????????????????????????????????????????│
-│  23       return [array.first] if array.length == 1        │• mid = 2                                                     │
+│  23       return [array.first] if array.length == 1        │  mid = 2                                                     │
 │  24                                                        │  sorted_left (len:2) = [1, 2]                                │
-│  25       mid = array.length / 2                           │• sorted_right = nil                                          │
+│  25       mid = array.length / 2                           │  sorted_right = nil                                          │
 │  26       sorted_left = do_sort(array[0..mid - 1], less)   │  @array (len:5) = [1, 2, 3, 4, 5]                            │
 │⮕ 27       sorted_right = do_sort(array[mid..array.length - │  @merger = #<JardMergeSort::Merger:??????????????????>       │
 │     1], less)                                              │                                                              │
@@ -347,7 +347,7 @@ jard >>
 │                                                            │                                                              │
 ├ Backtrace  3 frames ───────────────────────────────────────┤                                                              │
 │⮕ 0 JardMergeSort::Sorter in do_sort                        ├ Threads  1 threads ──────────────────────────────────────────┤
-│    in <jard_merge_sort 0.1.0>                              │► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│    in <jard_merge_sort 0.1.0>                              │▸ Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
 │  1 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 │  2 Object in <main> at main_example.rb:6                   │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -382,11 +382,11 @@ jard >>
 ### START SCREEN ###
 ┌ Source  <jard_merge_sort:lib/jard_merge_sort/merger.rb:14> ┬ Variables ───────────────────────────────────────────────────┐
 │   7                                                        │  self = #<JardMergeSort::Merger:??????????????????>          │
-│   8       while !left.empty? || !right.empty?              │• left (len:2) = [1, 2]                                       │
-│   9         result <<                                      │• less = #<Proc:??????????????????????????????????????????????│
+│   8       while !left.empty? || !right.empty?              │  left (len:2) = [1, 2]                                       │
+│   9         result <<                                      │  less = #<Proc:??????????????????????????????????????????????│
 │  10           if left.empty?                               │  ????????????????????????????????????????????????????????????│
 │  11             right.shift                                │  result = []                                                 │
-│  12           elsif right.empty?                           │• right (len:3) = [3, 4, 5]                                   │
+│  12           elsif right.empty?                           │  right (len:3) = [3, 4, 5]                                   │
 │  13             left.shift                                 │                                                              │
 │⮕ 14           elsif less.call(left[0], right[0])           │                                                              │
 │  15             left.shift                                 │                                                              │
@@ -400,7 +400,7 @@ jard >>
 │⮕ 0 JardMergeSort::Merger in merge                          │                                                              │
 │    in <jard_merge_sort 0.1.0>                              │                                                              │
 │  1 JardMergeSort::Sorter in do_sort                        ├ Threads  1 threads ──────────────────────────────────────────┤
-│    in <jard_merge_sort 0.1.0>                              │► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│    in <jard_merge_sort 0.1.0>                              │▸ Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
 │  2 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│                                                              │
 │  3 Object in <main> at main_example.rb:6                   │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -418,10 +418,10 @@ jard >>
 ┌ Source  main_example.rb:7 ─────────────────────────────────┬ Variables ───────────────────────────────────────────────────┐
 │   1 require 'ruby_jard'                                    │  self = main                                                 │
 │   2 require 'jard_merge_sort'                              │  result_a (len:5) = [1, 2, 3, 4, 5]                          │
-│   3                                                        │• result_b = nil                                              │
-│   4 jard                                                   │• sorter = #<JardMergeSort::Sorter:?????????????????? @array=[│
-│   5 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │  1, 2, 3, 4, 5], @merger=#<JardMergeSort::Merger:????????????│
-│   6 result_a = sorter.sort { |a, b| a < b }                │  ??????>>                                                    │
+│   3                                                        │  result_b = nil                                              │
+│   4 jard                                                   │▾ sorter = #<JardMergeSort::Sorter:??????????????????>        │
+│   5 sorter = JardMergeSort::Sorter.new([1, 2, 3, 4, 5])    │    ▸ @array → [1, 2, 3, 4, 5]                                │
+│   6 result_a = sorter.sort { |a, b| a < b }                │    ▸ @merger → #<JardMergeSort::Merger:??????????????????>   │
 │⮕  7 result_b = sorter.sort { |a, b| a > b }                │                                                              │
 │   8 puts result_a                                          │                                                              │
 │   9 puts result_b                                          │                                                              │
@@ -435,7 +435,7 @@ jard >>
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├ Backtrace  1 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 Object in <main> at main_example.rb:7                   │► Thread 1 (run) untitled at main_example.rb:7                │
+│⮕ 0 Object in <main> at main_example.rb:7                   │▸ Thread 1 (run) untitled at main_example.rb:7                │
 │                                                            │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -457,9 +457,9 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 │   7   ##                                                   │  self = #<JardMergeSort::Sorter:??????????????????>          │
-│   8   # Entry point for merge sort algorithm               │• less = #<Proc:??????????????????????????????????????????????│
+│   8   # Entry point for merge sort algorithm               │  less = #<Proc:??????????????????????????????????????????????│
 │   9   class Sorter                                         │  ????????????????????????????????????????????????????????????│
-│  10     def initialize(array)                              │• @array (len:5) = [1, 2, 3, 4, 5]                            │
+│  10     def initialize(array)                              │  @array (len:5) = [1, 2, 3, 4, 5]                            │
 │  11       @array = array                                   │  @merger = #<JardMergeSort::Merger:??????????????????>       │
 │  12       @merger = JardMergeSort::Merger.new              │                                                              │
 │  13     end                                                │                                                              │
@@ -475,7 +475,7 @@ jard >>
 │  23       return [array.first] if array.length == 1        │                                                              │
 │  24                                                        │                                                              │
 ├ Backtrace  2 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│⮕ 0 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│▸ Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
 │  1 Object in <main> at main_example.rb:7                   │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤
@@ -493,9 +493,9 @@ jard >>
 ### START SCREEN ###
 ┌ Source  <jard_merge_sort:lib/jard_merge_sort.rb:16> ───────┬ Variables ───────────────────────────────────────────────────┐
 │   7   ##                                                   │  self = #<JardMergeSort::Sorter:??????????????????>          │
-│   8   # Entry point for merge sort algorithm               │• less = #<Proc:??????????????????????????????????????????????│
+│   8   # Entry point for merge sort algorithm               │  less = #<Proc:??????????????????????????????????????????????│
 │   9   class Sorter                                         │  ????????????????????????????????????????????????????????????│
-│  10     def initialize(array)                              │• @array (len:5) = [1, 2, 3, 4, 5]                            │
+│  10     def initialize(array)                              │  @array (len:5) = [1, 2, 3, 4, 5]                            │
 │  11       @array = array                                   │  @merger = #<JardMergeSort::Merger:??????????????????>       │
 │  12       @merger = JardMergeSort::Merger.new              │                                                              │
 │  13     end                                                │                                                              │
@@ -511,7 +511,7 @@ jard >>
 │  23       return [array.first] if array.length == 1        │                                                              │
 │  24                                                        │                                                              │
 ├ Backtrace  2 frames ───────────────────────────────────────┼ Threads  1 threads ──────────────────────────────────────────┤
-│⮕ 0 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│► Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
+│⮕ 0 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>│▸ Thread 1 (run) untitled in <jard_merge_sort 0.1.0>          │
 │  1 Object in <main> at main_example.rb:7                   │                                                              │
 │                                                            │                                                              │
 ├────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┤

@@ -19,27 +19,26 @@ module RubyJard
 
       BACKGROUND = GRAY1
       STYLES = {
-        background:            [WHITE, BACKGROUND],
-        border:                [GRAY3, BACKGROUND],
-        title:                 [GRAY2, GREEN],
-        title_secondary:       [WHITE, GRAY3],
-        title_background:      [GRAY2, GRAY2],
-        text_primary:          [WHITE, BACKGROUND],
-        text_secondary:        [GRAY5, BACKGROUND],
-        text_dim:              [GRAY4, BACKGROUND],
-        text_highlighted:      [GREEN, BACKGROUND],
-        text_special:          [GREEN, BACKGROUND],
-        text_selected:         [YELLOW, BACKGROUND],
-        keyword:               [PURPLE, BACKGROUND],
-        method:                [BLUE, BACKGROUND],
-        comment:               [GRAY4, BACKGROUND],
-        literal:               [YELLOW, BACKGROUND],
-        string:                [GREEN, BACKGROUND],
-        local_variable:        [RED, BACKGROUND],
-        instance_variable:     [RED, BACKGROUND],
-        constant:              [YELLOW, BACKGROUND],
-        normal_token:          [GRAY5, BACKGROUND],
-        object:                [YELLOW, BACKGROUND]
+        background:        [WHITE, BACKGROUND],
+        border:            [GRAY3, BACKGROUND],
+        title:             [GRAY2, GREEN],
+        title_secondary:   [WHITE, GRAY3],
+        title_background:  [GRAY2, GRAY2],
+        text_primary:      [GRAY5, BACKGROUND],
+        text_dim:          [GRAY4, BACKGROUND],
+        text_highlighted:  [GREEN, BACKGROUND],
+        text_special:      [GREEN, BACKGROUND],
+        text_selected:     [YELLOW, BACKGROUND],
+        keyword:           [PURPLE, BACKGROUND],
+        method:            [BLUE, BACKGROUND],
+        comment:           [GRAY4, BACKGROUND],
+        literal:           [YELLOW, BACKGROUND],
+        string:            [GREEN, BACKGROUND],
+        local_variable:    [RED, BACKGROUND],
+        instance_variable: [RED, BACKGROUND],
+        constant:          [YELLOW, BACKGROUND],
+        normal_token:      [GRAY5, BACKGROUND],
+        object:            [YELLOW, BACKGROUND]
       }.freeze
     end
   end

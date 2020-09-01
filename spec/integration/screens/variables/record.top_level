@@ -3,18 +3,18 @@
 │  self = main                                                                 │
 │  var_a = 123                                                                 │
 │  var_b = "hello world"                                                       │
-│  var_c (len:4) = ["Hello", 1, 2, 3]                                          │
-│  variable_d (size:3) = {:test=>1, :this=>"Bye", :array=>nil}                 │
+│▾ var_c (len:4) = [                                                           │
+│    ▸ "Hello"                                                                 │
+│    ▸ 1                                                                       │
+│    ▸ 2                                                                       │
+│    ▸ 3                                                                       │
+│  ]                                                                           │
+│  variable_d (size:3) = {:test → 1, :this → "Bye", :array → nil}              │
 │  variable_e = /Wait, what/i                                                  │
 │  variable_f = 1.1                                                            │
 │  variable_g = 99..100                                                        │
-│• variable_h = nil                                                            │
+│  variable_h = nil                                                            │
 │  variable_k = #<StandardError: A random error>                               │
-│                                                                              │
-│                                                                              │
-│                                                                              │
-│                                                                              │
-│                                                                              │
 │                                                                              │
 │                                                                              │
 │                                                                              │
@@ -32,18 +32,18 @@ jard >>
 │  self = main                                                                 │
 │  var_a = 123                                                                 │
 │  var_b = "hello world"                                                       │
-│  var_c (len:4) = ["Hello", 1, 2, 3]                                          │
-│  variable_d (size:3) = {:test=>1, :this=>"Bye", :array=>nil}                 │
+│▾ var_c (len:4) = [                                                           │
+│    ▸ "Hello"                                                                 │
+│    ▸ 1                                                                       │
+│    ▸ 2                                                                       │
+│    ▸ 3                                                                       │
+│  ]                                                                           │
+│  variable_d (size:3) = {:test → 1, :this → "Bye", :array → nil}              │
 │  variable_e = /Wait, what/i                                                  │
 │  variable_f = 1.1                                                            │
 │  variable_g = 99..100                                                        │
 │  variable_h = 15                                                             │
 │  variable_k = #<StandardError: A random error>                               │
-│                                                                              │
-│                                                                              │
-│                                                                              │
-│                                                                              │
-│                                                                              │
 │                                                                              │
 │                                                                              │
 │                                                                              │
@@ -59,20 +59,20 @@ jard >>
 ### START SCREEN ###
 ┌ Variables ───────────────────────────────────────────────────────────────────┐
 │  self = main                                                                 │
-│• var_a = 123                                                                 │
+│  var_a = 123                                                                 │
 │  var_b = "hello world"                                                       │
-│  var_c (len:4) = ["Hello", 1, 2, 3]                                          │
-│  variable_d (size:3) = {:test=>1, :this=>"Bye", :array=>nil}                 │
+│▾ var_c (len:4) = [                                                           │
+│    ▸ "Hello"                                                                 │
+│    ▸ 1                                                                       │
+│    ▸ 2                                                                       │
+│    ▸ 3                                                                       │
+│  ]                                                                           │
+│  variable_d (size:3) = {:test → 1, :this → "Bye", :array → nil}              │
 │  variable_e = /Wait, what/i                                                  │
-│• variable_f = 1.1                                                            │
+│  variable_f = 1.1                                                            │
 │  variable_g = 99..100                                                        │
-│• variable_h = 15                                                             │
+│  variable_h = 15                                                             │
 │  variable_k = #<StandardError: A random error>                               │
-│                                                                              │
-│                                                                              │
-│                                                                              │
-│                                                                              │
-│                                                                              │
 │                                                                              │
 │                                                                              │
 │                                                                              │

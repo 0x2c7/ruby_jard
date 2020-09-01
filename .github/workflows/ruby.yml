@@ -68,12 +68,12 @@ jobs:
       run: bundle install
     - name: Run tests
       run: bundle exec parallel_rspec -n 2 spec/
-  test-previous-byebug:
+  test-byebug:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        byebug: [9.1.0, 10.0.2]
+        byebug: [9.1.0, 10.0.2, 11.1.0]
     env:
       BUNDLE_GEMFILE: "./spec/gemfiles/Gemfile-byebug-${{ matrix.byebug }}"
     steps:

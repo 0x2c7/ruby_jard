@@ -65,12 +65,13 @@ module RubyJard
       end
 
       def span_class_label(frame)
+        self_class = RubyJard::Reflection.call_class(frame.frame_self)
         class_label =
-          if frame.frame_class.nil? || frame.frame_self.class == frame.frame_class
-            if frame.frame_self.is_a?(Class)
+          if frame.frame_class.nil? || self_class == frame.frame_class
+            if ::RubyJard::Reflection.call_is_a?(frame.frame_self, Class)
               frame.frame_self.name
             else
-              frame.frame_self.class.name
+              self_class.name
             end
           elsif frame.frame_class.singleton_class?
             # No easy way to get the original class of a singleton class
@@ -91,7 +92,7 @@ module RubyJard
         RubyJard::Span.new(
           content: 'in',
           margin_right: 1,
-          styles: :text_secondary
+          styles: :text_primary
         )
       end
 
@@ -115,7 +116,7 @@ module RubyJard
         )
         RubyJard::Span.new(
           content: path_label,
-          styles: :text_secondary
+          styles: :text_primary
         )
       end
     end

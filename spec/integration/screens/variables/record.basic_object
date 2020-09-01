@@ -1,13 +1,13 @@
 ### START SCREEN ###
 ┌ Variables ───────────────────────────────────────────────────────────────────┐
-│  self = #<Fibonaci:?????????????????? @a → 1, @b → 1, @other → 5>            │
-│  index = 3                                                                   │
-│  k = nil                                                                     │
-│  n = 50                                                                      │
-│  @a = 1                                                                      │
-│  @b = 1                                                                      │
-│  @other = 5                                                                  │
-│  MAX_SUPPORTED = 64                                                          │
+│  self = main                                                                 │
+│  method_str = nil                                                            │
+│▾ proxy = #<Proxy:??????????????????>                                         │
+│    ▸ @core → {:method → "GET", :uri → "http://google.com"}                   │
+│    ▸ @source → "server"                                                      │
+│  uri_str = nil                                                               │
+│                                                                              │
+│                                                                              │
 │                                                                              │
 │                                                                              │
 │                                                                              │
@@ -20,23 +20,23 @@
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>
+jard >>             
 
 
 ### END SCREEN ###
 ### START SEND_KEYS ###
-["continue", :Enter]
+["step", :Enter]
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Variables ───────────────────────────────────────────────────────────────────┐
-│  self = #<Fibonaci:?????????????????? @a → 1, @b → 2, @other → 5>            │
-│  index = 4                                                                   │
-│  k = nil                                                                     │
-│  n = 50                                                                      │
-│  @a = 1                                                                      │
-│  @b = 2                                                                      │
-│  @other = 5                                                                  │
-│  MAX_SUPPORTED = 64                                                          │
+│  self = #<Proxy:??????????????????>                                          │
+│  @core (size:2) = {:method → "GET", :uri → "http://google.com"}              │
+│  @source = "server"                                                          │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
 │                                                                              │
 │                                                                              │
 │                                                                              │
@@ -49,23 +49,26 @@ jard >>
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>
+jard >>             
 
 
 ### END SCREEN ###
 ### START SEND_KEYS ###
-["continue", :Enter]
+["step", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Variables ───────────────────────────────────────────────────────────────────┐
-│  self = #<Fibonaci:?????????????????? @a → 2, @b → 3, @other → 5>            │
-│  index = 5                                                                   │
-│  k = nil                                                                     │
-│  n = 50                                                                      │
-│  @a = 2                                                                      │
-│  @b = 3                                                                      │
-│  @other = 5                                                                  │
-│  MAX_SUPPORTED = 64                                                          │
+│  self = #<Proxy:??????????????????>                                          │
+│  @core (size:2) = {:method → "GET", :uri → "http://google.com"}              │
+│  @source = "server"                                                          │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
 │                                                                              │
 │                                                                              │
 │                                                                              │
@@ -78,7 +81,7 @@ jard >>
 │                                                                              │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>
+jard >>             
 
 
 ### END SCREEN ###
