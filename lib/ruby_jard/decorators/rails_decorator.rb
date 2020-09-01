@@ -27,7 +27,7 @@ module RubyJard
         end
 
         def decorate_singleline(variable, line_limit:, depth: 0)
-          label = RubyJard::Span.new(content: variable.to_s.chomp!('>'), margin_right: 1, styles: :text_primary)
+          label = RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable).chomp!('>'), margin_right: 1, styles: :text_primary)
           spans = [label]
           spans += @attributes_decorator.inline_pairs(
             variable.attributes.each_with_index,
@@ -43,7 +43,7 @@ module RubyJard
           if singleline.map(&:content_length).sum < line_limit
             [singleline]
           else
-            spans = [RubyJard::Span.new(content: variable.to_s, styles: :text_primary)]
+            spans = [RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)]
 
             item_count = 0
             variable.attributes.each_with_index do |(key, value), index|
@@ -85,7 +85,9 @@ module RubyJard
         def decorate_singleline(variable, line_limit:, depth: 0)
           if variable.respond_to?(:loaded?) && variable.loaded?
             spans = []
-            label = RubyJard::Span.new(content: variable.to_s.chomp('>'), styles: :text_primary)
+            label = RubyJard::Span.new(
+              content: RubyJard::Reflection.call_to_s(variable).chomp('>'), styles: :text_primary
+            )
             spans << label
             spans += @attributes_decorator.inline_values(
               variable.each_with_index,
@@ -96,10 +98,7 @@ module RubyJard
 
             spans
           else
-            [
-              RubyJard::Span.new(content: variable.to_s, styles: :text_primary),
-              RubyJard::Span.new(content: '(not loaded)', margin_left: 1, styles: :text_dim)
-            ]
+            relation_summary(variable, line_limit)
           end
         end
 
@@ -108,14 +107,9 @@ module RubyJard
           if singleline.map(&:content_length).sum < line_limit
             [singleline]
           elsif !variable.respond_to?(:loaded?) || !variable.loaded?
-            [
-              [
-                RubyJard::Span.new(content: variable.to_s, styles: :text_primary),
-                RubyJard::Span.new(content: '(not loaded)', margin_left: 1, styles: :text_dim)
-              ]
-            ]
+            [relation_summary(variable, first_line_limit)]
           else
-            spans = [[RubyJard::Span.new(content: variable.to_s, styles: :text_primary)]]
+            spans = [[RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)]]
 
             item_count = 0
             variable.each_with_index do |value, index|
@@ -132,6 +126,22 @@ module RubyJard
             end
             spans
           end
+        end
+
+        private
+
+        def relation_summary(variable, line_limit)
+          overview = RubyJard::Reflection.call_to_s(variable).chomp('>')
+          width = overview.length + 1 + 12
+          spans = [RubyJard::Span.new(content: overview, styles: :text_primary)]
+          if RubyJard::Reflection.call_respond_to?(variable, :to_sql) && width < line_limit
+            detail = variable.to_sql
+            detail = detail[0..line_limit - width - 2] + '…' if width + detail.length < line_limit
+            spans << RubyJard::Span.new(content: detail, styles: :text_dim, margin_left: 1)
+          end
+          spans << RubyJard::Span.new(content: '>', styles: :text_primary)
+          spans << RubyJard::Span.new(content: '(not loaded)', margin_left: 1, styles: :text_dim)
+          spans
         end
       end
 
