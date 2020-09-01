@@ -151,7 +151,7 @@ module RubyJard
             "(size:#{value.length})"
           end
         RubyJard::Span.new(
-          margin_right: 1,
+          margin_left: 1,
           content: size_label,
           styles: :text_primary
         )
