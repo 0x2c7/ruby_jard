@@ -33,6 +33,10 @@ module RubyJard
         bind_call(Kernel, :instance_variable_get, object, variable)
       end
 
+      def call_instance_variable_set(object, variable, value)
+        bind_call(Kernel, :instance_variable_set, object, variable, value)
+      end
+
       def call_inspect(object)
         if call_is_a?(object, Module)
           bind_call(Kernel, :inspect, object)
