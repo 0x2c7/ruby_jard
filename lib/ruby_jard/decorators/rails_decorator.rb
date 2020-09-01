@@ -27,7 +27,10 @@ module RubyJard
         end
 
         def decorate_singleline(variable, line_limit:, depth: 0)
-          label = RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable).chomp!('>'), margin_right: 1, styles: :text_primary)
+          label = RubyJard::Span.new(
+            content: RubyJard::Reflection.call_to_s(variable).chomp!('>'),
+            margin_right: 1, styles: :text_primary
+          )
           spans = [label]
           spans += @attributes_decorator.inline_pairs(
             variable.attributes.each_with_index,
