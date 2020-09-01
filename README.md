@@ -1,5 +1,9 @@
 <img src="./docs/logo.jpg" width="400" />
 
+[![Made in Vietnam](https://raw.githubusercontent.com/webuild-community/badge/master/svg/made.svg)](https://webuild.community)
+![Rspec](https://github.com/nguyenquangminh0711/ruby_jard/workflows/Rspec/badge.svg?branch=master)
+[![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop-hq/rubocop)
+
 Jard stands for Just Another Ruby Debugger, aims to provide a better experience while debugging Ruby. Ruby Jard provides modular visual interfaces to show relevant information about your debugging program. Those interfaces are optimized for usability, and highly friendly to developers, especially new comers. They help you reduce the commands you need to type, the mental efforts wasted trying to navigate and grab the information you need. As a result, you can now focus more on the debug flow.
 
 [![Ruby Jard Demo](./docs/demo.png)](https://asciinema.org/a/350233)
@@ -255,7 +259,7 @@ jard show variables
 jard show threads
 ```
 
-Show a particular screen on the current interface. 
+Show a particular screen on the current interface.
 
 ### Hide
 
@@ -270,7 +274,7 @@ jard hide variables
 jard hide threads
 ```
 
-Hide a particular screen from the current interface. 
+Hide a particular screen from the current interface.
 
 ### Output
 
