@@ -64,7 +64,7 @@ module RubyJard
         @rows = variables.map do |variable|
           name = span_name(variable)
           size = span_size(variable)
-          assignment = RubyJard::Span.new(margin_right: 1, content: '=', styles: :text_secondary)
+          assignment = RubyJard::Span.new(margin_right: 1, content: '=', styles: :text_primary)
           inline_limit =
             (@layout.width - 3) * 3 - name.content_length - size.content_length - assignment.content_length
           inspections = @inspection_decorator.decorate_multiline(
@@ -154,7 +154,7 @@ module RubyJard
         RubyJard::Span.new(
           margin_right: 1,
           content: size_label,
-          styles: :text_secondary
+          styles: :text_primary
         )
       end
 

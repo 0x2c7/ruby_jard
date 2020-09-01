@@ -27,14 +27,14 @@ module RubyJard
         end
 
         def decorate_singleline(variable, line_limit:, depth: 0)
-          label = RubyJard::Span.new(content: variable.to_s.chomp!('>'), margin_right: 1, styles: :text_secondary)
+          label = RubyJard::Span.new(content: variable.to_s.chomp!('>'), margin_right: 1, styles: :text_primary)
           spans = [label]
           spans += @attributes_decorator.inline_pairs(
             variable.attributes.each_with_index,
             total: variable.attributes.length, line_limit: line_limit - label.content_length - 2,
             process_key: false, depth: depth + 1
           )
-          spans << RubyJard::Span.new(content: '>', styles: :text_secondary)
+          spans << RubyJard::Span.new(content: '>', styles: :text_primary)
         end
 
         def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
@@ -43,7 +43,7 @@ module RubyJard
           if singleline.map(&:content_length).sum < line_limit
             [singleline]
           else
-            spans = [RubyJard::Span.new(content: variable.to_s, styles: :text_secondary)]
+            spans = [RubyJard::Span.new(content: variable.to_s, styles: :text_primary)]
 
             item_count = 0
             variable.attributes.each_with_index do |(key, value), index|
@@ -85,19 +85,19 @@ module RubyJard
         def decorate_singleline(variable, line_limit:, depth: 0)
           if variable.respond_to?(:loaded?) && variable.loaded?
             spans = []
-            label = RubyJard::Span.new(content: variable.to_s.chomp('>'), styles: :text_secondary)
+            label = RubyJard::Span.new(content: variable.to_s.chomp('>'), styles: :text_primary)
             spans << label
             spans += @attributes_decorator.inline_values(
               variable.each_with_index,
               total: variable.length, line_limit: line_limit - label.content_length - 2,
               depth: depth + 1
             )
-            spans << RubyJard::Span.new(content: '>', styles: :text_secondary)
+            spans << RubyJard::Span.new(content: '>', styles: :text_primary)
 
             spans
           else
             [
-              RubyJard::Span.new(content: variable.to_s, styles: :text_secondary),
+              RubyJard::Span.new(content: variable.to_s, styles: :text_primary),
               RubyJard::Span.new(content: '(not loaded)', margin_left: 1, styles: :text_dim)
             ]
           end
@@ -110,12 +110,12 @@ module RubyJard
           elsif !variable.respond_to?(:loaded?) || !variable.loaded?
             [
               [
-                RubyJard::Span.new(content: variable.to_s, styles: :text_secondary),
+                RubyJard::Span.new(content: variable.to_s, styles: :text_primary),
                 RubyJard::Span.new(content: '(not loaded)', margin_left: 1, styles: :text_dim)
               ]
             ]
           else
-            spans = [[RubyJard::Span.new(content: variable.to_s, styles: :text_secondary)]]
+            spans = [[RubyJard::Span.new(content: variable.to_s, styles: :text_primary)]]
 
             item_count = 0
             variable.each_with_index do |value, index|

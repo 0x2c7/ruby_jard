@@ -10,7 +10,7 @@ module RubyJard
       end
 
       def secondary(content)
-        color_decorator.decorate(:text_secondary, content)
+        color_decorator.decorate(:text_primary, content)
       end
 
       def highlight(content)

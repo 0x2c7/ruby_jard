@@ -128,7 +128,7 @@ module RubyJard
         if process_key
           @generic_decorator.decorate_singleline(key, line_limit: item_limit)
         else
-          [RubyJard::Span.new(content: key.to_s, styles: :text_secondary)]
+          [RubyJard::Span.new(content: key.to_s, styles: :text_primary)]
         end
       end
 
@@ -137,7 +137,7 @@ module RubyJard
       end
 
       def separator_span
-        RubyJard::Span.new(content: ',', margin_right: 1, styles: :text_secondary)
+        RubyJard::Span.new(content: ',', margin_right: 1, styles: :text_primary)
       end
 
       def ellipsis_span

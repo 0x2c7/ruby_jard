@@ -68,11 +68,11 @@ module RubyJard
         if match
           instance_variables = RubyJard::Reflection.call_instance_variables(variable)
           spans = [
-            RubyJard::Span.new(content: '#<', styles: :text_secondary),
-            RubyJard::Span.new(content: match[1], styles: :text_secondary)
+            RubyJard::Span.new(content: '#<', styles: :text_primary),
+            RubyJard::Span.new(content: match[1], styles: :text_primary)
           ]
           if with_children && !instance_variables.empty?
-            spans << RubyJard::Span.new(content: ' ', styles: :text_secondary)
+            spans << RubyJard::Span.new(content: ' ', styles: :text_primary)
             spans += @attributes_decorator.inline_pairs(
               instance_variables.each_with_index, total: instance_variables.length,
               line_limit: line_limit - spans.map(&:content_length).sum - 1,
@@ -80,12 +80,12 @@ module RubyJard
               value_proc: ->(key) { RubyJard::Reflection.call_instance_variable_get(variable, key) }
             )
           end
-          spans << RubyJard::Span.new(content: '>', styles: :text_secondary)
+          spans << RubyJard::Span.new(content: '>', styles: :text_primary)
           spans
         elsif raw_inspection.length <= line_limit
-          [RubyJard::Span.new(content: raw_inspection[0..line_limit], styles: :text_secondary)]
+          [RubyJard::Span.new(content: raw_inspection[0..line_limit], styles: :text_primary)]
         else
-          [RubyJard::Span.new(content: raw_inspection[0..line_limit - 3] + '…>', styles: :text_secondary)]
+          [RubyJard::Span.new(content: raw_inspection[0..line_limit - 3] + '…>', styles: :text_primary)]
         end
       end
 
@@ -100,15 +100,15 @@ module RubyJard
               match[2][0..line_limit - match[1].length - 4] + '…'
             end
           [
-            RubyJard::Span.new(content: '#<', styles: :text_secondary),
-            RubyJard::Span.new(content: match[1], styles: :text_secondary),
+            RubyJard::Span.new(content: '#<', styles: :text_primary),
+            RubyJard::Span.new(content: match[1], styles: :text_primary),
             RubyJard::Span.new(content: detail, styles: :text_dim),
-            RubyJard::Span.new(content: '>', styles: :text_secondary)
+            RubyJard::Span.new(content: '>', styles: :text_primary)
           ]
         elsif raw_inspection.length <= line_limit
-          [RubyJard::Span.new(content: raw_inspection[0..line_limit], styles: :text_secondary)]
+          [RubyJard::Span.new(content: raw_inspection[0..line_limit], styles: :text_primary)]
         else
-          [RubyJard::Span.new(content: raw_inspection[0..line_limit - 3] + '…>', styles: :text_secondary)]
+          [RubyJard::Span.new(content: raw_inspection[0..line_limit - 3] + '…>', styles: :text_primary)]
         end
       end
     end

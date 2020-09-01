@@ -92,7 +92,7 @@ module RubyJard
         RubyJard::Span.new(
           content: 'in',
           margin_right: 1,
-          styles: :text_secondary
+          styles: :text_primary
         )
       end
 
@@ -116,7 +116,7 @@ module RubyJard
         )
         RubyJard::Span.new(
           content: path_label,
-          styles: :text_secondary
+          styles: :text_primary
         )
       end
     end

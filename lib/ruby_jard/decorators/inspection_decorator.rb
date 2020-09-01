@@ -33,8 +33,8 @@ module RubyJard
         //.class.name => :literal, # TODO: create a new class to handle range
         (0..0).class.name => :literal,
         nil.class.name => :text_dim,
-        Class.class.name => :text_secondary, # Sorry, I lied, Class will never change
-        Proc.name => :text_secondary # TODO: create a new class to handle proc.
+        Class.class.name => :text_primary, # Sorry, I lied, Class will never change
+        Proc.name => :text_primary # TODO: create a new class to handle proc.
       }.freeze
 
       def initialize

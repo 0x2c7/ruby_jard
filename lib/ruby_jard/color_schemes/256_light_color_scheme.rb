@@ -12,7 +12,7 @@ module RubyJard
 
       WHITE      = '231'
       RED        = '167'
-      GREEN      = '71'
+      GREEN      = '22'
       YELLOW     = '136'
       BLUE       = '31'
       PURPLE     = '127'
@@ -20,29 +20,28 @@ module RubyJard
 
       BACKGROUND = WHITE
       STYLES = {
-        background:            [GRAY5, BACKGROUND],
-        border:                [GRAY3, BACKGROUND],
-        title:                 [WHITE, GREEN],
-        title_secondary:       [GRAY5, GRAY2],
-        title_background:      [GRAY3, BACKGROUND],
-        source_line_mark:      [YELLOW, BACKGROUND],
-        source_lineno:         [GRAY4, BACKGROUND],
-        text_primary:          [GRAY5, BACKGROUND],
-        text_secondary:        [GRAY5, BACKGROUND],
-        text_dim:              [GRAY5, BACKGROUND],
-        text_highlighted:      [BLUE, BACKGROUND],
-        text_special:          [RED, BACKGROUND],
-        text_selected:         [GREEN, BACKGROUND],
-        keyword:               [PURPLE, BACKGROUND],
-        method:                [BLUE, BACKGROUND],
-        comment:               [GRAY4, BACKGROUND],
-        literal:               [YELLOW, BACKGROUND],
-        string:                [GREEN, BACKGROUND],
-        local_variable:        [RED, BACKGROUND],
-        instance_variable:     [RED, BACKGROUND],
-        constant:              [YELLOW, BACKGROUND],
-        normal_token:          [GRAY5, BACKGROUND],
-        object:                [YELLOW, BACKGROUND]
+        background:        [GRAY5, BACKGROUND],
+        border:            [GRAY3, BACKGROUND],
+        title:             [WHITE, GREEN],
+        title_secondary:   [GRAY5, GRAY2],
+        title_background:  [GRAY3, BACKGROUND],
+        source_line_mark:  [YELLOW, BACKGROUND],
+        source_lineno:     [GRAY4, BACKGROUND],
+        text_primary:      [GRAY5, BACKGROUND],
+        text_dim:          [GRAY5, BACKGROUND],
+        text_highlighted:  [BLUE, BACKGROUND],
+        text_special:      [RED, BACKGROUND],
+        text_selected:     [GREEN, BACKGROUND],
+        keyword:           [PURPLE, BACKGROUND],
+        method:            [BLUE, BACKGROUND],
+        comment:           [GRAY4, BACKGROUND],
+        literal:           [YELLOW, BACKGROUND],
+        string:            [GREEN, BACKGROUND],
+        local_variable:    [RED, BACKGROUND],
+        instance_variable: [RED, BACKGROUND],
+        constant:          [YELLOW, BACKGROUND],
+        normal_token:      [GRAY5, BACKGROUND],
+        object:            [YELLOW, BACKGROUND]
       }.freeze
     end
   end

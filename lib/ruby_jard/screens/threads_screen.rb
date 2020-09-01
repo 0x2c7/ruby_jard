@@ -95,7 +95,7 @@ module RubyJard
 
         RubyJard::Span.new(
           content: path_label,
-          styles: :text_secondary
+          styles: :text_primary
         )
       end
 

@@ -12,12 +12,12 @@ module RubyJard
 
       def decorate_singleline(variable, line_limit:, depth: 0)
         spans = []
-        spans << RubyJard::Span.new(content: '{', styles: :text_secondary)
+        spans << RubyJard::Span.new(content: '{', styles: :text_primary)
         spans += @attributes_decorator.inline_pairs(
           variable.each_with_index,
           total: variable.length, line_limit: line_limit - 2, process_key: true, depth: depth + 1
         )
-        spans << RubyJard::Span.new(content: '}', styles: :text_secondary)
+        spans << RubyJard::Span.new(content: '}', styles: :text_primary)
       end
 
       def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
@@ -25,7 +25,7 @@ module RubyJard
         if singleline.map(&:content_length).sum < line_limit || variable.length <= 1
           [singleline]
         else
-          spans = [[RubyJard::Span.new(content: '{', styles: :text_secondary)]]
+          spans = [[RubyJard::Span.new(content: '{', styles: :text_primary)]]
 
           item_count = 0
           variable.each_with_index do |(key, value), index|
@@ -52,11 +52,11 @@ module RubyJard
             ),
             RubyJard::Span.new(
               content: '}',
-              styles: :text_secondary
+              styles: :text_primary
             )
           ]
         else
-          [RubyJard::Span.new(content: '}', styles: :text_secondary)]
+          [RubyJard::Span.new(content: '}', styles: :text_primary)]
         end
       end
     end

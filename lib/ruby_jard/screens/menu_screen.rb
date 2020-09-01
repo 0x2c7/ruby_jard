@@ -48,7 +48,7 @@ module RubyJard
           filter_more = filter_details.length > 3 ? " (#{filter_details.length - 3} more...)" : nil
           filter_details_span = RubyJard::Span.new(
             content: "#{filter_exceprt}#{filter_more}",
-            styles: :text_secondary,
+            styles: :text_primary,
             margin_left: 1
           )
           [
@@ -68,7 +68,7 @@ module RubyJard
           RubyJard::Span.new(
             content: menu_item,
             margin_left: 3,
-            styles: :text_secondary
+            styles: :text_primary
           )
         end
       end
