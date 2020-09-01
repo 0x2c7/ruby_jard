@@ -50,14 +50,7 @@ module RubyJard
 
       def decorate_singleline(variable, line_limit:, depth: 0)
         if primitive?(variable)
-          inspection = variable.inspect
-          inspection = inspection[0..line_limit - 2] + '…' if inspection.length >= line_limit
-          return [
-            RubyJard::Span.new(
-              content: inspection,
-              styles: PRIMITIVE_TYPES[RubyJard::Reflection.call_class(variable).name]
-            )
-          ]
+          return decorate_primitive(variable, line_limit)
         end
 
         @klass_decorators.each do |klass_decorator|
@@ -71,12 +64,7 @@ module RubyJard
 
       def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
         if primitive?(variable)
-          return [[
-            RubyJard::Span.new(
-              content: variable.inspect[0..first_line_limit - 1],
-              styles: PRIMITIVE_TYPES[RubyJard::Reflection.call_class(variable).name]
-            )
-          ]]
+          return decorate_primitive(variable, first_line_limit)
         end
 
         @klass_decorators.each do |klass_decorator|
@@ -104,6 +92,17 @@ module RubyJard
 
       def primitive?(variable)
         !PRIMITIVE_TYPES[RubyJard::Reflection.call_class(variable).name].nil?
+      end
+
+      def decorate_primitive(variable, line_limit)
+        inspection = variable.inspect
+        inspection = inspection[0..line_limit - 2] + '…' if inspection.length >= line_limit
+        [
+          RubyJard::Span.new(
+            content: inspection,
+            styles: PRIMITIVE_TYPES[RubyJard::Reflection.call_class(variable).name]
+          )
+        ]
       end
     end
   end

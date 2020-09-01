@@ -21,26 +21,36 @@ module RubyJard
       end
 
       def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
+        if variable.size > lines * 1.5
+          return do_decorate_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
+        end
+
         singleline = decorate_singleline(variable, line_limit: first_line_limit)
         if singleline.map(&:content_length).sum < line_limit || variable.length <= 1
           [singleline]
         else
-          spans = [[RubyJard::Span.new(content: '{', styles: :text_primary)]]
-
-          item_count = 0
-          variable.each_with_index do |(key, value), index|
-            spans << @attributes_decorator.pair(
-              key, value, line_limit: line_limit, process_key: true, depth: depth + 1
-            )
-            item_count += 1
-            break if index >= lines - 2
-          end
-          spans << last_line(variable.length, item_count)
+          do_decorate_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         end
       end
 
       def match?(variable)
         RubyJard::Reflection.call_is_a?(variable, Hash)
+      end
+
+      private
+
+      def do_decorate_multiline(variable, lines:, line_limit:, depth: 0)
+        spans = [[RubyJard::Span.new(content: '{', styles: :text_primary)]]
+
+        item_count = 0
+        variable.each_with_index do |(key, value), index|
+          spans << @attributes_decorator.pair(
+            key, value, line_limit: line_limit, process_key: true, depth: depth + 1
+          )
+          item_count += 1
+          break if index >= lines - 2
+        end
+        spans << last_line(variable.length, item_count)
       end
 
       def last_line(total, item_count)

@@ -10,6 +10,10 @@ module RubyJard
         @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
       end
 
+      def match?(variable)
+        RubyJard::Reflection.call_is_a?(variable, Array)
+      end
+
       def decorate_singleline(variable, line_limit:, depth: 0)
         spans = []
         spans << RubyJard::Span.new(content: '[', styles: :text_primary)
@@ -22,26 +26,36 @@ module RubyJard
       end
 
       def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
+        if variable.length > lines * 2
+          return do_decorate_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
+        end
+
         singleline = decorate_singleline(variable, line_limit: first_line_limit, depth: depth)
-        if singleline.map(&:content_length).sum < line_limit || variable.length <= 1
+        if (singleline.map(&:content_length).sum < line_limit && same_type?(variable, lines)) || variable.length <= 1
           [singleline]
         else
-          spans = [[RubyJard::Span.new(content: '[', styles: :text_primary)]]
-
-          item_count = 0
-          variable.each_with_index do |value, index|
-            spans << @attributes_decorator.value(value, line_limit: line_limit, depth: depth + 1)
-
-            item_count += 1
-            break if index >= lines - 2
-          end
-
-          spans << last_line(variable.length, item_count)
+          do_decorate_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         end
       end
 
-      def match?(variable)
-        RubyJard::Reflection.call_is_a?(variable, Array)
+      private
+
+      def same_type?(variable, sample)
+        variable.first(sample).map { |item| RubyJard::Reflection.call_class(item) }.uniq.length <= 1
+      end
+
+      def do_decorate_multiline(variable, lines:, line_limit:, depth: 0)
+        spans = [[RubyJard::Span.new(content: '[', styles: :text_primary)]]
+
+        item_count = 0
+        variable.each_with_index do |value, index|
+          spans << @attributes_decorator.value(value, line_limit: line_limit, depth: depth + 1)
+
+          item_count += 1
+          break if index >= lines - 2
+        end
+
+        spans << last_line(variable.length, item_count)
       end
 
       def last_line(total, item_count)
