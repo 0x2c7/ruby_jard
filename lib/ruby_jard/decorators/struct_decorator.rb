@@ -16,9 +16,9 @@ module RubyJard
       end
 
       def decorate_singleline(variable, line_limit:, depth: 0)
-        spans = [RubyJard::Span.new(content: '#<struct ', styles: :text_dim)]
+        spans = [RubyJard::Span.new(content: '#<struct', margin_right: 1, styles: :text_dim)]
         unless variable.class.name.nil?
-          spans << RubyJard::Span.new(content: variable.class.name.to_s, styles: :text_primary)
+          spans << RubyJard::Span.new(content: variable.class.name.to_s, margin_right: 1, styles: :text_primary)
         end
         spans += @attributes_decorator.inline_pairs(
           variable.members.each_with_index,
@@ -36,7 +36,7 @@ module RubyJard
           [singleline]
         else
           spans = []
-          start = [RubyJard::Span.new(content: '#<struct ', styles: :text_dim)]
+          start = [RubyJard::Span.new(content: '#<struct', margin_right: 1, styles: :text_dim)]
           unless variable.class.name.nil?
             start << RubyJard::Span.new(content: variable.class.name.to_s, styles: :text_primary)
           end
