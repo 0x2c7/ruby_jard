@@ -26,17 +26,18 @@ module RubyJard
           RubyJard::Reflection.call_is_a?(variable, ActiveRecord::Base)
         end
 
-        def decorate_singleline(variable, line_limit:)
+        def decorate_singleline(variable, line_limit:, depth: 0)
           label = RubyJard::Span.new(content: variable.to_s.chomp!('>'), margin_right: 1, styles: :text_secondary)
           spans = [label]
           spans += @attributes_decorator.inline_pairs(
             variable.attributes.each_with_index,
-            total: variable.attributes.length, line_limit: line_limit - label.content_length - 2, process_key: false
+            total: variable.attributes.length, line_limit: line_limit - label.content_length - 2,
+            process_key: false, depth: depth + 1
           )
           spans << RubyJard::Span.new(content: '>', styles: :text_secondary)
         end
 
-        def decorate_multiline(variable, first_line_limit:, lines:, line_limit:)
+        def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
           singleline = decorate_singleline(variable, line_limit: first_line_limit)
 
           if singleline.map(&:content_length).sum < line_limit
@@ -47,7 +48,7 @@ module RubyJard
             item_count = 0
             variable.attributes.each_with_index do |(key, value), index|
               spans << @attributes_decorator.pair(
-                key, value, line_limit: line_limit, process_key: false
+                key, value, line_limit: line_limit, process_key: false, depth: depth + 1
               )
               item_count += 1
               break if index >= lines - 2
@@ -81,13 +82,15 @@ module RubyJard
           false
         end
 
-        def decorate_singleline(variable, line_limit:)
+        def decorate_singleline(variable, line_limit:, depth: 0)
           if variable.respond_to?(:loaded?) && variable.loaded?
             spans = []
             label = RubyJard::Span.new(content: variable.to_s.chomp('>'), styles: :text_secondary)
             spans << label
             spans += @attributes_decorator.inline_values(
-              variable.each_with_index, total: variable.length, line_limit: line_limit - label.content_length - 2
+              variable.each_with_index,
+              total: variable.length, line_limit: line_limit - label.content_length - 2,
+              depth: depth + 1
             )
             spans << RubyJard::Span.new(content: '>', styles: :text_secondary)
 
@@ -100,7 +103,7 @@ module RubyJard
           end
         end
 
-        def decorate_multiline(variable, first_line_limit:, lines:, line_limit:)
+        def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
           singleline = decorate_singleline(variable, line_limit: first_line_limit)
           if singleline.map(&:content_length).sum < line_limit
             [singleline]
@@ -116,7 +119,7 @@ module RubyJard
 
             item_count = 0
             variable.each_with_index do |value, index|
-              spans << @attributes_decorator.value(value, line_limit: line_limit)
+              spans << @attributes_decorator.value(value, line_limit: line_limit, depth: depth + 1)
 
               item_count += 1
               break if index >= lines - 2
@@ -146,19 +149,19 @@ module RubyJard
         false
       end
 
-      def decorate_singleline(variable, line_limit:)
+      def decorate_singleline(variable, line_limit:, depth: 0)
         @sub_decorators.each do |sub_decorator|
           next unless sub_decorator.match?(variable)
 
           return sub_decorator.decorate_singleline(
-            variable, line_limit: line_limit
+            variable, line_limit: line_limit, depth: depth
           )
         end
 
         nil
       end
 
-      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:)
+      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
         @sub_decorators.each do |sub_decorator|
           next unless sub_decorator.match?(variable)
 
@@ -166,7 +169,8 @@ module RubyJard
             variable,
             first_line_limit: first_line_limit,
             lines: lines,
-            line_limit: line_limit
+            line_limit: line_limit,
+            depth: depth
           )
         end
 

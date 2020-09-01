@@ -10,16 +10,17 @@ module RubyJard
         @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
       end
 
-      def decorate_singleline(variable, line_limit:)
+      def decorate_singleline(variable, line_limit:, depth: 0)
         spans = []
         spans << RubyJard::Span.new(content: '{', styles: :text_secondary)
         spans += @attributes_decorator.inline_pairs(
-          variable.each_with_index, total: variable.length, line_limit: line_limit - 2, process_key: true
+          variable.each_with_index,
+          total: variable.length, line_limit: line_limit - 2, process_key: true, depth: depth + 1
         )
         spans << RubyJard::Span.new(content: '}', styles: :text_secondary)
       end
 
-      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:)
+      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
         singleline = decorate_singleline(variable, line_limit: first_line_limit)
         if singleline.map(&:content_length).sum < line_limit || variable.length <= 1
           [singleline]
@@ -29,7 +30,7 @@ module RubyJard
           item_count = 0
           variable.each_with_index do |(key, value), index|
             spans << @attributes_decorator.pair(
-              key, value, line_limit: line_limit, process_key: true
+              key, value, line_limit: line_limit, process_key: true, depth: depth + 1
             )
             item_count += 1
             break if index >= lines - 2

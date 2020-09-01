@@ -14,14 +14,13 @@ module RubyJard
       end
 
       # rubocop:disable Lint/UnusedMethodArgument
-      def decorate_multiline(variable, first_line_limit:, line_limit:, lines:)
+      def decorate_multiline(variable, first_line_limit:, line_limit:, lines:, depth: 0)
         [
           decorate_singleline(variable, line_limit: first_line_limit)
         ]
       end
-      # rubocop:enable Lint/UnusedMethodArgument
 
-      def decorate_singleline(variable, line_limit:)
+      def decorate_singleline(variable, line_limit:, depth: 0)
         inspection = variable.inspect[1..-1].chomp!('"')
         str =
           if inspection.length < line_limit - 2
@@ -36,6 +35,7 @@ module RubyJard
           RubyJard::Span.new(content: '"', styles: :string)
         ]
       end
+      # rubocop:enable Lint/UnusedMethodArgument
     end
   end
 end

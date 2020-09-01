@@ -2,6 +2,7 @@
 
 module RubyJard
   module Decorators
+    MAX_DEPTH = 3
     ##
     # Decorate collection data structure. Support:
     # - Collection of values
@@ -14,7 +15,9 @@ module RubyJard
         @generic_decorator = generic_decorator
       end
 
-      def inline_pairs(enum, total:, line_limit:, process_key:, value_proc: nil)
+      def inline_pairs(enum, total:, line_limit:, process_key:, value_proc: nil, depth: 0)
+        return [ellipsis_span] if depth > MAX_DEPTH
+
         spans = []
         width = 1
         item_limit = total == 0 ? 0 : [line_limit / total / 2, 30].max
@@ -24,7 +27,8 @@ module RubyJard
           key_inspection_length = key_inspection.map(&:content_length).sum
 
           value_inspection = @generic_decorator.decorate_singleline(
-            value_proc.nil? ? value : value_proc.call(key), line_limit: [item_limit - key_inspection_length, 30].max
+            value_proc.nil? ? value : value_proc.call(key),
+            line_limit: [item_limit - key_inspection_length, 30].max, depth: depth + 1
           )
           value_inspection_length = value_inspection.map(&:content_length).sum
 
@@ -51,14 +55,16 @@ module RubyJard
         spans
       end
 
-      def inline_values(enum, total:, line_limit:)
+      def inline_values(enum, total:, line_limit:, depth: 0)
+        return [ellipsis_span] if depth > MAX_DEPTH
+
         spans = []
         width = 1
         item_limit = total == 0 ? 0 : [line_limit / total / 2, 30].max
 
         enum.each do |value, index|
           value_inspection = @generic_decorator.decorate_singleline(
-            value, line_limit: [item_limit, 30].max
+            value, line_limit: [item_limit, 30].max, depth: depth + 1
           )
           value_inspection_length = value_inspection.map(&:content_length).sum
 
@@ -79,19 +85,23 @@ module RubyJard
         spans
       end
 
-      def value(value, line_limit:)
+      def value(value, line_limit:, depth: 0)
+        return [ellipsis_span] if depth > MAX_DEPTH
+
         spans = []
         spans << indent_span
         width = indent_span.content_length
 
         value_inspection = @generic_decorator.decorate_singleline(
-          value, line_limit: [line_limit - width, 30].max
+          value, line_limit: [line_limit - width, 30].max, depth: depth
         )
 
         spans + value_inspection
       end
 
-      def pair(key, value, line_limit:, process_key:)
+      def pair(key, value, line_limit:, process_key:, depth: 0)
+        return [ellipsis_span] if depth > MAX_DEPTH
+
         spans = []
         spans << indent_span
         width = indent_span.content_length
@@ -106,7 +116,7 @@ module RubyJard
         width += 3
 
         value_inspection = @generic_decorator.decorate_singleline(
-          value, line_limit: [line_limit - width, 30].max
+          value, line_limit: [line_limit - width, 30].max, depth: depth
         )
 
         spans + value_inspection

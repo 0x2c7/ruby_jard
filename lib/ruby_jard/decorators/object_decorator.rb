@@ -15,15 +15,15 @@ module RubyJard
         @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
       end
 
-      def decorate_singleline(variable, line_limit:)
+      def decorate_singleline(variable, line_limit:, depth: 0)
         if native_inspect?(variable)
-          decorate_native_inspection(variable, line_limit: line_limit)
+          decorate_native_inspection(variable, line_limit: line_limit, depth: depth)
         else
           decorate_custom_inspection(variable, line_limit: line_limit)
         end
       end
 
-      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:)
+      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
         singleline = decorate_singleline(variable, line_limit: first_line_limit)
         return [singleline] if singleline.map(&:content_length).sum < line_limit
 
@@ -34,7 +34,7 @@ module RubyJard
         instance_variables.each do |key|
           spans << @attributes_decorator.pair(
             key, RubyJard::Reflection.call_instance_variable_get(variable, key),
-            line_limit: line_limit, process_key: false
+            line_limit: line_limit, process_key: false, depth: depth + 1
           )
 
           item_count += 1
@@ -61,7 +61,7 @@ module RubyJard
         RubyJard::Reflection.bind_call(::Kernel, :method, variable, :inspect).owner == ::Kernel
       end
 
-      def decorate_native_inspection(variable, line_limit:, with_children: true)
+      def decorate_native_inspection(variable, line_limit:, depth: 0, with_children: true)
         raw_inspection = RubyJard::Reflection.call_to_s(variable)
         match = raw_inspection.match(DEFAULT_INSPECTION_PATTERN)
 
@@ -76,7 +76,8 @@ module RubyJard
             spans += @attributes_decorator.inline_pairs(
               instance_variables.each_with_index, total: instance_variables.length,
               line_limit: line_limit - spans.map(&:content_length).sum - 1,
-              process_key: false, value_proc: ->(key) { RubyJard::Reflection.call_instance_variable_get(variable, key) }
+              depth: depth + 1, process_key: false,
+              value_proc: ->(key) { RubyJard::Reflection.call_instance_variable_get(variable, key) }
             )
           end
           spans << RubyJard::Span.new(content: '>', styles: :text_secondary)

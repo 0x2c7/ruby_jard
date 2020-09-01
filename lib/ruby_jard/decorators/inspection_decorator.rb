@@ -48,7 +48,7 @@ module RubyJard
         @object_decorator = ObjectDecorator.new(self)
       end
 
-      def decorate_singleline(variable, line_limit:)
+      def decorate_singleline(variable, line_limit:, depth: 0)
         if primitive?(variable)
           inspection = variable.inspect
           inspection = inspection[0..line_limit - 2] + '…' if inspection.length >= line_limit
@@ -63,13 +63,13 @@ module RubyJard
         @klass_decorators.each do |klass_decorator|
           next unless klass_decorator.match?(variable)
 
-          spans = klass_decorator.decorate_singleline(variable, line_limit: line_limit)
+          spans = klass_decorator.decorate_singleline(variable, line_limit: line_limit, depth: depth)
           return spans unless spans.nil?
         end
         @object_decorator.decorate_singleline(variable, line_limit: line_limit)
       end
 
-      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:)
+      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
         if primitive?(variable)
           return [[
             RubyJard::Span.new(
@@ -86,7 +86,8 @@ module RubyJard
             variable,
             first_line_limit: first_line_limit,
             lines: lines,
-            line_limit: line_limit
+            line_limit: line_limit,
+            depth: depth
           )
           return spans unless spans.nil?
         end
@@ -94,7 +95,8 @@ module RubyJard
           variable,
           first_line_limit: first_line_limit,
           lines: lines,
-          line_limit: line_limit
+          line_limit: line_limit,
+          depth: depth
         )
       end
 

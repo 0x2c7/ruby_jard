@@ -15,20 +15,21 @@ module RubyJard
         RubyJard::Reflection.call_is_a?(variable, Struct)
       end
 
-      def decorate_singleline(variable, line_limit:)
+      def decorate_singleline(variable, line_limit:, depth: 0)
         spans = [RubyJard::Span.new(content: '#<struct ', styles: :text_dim)]
         unless variable.class.name.nil?
           spans << RubyJard::Span.new(content: variable.class.name.to_s, styles: :text_secondary)
         end
         spans += @attributes_decorator.inline_pairs(
           variable.members.each_with_index,
-          total: variable.length, line_limit: line_limit - spans.map(&:content_length).sum - 1, process_key: false,
+          total: variable.length, line_limit: line_limit - spans.map(&:content_length).sum - 1,
+          process_key: false, depth: depth + 1,
           value_proc: ->(key) { variable[key] }
         )
         spans << RubyJard::Span.new(content: '>', styles: :text_dim)
       end
 
-      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:)
+      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
         singleline = decorate_singleline(variable, line_limit: first_line_limit)
 
         if singleline.map(&:content_length).sum < line_limit || variable.length <= 1
@@ -45,7 +46,7 @@ module RubyJard
           item_count = 0
           variable.members.each_with_index do |member, index|
             spans << @attributes_decorator.pair(
-              member, variable[member], line_limit: line_limit, process_key: false
+              member, variable[member], line_limit: line_limit, process_key: false, depth: depth + 1
             )
             item_count += 1
             break if index >= lines - 2

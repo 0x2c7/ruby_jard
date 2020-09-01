@@ -215,4 +215,20 @@ RSpec.describe 'Variable screen', integration: true do
       test.stop
     end
   end
+
+  context 'when working with circular reference object' do
+    it 'display relevant instance variables' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'record.circular_reference',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/circular_reference_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
 end
