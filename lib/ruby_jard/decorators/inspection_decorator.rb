@@ -66,7 +66,7 @@ module RubyJard
           spans = klass_decorator.decorate_singleline(variable, line_limit: line_limit, depth: depth)
           return spans unless spans.nil?
         end
-        @object_decorator.decorate_singleline(variable, line_limit: line_limit)
+        @object_decorator.decorate_singleline(variable, line_limit: line_limit, depth: depth)
       end
 
       def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
