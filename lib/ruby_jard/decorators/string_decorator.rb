@@ -26,7 +26,7 @@ module RubyJard
           if inspection.length < line_limit - 2
             inspection
           else
-            inspection[0..line_limit - 5] + ' »'
+            inspection[0..line_limit - 4] + '…'
           end
         [
 
