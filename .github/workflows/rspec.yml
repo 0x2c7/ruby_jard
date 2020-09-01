@@ -24,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [2.5, 2.6, 2.7.1]
+        ruby: [2.5, 2.6, 2.7.1, head]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -48,7 +48,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [2.5, 2.6, 2.7.1]
+        ruby: [2.5, 2.6, 2.7.1, head]
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
@@ -73,7 +73,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        byebug: [9.1.0, 10.0.2, 11.1.0]
+        byebug: [9.1.0, 10.0.2]
     env:
       BUNDLE_GEMFILE: "./spec/gemfiles/Gemfile-byebug-${{ matrix.byebug }}"
     steps:
