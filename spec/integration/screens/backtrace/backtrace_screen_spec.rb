@@ -178,9 +178,7 @@ RSpec.describe 'Backtrace screen', integration: true do
       test.assert_screen
       test.send_keys('up', :Enter)
       test.assert_screen
-      test.send_keys('down', :Enter)
-      test.assert_screen
-      test.send_keys('down', :Enter)
+      test.send_keys('down 2', :Enter)
       test.assert_screen
 
       test.send_keys('jard filter gems', :Enter)
@@ -190,10 +188,7 @@ RSpec.describe 'Backtrace screen', integration: true do
       test.send_keys('up', :Enter)
       test.send_keys('up', :Enter)
       test.assert_screen
-      test.send_keys('up', :Enter)
-      test.send_keys('up', :Enter)
-      test.send_keys('up', :Enter)
-      test.send_keys('up', :Enter)
+      test.send_keys('up 4', :Enter)
       test.assert_screen
 
       test.send_keys('frame 2', :Enter)
