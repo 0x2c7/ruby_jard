@@ -7,14 +7,18 @@ module RubyJard
     class BacktraceScreen < RubyJard::Screen
       def initialize(*args)
         super(*args)
-        @frames = @session.current_backtrace.select(&:visible?)
+        @current_frame = @session.current_frame
+        @frames =
+          @session
+          .current_backtrace
+          .select(&:visible?)
+          .sort { |a, b| a.virtual_pos.to_i <=> b.virtual_pos.to_i }
+        insert_current_frame
         @selected =
-          if @session.current_frame.nil?
+          if @current_frame.nil?
             0
-          elsif @session.current_frame.hidden?
-            -1
           else
-            @session.current_frame.virtual_pos
+            @frames.find_index { |f| f.real_pos == @current_frame.real_pos }
           end
         @frames_count = @frames.length
         @hidden_frames_count = @session.current_backtrace.count(&:hidden?)
@@ -31,13 +35,13 @@ module RubyJard
       end
 
       def build
-        @rows = @frames.map.with_index do |frame, frame_id|
+        @rows = @frames.map do |frame|
           RubyJard::Row.new(
             line_limit: 2,
             columns: [
               RubyJard::Column.new(
                 spans: [
-                  span_frame_id(frame_id)
+                  span_frame_pos(frame)
                 ]
               ),
               RubyJard::Column.new(
@@ -55,16 +59,21 @@ module RubyJard
 
       private
 
-      def span_frame_id(frame_id)
-        frame_id_label = frame_id.to_s.rjust(@frames_count.to_s.length)
-        if frame_id == @selected
+      def span_frame_pos(frame)
+        frame_pos_label =
+          if frame.hidden?
+            '*'.rjust(@frames_count.to_s.length)
+          else
+            frame.virtual_pos.to_s.rjust(@frames_count.to_s.length)
+          end
+        if frame.real_pos == @current_frame.real_pos
           RubyJard::Span.new(
-            content: "⮕ #{frame_id_label}",
+            content: "⮕ #{frame_pos_label}",
             styles: :text_selected
           )
         else
           RubyJard::Span.new(
-            content: "  #{frame_id_label}",
+            content: "  #{frame_pos_label}",
             styles: :text_dim
           )
         end
@@ -124,6 +133,17 @@ module RubyJard
           content: path_label,
           styles: :text_primary
         )
+      end
+
+      def insert_current_frame
+        return if @current_frame.visible?
+
+        index = @frames.find_index { |f| @current_frame.real_pos < f.real_pos }
+        if index.nil?
+          @frames << @current_frame
+        else
+          @frames.insert(index, @current_frame)
+        end
       end
     end
   end
