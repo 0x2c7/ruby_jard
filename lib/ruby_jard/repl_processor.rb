@@ -61,6 +61,7 @@ module RubyJard
     end
 
     def process_commands(redraw = true)
+      RubyJard::Session.sync
       RubyJard::ScreenManager.draw_screens if redraw
 
       return_value = nil
