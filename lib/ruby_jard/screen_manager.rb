@@ -29,7 +29,7 @@ module RubyJard
     class << self
       extend Forwardable
 
-      def_delegators :instance, :update, :puts, :draw_error, :start, :stop, :started?, :updating?
+      def_delegators :instance, :sync, :puts, :draw_error, :start, :stop, :started?, :updating?
 
       def instance
         @instance ||= new
@@ -73,7 +73,7 @@ module RubyJard
       RubyJard::Console.enable_cursor!
     end
 
-    def update
+    def sync
       start unless started?
       @updating = true
 

@@ -26,7 +26,6 @@ module RubyJard
     def initialize(context, *args)
       super(context, *args)
       @config = RubyJard.config
-      @path_filter = RubyJard::PathFilter.new
       @repl_proxy = RubyJard::ReplProxy.new(
         key_bindings: RubyJard.global_key_bindings
       )
@@ -48,7 +47,8 @@ module RubyJard
     private
 
     def process_commands_with_lock
-      unless debuggable?(Byebug.current_context)
+      RubyJard::Session.assume_context
+      unless RubyJard::Session.should_stop?
         handle_flow(@previous_flow)
         return
       end
@@ -60,14 +60,10 @@ module RubyJard
       end
     end
 
-    def debuggable?(context)
-      @path_filter.match?(context.frame_file)
-    end
-
-    def process_commands(update = true)
-      if update
-        RubyJard::Session.update
-        RubyJard::ScreenManager.update
+    def process_commands(sync = true)
+      if sync
+        RubyJard::Session.sync
+        RubyJard::ScreenManager.sync
       end
       return_value = nil
 
@@ -93,49 +89,49 @@ module RubyJard
 
     def handle_next_command(options = {})
       times = options[:times] || 1
-      Byebug.current_context.step_over(times, Byebug.current_context.frame.pos)
+      RubyJard::Session.step_over(times)
       proceed!
     end
 
     def handle_step_command(options = {})
       times = options[:times] || 1
-      Byebug.current_context.step_into(times, Byebug.current_context.frame.pos)
+      RubyJard::Session.step_into(times)
       proceed!
     end
 
     def handle_step_out_command(options = {})
       times = options[:times] || 1
 
-      next_frame = up_n_frames(Byebug.current_context.frame.pos, times)
-      Byebug.current_context.frame = next_frame
-      Byebug.current_context.step_over(1, Byebug.current_context.frame.pos)
+      next_frame = up_n_frames(RubyJard::Session.current_frame.pos, times)
+      RubyJard::Session.frame = next_frame
+      RubyJard::Session.step_over(1)
       proceed!
     end
 
     def handle_up_command(options = {})
       times = options[:times] || 1
 
-      next_frame = up_n_frames(Byebug.current_context.frame.pos, times)
-      Byebug.current_context.frame = next_frame
+      next_frame = up_n_frames(RubyJard::Session.current_frame.pos, times)
+      RubyJard::Session.frame = next_frame
       proceed!
       process_commands
     end
 
     def handle_down_command(options = {})
       times = options[:times] || 1
-      next_frame = down_n_frames(Byebug.current_context.frame.pos, times)
-      Byebug.current_context.frame = next_frame
+      next_frame = down_n_frames(RubyJard::Session.current_frame.pos, times)
+      RubyJard::Session.frame = next_frame
       proceed!
       process_commands
     end
 
     def handle_frame_command(options)
       next_frame = options[:frame].to_i
-      if Byebug::Frame.new(Byebug.current_context, next_frame).c_frame?
+      if RubyJard::Session.current_backtrace[next_frame].c_frame?
         RubyJard::ScreenManager.puts "Error: Frame #{next_frame} is a c-frame. Not able to inspect c layer!"
         process_commands(false)
       else
-        Byebug.current_context.frame = next_frame
+        RubyJard::Session.frame = next_frame
         proceed!
         process_commands(true)
       end
@@ -174,9 +170,9 @@ module RubyJard
     def up_n_frames(current_frame, times)
       next_frame = current_frame
       times.times do
-        next_frame = [next_frame + 1, Byebug.current_context.backtrace.length - 1].min
-        while Byebug::Frame.new(Byebug.current_context, next_frame).c_frame? &&
-              next_frame < Byebug.current_context.backtrace.length - 1
+        next_frame = [next_frame + 1, RubyJard::Session.current_backtrace.length - 1].min
+        while RubyJard::Session.current_backtrace[next_frame].c_frame? &&
+              next_frame < RubyJard::Session.current_backtrace.length - 1
           next_frame += 1
         end
       end
@@ -187,7 +183,7 @@ module RubyJard
       next_frame = current_frame
       times.times do
         next_frame = [next_frame - 1, 0].max
-        while Byebug::Frame.new(Byebug.current_context, next_frame).c_frame? &&
+        while RubyJard::Session.current_backtrace[next_frame].c_frame? &&
               next_frame > 0
           next_frame -= 1
         end

@@ -13,7 +13,9 @@ module RubyJard
       extend Forwardable
 
       def_delegators :instance,
-                     :attach, :lock, :update, :flush,
+                     :attach, :lock,
+                     :assume_context, :sync, :should_stop?,
+                     :step_over, :step_into, :frame=,
                      :threads, :current_frame, :current_thread, :current_backtrace,
                      :output_buffer, :append_output_buffer
 
@@ -30,12 +32,13 @@ module RubyJard
       @options = options
       @started = false
       @session_lock = Mutex.new
-
       @output_buffer = []
 
       @current_frame = nil
       @current_backtrace = []
       @threads = []
+
+      @path_filter = RubyJard::PathFilter.new
     end
 
     def start
@@ -101,12 +104,19 @@ module RubyJard
       Byebug.current_context.step_out(3, true)
     end
 
-    def update
-      current_context = Byebug.current_context
-      @current_frame = RubyJard::Frame.new(current_context, current_context.frame.pos)
-      @current_thread = RubyJard::ThreadInfo.new(current_context.thread)
-      @current_backtrace = current_context.backtrace.map.with_index do |_frame, index|
-        RubyJard::Frame.new(current_context, index)
+    def assume_context
+      @current_context = Byebug.current_context
+    end
+
+    def should_stop?
+      @path_filter.match?(@current_context.frame_file)
+    end
+
+    def sync
+      @current_frame = RubyJard::Frame.new(@current_context, @current_context.frame.pos)
+      @current_thread = RubyJard::ThreadInfo.new(@current_context.thread)
+      @current_backtrace = @current_context.backtrace.map.with_index do |_frame, index|
+        RubyJard::Frame.new(@current_context, index)
       end
       threads =
         Thread
@@ -115,6 +125,18 @@ module RubyJard
         .reject { |t| t.name.to_s =~ /<<Jard:.*>>/ }
         .map { |t| RubyJard::ThreadInfo.new(t) }
       @threads = threads.each_with_object({}) { |t, hash| hash[t.id] = t }
+    end
+
+    def frame=(next_frame)
+      @current_context.frame = next_frame
+    end
+
+    def step_into(times)
+      @current_context.step_into(times, RubyJard::Session.current_frame.pos)
+    end
+
+    def step_over(times)
+      @current_context.step_over(times, RubyJard::Session.current_frame.pos)
     end
 
     def lock
