@@ -101,7 +101,7 @@ module RubyJard
     def handle_step_out_command(options = {})
       times = options[:times] || 1
 
-      next_frame = up_n_frames(RubyJard::Session.current_frame.pos, times)
+      next_frame = up_n_frames(RubyJard::Session.current_frame.real_pos, times)
       RubyJard::Session.frame = next_frame
       RubyJard::Session.step_over(1)
       proceed!
@@ -110,7 +110,7 @@ module RubyJard
     def handle_up_command(options = {})
       times = options[:times] || 1
 
-      next_frame = up_n_frames(RubyJard::Session.current_frame.pos, times)
+      next_frame = up_n_frames(RubyJard::Session.current_frame.real_pos, times)
       RubyJard::Session.frame = next_frame
       proceed!
       process_commands
@@ -118,19 +118,23 @@ module RubyJard
 
     def handle_down_command(options = {})
       times = options[:times] || 1
-      next_frame = down_n_frames(RubyJard::Session.current_frame.pos, times)
+      next_frame = down_n_frames(RubyJard::Session.current_frame.real_pos, times)
       RubyJard::Session.frame = next_frame
       proceed!
       process_commands
     end
 
     def handle_frame_command(options)
-      next_frame = options[:frame].to_i
-      if RubyJard::Session.current_backtrace[next_frame].c_frame?
+      next_frame = find_frame(options[:frame].to_i)
+      if next_frame.nil?
+        # There must be an error in outer validators
+        RubyJard::ScreenManager.puts 'Error: Frame not found. There should be an error with Jard.'
+        process_commands(false)
+      elsif next_frame.c_frame?
         RubyJard::ScreenManager.puts "Error: Frame #{next_frame} is a c-frame. Not able to inspect c layer!"
         process_commands(false)
       else
-        RubyJard::Session.frame = next_frame
+        RubyJard::Session.frame = next_frame.real_pos
         proceed!
         process_commands(true)
       end
@@ -166,28 +170,41 @@ module RubyJard
       process_commands
     end
 
-    def up_n_frames(current_frame, times)
-      next_frame = current_frame
+    def up_n_frames(real_pos, times)
+      next_frame = real_pos
       times.times do
         next_frame = [next_frame + 1, RubyJard::Session.current_backtrace.length - 1].min
-        while RubyJard::Session.current_backtrace[next_frame].c_frame? &&
-              next_frame < RubyJard::Session.current_backtrace.length - 1
+        while next_frame < RubyJard::Session.current_backtrace.length &&
+              (
+                RubyJard::Session.current_backtrace[next_frame].c_frame? ||
+                RubyJard::Session.current_backtrace[next_frame].hidden?
+              )
           next_frame += 1
         end
+        return real_pos if next_frame >= RubyJard::Session.current_backtrace.length
       end
       next_frame
     end
 
-    def down_n_frames(current_frame, times)
-      next_frame = current_frame
+    def down_n_frames(real_pos, times)
+      next_frame = real_pos
       times.times do
         next_frame = [next_frame - 1, 0].max
-        while RubyJard::Session.current_backtrace[next_frame].c_frame? &&
-              next_frame > 0
+        while next_frame >= 0 &&
+              (
+                RubyJard::Session.current_backtrace[next_frame].c_frame? ||
+                RubyJard::Session.current_backtrace[next_frame].hidden?
+              )
+
           next_frame -= 1
         end
+        return real_pos if next_frame < 0
       end
       next_frame
+    end
+
+    def find_frame(virtual_pos)
+      RubyJard::Session.current_backtrace.find { |frame| frame.virtual_pos == virtual_pos }
     end
   end
 end

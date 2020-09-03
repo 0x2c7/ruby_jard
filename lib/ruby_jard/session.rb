@@ -37,7 +37,7 @@ module RubyJard
       @current_frame = nil
       @current_backtrace = []
       @threads = []
-      @current_frame = nil
+      @current_thread = nil
 
       @path_filter = RubyJard::PathFilter.new
     end
@@ -119,7 +119,7 @@ module RubyJard
     end
 
     def current_frame
-      @current_frame ||= RubyJard::Frame.new(@current_context, @current_context.frame.pos)
+      @current_frame ||= current_backtrace[@current_context.frame.pos]
     end
 
     def current_thread
@@ -127,9 +127,7 @@ module RubyJard
     end
 
     def current_backtrace
-      @current_backtrace ||= @current_context.backtrace.map.with_index do |_frame, index|
-        RubyJard::Frame.new(@current_context, index)
-      end
+      @current_backtrace ||= generate_backtrace
     end
 
     def threads
@@ -141,17 +139,17 @@ module RubyJard
         .map { |t| RubyJard::ThreadInfo.new(t) }
     end
 
-    def frame=(next_frame)
-      @current_context.frame = next_frame
-      @current_frame = @current_backtrace[next_frame]
+    def frame=(real_pos)
+      @current_context.frame = @current_backtrace[real_pos].real_pos
+      @current_frame = @current_backtrace[real_pos]
     end
 
     def step_into(times)
-      @current_context.step_into(times, RubyJard::Session.current_frame.pos)
+      @current_context.step_into(times, current_frame.real_pos)
     end
 
     def step_over(times)
-      @current_context.step_over(times, RubyJard::Session.current_frame.pos)
+      @current_context.step_over(times, current_frame.real_pos)
     end
 
     def lock
@@ -161,6 +159,23 @@ module RubyJard
       # Let's deal with that later.
       @session_lock.synchronize do
         yield
+      end
+    end
+
+    private
+
+    def generate_backtrace
+      virtual_pos = 0
+      @current_context.backtrace.map.with_index do |_frame, index|
+        frame = RubyJard::Frame.new(@current_context, index)
+        if @path_filter.match?(frame.frame_file)
+          frame.visible = true
+          frame.virtual_pos = virtual_pos
+          virtual_pos += 1
+        else
+          frame.visible = false
+        end
+        frame
       end
     end
   end

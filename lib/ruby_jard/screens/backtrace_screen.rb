@@ -7,21 +7,26 @@ module RubyJard
     class BacktraceScreen < RubyJard::Screen
       def initialize(*args)
         super(*args)
+        @frames = @session.current_backtrace.select(&:visible?)
         @current_frame =
           if @session.current_frame.nil?
             0
           else
-            @session.current_frame.pos.to_i
+            @session.current_frame.virtual_pos
           end
-        @frames = @session.current_backtrace
         @frames_count = @frames.length
+        @hidden_frames_count = @session.current_backtrace.count(&:hidden?)
         @selected = @current_frame
 
         @path_decorator = RubyJard::Decorators::PathDecorator.new
       end
 
       def title
-        ['Backtrace', "#{@frames_count} frames"]
+        if @hidden_frames_count == 0
+          ['Backtrace', "#{@frames_count} frames"]
+        else
+          ['Backtrace', "#{@frames_count} frames - #{@hidden_frames_count} hidden"]
+        end
       end
 
       def build
