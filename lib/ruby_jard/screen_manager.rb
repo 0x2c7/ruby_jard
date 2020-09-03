@@ -29,7 +29,7 @@ module RubyJard
     class << self
       extend Forwardable
 
-      def_delegators :instance, :sync, :puts, :draw_error, :start, :stop, :started?, :updating?
+      def_delegators :instance, :draw_screens, :puts, :draw_error, :start, :stop, :started?, :updating?
 
       def instance
         @instance ||= new
@@ -73,7 +73,7 @@ module RubyJard
       RubyJard::Console.enable_cursor!
     end
 
-    def sync
+    def draw_screens
       start unless started?
       @updating = true
 
@@ -87,7 +87,13 @@ module RubyJard
       RubyJard::Console.move_to(@output, 0, 0)
 
       draw_box(@screens)
-      draw_screens(@screens)
+      @screens.each do |screen|
+        RubyJard::ScreenDrawer.new(
+          output: @output,
+          screen: screen,
+          color_scheme: pick_color_scheme
+        ).draw
+      end
 
       RubyJard::Console.move_to(@output, 0, total_screen_height(@layouts) + 1)
       RubyJard::Console.clear_screen_to_end(@output)
@@ -161,16 +167,6 @@ module RubyJard
         screens: screens,
         color_scheme: pick_color_scheme
       ).draw
-    end
-
-    def draw_screens(screens)
-      screens.each do |screen|
-        RubyJard::ScreenDrawer.new(
-          output: @output,
-          screen: screen,
-          color_scheme: pick_color_scheme
-        ).draw
-      end
     end
 
     def render_screen(screen)

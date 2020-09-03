@@ -26,7 +26,7 @@ module RubyJard
 
     OUTPUT_BUFFER_LENGTH = 10_000 # 10k lines
 
-    attr_accessor :threads, :current_frame, :current_thread, :current_backtrace, :output_buffer
+    attr_accessor :output_buffer
 
     def initialize(options = {})
       @options = options
@@ -37,6 +37,7 @@ module RubyJard
       @current_frame = nil
       @current_backtrace = []
       @threads = []
+      @current_frame = nil
 
       @path_filter = RubyJard::PathFilter.new
     end
@@ -110,12 +111,29 @@ module RubyJard
 
     def sync
       @current_context = Byebug.current_context
-      @current_frame = RubyJard::Frame.new(@current_context, @current_context.frame.pos)
-      @current_thread = RubyJard::ThreadInfo.new(@current_context.thread)
-      @current_backtrace = @current_context.backtrace.map.with_index do |_frame, index|
+      # Remove cache
+      @current_frame = nil
+      @current_thread = nil
+      @current_backtrace = nil
+      @threads = nil
+    end
+
+    def current_frame
+      @current_frame ||= RubyJard::Frame.new(@current_context, @current_context.frame.pos)
+    end
+
+    def current_thread
+      @current_thread ||= RubyJard::ThreadInfo.new(@current_context.thread)
+    end
+
+    def current_backtrace
+      @current_backtrace ||= @current_context.backtrace.map.with_index do |_frame, index|
         RubyJard::Frame.new(@current_context, index)
       end
-      @threads =
+    end
+
+    def threads
+      @threads ||=
         Thread
         .list
         .select(&:alive?)

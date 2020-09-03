@@ -60,10 +60,9 @@ module RubyJard
       end
     end
 
-    def process_commands(sync = true)
-      if sync
-        RubyJard::ScreenManager.sync
-      end
+    def process_commands(redraw = true)
+      RubyJard::ScreenManager.draw_screens if redraw
+
       return_value = nil
 
       flow = RubyJard::ControlFlow.listen do
