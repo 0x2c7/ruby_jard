@@ -10,10 +10,10 @@ module RubyJard
     attr_writer :visible
     attr_accessor :virtual_pos
 
-    def initialize(context, real_pos)
+    def initialize(context, real_pos, virtual_pos: nil)
       @context = context
       @real_pos = real_pos
-      @virtual_pos = nil
+      @virtual_pos = virtual_pos
 
       @visible = true
     end
