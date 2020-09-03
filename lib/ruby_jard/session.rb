@@ -119,7 +119,7 @@ module RubyJard
     end
 
     def current_frame
-      @current_frame ||= current_backtrace[@current_context.frame.pos]
+      @current_frame ||= RubyJard::Frame.new(@current_context, @current_context.frame.pos)
     end
 
     def current_thread
