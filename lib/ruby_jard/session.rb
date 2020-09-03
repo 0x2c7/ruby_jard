@@ -15,8 +15,7 @@ module RubyJard
       def_delegators :instance,
                      :attach, :lock, :update, :flush,
                      :threads, :current_frame, :current_thread, :current_backtrace,
-                     :output_buffer, :append_output_buffer,
-                     :secondary_output_buffer, :append_secondary_output_buffer, :flush_secondary_output_buffer
+                     :output_buffer, :append_output_buffer
 
       def instance
         @instance ||= new
@@ -33,7 +32,6 @@ module RubyJard
       @session_lock = Mutex.new
 
       @output_buffer = []
-      @secondary_output_buffer = []
 
       @current_frame = nil
       @current_backtrace = []
@@ -67,19 +65,12 @@ module RubyJard
           super(*string)
           return
         end
+
         unless RubyJard::ScreenManager.instance.updating?
           RubyJard::Session.instance.append_output_buffer(string)
         end
-        if RubyJard::Session.instance.threads[Thread.current.object_id].nil?
-          # Newly spawn thread
-          super(*string)
-        elsif RubyJard::Session.instance.current_thread == Thread.current
-          # Current paused threads
-          super(*string)
-        else
-          # Other concurrent thread. Move to secondary buffer
-          RubyJard::Session.instance.append_secondary_output_buffer(string)
-        end
+
+        super(*string)
       end
       # rubocop:enable Lint/NestedMethodDefinition
 
@@ -91,18 +82,6 @@ module RubyJard
     def append_output_buffer(string)
       @output_buffer.shift if @output_buffer.length > OUTPUT_BUFFER_LENGTH
       @output_buffer << string
-    end
-
-    def append_secondary_output_buffer(string)
-      @secondary_output_buffer.shift if @secondary_output_buffer.length > OUTPUT_BUFFER_LENGTH
-      @secondary_output_buffer << string
-    end
-
-    def flush_secondary_output_buffer
-      @secondary_output_buffer.each do |string|
-        STDOUT.write(*string, from_jard: true)
-      end
-      @secondary_output_buffer = []
     end
 
     def stop

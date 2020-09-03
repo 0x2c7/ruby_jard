@@ -58,8 +58,6 @@ module RubyJard
           process_commands
         end
       end
-    ensure
-      RubyJard::Session.flush_secondary_output_buffer
     end
 
     def debuggable?(context)
