@@ -21,13 +21,13 @@ module RubyJard
             @frames.find_index { |f| f.real_pos == @current_frame.real_pos }
           end
         @frames_count = @frames.length
-        @hidden_frames_count = @session.current_backtrace.count(&:hidden?)
+        @hidden_frames_count = @session.current_backtrace.length - @frames.length
 
         @path_decorator = RubyJard::Decorators::PathDecorator.new
       end
 
       def title
-        if @hidden_frames_count == 0
+        if @hidden_frames_count <= 0
           ['Backtrace', "#{@frames_count} frames"]
         else
           ['Backtrace', "#{@frames_count} frames - #{@hidden_frames_count} hidden"]

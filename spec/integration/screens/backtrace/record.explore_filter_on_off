@@ -298,7 +298,7 @@ jard >>
 ["jard filter application", :Enter]
 ### END SEND_KEYS ###
 ### START SCREEN ###
-┌ Backtrace  3 frames - 5 hidden ──────────────────────────────────────────────┐
+┌ Backtrace  3 frames - 4 hidden ──────────────────────────────────────────────┐
 │  0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
 │⮕ * JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
 │  1 Object in <main> at ../../../examples/sort_example.rb:7                   │
@@ -327,7 +327,7 @@ jard >>
 ["frame 2", :Enter]
 ### END SEND_KEYS ###
 ### START SCREEN ###
-┌ Backtrace  3 frames - 5 hidden ──────────────────────────────────────────────┐
+┌ Backtrace  3 frames - 4 hidden ──────────────────────────────────────────────┐
 │  0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
 │⮕ * JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
 │  1 Object in <main> at ../../../examples/sort_example.rb:7                   │
@@ -391,7 +391,7 @@ jard >>
 ["jard filter application", :Enter]
 ### END SEND_KEYS ###
 ### START SCREEN ###
-┌ Backtrace  3 frames - 5 hidden ──────────────────────────────────────────────┐
+┌ Backtrace  3 frames - 4 hidden ──────────────────────────────────────────────┐
 │  0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
 │⮕ * JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
 │  1 Object in <main> at ../../../examples/sort_example.rb:7                   │
