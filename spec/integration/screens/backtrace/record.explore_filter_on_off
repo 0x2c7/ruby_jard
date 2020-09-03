@@ -1,0 +1,700 @@
+### START SCREEN ###
+┌ Backtrace  1 frames ─────────────────────────────────────────────────────────┐
+│⮕ 0 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  2 frames - 5 hidden ──────────────────────────────────────────────┐
+│⮕ 0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│  1 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["up", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  2 frames - 5 hidden ──────────────────────────────────────────────┐
+│  0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│⮕ 1 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["up", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  2 frames - 5 hidden ──────────────────────────────────────────────┐
+│  0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│⮕ 1 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["down", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  2 frames - 5 hidden ──────────────────────────────────────────────┐
+│⮕ 0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│  1 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["down", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  2 frames - 5 hidden ──────────────────────────────────────────────┐
+│⮕ 0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│  1 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["jard filter gems", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  7 frames ─────────────────────────────────────────────────────────┐
+│⮕ 0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│  1 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                 │
+│  2 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  4 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  5 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>                  │
+│  6 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["up", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["up", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["up", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["up", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  7 frames ─────────────────────────────────────────────────────────┐
+│  0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│  1 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                 │
+│  2 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│⮕ 4 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  5 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>                  │
+│  6 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["up", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["up", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["up", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["up", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  7 frames ─────────────────────────────────────────────────────────┐
+│  0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│  1 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                 │
+│  2 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  4 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  5 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>                  │
+│⮕ 6 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["frame 2", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  7 frames ─────────────────────────────────────────────────────────┐
+│  0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│  1 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                 │
+│⮕ 2 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  4 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  5 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>                  │
+│  6 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["frame 7", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  7 frames ─────────────────────────────────────────────────────────┐
+│  0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│  1 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                 │
+│⮕ 2 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  4 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  5 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>                  │
+│  6 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >> frame 7     
+Error: argument must be from 0 to 6     
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["jard filter application", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  3 frames - 5 hidden ──────────────────────────────────────────────┐
+│  0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│⮕ * JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  1 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["frame 2", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  3 frames - 5 hidden ──────────────────────────────────────────────┐
+│  0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│⮕ * JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  1 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >> frame 2     
+Error: argument must be from 0 to 1     
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["down", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  2 frames - 5 hidden ──────────────────────────────────────────────┐
+│⮕ 0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│  1 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["jard filter gems", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["frame 2", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["jard filter application", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  3 frames - 5 hidden ──────────────────────────────────────────────┐
+│  0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│⮕ * JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>               │
+│  1 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["up", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  2 frames - 5 hidden ──────────────────────────────────────────────┐
+│  0 Object in <main> (block) at ../../../examples/sort_example.rb:7           │
+│⮕ 1 Object in <main> at ../../../examples/sort_example.rb:7                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  4 frames - 5 hidden ──────────────────────────────────────────────┐
+│⮕ 0 Object in <main> (block) at ../../../examples/sort_example.rb:9           │
+│  1 Object in <main> (block) at ../../../examples/sort_example.rb:9           │
+│  2 [c] Integer in times at ../../../examples/sort_example.rb:9               │
+│  3 Object in <main> at ../../../examples/sort_example.rb:9                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["jard filter everything", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  10 frames ────────────────────────────────────────────────────────┐
+│⮕  0 Random::Formatter in random_bytes in <stdlib:securerandom>               │
+│   1 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
+│   2 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                │
+│   3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   4 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   5 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   6 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>                 │
+│   7 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
+│   8 [c] Integer in times at ../../../examples/sort_example.rb:9              │
+│   9 Object in <main> at ../../../examples/sort_example.rb:9                  │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["frame 10", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  10 frames ────────────────────────────────────────────────────────┐
+│⮕  0 Random::Formatter in random_bytes in <stdlib:securerandom>               │
+│   1 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
+│   2 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                │
+│   3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   4 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   5 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   6 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>                 │
+│   7 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
+│   8 [c] Integer in times at ../../../examples/sort_example.rb:9              │
+│   9 Object in <main> at ../../../examples/sort_example.rb:9                  │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >> frame 10    
+Error: argument must be from 0 to 9     
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["frame 7", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  10 frames ────────────────────────────────────────────────────────┐
+│   0 Random::Formatter in random_bytes in <stdlib:securerandom>               │
+│   1 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
+│   2 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                │
+│   3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   4 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   5 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   6 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>                 │
+│⮕  7 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
+│   8 [c] Integer in times at ../../../examples/sort_example.rb:9              │
+│   9 Object in <main> at ../../../examples/sort_example.rb:9                  │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["up", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  10 frames ────────────────────────────────────────────────────────┐
+│   0 Random::Formatter in random_bytes in <stdlib:securerandom>               │
+│   1 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
+│   2 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                │
+│   3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   4 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   5 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   6 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>                 │
+│   7 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
+│   8 [c] Integer in times at ../../../examples/sort_example.rb:9              │
+│⮕  9 Object in <main> at ../../../examples/sort_example.rb:9                  │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["down", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  10 frames ────────────────────────────────────────────────────────┐
+│   0 Random::Formatter in random_bytes in <stdlib:securerandom>               │
+│   1 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
+│   2 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                │
+│   3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   4 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   5 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
+│   6 JardMergeSort::Sorter in sort in <jard_merge_sort 0.1.0>                 │
+│⮕  7 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
+│   8 [c] Integer in times at ../../../examples/sort_example.rb:9              │
+│   9 Object in <main> at ../../../examples/sort_example.rb:9                  │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["jard filter application", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Backtrace  4 frames - 6 hidden ──────────────────────────────────────────────┐
+│  0 Object in <main> (block) at ../../../examples/sort_example.rb:9           │
+│⮕ 1 Object in <main> (block) at ../../../examples/sort_example.rb:9           │
+│  2 [c] Integer in times at ../../../examples/sort_example.rb:9               │
+│  3 Object in <main> at ../../../examples/sort_example.rb:9                   │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
