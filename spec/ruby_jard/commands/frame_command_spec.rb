@@ -7,7 +7,11 @@ RSpec.describe RubyJard::Commands::FrameCommand do
 
   before do
     allow(session).to receive(:current_backtrace).and_return(
-      Array.new(30, nil)
+      begin
+        array = (0..29).map { |index| RubyJard::Frame.new(nil, 0, virtual_pos: index) }.shuffle
+        array[10].virtual_pos = nil
+        array
+      end
     )
   end
 

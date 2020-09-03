@@ -13,10 +13,11 @@ module RubyJard
       extend Forwardable
 
       def_delegators :instance,
-                     :attach, :lock, :update, :flush,
+                     :attach, :lock,
+                     :sync, :should_stop?,
+                     :step_over, :step_into, :frame=,
                      :threads, :current_frame, :current_thread, :current_backtrace,
-                     :output_buffer, :append_output_buffer,
-                     :secondary_output_buffer, :append_secondary_output_buffer, :flush_secondary_output_buffer
+                     :output_buffer, :append_output_buffer
 
       def instance
         @instance ||= new
@@ -25,19 +26,20 @@ module RubyJard
 
     OUTPUT_BUFFER_LENGTH = 10_000 # 10k lines
 
-    attr_accessor :threads, :current_frame, :current_thread, :current_backtrace, :output_buffer
+    attr_accessor :output_buffer
 
     def initialize(options = {})
       @options = options
       @started = false
       @session_lock = Mutex.new
-
       @output_buffer = []
-      @secondary_output_buffer = []
 
       @current_frame = nil
       @current_backtrace = []
       @threads = []
+      @current_thread = nil
+
+      @path_filter = RubyJard::PathFilter.new
     end
 
     def start
@@ -67,19 +69,12 @@ module RubyJard
           super(*string)
           return
         end
+
         unless RubyJard::ScreenManager.instance.updating?
           RubyJard::Session.instance.append_output_buffer(string)
         end
-        if RubyJard::Session.instance.threads[Thread.current.object_id].nil?
-          # Newly spawn thread
-          super(*string)
-        elsif RubyJard::Session.instance.current_thread == Thread.current
-          # Current paused threads
-          super(*string)
-        else
-          # Other concurrent thread. Move to secondary buffer
-          RubyJard::Session.instance.append_secondary_output_buffer(string)
-        end
+
+        super(*string)
       end
       # rubocop:enable Lint/NestedMethodDefinition
 
@@ -91,18 +86,6 @@ module RubyJard
     def append_output_buffer(string)
       @output_buffer.shift if @output_buffer.length > OUTPUT_BUFFER_LENGTH
       @output_buffer << string
-    end
-
-    def append_secondary_output_buffer(string)
-      @secondary_output_buffer.shift if @secondary_output_buffer.length > OUTPUT_BUFFER_LENGTH
-      @secondary_output_buffer << string
-    end
-
-    def flush_secondary_output_buffer
-      @secondary_output_buffer.each do |string|
-        STDOUT.write(*string, from_jard: true)
-      end
-      @secondary_output_buffer = []
     end
 
     def stop
@@ -122,20 +105,56 @@ module RubyJard
       Byebug.current_context.step_out(3, true)
     end
 
-    def update
-      current_context = Byebug.current_context
-      @current_frame = RubyJard::Frame.new(current_context, current_context.frame.pos)
-      @current_thread = RubyJard::ThreadInfo.new(current_context.thread)
-      @current_backtrace = current_context.backtrace.map.with_index do |_frame, index|
-        RubyJard::Frame.new(current_context, index)
-      end
-      threads =
+    def should_stop?
+      @path_filter.match?(@current_context.frame_file)
+    end
+
+    def sync
+      @current_context = Byebug.current_context
+      # Remove cache
+      @current_frame = nil
+      @current_thread = nil
+      @current_backtrace = nil
+      @threads = nil
+    end
+
+    def current_frame
+      @current_frame ||=
+        begin
+          frame = RubyJard::Frame.new(@current_context, @current_context.frame.pos)
+          frame.visible = @path_filter.match?(frame.frame_file)
+          frame
+        end
+    end
+
+    def current_thread
+      @current_thread ||= RubyJard::ThreadInfo.new(@current_context.thread)
+    end
+
+    def current_backtrace
+      @current_backtrace ||= generate_backtrace
+    end
+
+    def threads
+      @threads ||=
         Thread
         .list
         .select(&:alive?)
         .reject { |t| t.name.to_s =~ /<<Jard:.*>>/ }
         .map { |t| RubyJard::ThreadInfo.new(t) }
-      @threads = threads.each_with_object({}) { |t, hash| hash[t.id] = t }
+    end
+
+    def frame=(real_pos)
+      @current_context.frame = @current_backtrace[real_pos].real_pos
+      @current_frame = @current_backtrace[real_pos]
+    end
+
+    def step_into(times)
+      @current_context.step_into(times, current_frame.real_pos)
+    end
+
+    def step_over(times)
+      @current_context.step_over(times, current_frame.real_pos)
     end
 
     def lock
@@ -146,6 +165,25 @@ module RubyJard
       @session_lock.synchronize do
         yield
       end
+    end
+
+    private
+
+    def generate_backtrace
+      virtual_pos = 0
+      backtrace = @current_context.backtrace.map.with_index do |_frame, index|
+        frame = RubyJard::Frame.new(@current_context, index)
+        if @path_filter.match?(frame.frame_file)
+          frame.visible = true
+          frame.virtual_pos = virtual_pos
+          virtual_pos += 1
+        else
+          frame.visible = false
+        end
+        frame
+      end
+      current_frame.virtual_pos = backtrace[current_frame.real_pos].virtual_pos
+      backtrace
     end
   end
 end

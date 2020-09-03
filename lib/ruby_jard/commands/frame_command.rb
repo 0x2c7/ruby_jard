@@ -28,7 +28,7 @@ module RubyJard
       def process
         frame = validate_present!(args.first)
         frame = validate_non_negative_integer!(frame)
-        frame = validate_range!(frame, 0, @current_backtrace.length - 1)
+        frame = validate_range!(frame, 0, @current_backtrace.map(&:virtual_pos).compact.max)
         RubyJard::ControlFlow.dispatch(:frame, frame: frame)
       end
     end

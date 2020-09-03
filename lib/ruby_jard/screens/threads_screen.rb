@@ -9,7 +9,7 @@ module RubyJard
         super
         @current_frame_location = @session.current_frame&.frame_location
         @current_thread = @session.current_thread
-        @threads = @session.threads.values
+        @threads = @session.threads
 
         @selected = @threads.index { |c| current_thread?(c) }
         @path_decorator = RubyJard::Decorators::PathDecorator.new

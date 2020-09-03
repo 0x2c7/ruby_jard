@@ -162,4 +162,75 @@ RSpec.describe 'Backtrace screen', integration: true do
       test.stop
     end
   end
+
+  context 'when explore the backtrace with filter on/off' do
+    it 'display correct backtrace' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'record.explore_filter_on_off',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/sort_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('step', :Enter)
+      test.assert_screen
+      test.send_keys('up', :Enter)
+      test.assert_screen
+      test.send_keys('up', :Enter)
+      test.assert_screen
+      test.send_keys('down 2', :Enter)
+      test.assert_screen
+
+      test.send_keys('jard filter gems', :Enter)
+      test.assert_screen
+      test.send_keys('up', :Enter)
+      test.send_keys('up', :Enter)
+      test.send_keys('up', :Enter)
+      test.send_keys('up', :Enter)
+      test.assert_screen
+      test.send_keys('up 4', :Enter)
+      test.assert_screen
+
+      test.send_keys('frame 2', :Enter)
+      test.assert_screen
+      test.send_keys('frame 7', :Enter)
+      test.assert_screen
+
+      test.send_keys('jard filter application', :Enter)
+      test.assert_screen
+      test.send_keys('frame 2', :Enter)
+      test.assert_screen
+      test.send_keys('down', :Enter)
+      test.assert_screen
+      test.send_keys('jard filter gems', :Enter)
+      test.send_keys('frame 2', :Enter)
+      test.send_keys('jard filter application', :Enter)
+      test.assert_screen
+      test.send_keys('up', :Enter)
+      test.assert_screen
+
+      test.send_keys('continue', :Enter)
+
+      test.send_keys('step', :Enter)
+      test.send_keys('step', :Enter)
+      test.send_keys('step', :Enter)
+      test.assert_screen
+      test.send_keys('jard filter everything', :Enter)
+      test.send_keys('step', :Enter)
+      test.assert_screen
+      test.send_keys('frame 10', :Enter)
+      test.assert_screen
+      test.send_keys('frame 7', :Enter)
+      test.assert_screen
+      test.send_keys('up', :Enter)
+      test.assert_screen
+      test.send_keys('down', :Enter)
+      test.assert_screen
+
+      test.send_keys('jard filter application', :Enter)
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
 end
