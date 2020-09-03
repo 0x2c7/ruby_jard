@@ -8,15 +8,16 @@ module RubyJard
       def initialize(*args)
         super(*args)
         @frames = @session.current_backtrace.select(&:visible?)
-        @current_frame =
+        @selected =
           if @session.current_frame.nil?
             0
+          elsif @session.current_frame.hidden?
+            -1
           else
             @session.current_frame.virtual_pos
           end
         @frames_count = @frames.length
         @hidden_frames_count = @session.current_backtrace.count(&:hidden?)
-        @selected = @current_frame
 
         @path_decorator = RubyJard::Decorators::PathDecorator.new
       end
@@ -56,7 +57,7 @@ module RubyJard
 
       def span_frame_id(frame_id)
         frame_id_label = frame_id.to_s.rjust(@frames_count.to_s.length)
-        if frame_id == @current_frame
+        if frame_id == @selected
           RubyJard::Span.new(
             content: "⮕ #{frame_id_label}",
             styles: :text_selected

@@ -119,7 +119,12 @@ module RubyJard
     end
 
     def current_frame
-      @current_frame ||= RubyJard::Frame.new(@current_context, @current_context.frame.pos)
+      @current_frame ||=
+        begin
+          frame = RubyJard::Frame.new(@current_context, @current_context.frame.pos)
+          frame.visible = @path_filter.match?(frame.frame_file)
+          frame
+        end
     end
 
     def current_thread
@@ -166,7 +171,7 @@ module RubyJard
 
     def generate_backtrace
       virtual_pos = 0
-      @current_context.backtrace.map.with_index do |_frame, index|
+      backtrace = @current_context.backtrace.map.with_index do |_frame, index|
         frame = RubyJard::Frame.new(@current_context, index)
         if @path_filter.match?(frame.frame_file)
           frame.visible = true
@@ -177,6 +182,8 @@ module RubyJard
         end
         frame
       end
+      current_frame.virtual_pos = backtrace[current_frame.real_pos].virtual_pos
+      backtrace
     end
   end
 end
