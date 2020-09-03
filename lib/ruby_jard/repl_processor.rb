@@ -47,14 +47,14 @@ module RubyJard
     private
 
     def process_commands_with_lock
-      RubyJard::Session.assume_context
-      unless RubyJard::Session.should_stop?
-        handle_flow(@previous_flow)
-        return
-      end
-
       allowing_other_threads do
         RubyJard::Session.lock do
+          RubyJard::Session.sync
+          unless RubyJard::Session.should_stop?
+            handle_flow(@previous_flow)
+            return
+          end
+
           process_commands
         end
       end
@@ -62,7 +62,6 @@ module RubyJard
 
     def process_commands(sync = true)
       if sync
-        RubyJard::Session.sync
         RubyJard::ScreenManager.sync
       end
       return_value = nil

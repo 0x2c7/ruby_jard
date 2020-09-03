@@ -14,7 +14,7 @@ module RubyJard
 
       def_delegators :instance,
                      :attach, :lock,
-                     :assume_context, :sync, :should_stop?,
+                     :sync, :should_stop?,
                      :step_over, :step_into, :frame=,
                      :threads, :current_frame, :current_thread, :current_backtrace,
                      :output_buffer, :append_output_buffer
@@ -104,31 +104,28 @@ module RubyJard
       Byebug.current_context.step_out(3, true)
     end
 
-    def assume_context
-      @current_context = Byebug.current_context
-    end
-
     def should_stop?
       @path_filter.match?(@current_context.frame_file)
     end
 
     def sync
+      @current_context = Byebug.current_context
       @current_frame = RubyJard::Frame.new(@current_context, @current_context.frame.pos)
       @current_thread = RubyJard::ThreadInfo.new(@current_context.thread)
       @current_backtrace = @current_context.backtrace.map.with_index do |_frame, index|
         RubyJard::Frame.new(@current_context, index)
       end
-      threads =
+      @threads =
         Thread
         .list
         .select(&:alive?)
         .reject { |t| t.name.to_s =~ /<<Jard:.*>>/ }
         .map { |t| RubyJard::ThreadInfo.new(t) }
-      @threads = threads.each_with_object({}) { |t, hash| hash[t.id] = t }
     end
 
     def frame=(next_frame)
       @current_context.frame = next_frame
+      @current_frame = @current_backtrace[next_frame]
     end
 
     def step_into(times)
