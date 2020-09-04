@@ -1,0 +1,299 @@
+### START SCREEN ###
+
+jard >>             
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["hash_a", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+
+jard >> hash_a      
+=> {:variable_1=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                              
+ :variable_2=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_3=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_4=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_5=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}                                 
+jard >>             
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["hash_b", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+
+jard >> hash_b      
+=> {:variable_1=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                              
+ :variable_2=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_3=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_4=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_5=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_6=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_7=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_8=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_9=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_10=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}                                
+jard >>             
+
+
+
+
+
+
+
+
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["hash_c", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+
+jard >> hash_c      
+=> {:variable_1=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                              
+ :variable_2=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_3=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_4=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_5=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_6=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_7=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_8=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_9=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_10=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_11=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_12=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_13=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_14=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_15=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}                                
+jard >> Tips: You can use `list` command to show back debugger screens          
+jard >>             
+
+
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["hash_d", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+
+jard >> hash_d      
+=> {:variable_1=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                              
+ :variable_2=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_3=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_4=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_5=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_6=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_7=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_8=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_9=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_10=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_11=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_12=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_13=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_14=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_15=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_16=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_17=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_18=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_19=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_20=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}                                
+jard >> Tips: You can use `list` command to show back debugger screens          
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["hash_e", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+=> {:variable_1=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                              
+ :variable_2=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_3=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_4=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_5=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_6=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_7=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_8=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_9=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_10=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_11=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_12=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_13=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_14=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_15=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_16=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_17=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_18=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_19=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_20=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_21=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_22=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_23=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+:                   
+### END SCREEN ###
+### START SEND_KEYS ###
+["G"]
+### END SEND_KEYS ###
+### START SCREEN ###
+ :variable_3=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_4=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_5=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_6=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_7=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_8=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_9=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_10=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_11=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_12=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_13=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_14=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_15=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_16=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_17=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_18=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_19=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_20=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_21=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_22=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_23=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_24=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_25=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}                                
+(END)               
+### END SCREEN ###
+### START SEND_KEYS ###
+["gg"]
+### END SEND_KEYS ###
+### START SCREEN ###
+=> {:variable_1=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                              
+ :variable_2=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_3=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_4=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_5=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_6=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_7=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_8=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_9=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                 
+ :variable_10=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_11=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_12=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_13=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_14=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_15=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_16=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_17=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_18=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_19=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_20=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_21=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_22=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_23=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+:                   
+### END SCREEN ###
+### START SEND_KEYS ###
+["/variable_17", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+ :variable_17=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_18=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_19=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_20=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_21=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_22=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_23=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_24=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_25=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}                                
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+(END)               
+### END SCREEN ###
+### START SEND_KEYS ###
+["q"]
+### END SEND_KEYS ###
+### START SCREEN ###
+ :variable_18=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_19=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_20=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_21=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_22=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_23=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_24=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",                                
+ :variable_25=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}                                
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+~                   
+jard >> Tips: You can use `list` command to show back debugger screens          
+jard >>             
+### END SCREEN ###
