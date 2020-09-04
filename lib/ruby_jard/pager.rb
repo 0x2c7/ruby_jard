@@ -40,6 +40,7 @@ module RubyJard
         @pager_start_at_the_end = pager_start_at_the_end
         @prompt = prompt
 
+        width, height = RubyJard::Console.screen_size(@pry_instance.output)
         @tracker = Pry::Pager::PageTracker.new(height, width)
         @pager = force_open ? open_pager : nil
       end
