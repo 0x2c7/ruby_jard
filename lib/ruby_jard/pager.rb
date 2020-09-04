@@ -30,6 +30,12 @@ module RubyJard
     end
 
     ##
+    # Pager tracker in Pry does not expose enough
+    class JardPageTracker < Pry::Pager::PageTracker
+      attr_reader :row, :col
+    end
+
+    ##
     # Pager using GNU Less
     class LessPager < Pry::Pager::NullPager
       def initialize(pry_instance, force_open: false, pager_start_at_the_end: false, prompt: nil)
@@ -40,8 +46,8 @@ module RubyJard
         @pager_start_at_the_end = pager_start_at_the_end
         @prompt = prompt
 
-        width, height = RubyJard::Console.screen_size(@pry_instance.output)
-        @tracker = Pry::Pager::PageTracker.new(height, width)
+        @window_width, @window_height = RubyJard::Console.screen_size(@pry_instance.output)
+        @tracker = JardPageTracker.new(@window_height, @window_width)
         @pager = force_open ? open_pager : nil
       end
 
@@ -65,9 +71,11 @@ module RubyJard
           @pager.close
           @pry_instance.exec_hook :after_pager, self
 
-          prompt = @pry_instance.prompt.wait_proc.call
-          # TODO: should show this tip even pager not invoked, when the size exceed a certain height
-          @out.puts "#{prompt}Tips: You can use `list` command to show back debugger screens"
+          list_prompt
+        elsif @tracker.row > @window_height / 2
+          @out.write @buffer
+
+          list_prompt
         else
           @out.write @buffer
         end
@@ -93,6 +101,11 @@ module RubyJard
         return unless invoked_pager?
 
         @pager.write str.encode('UTF-8', undef: :replace)
+      end
+
+      def list_prompt
+        prompt = @pry_instance.prompt.wait_proc.call
+        @out.puts "#{prompt}Tips: You can use `list` command to show back debugger screens"
       end
     end
   end
