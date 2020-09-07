@@ -1,18 +1,17 @@
 module.exports = {
   title: 'Ruby Jard',
-  tagline: 'The tagline of my site',
+  tagline: 'Just Another Ruby Debugger, aims to provide a better experience while debugging Ruby',
   url: 'https://rubyjard.org/',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
-  organizationName: 'nguyenquangminh0711', // Usually your GitHub org/user name.
-  projectName: 'ruby_jard', // Usually your repo name.
+  organizationName: 'nguyenquangminh0711',
+  projectName: 'ruby_jard',
   themeConfig: {
     navbar: {
-      title: 'My Site',
+      title: 'Ruby Jard',
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: 'Ruby Jard Logo',
+        src: 'img/logo.png',
       },
       items: [
         {
@@ -35,30 +34,9 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Style Guide',
+              label: 'Getting Started',
               to: 'docs/',
-            },
-            {
-              label: 'Second Doc',
-              to: 'docs/doc2/',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
-            },
+            }
           ],
         },
         {
@@ -73,6 +51,13 @@ module.exports = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Minh Nguyen - nguyenquangminh0711. Built with Docusaurus.`,
     },
+    prism: {
+      theme: require('prism-react-renderer/themes/github'),
+      defaultLanguage: 'ruby'
+    },
+    gtag: {
+      trackingID: 'UA-92088150-3'
+    },
   },
   presets: [
     [
@@ -80,7 +65,6 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
           editUrl:
             'https://github.com/nguyenquangminh0711/ruby_jard/edit/master/website/',
         },

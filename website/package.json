@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@docusaurus/core": "2.0.0-alpha.63",
+    "@docusaurus/plugin-google-gtag": "^2.0.0-alpha.37",
     "@docusaurus/preset-classic": "2.0.0-alpha.63",
     "@mdx-js/react": "^1.5.8",
     "clsx": "^1.1.1",
+    "prism-react-renderer": "^1.1.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4"
   },
