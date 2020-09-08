@@ -7,9 +7,27 @@
 
 .heroBanner {
   padding: 4rem 0;
-  text-align: center;
+  text-align: left;
   position: relative;
   overflow: hidden;
+}
+
+.heroSubBanner {
+  padding: 1.5rem 0;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--ifm-color-primary-light);
+  color: var(--ifm-color-primary-lightest);
+}
+
+.heroMiniLogo {
+  width: 200px;
+}
+
+.heroDemo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media screen and (max-width: 966px) {
@@ -19,26 +37,34 @@
 }
 
 .buttons {
+  margin-top: 30px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .github {
-  margin-top: 15px;
+  margin-left: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.features {
+.feature {
   display: flex;
-  align-items: center;
-  padding: 2rem 0;
-  width: 100%;
+  align-items: stretch;
+
 }
 
-.featureImage {
-  height: 200px;
-  width: 200px;
+.featureWrapperOdd {
+  padding: 2rem 0;
+}
+
+.featureWrapperEven {
+  background-color: var(--ifm-color-secondary-lightest);
+  padding: 2rem 0;
+}
+
+.featureImage img {
+  border-radius: 10px;
 }

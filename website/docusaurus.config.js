@@ -3,7 +3,7 @@ module.exports = {
   tagline: 'Just Another Ruby Debugger, aims to provide a better experience while debugging Ruby',
   url: 'https://rubyjard.org/',
   baseUrl: '/',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/logo/favicon.png',
   organizationName: 'nguyenquangminh0711',
   projectName: 'ruby_jard',
   themeConfig: {
@@ -11,14 +11,14 @@ module.exports = {
       title: 'Ruby Jard',
       logo: {
         alt: 'Ruby Jard Logo',
-        src: 'img/logo.png',
+        src: 'img/logo/logo-small.png',
       },
       items: [
         {
           to: 'docs/',
           activeBasePath: 'docs',
           label: 'Docs',
-          position: 'left',
+          position: 'right',
         },
         {
           href: 'https://github.com/nguyenquangminh0711/ruby_jard',
@@ -29,35 +29,19 @@ module.exports = {
     },
     footer: {
       style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Getting Started',
-              to: 'docs/',
-            }
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'GitHub',
-              href: 'https://github.com/nguyenquangminh0711/ruby_jard',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} Minh Nguyen - nguyenquangminh0711. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Minh Nguyen - nguyenquangminh0711. Built with Docusaurus.`
     },
     prism: {
-      theme: require('prism-react-renderer/themes/github'),
-      defaultLanguage: 'ruby'
+      defaultLanguage: 'ruby',
+      additionalLanguages: ['ruby'],
     },
     gtag: {
       trackingID: 'UA-92088150-3'
     },
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: true
+    }
   },
   presets: [
     [

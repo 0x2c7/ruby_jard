@@ -3,7 +3,9 @@ id: Introduction
 slug: /
 ---
 
-<img src="/img/logo-full.jpg" width="400" />
+
+![Ruby Jard](/img/logo/logo-full.png)
+
 
 [![From Vietnam with <3](https://raw.githubusercontent.com/webuild-community/badge/master/svg/love.svg)](https://webuild.community)
 ![Rspec](https://github.com/nguyenquangminh0711/ruby_jard/workflows/Rspec/badge.svg?branch=master)
