@@ -109,8 +109,11 @@ function Home() {
                 <CodeHighlight
                   code={`requrie 'ruby_jard'
 
-jard
-test_method # Stop at the first method after \`jard\``}
+def test_method
+  jard # Debugger will stop here
+  a = 1
+  b = 2
+end`}
                   language="ruby"
                 />
               </div>
