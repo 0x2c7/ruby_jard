@@ -1,12 +1,13 @@
 module.exports = {
   title: 'Ruby Jard',
-  tagline: 'Just Another Ruby Debugger, aims to provide a better experience while debugging Ruby',
+  tagline: 'Just Another Ruby Debugger. Provide a rich Terminal UI that visualizes everything your need, navigates your program with pleasure, stops at matter places only, reduces manual and mental efforts. You can now focus on real debugging.',
   url: 'https://rubyjard.org/',
   baseUrl: '/',
   favicon: 'img/logo/favicon.png',
   organizationName: 'nguyenquangminh0711',
   projectName: 'ruby_jard',
   themeConfig: {
+    image: 'img/thumbnail.jpg',
     navbar: {
       title: 'Ruby Jard',
       logo: {
