@@ -47,7 +47,7 @@ function Home() {
           <div className="row">
             <div className="col col--7">
               <img className={styles.heroMiniLogo} src={useBaseUrl('/img/logo/logo-full-mid-light.png')}/>
-              <p className="hero__title">Just Another Ruby Debugger</p>
+              <p className={clsx('hero__title', styles.heroTitle)}>Just Another Ruby Debugger</p>
               <p className="hero__subtitle">Ruby Jard provides a rich Terminal UI that visualizes everything your need, navigates your program with pleasure, stops at matter places only, reduces manual and mental efforts. You can now focus on real debugging.</p>
               <div className={styles.buttons}>
                 <Link
@@ -262,7 +262,7 @@ end`}
         <div className="container">
           <div className="row">
             <div className="col col--9">
-              <p className="hero__title">
+              <p className={clsx('hero__title', styles.heroTitle)}>
                 Not what you are looking for now?
               </p>
               <p className="hero__subtitle">

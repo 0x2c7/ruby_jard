@@ -33,6 +33,13 @@
 @media screen and (max-width: 966px) {
   .heroBanner {
     padding: 2rem;
+    text-align: center;
+  }
+  .buttons {
+    margin-bottom: 30px;
+  }
+  .heroTitle {
+    font-size: 2.5rem;
   }
 }
 
