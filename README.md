@@ -8,7 +8,7 @@ Ruby Jard provides a rich Terminal UI that visualizes everything your need, navi
 
 Please visit [https://rubyjard.org/](https://rubyjard.org/) for more information.
 
-[![Ruby Jard Demo](./docs/demo.png)](https://asciinema.org/a/350233)
+[![Ruby Jard Demo](./website/static/img/demo.png)](https://asciinema.org/a/350233)
 
 *[(Click for demo video)](https://asciinema.org/a/350233)*
 
