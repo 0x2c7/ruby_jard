@@ -6,11 +6,12 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 import Highlight, { defaultProps } from "prism-react-renderer";
+import ReactGA from 'react-ga';
 
 function GithubButton() {
   return (
     <div className={clsx(styles.github, 'button--lg')}>
-      <iframe src="https://ghbtns.com/github-btn.html?user=nguyenquangminh0711&amp;repo=ruby_jard&amp;type=star&amp;count=true&amp;size=large" scrolling="0" title="GitHub Stars" width="140" height="30" frameborder="0"></iframe>
+      <iframe src="https://ghbtns.com/github-btn.html?user=nguyenquangminh0711&amp;repo=ruby_jard&amp;type=star&amp;count=true&amp;size=large" scrolling="0" title="GitHub Stars" width="140" height="30" frameBorder="0"></iframe>
     </div>
   )
 }
@@ -36,14 +37,15 @@ function CodeHighlight({code, language}) {
 function Home() {
   const context = useDocusaurusContext();
   const {siteConfig = {}} = context;
+  ReactGA.initialize('UA-92088150-3');
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
       description={siteConfig.tagline}>
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
-          <div class="row">
-            <div class="col col--7">
+          <div className="row">
+            <div className="col col--7">
               <img className={styles.heroMiniLogo} src={useBaseUrl('/img/logo/logo-full-mid-light.png')}/>
               <p className="hero__title">Just Another Ruby Debugger</p>
               <p className="hero__subtitle">Ruby Jard provides a rich Terminal UI that visualizes everything your need, navigates your program with pleasure, stops at matter places only, reduces manual and mental efforts. You can now focus on real debugging.</p>
@@ -69,8 +71,8 @@ function Home() {
       </header>
       <header className={clsx('hero hero--primary', styles.heroSubBanner)}>
         <div className="container">
-          <div class="row">
-            <div class="col col--4">
+          <div className="row">
+            <div className="col col--4">
               <h3>
                 MIT License
               </h3>
@@ -78,15 +80,15 @@ function Home() {
                 Ruby Jard is open-source, built for community, and under MIT license. All contributions are welcome.
               </p>
             </div>
-            <div class="col col--4">
+            <div className="col col--4">
               <h3>
                 Powered by Byebug and Pry
               </h3>
               <p>
-                Ruby Jard's core is <a class="text--secondary" href="https://github.com/deivid-rodriguez/byebug">Byebug</a>, combine with <a class="text--secondary" href="https://github.com/pry/pry">Pry</a> REPL power. This brings battle-tested reliability, flexibility, and tons of cool features.
+                Ruby Jard's core is <a className="text--secondary" href="https://github.com/deivid-rodriguez/byebug">Byebug</a>, combine with <a className="text--secondary" href="https://github.com/pry/pry">Pry</a> REPL power. This brings battle-tested reliability, flexibility, and tons of cool features.
               </p>
             </div>
-            <div class="col col--4">
+            <div className="col col--4">
               <h3>
                 Pure Ruby and minimal dependencies
               </h3>
@@ -100,7 +102,7 @@ function Home() {
       <main>
         <section className={clsx('hero hero--light', styles.featureWrapperOdd)}>
           <div className="container">
-            <div class="row">
+            <div className="row">
               <div className={clsx('col col--6')}>
                 <CodeHighlight
                   code={`gem 'ruby_jard'`}
@@ -188,12 +190,12 @@ end`}
                 </p>
                 <p>
                   Good. Ruby Jard comes with a smart filter to let you choose the matter places only.
-                  <ul>
-                    <li>By default, Ruby Jard ignores everything outside of your project folder.</li>
-                    <li>You can always change filter mode to go into gem, or even standard lib.</li>
-                    <li>You can include/exclude a gem, a standard lib, a file, or even a folder.</li>
-                  </ul>
                 </p>
+                <ul>
+                  <li>By default, Ruby Jard ignores everything outside of your project folder.</li>
+                  <li>You can always change filter mode to go into gem, or even standard lib.</li>
+                  <li>You can include/exclude a gem, a standard lib, a file, or even a folder.</li>
+                </ul>
               </div>
               <div className={clsx('col col--6', styles.featureImage)}>
                 <img src={useBaseUrl('img/home/demo-stop-matter.png')} alt="Stop at matter places" />
@@ -212,16 +214,16 @@ end`}
                 <h3>Powerful REPL console</h3>
                 <p>
                   Ruby Jard's REPL engine is powered by <a href="https://github.com/pry/pry">Pry</a>, a runtime developer console with powerful introspection capabilities. There are plenty of things you can do with the REPL console:
-                  <ul>
-                    <li>Ad-hoc code execution</li>
-                    <li>Inspect nested variable, support syntax highlight</li>
-                    <li>Source code browsing </li>
-                    <li>Document browsing</li>
-                    <li>Command shell integration</li>
-                    <li>Navigation around state</li>
-                    <li>Interfere and change current object state</li>
-                  </ul>
                 </p>
+                <ul>
+                  <li>Ad-hoc code execution</li>
+                  <li>Inspect nested variable, support syntax highlight</li>
+                  <li>Source code browsing </li>
+                  <li>Document browsing</li>
+                  <li>Command shell integration</li>
+                  <li>Navigation around state</li>
+                  <li>Interfere and change current object state</li>
+                </ul>
               </div>
             </div>
           </div>
@@ -258,8 +260,8 @@ end`}
       </main>
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
-          <div class="row">
-            <div class="col col--9">
+          <div className="row">
+            <div className="col col--9">
               <p className="hero__title">
                 Not what you are looking for now?
               </p>
