@@ -1,4 +1,4 @@
-[<img src="./website/logo/logo-full.png" width="400" />](https://rubyjard.org/)
+[<img src="./website/static/img/logo/logo-full.png" width="400" />](https://rubyjard.org/)
 
 [![From Vietnam with <3](https://raw.githubusercontent.com/webuild-community/badge/master/svg/love.svg)](https://webuild.community)
 ![Rspec](https://github.com/nguyenquangminh0711/ruby_jard/workflows/Rspec/badge.svg?branch=master)
