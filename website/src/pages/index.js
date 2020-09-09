@@ -5,34 +5,9 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
-import Highlight, { defaultProps } from "prism-react-renderer";
 import ReactGA from 'react-ga';
-
-function GithubButton() {
-  return (
-    <div className={clsx(styles.github, 'button--lg')}>
-      <iframe src="https://ghbtns.com/github-btn.html?user=nguyenquangminh0711&amp;repo=ruby_jard&amp;type=star&amp;count=true&amp;size=large" scrolling="0" title="GitHub Stars" width="140" height="30" frameBorder="0"></iframe>
-    </div>
-  )
-}
-
-function CodeHighlight({code, language}) {
-  return (
-    <Highlight {...defaultProps} code={code} language={language}>
-      {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre className={className} style={style}>
-          {tokens.map((line, i) => (
-            <div {...getLineProps({ line, key: i })}>
-              {line.map((token, key) => (
-                <span {...getTokenProps({ token, key })} />
-              ))}
-            </div>
-          ))}
-        </pre>
-      )}
-    </Highlight>
-  )
-}
+import {CodeHighlight} from '../components/CodeHighlight'
+import {GithubButton} from '../components/GithubButton'
 
 function Home() {
   const context = useDocusaurusContext();

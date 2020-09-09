@@ -50,13 +50,6 @@
   justify-content: flex-start;
 }
 
-.github {
-  margin-left: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .feature {
   display: flex;
   align-items: stretch;
