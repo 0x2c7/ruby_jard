@@ -4,20 +4,6 @@ id: Screens
 
 When Jard attaches at any line of code, the main tile-style UI shows up. By default, there are 5 areas on the UI that you'll be interested.
 
-### Backtrace screen
-
-<img src="/img/screen-backtrace.png" alt="Screen backtrace"/>
-
-This screen describes the current backtrace of the current thread your program is stopping. Each line of this screen describes the current Frame. What is frame and backtrace by the way? Let's step back a little bit at how Ruby executes your code. Internally, Ruby uses an interpreter to read and execute your code, line by line (technically, YARD instructions, but let's go with a simple version). When it meets a chunk of code that needs to open a new scope, like method calls or inline-block call, the interpreter creates a new structure to store the current context so that it can link to the next scope and go back later. This data structure is call Frame. The interpreter pushes frame into a stack, called backtrace (or stack trace, or call stack, whatever), and continues to execute your code. Each thread has a separate backtrace. To understand deeply, you may be interested in this wonderful slide: [Grow and Shrink - Dynamically Extending the Ruby VM Stack](https://www.slideshare.net/KeitaSugiyama1/grow-and-shrink-dynamically-extending-the-ruby-vm-stack).
-
-Overall, the whole backtrace screen lets you know where you are stopping at, the trace of how your program is running. When combining with other tools and other screens, you will be surprised by how much information the bugger can help you when you encounter your bugs.
-
-Each frame includes the following information:
-
-- Frame ID: incremental, can be used to jump to an arbitrary frame with frame command.
-- Current location label: a class name and method name of the method covers its frame. If there is a `[c]` prefix in front of a class name, it means that the method is provided by Ruby, implemented in C, and impossible to peek.
-- Current physical location: exact file name and line number. If a frame is allocated in a gem, the physical location shows a gem name and version only. For example: `RSpec::Core::Hooks::HookCollections in run in rspec-core (3.9.2)`.
-
 ### Variable screen
 
 <img src="/img/screen-variables.png" alt="Variables screen"/>
