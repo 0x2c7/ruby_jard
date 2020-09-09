@@ -69,7 +69,7 @@ import {GithubButton} from '../src/components/GithubButton'
 
 ## Run your program with Ruby Jard
 
-<LinkedImage link="/img/getting_started/how-to-use.gif" alt="How to use image"/>
+<LinkedImage link="/img/getting_started/how-to-use.gif" alt="How to run your program with Ruby Jard"/>
 
 To use Ruby Jard, you just need to put `jard` magic method **before** any places you want to stop. Jard supports stopping at anywhere, including top level binding, instance methods, class methods, string evaluation, or even inside a class declaration.
 
