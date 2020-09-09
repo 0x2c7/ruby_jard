@@ -27,6 +27,7 @@ module.exports = {
       'commands/list'
     ],
     'Control Commands': [
+      'commands/filter',
       'commands/show',
       'commands/hide',
       'commands/output',
