@@ -4,16 +4,6 @@ id: Screens
 
 When Jard attaches at any line of code, the main tile-style UI shows up. By default, there are 5 areas on the UI that you'll be interested.
 
-### Source screen
-
-<img src="/img/screen-source.png" alt="Source screen" />
-
-This screen shows the current line of code that your program is stopping, and surrounding related lines. The number of lines shown in this screen depends on your current terminal height, but never less than 5.
-
-Ruby Jard supports any file extensions that your program runs into, especially `.rb`, `.erb`, `.haml` files. Other file types may encounter minor syntax highlighting issues.
-
-Ruby Jard also supports inspecting gems and libraries, if you are interested.
-
 ### Backtrace screen
 
 <img src="/img/screen-backtrace.png" alt="Screen backtrace"/>
