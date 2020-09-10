@@ -25,21 +25,26 @@ module RubyJard
       TYPE_UNKNOWN = :unknown
     ].freeze
 
+    def initialize
+      @gem_paths = fetch_gem_paths
+    end
+
     def classify(path)
       return TYPE_UNKNOWN if path.nil?
 
-      [
-        TYPE_INTERNAL,
-        TYPE_EVALUATION,
-        TYPE_RUBY_SCRIPT,
-        TYPE_SOURCE_TREE,
-        TYPE_GEM,
-        TYPE_STDLIB
-      ].each do |type|
-        matched, *info = send("try_classify_#{type}".to_sym, path)
+      return TYPE_INTERNAL if try_classify_internal(path)
 
-        return type, *info if matched
-      end
+      return TYPE_EVALUATION if try_classify_evaluation(path)
+
+      return TYPE_RUBY_SCRIPT if try_classify_ruby_script(path)
+
+      return TYPE_SOURCE_TREE if try_classify_source_tree(path)
+
+      matched, *info = try_classify_gem(path)
+      return TYPE_GEM, *info if matched
+
+      matched, *info = try_classify_stdlib(path)
+      return TYPE_STDLIB, *info if matched
 
       TYPE_UNKNOWN
     end
@@ -47,7 +52,7 @@ module RubyJard
     private
 
     def try_classify_gem(path)
-      gem_paths.each do |gem_path|
+      @gem_paths.each do |gem_path|
         next unless path.start_with?(gem_path)
 
         splitted_path =
@@ -103,10 +108,9 @@ module RubyJard
     end
 
     def try_classify_source_tree(path)
-      File.expand_path(path).start_with?(Dir.pwd)
     end
 
-    def gem_paths
+    def fetch_gem_paths
       paths = []
 
       if defined?(Gem)

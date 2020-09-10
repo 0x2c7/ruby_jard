@@ -15,7 +15,7 @@ RSpec.describe RubyJard::PathClassifier do
     let(:dir) { Dir.pwd }
 
     it 'returns source tree' do
-      expect(classifier.classify("#{dir}/test.rb")).to eq([:source_tree])
+      expect(classifier.classify("#{dir}/test.rb")).to eq(:source_tree)
     end
   end
 
@@ -23,7 +23,7 @@ RSpec.describe RubyJard::PathClassifier do
     let(:dir) { Dir.pwd }
 
     it 'returns source tree' do
-      expect(classifier.classify("#{dir}/abc/test.rb")).to eq([:source_tree])
+      expect(classifier.classify("#{dir}/abc/test.rb")).to eq(:source_tree)
     end
   end
 
@@ -32,7 +32,7 @@ RSpec.describe RubyJard::PathClassifier do
 
     it 'returns source tree' do
       Dir.chdir(dir) do
-        expect(classifier.classify("#{dir}/abc/test.rb")).to eq([:source_tree])
+        expect(classifier.classify("#{dir}/abc/test.rb")).to eq(:source_tree)
       end
     end
   end
@@ -42,14 +42,8 @@ RSpec.describe RubyJard::PathClassifier do
 
     it 'returns source tree' do
       Dir.chdir(dir) do
-        expect(classifier.classify("#{dir}/abc/test.rb")).to eq([:source_tree])
+        expect(classifier.classify("#{dir}/abc/test.rb")).to eq(:source_tree)
       end
-    end
-  end
-
-  context 'when input path is a relative path in current dir' do
-    it 'returns source tree' do
-      expect(classifier.classify('./abc/test.rb')).to eq([:source_tree])
     end
   end
 
@@ -115,19 +109,19 @@ RSpec.describe RubyJard::PathClassifier do
     let(:path) { eval("\"\#\{__FILE__\}\"") }
 
     it 'returns stdlib, and relative path' do
-      expect(classifier.classify(path)).to eq([:evaluation])
+      expect(classifier.classify(path)).to eq(:evaluation)
     end
   end
 
   context 'when input path is a -e ruby_script' do
     it 'returns stdlib, and relative path' do
-      expect(classifier.classify('-e')).to eq([:ruby_script])
+      expect(classifier.classify('-e')).to eq(:ruby_script)
     end
   end
 
   context 'when input path is a an internal location' do
     it 'returns stdlib, and relative path' do
-      expect(classifier.classify('<internal:gc>')).to eq([:internal])
+      expect(classifier.classify('<internal:gc>')).to eq(:internal)
     end
   end
 
