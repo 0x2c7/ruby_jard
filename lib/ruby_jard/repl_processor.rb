@@ -49,7 +49,7 @@ module RubyJard
     def process_commands_with_lock
       allowing_other_threads do
         RubyJard::Session.lock do
-          RubyJard::Session.sync
+          RubyJard::Session.sync(@context)
           unless RubyJard::Session.should_stop?
             handle_flow(@previous_flow)
             return
@@ -61,7 +61,7 @@ module RubyJard
     end
 
     def process_commands(redraw = true)
-      RubyJard::Session.sync
+      RubyJard::Session.sync(@context)
       RubyJard::ScreenManager.draw_screens if redraw
 
       return_value = nil
@@ -89,13 +89,11 @@ module RubyJard
     def handle_next_command(options = {})
       times = options[:times] || 1
       RubyJard::Session.step_over(times)
-      proceed!
     end
 
     def handle_step_command(options = {})
       times = options[:times] || 1
       RubyJard::Session.step_into(times)
-      proceed!
     end
 
     def handle_step_out_command(options = {})
@@ -104,7 +102,6 @@ module RubyJard
       next_frame = up_n_frames(RubyJard::Session.current_frame.real_pos, times)
       RubyJard::Session.frame = next_frame
       RubyJard::Session.step_over(1)
-      proceed!
     end
 
     def handle_up_command(options = {})
@@ -112,7 +109,6 @@ module RubyJard
 
       next_frame = up_n_frames(RubyJard::Session.current_frame.real_pos, times)
       RubyJard::Session.frame = next_frame
-      proceed!
       process_commands
     end
 
@@ -120,7 +116,6 @@ module RubyJard
       times = options[:times] || 1
       next_frame = down_n_frames(RubyJard::Session.current_frame.real_pos, times)
       RubyJard::Session.frame = next_frame
-      proceed!
       process_commands
     end
 
@@ -135,13 +130,13 @@ module RubyJard
         process_commands(false)
       else
         RubyJard::Session.frame = next_frame.real_pos
-        proceed!
         process_commands(true)
       end
     end
 
     def handle_continue_command(_options = {})
       RubyJard::ScreenManager.puts '▸▸ Program resumed ▸▸'
+      Byebug.stop if Byebug.stoppable?
     end
 
     def handle_exit_command(_options = {})

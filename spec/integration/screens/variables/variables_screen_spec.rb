@@ -96,6 +96,7 @@ RSpec.describe 'Variable screen', integration: true do
       )
       test.start
       test.assert_screen
+      test.send_keys('jard filter everything', :Enter)
       test.send_keys('step', :Enter)
       test.assert_screen
       test.send_keys('step-out', :Enter)

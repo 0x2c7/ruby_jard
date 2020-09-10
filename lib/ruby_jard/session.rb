@@ -109,8 +109,8 @@ module RubyJard
       @path_filter.match?(@current_context.frame_file)
     end
 
-    def sync
-      @current_context = Byebug.current_context
+    def sync(context)
+      @current_context = context
       # Remove cache
       @current_frame = nil
       @current_thread = nil
