@@ -1,3 +1,7 @@
+---
+slug: color-scheme
+---
+
 <div class="alert alert--warning">TODO: This page is still under construction.</div>
 
 **Repl command**: `jard color-scheme [-l|-h] [frame_id]`
