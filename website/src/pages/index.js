@@ -52,7 +52,10 @@ function Home() {
                 MIT License
               </h3>
               <p>
-                Ruby Jard is open-source, built for community, and under MIT license. All contributions are welcome.
+                Ruby Jard is open-source, built for community. All contributions are welcome.
+                <a href="https://github.com/nguyenquangminh0711/ruby_jard/releases" className={styles.heroVersion}>
+                  <img alt="Gem" src="https://img.shields.io/gem/v/ruby_jard?color=%23805dfb&label=latest%20version&style=for-the-badge"/>
+                </a>
               </p>
             </div>
             <div className="col col--4">

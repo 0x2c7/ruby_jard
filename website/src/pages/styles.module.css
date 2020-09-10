@@ -30,6 +30,11 @@
   justify-content: center !important;
 }
 
+.heroVersion{
+  margin-top: 10px;
+  display: block;
+}
+
 @media screen and (max-width: 966px) {
   .heroBanner {
     padding: 2rem;
