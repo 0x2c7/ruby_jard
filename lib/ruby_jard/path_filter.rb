@@ -64,8 +64,10 @@ module RubyJard
         !match_excluded?(path)
       when RubyJard::PathClassifier::TYPE_GEM, RubyJard::PathClassifier::TYPE_STDLIB
         match_included?(info[0], expand_path: false) || match_included?(path)
-      when RubyJard::PathClassifier::TYPE_RUBY_SCRIPT, RubyJard::PathClassifier::TYPE_EVALUATION
+      when RubyJard::PathClassifier::TYPE_RUBY_SCRIPT
         true
+      when RubyJard::PathClassifier::TYPE_EVALUATION
+        false
       when RubyJard::PathClassifier::TYPE_INTERNAL
         false
       end
@@ -81,8 +83,10 @@ module RubyJard
         match_included?(path)
       when RubyJard::PathClassifier::TYPE_GEM, RubyJard::PathClassifier::TYPE_STDLIB
         match_included?(info[0], expand_path: false) || match_included?(path)
-      when RubyJard::PathClassifier::TYPE_RUBY_SCRIPT, RubyJard::PathClassifier::TYPE_EVALUATION
+      when RubyJard::PathClassifier::TYPE_RUBY_SCRIPT
         true
+      when RubyJard::PathClassifier::TYPE_EVALUATION
+        false
       when RubyJard::PathClassifier::TYPE_INTERNAL
         false
       end
