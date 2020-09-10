@@ -1,5 +1,6 @@
 ---
 id: Backtrace screen
+slug: backtrace-screen
 ---
 
 import {LinkedImage} from '../../src/components/LinkedImage'

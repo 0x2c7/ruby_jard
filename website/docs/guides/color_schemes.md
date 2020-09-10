@@ -1,5 +1,6 @@
 ---
 id: Color schemes
+slug: color-schemes
 ---
 
 Ruby Jard bundles 6 built-in schemes, 4 dark ones, and 2 light ones. You can use [color scheme commands](/docs/commands/color_scheme) to up the flight, or define in [configuration file](/docs/guides/configurations).

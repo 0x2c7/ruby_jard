@@ -1,5 +1,6 @@
 ---
 id: Variable screen
+slug: variable-screen
 ---
 
 import {LinkedImage} from '../../src/components/LinkedImage'

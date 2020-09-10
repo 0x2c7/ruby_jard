@@ -1,5 +1,6 @@
 ---
 id: Thread screen
+slug: thread-screen
 ---
 
 import {LinkedImage} from '../../src/components/LinkedImage'
