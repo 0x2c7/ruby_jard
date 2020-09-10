@@ -79,20 +79,7 @@ function Home() {
           <div className="container">
             <div className="row">
               <div className={clsx('col col--6')}>
-                <CodeHighlight
-                  code={`gem 'ruby_jard'`}
-                  language="ruby"
-                />
-                <CodeHighlight
-                  code={`requrie 'ruby_jard'
-
-def test_method
-  jard # Debugger will stop here
-  a = 1
-  b = 2
-end`}
-                  language="ruby"
-                />
+                <img src={useBaseUrl('img/home/demo-easy.gif')} alt="Easy to use" />
               </div>
               <div className={clsx('col col--6')}>
                 <h3>Easy to Use</h3>
