@@ -142,6 +142,7 @@ module RubyJard
 
     def handle_continue_command(_options = {})
       RubyJard::ScreenManager.puts '▸▸ Program resumed ▸▸'
+      Byebug.stop if Byebug.stoppable?
     end
 
     def handle_exit_command(_options = {})
