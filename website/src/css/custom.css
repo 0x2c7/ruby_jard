@@ -19,4 +19,5 @@
 code {
   white-space: normal;
   display: inline-block;
+  padding: 0px var(--ifm-code-padding-horizontal);
 }

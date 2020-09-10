@@ -1,7 +1,21 @@
 module.exports = {
   docs: {
-    'Ruby Jard': ['Introduction', 'Contributing', 'Roadmap'],
-    'Getting started': ['Installation', 'Screens', 'Color schemes', 'Configurations'],
+    'Getting started': [
+      'Installation',
+      'Screenshot tour',
+      'Roadmap'
+    ],
+    'Guides': [
+      'guides/Source screen',
+      'guides/Backtrace screen',
+      'guides/Variable screen',
+      'guides/Thread screen',
+      'guides/REPL console screen',
+      'guides/Filter',
+      'guides/Key bindings',
+      'guides/Color schemes',
+      'guides/Configurations'
+    ],
     'Flow Commands': [
       'commands/next',
       'commands/step',
@@ -13,6 +27,7 @@ module.exports = {
       'commands/list'
     ],
     'Control Commands': [
+      'commands/filter',
       'commands/show',
       'commands/hide',
       'commands/output',
