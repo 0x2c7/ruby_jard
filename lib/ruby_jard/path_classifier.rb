@@ -108,6 +108,7 @@ module RubyJard
     end
 
     def try_classify_source_tree(path)
+      path.start_with?(Dir.pwd)
     end
 
     def fetch_gem_paths
