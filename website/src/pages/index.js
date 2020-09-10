@@ -39,7 +39,7 @@ function Home() {
               </div>
             </div>
             <div className={clsx("col col--5", styles.heroDemo)}>
-              <a href="https://asciinema.org/a/350233" target="_blank"><img src="https://asciinema.org/a/350233.svg" /></a>
+              <a href="https://asciinema.org/a/358874" target="_blank"><img src="https://asciinema.org/a/358874.svg" /></a>
             </div>
           </div>
         </div>
