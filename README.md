@@ -1,8 +1,6 @@
 [<img src="./website/static/img/logo/logo-full.png" width="400" />](https://rubyjard.org/)
 
-[![From Vietnam with <3](https://raw.githubusercontent.com/webuild-community/badge/master/svg/love.svg)](https://webuild.community)
-![Rspec](https://github.com/nguyenquangminh0711/ruby_jard/workflows/Rspec/badge.svg?branch=master)
-[![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop-hq/rubocop)
+![Gem](https://img.shields.io/gem/v/ruby_jard?label=Latest%20version&style=for-the-badge) ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/nguyenquangminh0711/ruby_jard/Rspec/master?label=Build&style=for-the-badge) ![GitHub stars](https://img.shields.io/github/stars/nguyenquangminh0711/ruby_jard?style=for-the-badge) [![From Vietnam with <3](https://raw.githubusercontent.com/webuild-community/badge/master/svg/love-modern.svg)](https://webuild.community)
 
 Ruby Jard provides a rich Terminal UI that visualizes everything your need, navigates your program with pleasure, stops at matter places only, reduces manual and mental efforts. You can now focus on real debugging.
 
