@@ -12,9 +12,9 @@ module RubyJard
       FILTER_GEMS = :gems,
       FILTER_EVERYTHING = :everything
     ].freeze
-    def initialize(config: nil, classifier: nil)
+    def initialize(config: nil, path_classifier: nil)
       @config = config || RubyJard.config
-      @path_classifier = classifier || RubyJard::PathClassifier.new
+      @path_classifier = path_classifier || RubyJard::PathClassifier.new
     end
 
     def match?(path)
@@ -35,8 +35,18 @@ module RubyJard
     def match_everything?(path)
       return true if @config.filter_excluded.empty?
 
-      # Always return true, unless path is explicitly mentioned in excluded list
-      !match_excluded?(path)
+      type, *info = @path_classifier.classify(path)
+
+      case type
+      when RubyJard::PathClassifier::TYPE_SOURCE_TREE, RubyJard::PathClassifier::TYPE_UNKNOWN
+        !match_excluded?(path)
+      when RubyJard::PathClassifier::TYPE_GEM
+        !match_excluded?(info[0], expand_path: false) && !match_excluded?(path)
+      when RubyJard::PathClassifier::TYPE_STDLIB
+        !match_excluded?(info[0], expand_path: false) && !match_excluded?(path)
+      else
+        true
+      end
     end
 
     def match_gems?(path)
