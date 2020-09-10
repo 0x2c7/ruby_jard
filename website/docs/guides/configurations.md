@@ -2,6 +2,8 @@
 id: Configurations
 ---
 
+<div class="alert alert--warning">TODO: This page is still under construction.</div>
+
 Ruby Jard supports customization via pre-loaded configuration files. You can configure Jard both globally, and per-project.
 
 - The global configuration file is located at `~/.jardrc`.
