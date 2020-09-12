@@ -31,7 +31,7 @@ module.exports = {
       'commands/show',
       'commands/hide',
       'commands/output',
-      'commands/color_scheme'
+      'commands/color-scheme'
     ]
   },
 };
