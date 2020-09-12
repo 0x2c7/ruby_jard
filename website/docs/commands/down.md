@@ -1,8 +1,13 @@
-<div class="alert alert--warning">TODO: This page is still under construction.</div>
+---
+id: down
+slug: down
+---
 
-**Repl command**: `down`
+| Command | Default key binding | Alias |
+| ------- | ------------------- | ----- |
+| `down` | Shift+F6 |  |
 
-**Key binding**: Shift+F6
+Explore the lower frame. See [up command](/docs/commands/up) for more information.
 
 **Examples:**
 
@@ -10,5 +15,3 @@
 down     # Move to lower frame
 down 3   # Move to lower 3 frames
 ```
-
-Explore the lower frame. See `up` command for more information.
