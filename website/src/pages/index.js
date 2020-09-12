@@ -39,7 +39,7 @@ function Home() {
               </div>
             </div>
             <div className={clsx("col col--5", styles.heroDemo)}>
-              <a href="https://asciinema.org/a/350233" target="_blank"><img src="https://asciinema.org/a/350233.svg" /></a>
+              <a href="https://asciinema.org/a/358874" target="_blank"><img src="https://asciinema.org/a/358874.svg" /></a>
             </div>
           </div>
         </div>
@@ -52,7 +52,10 @@ function Home() {
                 MIT License
               </h3>
               <p>
-                Ruby Jard is open-source, built for community, and under MIT license. All contributions are welcome.
+                Ruby Jard is open-source, built for community. All contributions are welcome.
+                <a href="https://github.com/nguyenquangminh0711/ruby_jard/releases" className={styles.heroVersion}>
+                  <img alt="Gem" src="https://img.shields.io/gem/v/ruby_jard?color=%23805dfb&label=latest%20version&style=for-the-badge"/>
+                </a>
               </p>
             </div>
             <div className="col col--4">
@@ -79,20 +82,7 @@ function Home() {
           <div className="container">
             <div className="row">
               <div className={clsx('col col--6')}>
-                <CodeHighlight
-                  code={`gem 'ruby_jard'`}
-                  language="ruby"
-                />
-                <CodeHighlight
-                  code={`requrie 'ruby_jard'
-
-def test_method
-  jard # Debugger will stop here
-  a = 1
-  b = 2
-end`}
-                  language="ruby"
-                />
+                <img src={useBaseUrl('img/home/demo-easy.gif')} alt="Easy to use" />
               </div>
               <div className={clsx('col col--6')}>
                 <h3>Easy to Use</h3>

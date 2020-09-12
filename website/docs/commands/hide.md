@@ -1,14 +1,19 @@
-<div class="alert alert--warning">TODO: This page is still under construction.</div>
+---
+id: hide
+slug: hide
+---
 
-**Repl command**: `jard hide [screen]`
+| Command | Default key binding | Alias |
+| ------- | ------------------- | ----- |
+| `jard hide [screen]` | | |
 
-**Key binding:** None
+Hide a particular screen from the current interface.
 
 **Examples:**
 
 ```
+jard hide source
 jard hide variables
 jard hide threads
+jard hide backtrace
 ```
-
-Hide a particular screen from the current interface.

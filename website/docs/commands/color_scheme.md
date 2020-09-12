@@ -1,19 +1,24 @@
-<div class="alert alert--warning">TODO: This page is still under construction.</div>
+---
+id: color-scheme
+slug: color-scheme
+---
 
-**Repl command**: `jard color-scheme [-l|-h] [frame_id]`
+import {LinkedImage} from '../../src/components/LinkedImage'
 
-**Key binding:** None
+| Command | Default key binding | Alias |
+| ------- | ------------------- | ----- |
+| `jard color-scheme [-l -h] [name]` | | |
+
+List all available color schemes, or switch to a particular color scheme at runtime.
 
 **Examples:**
 
 ```
 jard color-scheme -l # List all available color schemes
-# Output:
-# jard >>
-# 256
-# deep-space
-# gruvbox
+```
+
+```
 jard color-scheme deep-space # Switch to color scheme deep-space
 ```
 
-List all available color schemes, or switch to a particular color scheme at runtime.
+<LinkedImage link="/img/commands/color-scheme.gif" alt="Color scheme example"/>

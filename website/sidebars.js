@@ -19,7 +19,7 @@ module.exports = {
     'Flow Commands': [
       'commands/next',
       'commands/step',
-      'commands/step_out',
+      'commands/step-out',
       'commands/continue',
       'commands/up',
       'commands/down',
@@ -31,7 +31,7 @@ module.exports = {
       'commands/show',
       'commands/hide',
       'commands/output',
-      'commands/color_scheme'
+      'commands/color-scheme'
     ]
   },
 };

@@ -11,7 +11,7 @@ import {GithubButton} from '../src/components/GithubButton'
 <img src="/img/logo/logo-full.png" width="400"/>
 <br/><br/>
 
-[![From Vietnam with <3](https://raw.githubusercontent.com/webuild-community/badge/master/svg/love.svg)](https://webuild.community) ![Rspec](https://github.com/nguyenquangminh0711/ruby_jard/workflows/Rspec/badge.svg?branch=master) [![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop-hq/rubocop) <GithubButton inline="true" size="small" height="20" width="100"/>
+![Gem](https://img.shields.io/gem/v/ruby_jard?label=Latest%20version&style=for-the-badge) ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/nguyenquangminh0711/ruby_jard/Rspec/master?label=Build&style=for-the-badge) ![GitHub stars](https://img.shields.io/github/stars/nguyenquangminh0711/ruby_jard?style=for-the-badge) [![From Vietnam with <3](https://raw.githubusercontent.com/webuild-community/badge/master/svg/love-modern.svg)](https://webuild.community)
 
 **Note**: Ruby Jard is still under heavy development. Bugs and weird behaviors are expected. If you see one, please don't hesitate to [open an issue](https://github.com/nguyenquangminh0711/ruby_jard/issues). I'll try my best to fix.
 

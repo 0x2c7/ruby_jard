@@ -1,5 +1,6 @@
 ---
 id: Source screen
+slug: source-screen
 ---
 
 import {LinkedImage} from '../../src/components/LinkedImage'

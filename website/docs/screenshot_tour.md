@@ -1,5 +1,6 @@
 ---
 id: Screenshot tour
+slug: screenshot-tour
 ---
 
 import {LinkedImage} from '../src/components/LinkedImage'

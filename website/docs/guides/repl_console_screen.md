@@ -1,5 +1,6 @@
 ---
 id: REPL console screen
+slug: repl-console-screen
 ---
 
 import {LinkedImage} from '../../src/components/LinkedImage'

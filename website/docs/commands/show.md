@@ -1,14 +1,19 @@
-<div class="alert alert--warning">TODO: This page is still under construction.</div>
+---
+id: show
+slug: show
+---
 
-**Repl command**: `jard show [screen]`
+| Command | Default key binding | Alias |
+| ------- | ------------------- | ----- |
+| `jard show [screen]` | | |
 
-**Key binding:** None
+Show a particular screen on the current interface. This option correlates to recent layout's screens. If a screen is not available in current layout, it won't be shown.
 
 **Examples:**
 
 ```
+jard show source
 jard show variables
 jard show threads
+jard show backtrace
 ```
-
-Show a particular screen on the current interface.
