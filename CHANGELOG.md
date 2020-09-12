@@ -1,9 +1,13 @@
 # Changelog
 
 ## [0.3.0 - Beta 1]
-### UX/UI
+- Filter feature
+- New variable screen look and feel
+- Improve website and documentation page.
+- Improve color-scheme command
 - Use Thread sequential label instead of Thread's object id
-- Defer side threads' output to prevent them from flooding debugging thread
+- Complete testing infrastructure.
+- Fix multiple performance issues.
 
 ### Bug fixes
 - Solve program output performance degrade ([#21](https://github.com/nguyenquangminh0711/ruby_jard/pull/21))
