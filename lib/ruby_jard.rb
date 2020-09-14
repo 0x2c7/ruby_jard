@@ -98,13 +98,20 @@ module RubyJard
   def self.config
     @config ||= RubyJard::Config.smart_load
   end
+
+  def self.all_files
+    Dir.glob(File.join(File.expand_path(__dir__, './lib'), '**', '*.rb')) +
+      Dir.glob(File.join(File.expand_path(__dir__, './lib'), '*.rb')) +
+      Dir.glob(File.join(File.expand_path(__dir__, './bin'), '**', '*.rb')) +
+      Dir.glob(File.join(File.expand_path(__dir__, './bin'), '*.rb'))
+  end
 end
 
 ##
 # Monkey-patch Kernel module to allow putting jard command anywhere.
 module Kernel
   def jard
-    RubyJard::Session.instance.attach
+    RubyJard::Session.attach
   end
 
   if RubyJard.config.alias_to_debugger

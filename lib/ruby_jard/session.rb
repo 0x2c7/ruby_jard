@@ -13,7 +13,7 @@ module RubyJard
       extend Forwardable
 
       def_delegators :instance,
-                     :attach, :lock,
+                     :lock,
                      :sync, :should_stop?,
                      :step_over, :step_into, :frame=,
                      :threads, :current_frame, :current_thread, :current_backtrace,
@@ -21,6 +21,13 @@ module RubyJard
 
       def instance
         @instance ||= new
+      end
+
+      def attach
+        instance.start unless instance.started?
+
+        Byebug.attach
+        Byebug.current_context.step_out(3, true)
       end
     end
 
@@ -54,29 +61,24 @@ module RubyJard
       Byebug::Setting[:autopry] = false
       Byebug::Context.processor = RubyJard::ReplProcessor
       # Exclude all files in Ruby Jard source code from the stacktrace.
-      Byebug::Context.ignored_files = Byebug::Context.all_files + Dir.glob(
-        File.join(
-          File.expand_path(__dir__, '../lib'),
-          '**',
-          '*.rb'
-        )
-      )
-      # rubocop:disable Lint/NestedMethodDefinition
-      def $stdout.write(*string, from_jard: false)
-        # NOTE: `RubyJard::ScreenManager.instance` is a must. Jard doesn't work well with delegator
-        # TODO: Debug and fix the issues permanently
-        if from_jard
+      Byebug::Context.ignored_files = Byebug::Context.all_files + RubyJard.all_files
+
+      $stdout.send(:instance_eval, <<-CODE)
+        def write(*string, from_jard: false)
+          # NOTE: `RubyJard::ScreenManager.instance` is a must. Jard doesn't work well with delegator
+          # TODO: Debug and fix the issues permanently
+          if from_jard
+            super(*string)
+            return
+          end
+
+          unless RubyJard::ScreenManager.instance.updating?
+            RubyJard::Session.instance.append_output_buffer(string)
+          end
+
           super(*string)
-          return
         end
-
-        unless RubyJard::ScreenManager.instance.updating?
-          RubyJard::Session.instance.append_output_buffer(string)
-        end
-
-        super(*string)
-      end
-      # rubocop:enable Lint/NestedMethodDefinition
+      CODE
 
       at_exit { stop }
 
@@ -96,13 +98,6 @@ module RubyJard
 
     def started?
       @started == true
-    end
-
-    def attach
-      start unless started?
-
-      Byebug.attach
-      Byebug.current_context.step_out(3, true)
     end
 
     def should_stop?
