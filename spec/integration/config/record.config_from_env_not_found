@@ -1,0 +1,9 @@
+### START SCREEN ###
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["JARD_CONFIG_FILE=/tmp/please-do-not-exist /spec/examples/top_level_example.rb", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+
+### END SCREEN ###
