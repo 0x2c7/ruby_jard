@@ -25,7 +25,7 @@ jard >>
 
 ### END SCREEN ###
 ### START SEND_KEYS ###
-[:F9]
+[:"C-d"]
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Source  ../../examples/instance_method_2_example.rb:19 ──────────────────────┐
