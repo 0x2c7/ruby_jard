@@ -1,8 +1,8 @@
 ### START SCREEN ###
-┌ Source  ../../examples/placement_2_example.rb:4 ─────────────────────────────┐
+┌ Source  ../../examples/placement_7_example.rb:4 ─────────────────────────────┐
 │   1 require 'ruby_jard'                                                      │
 │   2                                                                          │
-│   3 ;;;;;;;;;;;;;;; jard; jard; print "From jard"                            │
+│   3 puts "Hello" or jard or sleep 0                                          │
 │⮕  4 sleep 0                                                                  │
 │                                                                              │
 │                                                                              │

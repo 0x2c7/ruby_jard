@@ -78,4 +78,28 @@ RSpec.describe 'Load config file from ENV', integration: true do
       test.stop
     end
   end
+
+  context 'when place jard after an or' do
+    it 'stops at the next file' do
+      test = JardIntegrationTest.new(
+        self, work_dir, 'record.placement_7',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/placement_7_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.stop
+    end
+  end
+
+  context 'when place jard inside a nested print' do
+    it 'stops at the next file' do
+      test = JardIntegrationTest.new(
+        self, work_dir, 'record.placement_8',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/placement_8_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.stop
+    end
+  end
 end

@@ -3,7 +3,7 @@
 │   1 require 'ruby_jard'                                                      │
 │   2 require_relative './top_level_example.rb'                                │
 │   3                                                                          │
-│   4 # Ignored the one                                                        │
+│   4 # Ignored  the first jard method call in top_level_example.rb            │
 │⮕  5 jard                                                                     │
 │   6 sleep 0                                                                  │
 │                                                                              │
