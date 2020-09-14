@@ -275,8 +275,6 @@ RSpec::Matchers.define :match_screen do |expected, line|
   end
 
   def match_line(expected_line, actual_line)
-    return false if expected_line.length != actual_line.length
-
     expected_line.each_char.with_index do |char, index|
       next if char == '?'
 
