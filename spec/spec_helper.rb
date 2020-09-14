@@ -3,6 +3,7 @@
 require 'bundler/setup'
 require 'rspec/retry'
 require 'ruby_jard'
+require 'tempfile'
 
 RSPEC_ROOT = File.dirname __FILE__
 
@@ -26,8 +27,12 @@ RSpec.configure do |config|
 
   config.after :suite do
     JardIntegrationTest.tests.each do |test|
-      test.stop
       puts "Someone forgot to stop integration test at #{test.source}"
+      begin
+        test.stop
+      rescue StandardError => e
+        puts "Fail to stop test. Error: #{e}"
+      end
     end
   end
 

@@ -83,6 +83,23 @@ class JardIntegrationTest
     end
   end
 
+  def assert_screen_include(str)
+    if recording_actual?
+      record_actual_screen('')
+    else
+      _content, _line = *(@expected_record.shift || [])
+      @test.expect(screen_content).to @test.include(str)
+    end
+  end
+
+  def skip_screen
+    if recording_actual?
+      record_actual_screen('')
+    else
+      _content, _line = *(@expected_record.shift || [])
+    end
+  end
+
   def send_keys(*args)
     record_actual_keys(args) if recording_actual?
 
