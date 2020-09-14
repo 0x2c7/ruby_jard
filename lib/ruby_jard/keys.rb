@@ -42,7 +42,8 @@ module RubyJard
       F7       => (ACTION_STEP     = :step),
       SHIFT_F7 => (ACTION_STEP_OUT = :step_out),
       F8       => (ACTION_NEXT     = :next),
-      F9       => (ACTION_CONTINUE = :continue)
+      F9       => (ACTION_CONTINUE = :continue),
+      CTRL_D   => ACTION_CONTINUE
     }.freeze
   end
 end

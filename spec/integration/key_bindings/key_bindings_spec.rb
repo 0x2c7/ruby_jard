@@ -96,18 +96,36 @@ RSpec.describe 'Default key bindings', integration: true do
   end
 
   context 'with continue bindings' do
-    it 'matches expected screens' do
-      test = JardIntegrationTest.new(
-        self, work_dir,
-        'record.continue_key_bindings',
-        "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_2_example.rb"
-      )
-      test.start
-      test.assert_screen
-      test.send_keys(:F9)
-      test.assert_screen
-    ensure
-      test.stop
+    context 'with F9' do
+      it 'matches expected screens' do
+        test = JardIntegrationTest.new(
+          self, work_dir,
+          'record.continue_key_bindings',
+          "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_2_example.rb"
+        )
+        test.start
+        test.assert_screen
+        test.send_keys(:F9)
+        test.assert_screen
+      ensure
+        test.stop
+      end
+    end
+
+    context 'with CTRL_D' do
+      it 'matches expected screens' do
+        test = JardIntegrationTest.new(
+          self, work_dir,
+          'record.continue_key_bindings_2',
+          "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_2_example.rb"
+        )
+        test.start
+        test.assert_screen
+        test.send_keys(:"C-d")
+        test.assert_screen
+      ensure
+        test.stop
+      end
     end
   end
 
