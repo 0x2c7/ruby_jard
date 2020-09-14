@@ -5,6 +5,7 @@ slug: configurations
 
 Ruby Jard supports customization via pre-loaded configuration files. You can configure Jard both globally, and per-project.
 
+- If `JARD_CONFIG_FILE` environment variable is available, Jard uses that file.
 - The global configuration file is located at `~/.jardrc`.
 - The project configuration file is located at `.jardrc` in working directory when you start Ruby Jard. Per-project ones override the global one.
 
