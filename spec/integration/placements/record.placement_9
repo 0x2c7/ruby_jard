@@ -1,0 +1,84 @@
+### START SCREEN ###
+irb(main):001:0>    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["require_relative \"../../examples/top_level_2_example.rb\"", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/top_level_2_example.rb:14 ────────────────────────────┐
+│   6   double(variable)                                                       │
+│   7 end                                                                      │
+│   8                                                                          │
+│   9 def double(variable)                                                     │
+│  10   variable * 2                                                           │
+│  11 end                                                                      │
+│  12                                                                          │
+│  13 jard                                                                     │
+│⮕ 14 a = 1                                                                    │
+│  15 b = double(a)                                                            │
+│  16 c = quad(a)                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application -../../examples/top_level_example.rb   Step (F7)    »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+│   6   double(variable)                                                       │
+│   7 end                                                                      │
+│   8                                                                          │
+│   9 def double(variable)                                                     │
+│  10   variable * 2                                                           │
+│  11 end                                                                      │
+│  12                                                                          │
+│  13 jard                                                                     │
+│⮕ 14 a = 1                                                                    │
+│  15 b = double(a)                                                            │
+│  16 c = quad(a)                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application -../../examples/top_level_example.rb   Step (F7)    »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >> continue    
+▸▸ Program resumed ▸▸                   
+=> true             
+irb(main):002:0>    
+### END SCREEN ###

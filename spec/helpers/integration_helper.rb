@@ -83,6 +83,23 @@ class JardIntegrationTest
     end
   end
 
+  def assert_screen_include(str)
+    if recording_actual?
+      record_actual_screen('')
+    else
+      _content, _line = *(@expected_record.shift || [])
+      @test.expect(screen_content).to @test.include(str)
+    end
+  end
+
+  def skip_screen
+    if recording_actual?
+      record_actual_screen('')
+    else
+      _content, _line = *(@expected_record.shift || [])
+    end
+  end
+
   def send_keys(*args)
     record_actual_keys(args) if recording_actual?
 
@@ -258,8 +275,6 @@ RSpec::Matchers.define :match_screen do |expected, line|
   end
 
   def match_line(expected_line, actual_line)
-    return false if expected_line.length != actual_line.length
-
     expected_line.each_char.with_index do |char, index|
       next if char == '?'
 

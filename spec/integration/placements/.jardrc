@@ -1,0 +1,1 @@
+config.filter_excluded = ['../../examples/top_level_example.rb']

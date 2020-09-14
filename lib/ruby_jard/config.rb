@@ -8,6 +8,14 @@ module RubyJard
       def smart_load
         config = RubyJard::Config.new
 
+        unless ENV['JARD_CONFIG_FILE'].nil?
+          unless File.exist?(ENV['JARD_CONFIG_FILE'])
+            raise "Config file '#{ENV['JARD_CONFIG_FILE']}' does not exist"
+          end
+
+          return load_config(config, ENV['JARD_CONFIG_FILE'])
+        end
+
         path = File.expand_path(File.join(Dir.pwd, CONFIG_FILE_NAME))
         load_config(config, path) if File.exist?(path)
 
@@ -15,10 +23,6 @@ module RubyJard
         load_config(config, path) if File.exist?(path)
 
         config
-      rescue StandardError => e
-        # Fallback to default setting
-        STDOUT.puts "Fail to load jard configurations at #{path}. Error: #{e}"
-        RubyJard::Config.new
       end
 
       private
@@ -28,6 +32,9 @@ module RubyJard
         config.instance_eval(config_content)
 
         config
+      rescue SyntaxError, StandardError => e
+        # Fallback to default setting
+        raise "Fail to load jard configurations at #{path}. Error: #{e}"
       end
     end
 

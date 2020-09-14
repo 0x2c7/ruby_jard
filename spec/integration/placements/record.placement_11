@@ -1,0 +1,55 @@
+### START SCREEN ###
+irb(main):001:0>    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["require_relative \"../../examples/instance_method_example.rb\"", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/instance_method_example.rb:23 ────────────────────────┐
+│  15     raise 'Exceeded support max' if n > MAX_SUPPORTED                    │
+│  16                                                                          │
+│  17     return @a if n == 1                                                  │
+│  18     return @b if n == 2                                                  │
+│  19                                                                          │
+│  20     (3..n).each do |index|                                               │
+│  21       puts index                                                         │
+│  22       jard                                                               │
+│⮕ 23       k = @a + @b                                                        │
+│  24       @a = @b                                                            │
+│  25       @b = k                                                             │
+│  26     end                                                                  │
+│  27                                                                          │
+│  28     @b                                                                   │
+│  29   end                                                                    │
+│  30 end                                                                      │
+│  31                                                                          │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application -../../examples/top_level_example.rb   Step (F7)    »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
