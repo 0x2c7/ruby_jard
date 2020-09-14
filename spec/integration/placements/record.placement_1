@@ -1,0 +1,26 @@
+### START SCREEN ###
+┌ Source  ../../examples/placement_1_example.rb:4 ─────────────────────────────┐
+│   1 require 'ruby_jard'                                                      │
+│   2                                                                          │
+│   3 jard; jard; jard; jard                                                   │
+│⮕  4 sleep 0                                                                  │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application -../../examples/top_level_example.rb   Step (F7)    »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###

@@ -1,0 +1,55 @@
+### START SCREEN ###
+┌ Source  ../../examples/placement_5_example.rb:6 ─────────────────────────────┐
+│   1 require 'ruby_jard'                                                      │
+│   2 require 'erb'                                                            │
+│   3                                                                          │
+│   4 lineno = __LINE__                                                        │
+│   5 view = <<-VIEW                                                           │
+│⮕  6   <h1><%= jard %><%= jard %> <%= jard %></h1>                            │
+│   7   <h1><% a = 1 %></h1>                                                   │
+│   8 VIEW                                                                     │
+│   9                                                                          │
+│  10 erb = ERB.new(view)                                                      │
+│  11 erb.filename = __FILE__                                                  │
+│  12 erb.lineno = lineno                                                      │
+│  13 erb.result_with_hash({})                                                 │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application -../../examples/top_level_example.rb   Step (F7)    »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["step", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/placement_5_example.rb:7 ─────────────────────────────┐
+│   1 require 'ruby_jard'                                                      │
+│   2 require 'erb'                                                            │
+│   3                                                                          │
+│   4 lineno = __LINE__                                                        │
+│   5 view = <<-VIEW                                                           │
+│   6   <h1><%= jard %><%= jard %> <%= jard %></h1>                            │
+│⮕  7   <h1><% a = 1 %></h1>                                                   │
+│   8 VIEW                                                                     │
+│   9                                                                          │
+│  10 erb = ERB.new(view)                                                      │
+│  11 erb.filename = __FILE__                                                  │
+│  12 erb.lineno = lineno                                                      │
+│  13 erb.result_with_hash({})                                                 │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application -../../examples/top_level_example.rb   Step (F7)    »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
