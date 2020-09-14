@@ -1,0 +1,58 @@
+### START SCREEN ###
+irb(main):001:0>    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["require_relative \"../../examples/top_level_example.rb\"", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["system(\"clear\")", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+=> true             
+irb(main):003:0>    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### END SCREEN ###

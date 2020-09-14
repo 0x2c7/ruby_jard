@@ -1,0 +1,96 @@
+### START SCREEN ###
+irb(main):001:0>    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["require \"ruby_jard\"", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["def method_a", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["  jard", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["end", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["method_a", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  (irb):4 ─────────────────────────────────────────────────────────────┐
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application -../../examples/top_level_example.rb   Step (F7)    »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+
+
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application -../../examples/top_level_example.rb   Step (F7)    »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >> continue    
+▸▸ Program resumed ▸▸                   
+=> nil              
+irb(main):006:0>    
+### END SCREEN ###

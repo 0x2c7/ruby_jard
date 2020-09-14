@@ -102,4 +102,69 @@ RSpec.describe 'Load config file from ENV', integration: true do
       test.stop
     end
   end
+
+  context 'when calling jard from a required file inside irb' do
+    it 'stops at the next file' do
+      test = JardIntegrationTest.new(
+        self, work_dir, 'record.placement_9',
+        'bundle exec irb'
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('require_relative "../../examples/top_level_2_example.rb"', :Enter)
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+      test.stop
+    end
+  end
+
+  context 'when calling jard from a ignored required file inside irb' do
+    it 'stops at the next file' do
+      test = JardIntegrationTest.new(
+        self, work_dir, 'record.placement_10',
+        'bundle exec irb'
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('require_relative "../../examples/top_level_example.rb"', :Enter)
+      test.send_keys('system("clear")', :Enter)
+      test.assert_screen
+      test.stop
+    end
+  end
+
+  context 'when calling jard from a method call inside irb' do
+    it 'stops at the next file' do
+      test = JardIntegrationTest.new(
+        self, work_dir, 'record.placement_11',
+        'bundle exec irb'
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('require_relative "../../examples/instance_method_example.rb"', :Enter)
+      test.assert_screen
+      test.stop
+    end
+  end
+
+  context 'when calling jard directly inside irb' do
+    it 'stops at the next file' do
+      test = JardIntegrationTest.new(
+        self, work_dir, 'record.placement_12',
+        'bundle exec irb'
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('require "ruby_jard"', :Enter)
+      test.send_keys('def method_a', :Enter)
+      test.send_keys('  jard', :Enter)
+      test.send_keys('end', :Enter)
+      test.send_keys('method_a', :Enter)
+      test.assert_screen
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+      test.stop
+    end
+  end
 end
