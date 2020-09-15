@@ -69,7 +69,7 @@ class JardIntegrationTest
     # Kill active pid in the pane to prevent trashing the system after rspec finishes
     begin
       pids = tmux('list-panes', '-t', @target, '-F', '\\#\{pane_pid\}')
-      pids.split("\n").map(&:strip).each { |pid| `kill #{pid}` }
+      pids.split("\n").map(&:strip).each { |pid| `kill #{pid}` if !pid.nil? && !pid.empty? }
     rescue StandardError => e
       puts "Fail to kill spawn processes: #{e.message}. Let's use ps kill them manually."
     end
