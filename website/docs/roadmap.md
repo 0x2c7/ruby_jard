@@ -3,26 +3,26 @@ id: Roadmap
 slug: roadmap
 ---
 
-Ruby Jard started its journey on July 2020. It's still young, and under active development. This roadmap refects the future, navigates the development of Ruby Jard. I am working on Ruby Jard on my free time. So, there won't be any commitments on the timeline. If you find something wrong, or want something that helps your daily activities, please don't hesitate to [request a new feature](https://github.com/nguyenquangminh0711/ruby_jard/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=).
+Ruby Jard started its journey in July 2020. It's still young and under active development. This roadmap reflects the future, navigates the development of Ruby Jard. I am working on Ruby Jard in my free time. So, there won't be any commitments on the timeline. If you find something wrong or want something that helps your daily activities, please don't hesitate to [request a new feature](https://github.com/nguyenquangminh0711/ruby_jard/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=).
 
 ### [Done] Version 0.1.0: Proof of concept
 
-This version is a bootstrap to see whether my idea works or not, in term of technical possibility and user usability. Luckily, everything works now, and I receive possible feedback from friends and peers.
+This version is a bootstrap to see whether my idea works or not, in terms of technical possibility and user usability. Luckily, everything works now, and I receive possible feedback from friends and peers.
 
 ### [Done] Version 0.2.0: UI completeness
 
-The bootstrap version is just a series of ugly prints on stdout. It's frustrated as many things can be broken, wrong drawing, text overlapping, etc. This version is to fix those issues, and provide a foundation for more complicated drawing.
+The bootstrap version is just a series of ugly prints on stdout. It's frustrating as many things can be broken, wrong drawing, text overlapping, etc. This version is to fix those issues and provide a foundation for more complicated drawings.
 
 ### [Done] Version 0.3.0: Complete the workflow
 
-This version focuses on making Jard usable for daily activities of any developer. In other words, this version is to become a complete replacement for Byebug (sorry :pray:).
+This version focuses on making Jard usable for the daily activities of any developer. In other words, this version is to become a complete replacement for Byebug (sorry 🙏).
 
 ### Milestone: Dynamic Breakpoints
 
 - Manage dynamic breakpoints
 - Conditional breakpoints
-- Standardalone mode: `jard start -- bundle exec ruby abc.rb`
-- Add temporary brakpoints support to existing commands. For exampe: `continue 35`, `continue SuperClass#method_a`, etc.
+- Standalone mode: `jard start -- bundle exec ruby abc.rb`
+- Add temporary breakpoints support to existing commands. For example: `continue 35`, `continue SuperClass#method_a`, etc.
 - `skip` command
 
 ### Milestone: Watch & Trace
@@ -35,7 +35,7 @@ This version focuses on making Jard usable for daily activities of any developer
 
 ### Milestone: Make the interfaces interactive
 
-Ruby Jard now serves well for all debugging use case. But it becomes floated, hard to use, and maybe just not "click" for the user. This version focuses on improve userability, stability, bugs, tweak small details. So that, after this version, Ruby Jard is just pleasant to use.
+Ruby Jard now serves well for all debugging use case. But it becomes floated, hard to use, and maybe just not "click" for the user. This version focuses on improving usability, stability, bugs, tweak small details. So, after this version, Ruby Jard is just pleasant to use.
 
 - Navigate between panels.
 - Collapsible and expandable variable inspection.
@@ -51,12 +51,12 @@ Keeping up with Ruby 3.0.0's tons of new features is not easy. Some significant 
 
 ### Milestone: Plugins & convenient tools
 
-- Plugins to reinforce most popular gems
+- Plugins to reinforce the most popular gems
   - Expand the support for Rails and friends
-  - Expand variable inpsections for RSpec
+  - Expand variable inspections for RSpec
 
 - Inline inspection (RubyMine-like)
-- Fuzzy-style variable inspection tool
+- A fuzzy-style variable inspection tool
 - Built-in hex viewer
 
 ### Milestone: Multi-threaded debugging
@@ -68,11 +68,11 @@ Keeping up with Ruby 3.0.0's tons of new features is not easy. Some significant 
 
 ### Milestone: Integration
 
-Accept or not, not everyone uses vim, or even terminal. Even in the terminal, I just want to provide minimal layout customizations, as I don't want to rebuild Tmux. Therefore, integration with other powerful systems to extend use cases, adapt different work flow and preferences is the focus on this version. I'm not sure about the ultimate solution, but at my limited knowledge now, [Debugger Adapter Protocol](https://microsoft.github.io/debug-adapter-protocol/) looks promising.
+Accept or not, not everyone uses vim or even terminal. Even in the terminal, I just want to provide minimal layout customizations, as I don't want to rebuild Tmux. Therefore, integration with other powerful systems to extend use cases, adapt different workflow and preferences is the focus on this version. I'm not sure about the ultimate solution, but at my limited knowledge now, [Debugger Adapter Protocol](https://microsoft.github.io/debug-adapter-protocol/) looks promising.
 
 - Prepare the infrastructure for DAP protocol.
-- Separate and split the panels into possible isolated processes, connect them together with DAP.
-- Fully layout configurations and integrate with Tmux.
+- Separate and split the panels into possible isolated processes, connect them with DAP.
+- Fully layout configurations and integration with Tmux.
 - Integrate with Vim 8+/Neovim via Terminal mode.
 - Integrate with Visual Studio Code via DAP.
 - Integrate with Emacs via dap mode.
@@ -80,4 +80,4 @@ Accept or not, not everyone uses vim, or even terminal. Even in the terminal, I 
 
 ### Further future
 
-As soon as it reaches all those features, and serves my interest well, I don't have much things in mind now. The future is uncertain. Dreaming is good. Making dreams come true is hard, and time-consuming. Hope I can reach that future.
+As soon as it reaches all those features, and serves my interest well, I don't have many things in mind now. The future is uncertain. Dreaming is good. Making dreams come true is hard, and time-consuming. Hope I can reach that future.
