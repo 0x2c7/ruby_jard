@@ -3,6 +3,8 @@ id: Roadmap
 slug: roadmap
 ---
 
+Ruby Jard started its journey on July 2020. It's still young, and under active development. This roadmap refects the future, navigates the development of Ruby Jard. I am working on Ruby Jard on my free time. So, there won't be any commitments on the timeline.
+
 ### [Done] Version 0.1.0: Proof of concept
 
 This version is a bootstrap to see whether my idea works or not, in term of technical possibility and user usability. Luckily, everything works now, and I receive possible feedback from friends and peers.
@@ -11,35 +13,43 @@ This version is a bootstrap to see whether my idea works or not, in term of tech
 
 The bootstrap version is just a series of ugly prints on stdout. It's frustrated as many things can be broken, wrong drawing, text overlapping, etc. This version is to fix those issues, and provide a foundation for more complicated drawing.
 
-### Version 0.3.0: Complete the workflow
+### [Done] Version 0.3.0: Complete the workflow
 
 This version focuses on making Jard usable for daily activities of any developer. In other words, this version is to become a complete replacement for Byebug (sorry :pray:).
 
-- Manage program's STDOUT.
-- Fulfill options for existing commands.
-- Add more commands to control workflow.
-- etc.
+### Milestone: Dynamic Breakpoints
 
-### Version 0.4.0: User satisfaction
+- Manage dynamic breakpoints
+- Conditional breakpoints
+- Standardalone mode: `jard start -- bundle exec ruby abc.rb`
+- Add temporary brakpoints support to existing commands. For exampe: `continue 35`, `continue SuperClass#method_a`, etc.
+- `skip` command
+
+### Milestone: Watch & Trace
+
+- Watch an expression
+- Pin variable
+- Stop when a variable changes
+- Stop when an exception is raised
+- Trace code execution
+
+### Milestone: Make the interfaces interactive
 
 Ruby Jard now serves well for all debugging use case. But it becomes floated, hard to use, and maybe just not "click" for the user. This version focuses on improve userability, stability, bugs, tweak small details. So that, after this version, Ruby Jard is just pleasant to use.
 
-- Support different screen sizes.
-- Minimal layout configuration.
-- Allow customizations (keyboard shortcut for example).
-- Rebuild variable inspection to optimize for each data type, especially nested complicated structure.
-- Collapsible and expandale variable inspection.
-- Windows, viewport, scrolling, etc.
 - Navigate between panels.
-- Build a buffer system to reduce interaction with STDOUT, and eventually improve drawing latency.
+- Collapsible and expandable variable inspection.
+- Scrolling feature
+- Mouse support
 
-- Dynamic breakpoints.
-- Watch expressions.
-- Pin variables.
-- Post moterm.
-- Trace variable changes.
+### Milestone: Multi-threaded debugging
 
-### Version 0.5.0: Integration
+- Thread debugging modes
+- Switch execution to another thread
+- Start/Suspend a thread
+- Defer output from background threads
+
+### Milestone: Integration
 
 Accept or not, not everyone uses vim, or even terminal. Even in the terminal, I just want to provide minimal layout customizations, as I don't want to rebuild Tmux. Therefore, integration with other powerful systems to extend use cases, adapt different work flow and preferences is the focus on this version. I'm not sure about the ultimate solution, but at my limited knowledge now, [Debugger Adapter Protocol](https://microsoft.github.io/debug-adapter-protocol/) looks promising.
 
@@ -49,8 +59,8 @@ Accept or not, not everyone uses vim, or even terminal. Even in the terminal, I 
 - Integrate with Vim 8+/Neovim via Terminal mode.
 - Integrate with Visual Studio Code via DAP.
 - Integrate with Emacs via dap mode.
-- Encrypted remote debugging.
+- Encrypted remote debugging
 
 ### Further future
 
-I won't stop until 0.5.0 version, even Jard doesn't have any users. However, as soon as it reaches 0.5.0, and serves my interest well, I don't have much things in mind now. The future is uncertain. Dreaming is good. Making dreams come true is hard, and time-consuming. Hope I can reach that future.
+As soon as it reaches all those features, and serves my interest well, I don't have much things in mind now. The future is uncertain. Dreaming is good. Making dreams come true is hard, and time-consuming. Hope I can reach that future.
