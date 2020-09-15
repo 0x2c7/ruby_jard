@@ -21,7 +21,7 @@ module RubyJard
 
     attr_reader :command, :arguments
 
-    def initialize(command, arguments)
+    def initialize(command, arguments = {})
       @command = command
       @arguments = arguments
 
