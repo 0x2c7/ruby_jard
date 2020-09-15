@@ -62,4 +62,30 @@ RSpec.describe 'Auto layout', integration: true do
       test.stop
     end
   end
+
+  context 'when a window is resized' do
+    it 'resizes and choose a right layout' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'record.resize',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.resize(50, 60)
+      test.assert_screen
+      test.resize(50, 40)
+      test.assert_screen
+      test.resize(121, 30)
+      test.assert_screen
+      test.resize(121, 20)
+      test.assert_screen
+      test.resize(100, 50)
+      test.assert_screen
+      test.resize(140, 70)
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
 end
