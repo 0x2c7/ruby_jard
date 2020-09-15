@@ -37,6 +37,8 @@ jobs:
         repository: tmux/tmux
         path: 'tmux'
         ref: '3.1b'
+    - name: Install dependencies for tmux
+      run: sudo apt install -y libevent-dev
     - name: Install tmux
       run: cd tmux && sh autogen.sh && ./configure && make
     - name: Start tmux
