@@ -41,6 +41,7 @@ Ruby Jard now serves well for all debugging use case. But it becomes floated, ha
 - Collapsible and expandable variable inspection.
 - Scrolling feature
 - Mouse support
+- Advanced command auto-completion
 
 ### Milestone: Ruby 3.0.0 is coming ...
 
