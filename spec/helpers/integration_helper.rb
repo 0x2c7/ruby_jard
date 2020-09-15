@@ -50,6 +50,16 @@ class JardIntegrationTest
     sleep 0.5
   end
 
+  def resize(width, height)
+    tmux(
+      'resize-window',
+      '-t', @target,
+      '-x', width.to_s,
+      '-y', height.to_s
+    )
+    sleep 1
+  end
+
   def stop
     # Kill active pid in the pane to prevent trashing the system after rspec finishes
     begin
