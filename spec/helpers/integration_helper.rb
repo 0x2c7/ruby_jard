@@ -24,7 +24,7 @@ class JardIntegrationTest
     @expected_record = parse_expected_record(@expected_record_file)
 
     if recording_actual?
-      @actual_record_file = File.open(File.join(@dir, "#{expected_record_file}.actual"), 'w')
+      @actual_record_file = File.open(File.join(@dir, "#{expected_record_file.gsub('.expected', '')}.actual"), 'w')
     end
 
     JardIntegrationTest.tests << self
@@ -48,6 +48,21 @@ class JardIntegrationTest
       @command
     )
     sleep 0.5
+  end
+
+  def resize(width, height)
+    @width = width
+    @height = height
+    @resized = true
+    tmux(
+      'resize-window',
+      '-t', @target,
+      '-x', @width.to_s,
+      '-y', @height.to_s
+    )
+    sleep 1
+
+    record_resize(width, height) if recording_actual?
   end
 
   def stop
@@ -123,7 +138,7 @@ class JardIntegrationTest
 
     attempt = 5
     loop do
-      @content = tmux('capture-pane', '-J', '-p', '-t', @target)
+      @content = capture_pane
       break if attempt <= 0
       break unless @content.to_s.strip.empty?
 
@@ -135,7 +150,7 @@ class JardIntegrationTest
 
     attempt = 5
     loop do
-      @content = tmux('capture-pane', '-J', '-p', '-t', @target)
+      @content = capture_pane
       break if allow_duplication
       break if attempt <= 0
       break if @content != previous_content
@@ -178,6 +193,12 @@ class JardIntegrationTest
     @actual_record_file.puts '### END SCREEN ###'
   end
 
+  def record_resize(width, height)
+    @actual_record_file.puts '### START RESIZE ###'
+    @actual_record_file.puts "Resize to #{width}, #{height}"
+    @actual_record_file.puts '### END RESIZE ###'
+  end
+
   def mark_screen(screen)
     screen.gsub(/0x[0-9a-z]{10,}/i) { |found| '?' * found.length }
   end
@@ -218,6 +239,18 @@ class JardIntegrationTest
       end
     end
     records
+  end
+
+  def capture_pane
+    if @resized
+      tmux('capture-pane', '-J', '-p', '-t', @target)
+        .split("\n")
+        .map { |line| line[0..@width - 1] }
+        .first(@height)
+        .join("\n")
+    else
+      tmux('capture-pane', '-J', '-p', '-t', @target)
+    end
   end
 end
 

@@ -7,7 +7,7 @@ RSpec.describe 'Pager tests', integration: true do
     it 'display pager perfectly' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.pager',
+        'pager.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/pager_example.rb"
       )
       test.start

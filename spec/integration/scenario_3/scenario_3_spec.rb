@@ -6,7 +6,7 @@ RSpec.describe 'Scenario 3: Turn on and off filter when debugging gem' do
   it 'runs as expected' do
     test = JardIntegrationTest.new(
       self, work_dir,
-      'record.scenario_3',
+      'scenario_3.expected',
       "bundle exec ruby #{RSPEC_ROOT}/integration/scenario_3/main_example.rb",
       width: 125, height: 30
     )

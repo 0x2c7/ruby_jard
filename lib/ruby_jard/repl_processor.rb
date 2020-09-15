@@ -29,7 +29,7 @@ module RubyJard
       @repl_proxy = RubyJard::ReplProxy.new(
         key_bindings: RubyJard.global_key_bindings
       )
-      @previous_flow = RubyJard::ControlFlow.new(:next, {})
+      @previous_flow = RubyJard::ControlFlow.new(:next)
     end
 
     def at_line

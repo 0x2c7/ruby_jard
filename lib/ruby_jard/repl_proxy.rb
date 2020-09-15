@@ -137,6 +137,10 @@ module RubyJard
 
       @pry_pty_output_thread = Thread.new { pry_pty_output }
       @pry_pty_output_thread.name = '<<Jard: Pty Output Thread>>'
+
+      Signal.trap('SIGWINCH') do
+        @main_thread.raise FlowInterrupt.new('Resize event', RubyJard::ControlFlow.new(:list))
+      end
     end
 
     def repl(current_binding)

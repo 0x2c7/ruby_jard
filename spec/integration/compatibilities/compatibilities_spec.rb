@@ -7,7 +7,7 @@ RSpec.describe 'Byebug compatibility', integration: true do
     it 'byebug command still works along with Jard' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.compatibility_byebug',
+        'compatibility_byebug.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/byebug_example.rb",
         width: 130, height: 30
       )
@@ -25,7 +25,7 @@ RSpec.describe 'Byebug compatibility', integration: true do
     it 'debugger command still works along with Jard' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.compatibility_debugger',
+        'compatibility_debugger.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/debugger_example.rb",
         width: 130, height: 30
       )
@@ -43,7 +43,7 @@ RSpec.describe 'Byebug compatibility', integration: true do
     it 'binding.pry command still works along with Jard' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.compatibility_binding_pry',
+        'compatibility_binding_pry.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/binding_pry_example.rb",
         width: 130, height: 30
       )

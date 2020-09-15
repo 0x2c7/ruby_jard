@@ -6,7 +6,7 @@ RSpec.describe 'Scenario 1: Debug a simple sorting algorithm' do
   it 'runs as expected' do
     test = JardIntegrationTest.new(
       self, work_dir,
-      'record.scenario_1',
+      'scenario_1.expected',
       "bundle exec ruby #{RSPEC_ROOT}/integration/scenario_1/main_example.rb",
       width: 125, height: 30
     )

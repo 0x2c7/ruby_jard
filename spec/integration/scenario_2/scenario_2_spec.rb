@@ -6,7 +6,7 @@ RSpec.describe 'Scenario 2: Debug a simple gem' do
   it 'runs as expected' do
     test = JardIntegrationTest.new(
       self, work_dir,
-      'record.scenario_2',
+      'scenario_2.expected',
       "bundle exec ruby #{RSPEC_ROOT}/integration/scenario_2/main_example.rb",
       width: 125, height: 30
     )

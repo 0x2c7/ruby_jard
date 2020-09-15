@@ -32,8 +32,17 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
+    - uses: actions/checkout@v2
+      with:
+        repository: tmux/tmux
+        path: 'tmux'
+        ref: '3.1b'
+    - name: Install dependencies for tmux
+      run: sudo apt install -y libevent-dev
     - name: Install tmux
-      run: sudo apt install -y tmux
+      run: cd tmux && sh autogen.sh && ./configure && make && sudo make install
+    - name: Tmux version
+      run: tmux -V
     - name: Start tmux
       run: tmux start-server
     - name: Start dummy tmux session
@@ -82,8 +91,17 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.5
+    - uses: actions/checkout@v2
+      with:
+        repository: tmux/tmux
+        path: 'tmux'
+        ref: '3.1b'
+    - name: Install dependencies for tmux
+      run: sudo apt install -y libevent-dev
     - name: Install tmux
-      run: sudo apt install -y tmux
+      run: cd tmux && sh autogen.sh && ./configure && make && sudo make install
+    - name: Tmux version
+      run: tmux -V
     - name: Start tmux
       run: tmux start-server
     - name: start dummy tmux session

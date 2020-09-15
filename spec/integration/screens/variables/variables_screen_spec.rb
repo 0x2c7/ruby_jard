@@ -7,7 +7,7 @@ RSpec.describe 'Variable screen', integration: true do
     it 'captures all variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.top_level',
+        'top_level.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
       )
       test.start
@@ -25,7 +25,7 @@ RSpec.describe 'Variable screen', integration: true do
     it 'captures all variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.instance_method',
+        'instance_method.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_example.rb"
       )
       test.start
@@ -43,7 +43,7 @@ RSpec.describe 'Variable screen', integration: true do
     it 'captures all variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.class_method',
+        'class_method.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/class_method_example.rb"
       )
       test.start
@@ -57,7 +57,7 @@ RSpec.describe 'Variable screen', integration: true do
     it 'captures all variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.nested_loop',
+        'nested_loop.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/nested_loop_example.rb"
       )
       test.start
@@ -71,7 +71,7 @@ RSpec.describe 'Variable screen', integration: true do
     it 'captures all variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.jump',
+        'jump.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_2_example.rb"
       )
       test.start
@@ -91,7 +91,7 @@ RSpec.describe 'Variable screen', integration: true do
     it 'display relevant variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.code_evaluation',
+        'code_evaluation.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/evaluation_example.rb"
       )
       test.start
@@ -111,7 +111,7 @@ RSpec.describe 'Variable screen', integration: true do
     it 'display relevant variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.end_of_method',
+        'end_of_method.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/end_of_method_example.rb"
       )
       test.start
@@ -130,7 +130,7 @@ RSpec.describe 'Variable screen', integration: true do
       CODE
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.ruby_e',
+        'ruby_e.expected',
         code
       )
       test.start
@@ -146,7 +146,7 @@ RSpec.describe 'Variable screen', integration: true do
     it 'display relevant variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.erb_file',
+        'erb_file.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/erb_evaluation.rb"
       )
       test.start
@@ -160,7 +160,7 @@ RSpec.describe 'Variable screen', integration: true do
     it 'display relevant constant and global variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.complicated_constant',
+        'complicated_constant.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/complicated_constant_example.rb"
       )
       test.start
@@ -178,7 +178,7 @@ RSpec.describe 'Variable screen', integration: true do
     it 'display relevant instance variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.complicated_instance',
+        'complicated_instance.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/complicated_instance_example.rb"
       )
       test.start
@@ -202,7 +202,7 @@ RSpec.describe 'Variable screen', integration: true do
     it 'display relevant instance variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.basic_object',
+        'basic_object.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/basic_object_example.rb"
       )
       test.start
@@ -221,7 +221,7 @@ RSpec.describe 'Variable screen', integration: true do
     it 'display relevant instance variables' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.circular_reference',
+        'circular_reference.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/circular_reference_example.rb"
       )
       test.start

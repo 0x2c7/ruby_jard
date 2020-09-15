@@ -7,7 +7,7 @@ RSpec.describe 'Default key bindings', integration: true do
     it 'matches expected screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.filter_key_bindings',
+        'filter_key_bindings.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
       )
       test.start
@@ -29,7 +29,7 @@ RSpec.describe 'Default key bindings', integration: true do
     it 'matches expected screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.next_step_key_bindings',
+        'next_step_key_bindings.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_2_example.rb"
       )
       test.start
@@ -51,7 +51,7 @@ RSpec.describe 'Default key bindings', integration: true do
     it 'matches expected screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.step_step_out_key_bindings',
+        'step_step_out_key_bindings.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_2_example.rb"
       )
       test.start
@@ -73,7 +73,7 @@ RSpec.describe 'Default key bindings', integration: true do
     it 'matches expected screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.up_down_key_bindings',
+        'up_down_key_bindings.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/nested_loop_example.rb"
       )
       test.start
@@ -100,7 +100,7 @@ RSpec.describe 'Default key bindings', integration: true do
       it 'matches expected screens' do
         test = JardIntegrationTest.new(
           self, work_dir,
-          'record.continue_key_bindings',
+          'continue_key_bindings.expected',
           "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_2_example.rb"
         )
         test.start
@@ -116,7 +116,7 @@ RSpec.describe 'Default key bindings', integration: true do
       it 'matches expected screens' do
         test = JardIntegrationTest.new(
           self, work_dir,
-          'record.continue_key_bindings_2',
+          'continue_key_bindings_2.expected',
           "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_2_example.rb"
         )
         test.start
@@ -133,7 +133,7 @@ RSpec.describe 'Default key bindings', integration: true do
     it 'matches expected screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.list_key_bindings',
+        'list_key_bindings.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
       )
       test.start
