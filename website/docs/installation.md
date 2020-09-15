@@ -120,3 +120,5 @@ Ruby Jard depends on 3 dependencies:
 - `byebug`, compatibility: '>= 9.1', '< 12.0'
 - `pry`, compatibility: '~> 0.13.0'
 - `tty-screen`, compatibility: '~> 0.8.1'
+
+Ruby Jard is compatible with `pry` and `byebug`. They can be used along with each other without conflicts. However, as soon as Jard already started (via `jard` magic method call), this compatibility is not guaranteed.
