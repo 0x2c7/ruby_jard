@@ -3,7 +3,7 @@ id: Roadmap
 slug: roadmap
 ---
 
-Ruby Jard started its journey on July 2020. It's still young, and under active development. This roadmap refects the future, navigates the development of Ruby Jard. I am working on Ruby Jard on my free time. So, there won't be any commitments on the timeline.
+Ruby Jard started its journey on July 2020. It's still young, and under active development. This roadmap refects the future, navigates the development of Ruby Jard. I am working on Ruby Jard on my free time. So, there won't be any commitments on the timeline. If you find something wrong, or want something that helps your daily activities, please don't hesitate to [request a new feature](https://github.com/nguyenquangminh0711/ruby_jard/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=).
 
 ### [Done] Version 0.1.0: Proof of concept
 
@@ -41,6 +41,23 @@ Ruby Jard now serves well for all debugging use case. But it becomes floated, ha
 - Collapsible and expandable variable inspection.
 - Scrolling feature
 - Mouse support
+
+### Milestone: Ruby 3.0.0 is coming ...
+
+Keeping up with Ruby 3.0.0's tons of new features is not easy. Some significant features in mind:
+- Ruby type system
+- Guild and real parallelism
+- Ractor
+
+### Milestone: Plugins & convenient tools
+
+- Plugins to reinforce most popular gems
+  - Expand the support for Rails and friends
+  - Expand variable inpsections for RSpec
+
+- Inline inspection (RubyMine-like)
+- Fuzzy-style variable inspection tool
+- Built-in hex viewer
 
 ### Milestone: Multi-threaded debugging
 
