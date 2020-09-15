@@ -44,7 +44,18 @@ RSpec.configure do |config|
     if ENV['CI']
       puts '==== Tmux ===='
       puts 'Restart Tmux...'
-      `tmux kill-server`
+      begin
+        puts `tmux kill-server`
+      rescue StandardError
+        # Ignore
+      end
+
+      begin
+        puts `kill -9 $(ps aux | grep tmux | awk '{print $2}')`
+      rescue StandardError
+        # Ignore
+      end
+      sleep 3
       `tmux start-server`
       `tmux new-session -t dummy -d`
       `ruby spec/wait_for_tmux.rb`
