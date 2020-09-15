@@ -32,8 +32,12 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
+    - uses: actions/checkout@v2
+      repository: tmux/tmux
+      path: 'tmux'
+      ref: '3.1b'
     - name: Install tmux
-      run: sudo apt install -y tmux
+      run: cd tmux && sh autogen.sh && ./configure && make
     - name: Start tmux
       run: tmux start-server
     - name: Start dummy tmux session
