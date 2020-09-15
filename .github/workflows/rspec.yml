@@ -33,9 +33,10 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
     - uses: actions/checkout@v2
-      repository: tmux/tmux
-      path: 'tmux'
-      ref: '3.1b'
+      with:
+        repository: tmux/tmux
+        path: 'tmux'
+        ref: '3.1b'
     - name: Install tmux
       run: cd tmux && sh autogen.sh && ./configure && make
     - name: Start tmux
