@@ -5,6 +5,9 @@ require 'rspec/retry'
 require 'ruby_jard'
 require 'tempfile'
 
+# Prepare for unit tests
+RubyJard::Session.instance.start
+
 RSPEC_ROOT = File.dirname __FILE__
 
 def require_relative_folder(pattern)
