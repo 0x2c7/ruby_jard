@@ -7,7 +7,7 @@ RSpec.describe 'Backtrace screen', integration: true do
     it 'displays top-level backtrace' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.top_level',
+        'top_level.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_2_example.rb"
       )
       test.start
@@ -29,7 +29,7 @@ RSpec.describe 'Backtrace screen', integration: true do
     it 'displays correct backtrace' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.instance_method',
+        'instance_method.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_example.rb"
       )
       test.start
@@ -49,7 +49,7 @@ RSpec.describe 'Backtrace screen', integration: true do
     it 'displays correct backtrace' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.class_method',
+        'class_method.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/class_method_example.rb"
       )
       test.start
@@ -63,7 +63,7 @@ RSpec.describe 'Backtrace screen', integration: true do
     it 'displays correct backtrace' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.nested_method',
+        'nested_method.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/nested_loop_example.rb"
       )
       test.start
@@ -77,7 +77,7 @@ RSpec.describe 'Backtrace screen', integration: true do
     it 'displays correct backtrace' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.end_of_file',
+        'end_of_file.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/start_of_file_example.rb"
       )
       test.start
@@ -91,7 +91,7 @@ RSpec.describe 'Backtrace screen', integration: true do
     it 'displays correct backtrace' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.code_evaluation',
+        'code_evaluation.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/evaluation_example.rb"
       )
       test.start
@@ -111,7 +111,7 @@ RSpec.describe 'Backtrace screen', integration: true do
     it 'displays correct backtrace' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.end_of_method',
+        'end_of_method.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/end_of_method_example.rb"
       )
       test.start
@@ -135,7 +135,7 @@ RSpec.describe 'Backtrace screen', integration: true do
     it 'displays correct backtrace' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.ruby_e',
+        'ruby_e.expected',
         "bundle exec ruby -e \"require 'ruby_jard'\njard\na = 100 + 300\""
       )
       test.start
@@ -149,7 +149,7 @@ RSpec.describe 'Backtrace screen', integration: true do
     it 'display correct backtrace inside basic object' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.basic_object',
+        'basic_object.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/basic_object_example.rb"
       )
       test.start
@@ -168,7 +168,7 @@ RSpec.describe 'Backtrace screen', integration: true do
     it 'display correct backtrace' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.explore_filter_on_off',
+        'explore_filter_on_off.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/sort_example.rb"
       )
       test.start

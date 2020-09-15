@@ -7,7 +7,7 @@ RSpec.describe 'Output Integration tests', integration: true do
     it 'displays empty pager' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.show_output.no_output',
+        'show_output.no_output.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/program_output_example.rb"
       )
       test.start
@@ -23,7 +23,7 @@ RSpec.describe 'Output Integration tests', integration: true do
     it 'displays full pager stopping at the end of file' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.show_output.fit',
+        'show_output.fit.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/program_output_example.rb"
       )
       test.start
@@ -40,7 +40,7 @@ RSpec.describe 'Output Integration tests', integration: true do
     it 'displays interactive pager fit into the screen' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.show_output.overflow',
+        'show_output.overflow.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/program_output_example.rb"
       )
       test.start

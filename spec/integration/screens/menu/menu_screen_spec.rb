@@ -7,7 +7,7 @@ RSpec.describe 'Menu screen', integration: true do
     it 'displays default filter and keybindings' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.default_menu',
+        'default_menu.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb",
         width: 120, height: 5
       )
@@ -22,7 +22,7 @@ RSpec.describe 'Menu screen', integration: true do
     it 'prioritizes filter' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.tiny_menu',
+        'tiny_menu.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb",
         width: 50, height: 10
       )
@@ -41,7 +41,7 @@ RSpec.describe 'Menu screen', integration: true do
     it 'displays current filter mode and keybindings' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.switch_modes',
+        'switch_modes.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb",
         width: 120, height: 5
       )
@@ -64,7 +64,7 @@ RSpec.describe 'Menu screen', integration: true do
     it 'displays current filter mode, filters and keybindings' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.include_exclude_filters',
+        'include_exclude_filters.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb",
         width: 120, height: 5
       )

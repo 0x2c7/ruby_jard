@@ -7,7 +7,7 @@ RSpec.describe 'Hide/show screens', integration: true do
     it 'strecthes the lower screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.top',
+        'top.expected',
         "bundle exec ruby -e \"require 'ruby_jard'\njard\na = 1\"",
         width: 130, height: 30
       )
@@ -34,7 +34,7 @@ RSpec.describe 'Hide/show screens', integration: true do
     it 'strecthes the upper screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.bottom',
+        'bottom.expected',
         "bundle exec ruby -e \"require 'ruby_jard'\njard\na = 1\"",
         width: 130, height: 30
       )
@@ -61,7 +61,7 @@ RSpec.describe 'Hide/show screens', integration: true do
     it 'strecthes the neighbor screens' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.not_same_column',
+        'not_same_column.expected',
         "bundle exec ruby -e \"require 'ruby_jard'\njard\na = 1\"",
         width: 130, height: 30
       )

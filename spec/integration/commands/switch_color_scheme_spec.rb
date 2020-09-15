@@ -7,7 +7,7 @@ RSpec.describe 'color-scheme command', integration: true do
     it 'displays list of schemes' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.scheme.list',
+        'scheme.list.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
       )
       test.start
@@ -23,7 +23,7 @@ RSpec.describe 'color-scheme command', integration: true do
     it 'displays no error' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.scheme.switch',
+        'scheme.switch.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
       )
       test.start
@@ -39,7 +39,7 @@ RSpec.describe 'color-scheme command', integration: true do
     it 'displays error' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.scheme.switch_not_found',
+        'scheme.switch_not_found.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
       )
       test.start

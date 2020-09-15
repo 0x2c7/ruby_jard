@@ -24,7 +24,7 @@ class JardIntegrationTest
     @expected_record = parse_expected_record(@expected_record_file)
 
     if recording_actual?
-      @actual_record_file = File.open(File.join(@dir, "#{expected_record_file}.actual"), 'w')
+      @actual_record_file = File.open(File.join(@dir, "#{expected_record_file.gsub('.expected', '')}.actual"), 'w')
     end
 
     JardIntegrationTest.tests << self

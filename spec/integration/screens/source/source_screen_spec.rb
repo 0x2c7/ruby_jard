@@ -6,7 +6,7 @@ RSpec.describe 'Source screen', integration: true do
   context 'when jard stops at top-level binding' do
     it 'displays correct line' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'record.top_level_example',
+        self, work_dir, 'top_level_example.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
       )
       test.start
@@ -26,7 +26,7 @@ RSpec.describe 'Source screen', integration: true do
     it 'displays correct line' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.instance_method',
+        'instance_method.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/instance_method_example.rb"
       )
       test.start
@@ -46,7 +46,7 @@ RSpec.describe 'Source screen', integration: true do
     it 'displays correct line' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.nested_method',
+        'nested_method.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/nested_loop_example.rb"
       )
       test.start
@@ -60,7 +60,7 @@ RSpec.describe 'Source screen', integration: true do
     it 'displays correct line' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.end_of_file',
+        'end_of_file.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/start_of_file_example.rb"
       )
       test.start
@@ -74,7 +74,7 @@ RSpec.describe 'Source screen', integration: true do
     it 'displays correct line' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.code_evaluation',
+        'code_evaluation.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/evaluation_example.rb"
       )
       test.start
@@ -94,7 +94,7 @@ RSpec.describe 'Source screen', integration: true do
     it 'displays correct line' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.end_of_method',
+        'end_of_method.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/end_of_method_example.rb"
       )
       test.start
@@ -110,7 +110,7 @@ RSpec.describe 'Source screen', integration: true do
     it 'displays correct line' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.ruby_e',
+        'ruby_e.expected',
         "bundle exec ruby -e \"require 'ruby_jard'\njard\na = 100 + 300\""
       )
       test.start
@@ -124,7 +124,7 @@ RSpec.describe 'Source screen', integration: true do
     it 'displays correct line' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.erb_file',
+        'erb_file.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/erb_evaluation.rb"
       )
       test.start

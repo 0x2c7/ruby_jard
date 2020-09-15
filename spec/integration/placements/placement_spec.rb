@@ -6,7 +6,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
   context 'when calling jard next to jard' do
     it 'stops at next line' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'record.placement_1',
+        self, work_dir, 'placement_1.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/placement_1_example.rb"
       )
       test.start
@@ -18,7 +18,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
   context 'when calling print next to jard' do
     it 'stops at next line' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'record.placement_2',
+        self, work_dir, 'placement_2.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/placement_2_example.rb"
       )
       test.start
@@ -30,7 +30,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
   context 'when calling as a method argument' do
     it 'stops at next line' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'record.placement_3',
+        self, work_dir, 'placement_3.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/placement_3_example.rb"
       )
       test.start
@@ -42,7 +42,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
   context 'when calling as a string interpolation' do
     it 'stops at next line' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'record.placement_4',
+        self, work_dir, 'placement_4.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/placement_4_example.rb"
       )
       test.start
@@ -56,7 +56,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
   context 'when wrongly placed inside an erb' do
     it 'ignores exluded file' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'record.placement_5',
+        self, work_dir, 'placement_5.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/placement_5_example.rb"
       )
       test.start
@@ -70,7 +70,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
   context 'when place jard in an ignored file' do
     it 'ignores exluded file' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'record.placement_6',
+        self, work_dir, 'placement_6.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/placement_6_example.rb"
       )
       test.start
@@ -82,7 +82,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
   context 'when place jard after an or' do
     it 'stops at the next file' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'record.placement_7',
+        self, work_dir, 'placement_7.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/placement_7_example.rb"
       )
       test.start
@@ -94,7 +94,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
   context 'when place jard inside a nested print' do
     it 'stops at the next file' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'record.placement_8',
+        self, work_dir, 'placement_8.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/placement_8_example.rb"
       )
       test.start
@@ -106,7 +106,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
   context 'when calling jard from a required file inside irb' do
     it 'stops at the next file' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'record.placement_9',
+        self, work_dir, 'placement_9.expected',
         'bundle exec irb'
       )
       test.start
@@ -122,7 +122,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
   context 'when calling jard from a ignored required file inside irb' do
     it 'stops at the next file' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'record.placement_10',
+        self, work_dir, 'placement_10.expected',
         'bundle exec irb'
       )
       test.start
@@ -137,7 +137,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
   context 'when calling jard from a method call inside irb' do
     it 'stops at the next file' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'record.placement_11',
+        self, work_dir, 'placement_11.expected',
         'bundle exec irb'
       )
       test.start
@@ -151,7 +151,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
   context 'when calling jard directly inside irb' do
     it 'stops at the next file' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'record.placement_12',
+        self, work_dir, 'placement_12.expected',
         'bundle exec irb'
       )
       test.start

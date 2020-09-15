@@ -7,7 +7,7 @@ RSpec.describe 'Threads screen', integration: true do
     it 'displays current threads' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.top_level',
+        'top_level.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
       )
       test.start
@@ -21,7 +21,7 @@ RSpec.describe 'Threads screen', integration: true do
     it 'display all untitled threads' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.threads_untitled',
+        'threads_untitled.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/threads_untitled.rb"
       )
       test.start
@@ -35,7 +35,7 @@ RSpec.describe 'Threads screen', integration: true do
     it 'display all titled threads, sorted by name, then path' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.threads_title',
+        'threads_title.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/threads_title.rb"
       )
       test.start
@@ -58,7 +58,7 @@ RSpec.describe 'Threads screen', integration: true do
     it 'excludes all dead threads' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.threads_dead',
+        'threads_dead.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/threads_dead.rb"
       )
       test.start
@@ -76,7 +76,7 @@ RSpec.describe 'Threads screen', integration: true do
     it 'captures all new threads' do
       test = JardIntegrationTest.new(
         self, work_dir,
-        'record.threads_spawn',
+        'threads_spawn.expected',
         "bundle exec ruby #{RSPEC_ROOT}/examples/threads_spawn.rb"
       )
       test.start
