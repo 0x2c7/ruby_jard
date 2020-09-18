@@ -38,7 +38,7 @@ module RubyJard
 
     attr_reader :output, :output_storage
 
-    def initialize(output: STDOUT)
+    def initialize(output: RubyJard::Console.output)
       @output = output
       @screens = {}
       @started = false
@@ -68,9 +68,9 @@ module RubyJard
 
       @started = false
 
-      RubyJard::Console.cooked!
-      RubyJard::Console.enable_echo!
-      RubyJard::Console.enable_cursor!
+      RubyJard::Console.cooked!(@output)
+      RubyJard::Console.enable_echo!(@output)
+      RubyJard::Console.enable_cursor!(@output)
     end
 
     def draw_screens
@@ -78,7 +78,7 @@ module RubyJard
       @updating = true
 
       RubyJard::Console.clear_screen(@output)
-      RubyJard::Console.disable_cursor!
+      RubyJard::Console.disable_cursor!(@output)
       width, height = RubyJard::Console.screen_size(@output)
 
       @layouts = calculate_layouts(width, height)
@@ -102,9 +102,9 @@ module RubyJard
       draw_error(e, height)
     ensure
       # You don't want to mess up previous user TTY no matter happens
-      RubyJard::Console.cooked!
-      RubyJard::Console.enable_echo!
-      RubyJard::Console.enable_cursor!
+      RubyJard::Console.cooked!(@output)
+      RubyJard::Console.enable_echo!(@output)
+      RubyJard::Console.enable_cursor!(@output)
       @updating = false
     end
 
@@ -126,10 +126,6 @@ module RubyJard
       end
       @output.puts '-------------'
       RubyJard.error(exception)
-    end
-
-    def puts(content)
-      @output.write "#{content}\n", from_jard: true
     end
 
     private
