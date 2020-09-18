@@ -87,7 +87,7 @@ function Home() {
               <div className={clsx('col col--6')}>
                 <h3>Easy to Use</h3>
                 <p>
-                  You just need to install the gem, put <code>jard</code> command before the place right before the place you want to stop, and run the program like normally. Jard spawns up a Terminal UI, runs right in your terminal emulator when your program stops at a break point.
+                  You just need to install the gem, put <code>jard</code> command before the place you want to stop, and run the program like normally. Jard spawns up a Terminal UI, runs right in your terminal emulator when your program stops at a break point.
                 </p>
                 <p>
                   The UI is friendly, intuitive, but still powerful enough. Jard's <a href={useBaseUrl('docs/')}>documents</a> come with plenty of references, guides, and videos to help you utilize all Jard features.
