@@ -2,8 +2,8 @@
 
 RSpec.describe 'Test standard_streams', integration: true do
   let(:shell) do
-    shell = `echo $SHELL`.strip
-    shell.empty? ? 'zsh' : shell
+    shell = `which zsh`.strip
+    shell.empty? ? `echo $SHELL` : 'zsh'
   end
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/standard_streams') }
 
