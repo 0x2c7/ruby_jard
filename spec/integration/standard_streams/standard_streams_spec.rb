@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe 'Test standard_streams', integration: true do
+  let(:shell) do
+    shell = `echo $SHELL`.strip
+    shell.empty? ? 'zsh' : shell
+  end
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/standard_streams') }
 
   context 'when nothing are redirected' do
@@ -30,7 +34,7 @@ RSpec.describe 'Test standard_streams', integration: true do
   context 'when pipe the stdin' do
     it 'works normally' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'pipe_stdin.expected', 'bash',
+        self, work_dir, 'pipe_stdin.expected', shell,
         width: 121, height: 40
       )
 
@@ -53,7 +57,7 @@ RSpec.describe 'Test standard_streams', integration: true do
   context 'when pipe the stdout' do
     it 'works normally' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'pipe_stdout.expected', 'bash',
+        self, work_dir, 'pipe_stdout.expected', shell,
         width: 121, height: 40
       )
 
@@ -79,7 +83,7 @@ RSpec.describe 'Test standard_streams', integration: true do
   context 'when pipe both stdin and stdout' do
     it 'works normally' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'pipe_both_stdin_stdout.expected', 'bash',
+        self, work_dir, 'pipe_both_stdin_stdout.expected', shell,
         width: 121, height: 40
       )
 
@@ -106,7 +110,7 @@ RSpec.describe 'Test standard_streams', integration: true do
   context 'when redirect stdout' do
     it 'works normally' do
       test = JardIntegrationTest.new(
-        self, work_dir, 'redirect_stdout.expected', 'bash',
+        self, work_dir, 'redirect_stdout.expected', shell,
         width: 121, height: 40
       )
 
