@@ -146,6 +146,7 @@ module RubyJard
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
     def repl(current_binding)
       @state.ready!
       @openning_pager = false
@@ -153,6 +154,9 @@ module RubyJard
       RubyJard::Console.disable_echo!(@output)
       RubyJard::Console.raw!(@output)
 
+      # Internally, Pry sneakily updates Readline to global output config
+      # when STDOUT is piping regardless of what I pass into Pry instance.
+      Pry.config.output = @pry_output_pty_write
       Readline.input = @pry_input_pipe_read
       Readline.output = @pry_output_pty_write
       @pry.binding_stack.clear
@@ -179,10 +183,12 @@ module RubyJard
       RubyJard::Console.cooked!(@output)
       Readline.input = @input
       Readline.output = @output
+      Pry.config.output = @output
       @key_listen_thread&.exit if @key_listen_thread&.alive?
       @pry_input_thread&.exit if @pry_input_thread&.alive?
       @state.exited!
     end
+    # rubocop:enable Metrics/MethodLength
 
     private
 
@@ -342,10 +348,11 @@ module RubyJard
     end
 
     def write_output(content)
+      # TODO: Fix me. This one and stdout overiding in session.rb should be unified
       if @output == $stdout
-        @output.write content, from_jard: true
+        @output.write content.force_encoding('UTF-8'), from_jard: true
       else
-        @output.write content
+        @output.write content.force_encoding('UTF-8')
       end
     end
   end
