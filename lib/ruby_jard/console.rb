@@ -8,6 +8,10 @@ module RubyJard
   # Wrapper for utilities to control screen
   class Console
     class << self
+      def redirected?
+        output != $stdout
+      end
+
       def output
         return @output if defined?(@output)
 

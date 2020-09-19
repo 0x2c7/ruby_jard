@@ -348,11 +348,10 @@ module RubyJard
     end
 
     def write_output(content)
-      # TODO: Fix me. This one and stdout overiding in session.rb should be unified
-      if @output == $stdout
-        @output.write content.force_encoding('UTF-8'), from_jard: true
-      else
+      if RubyJard::Console.redirected?
         @output.write content.force_encoding('UTF-8')
+      else
+        @output.write content.force_encoding('UTF-8'), from_jard: true
       end
     end
   end
