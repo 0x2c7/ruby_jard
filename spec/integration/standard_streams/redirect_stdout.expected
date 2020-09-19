@@ -1,0 +1,211 @@
+### START SEND_KEYS ###
+["bundle exec ruby /home/darkwing0711/www/ruby_jard/spec/examples/cli.rb > /dev/null", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/cli.rb:6 ─────────────────────────┬ Variables ─────────────────────────────────────────────────┐
+│   1 # frozen_string_literal: true                        │  self = main                                               │
+│   2                                                      │  age = nil                                                 │
+│   3 require 'ruby_jard'                                  │  name = nil                                                │
+│   4                                                      │                                                            │
+│   5 jard                                                 │                                                            │
+│⮕  6 puts "What's your name?"                             │                                                            │
+│   7 name = STDIN.gets.strip                              │                                                            │
+│   8                                                      │                                                            │
+│   9 puts 'How old are your?'                             │                                                            │
+│  10 age = STDIN.gets.strip.to_i                          │                                                            │
+│  11                                                      │                                                            │
+│  12 jard                                                 │                                                            │
+│  13 puts "Hi, #{name} (#{age})"                          │                                                            │
+│  14                                                      │                                                            │
+│  15 jard                                                 │                                                            │
+│  16 puts 'Nice to meet you'                              │                                                            │
+│  17                                                      │                                                            │
+│  18 warn 'Error! Failed to continue'                     │                                                            │
+│  19 jard                                                 │                                                            │
+│  20 puts 'Exiting'                                       │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+├ Backtrace  1 frames ─────────────────────────────────────┼ Threads  1 threads ────────────────────────────────────────┤
+│⮕ 0 Object in <main> at ../../examples/cli.rb:6           │▸ Thread 1 (run) untitled at ../../examples/cli.rb:6        │
+│                                                          │                                                            │
+│                                                          │                                                            │
+├──────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────┤
+│Filter (F2): Application                                    Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>                       
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["Quang-Minh", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["17", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/cli.rb:13 ────────────────────────┬ Variables ─────────────────────────────────────────────────┐
+│   1 # frozen_string_literal: true                        │  self = main                                               │
+│   2                                                      │  age = 17                                                  │
+│   3 require 'ruby_jard'                                  │  name = "Quang-Minh"                                       │
+│   4                                                      │                                                            │
+│   5 jard                                                 │                                                            │
+│   6 puts "What's your name?"                             │                                                            │
+│   7 name = STDIN.gets.strip                              │                                                            │
+│   8                                                      │                                                            │
+│   9 puts 'How old are your?'                             │                                                            │
+│  10 age = STDIN.gets.strip.to_i                          │                                                            │
+│  11                                                      │                                                            │
+│  12 jard                                                 │                                                            │
+│⮕ 13 puts "Hi, #{name} (#{age})"                          │                                                            │
+│  14                                                      │                                                            │
+│  15 jard                                                 │                                                            │
+│  16 puts 'Nice to meet you'                              │                                                            │
+│  17                                                      │                                                            │
+│  18 warn 'Error! Failed to continue'                     │                                                            │
+│  19 jard                                                 │                                                            │
+│  20 puts 'Exiting'                                       │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+├ Backtrace  1 frames ─────────────────────────────────────┼ Threads  1 threads ────────────────────────────────────────┤
+│⮕ 0 Object in <main> at ../../examples/cli.rb:13          │▸ Thread 1 (run) untitled at ../../examples/cli.rb:13       │
+│                                                          │                                                            │
+│                                                          │                                                            │
+├──────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────┤
+│Filter (F2): Application                                    Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>                       
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/cli.rb:16 ────────────────────────┬ Variables ─────────────────────────────────────────────────┐
+│   3 require 'ruby_jard'                                  │  self = main                                               │
+│   4                                                      │  age = 17                                                  │
+│   5 jard                                                 │  name = "Quang-Minh"                                       │
+│   6 puts "What's your name?"                             │                                                            │
+│   7 name = STDIN.gets.strip                              │                                                            │
+│   8                                                      │                                                            │
+│   9 puts 'How old are your?'                             │                                                            │
+│  10 age = STDIN.gets.strip.to_i                          │                                                            │
+│  11                                                      │                                                            │
+│  12 jard                                                 │                                                            │
+│  13 puts "Hi, #{name} (#{age})"                          │                                                            │
+│  14                                                      │                                                            │
+│  15 jard                                                 │                                                            │
+│⮕ 16 puts 'Nice to meet you'                              │                                                            │
+│  17                                                      │                                                            │
+│  18 warn 'Error! Failed to continue'                     │                                                            │
+│  19 jard                                                 │                                                            │
+│  20 puts 'Exiting'                                       │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+├ Backtrace  1 frames ─────────────────────────────────────┼ Threads  1 threads ────────────────────────────────────────┤
+│⮕ 0 Object in <main> at ../../examples/cli.rb:16          │▸ Thread 1 (run) untitled at ../../examples/cli.rb:16       │
+│                                                          │                                                            │
+│                                                          │                                                            │
+├──────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────┤
+│Filter (F2): Application                                    Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>                       
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/cli.rb:20 ────────────────────────┬ Variables ─────────────────────────────────────────────────┐
+│   7 name = STDIN.gets.strip                              │  self = main                                               │
+│   8                                                      │  age = 17                                                  │
+│   9 puts 'How old are your?'                             │  name = "Quang-Minh"                                       │
+│  10 age = STDIN.gets.strip.to_i                          │                                                            │
+│  11                                                      │                                                            │
+│  12 jard                                                 │                                                            │
+│  13 puts "Hi, #{name} (#{age})"                          │                                                            │
+│  14                                                      │                                                            │
+│  15 jard                                                 │                                                            │
+│  16 puts 'Nice to meet you'                              │                                                            │
+│  17                                                      │                                                            │
+│  18 warn 'Error! Failed to continue'                     │                                                            │
+│  19 jard                                                 │                                                            │
+│⮕ 20 puts 'Exiting'                                       │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+│                                                          │                                                            │
+├ Backtrace  1 frames ─────────────────────────────────────┼ Threads  1 threads ────────────────────────────────────────┤
+│⮕ 0 Object in <main> at ../../examples/cli.rb:20          │▸ Thread 1 (run) untitled at ../../examples/cli.rb:20       │
+│                                                          │                                                            │
+│                                                          │                                                            │
+├──────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────┤
+│Filter (F2): Application                                    Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>                       
+### END SCREEN ###
+### START SEND_KEYS ###
+["jard output", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+~                             
+What's your name?             
+How old are your?             
+Hi, Quang-Minh (17)           
+Nice to meet you              
+Program output                
+### END SCREEN ###
