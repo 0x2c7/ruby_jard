@@ -123,7 +123,10 @@ module RubyJard
       end
     end
 
-    def initialize(key_bindings: nil)
+    def initialize(key_bindings: nil, input: RubyJard::Console.input, output: RubyJard::Console.output)
+      @input = input
+      @output = output
+
       @state = ReplState.new
 
       @pry_input_pipe_read, @pry_input_pipe_write = IO.pipe
@@ -143,13 +146,17 @@ module RubyJard
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
     def repl(current_binding)
       @state.ready!
       @openning_pager = false
 
-      RubyJard::Console.disable_echo!
-      RubyJard::Console.raw!
+      RubyJard::Console.disable_echo!(@output)
+      RubyJard::Console.raw!(@output)
 
+      # Internally, Pry sneakily updates Readline to global output config
+      # when STDOUT is piping regardless of what I pass into Pry instance.
+      Pry.config.output = @pry_output_pty_write
       Readline.input = @pry_input_pipe_read
       Readline.output = @pry_output_pty_write
       @pry.binding_stack.clear
@@ -172,35 +179,37 @@ module RubyJard
       sleep PTY_OUTPUT_TIMEOUT until @state.exited?
       RubyJard::ControlFlow.dispatch(e.flow)
     ensure
-      RubyJard::Console.enable_echo!
-      RubyJard::Console.cooked!
-      Readline.input = STDIN
-      Readline.output = STDOUT
+      RubyJard::Console.enable_echo!(@output)
+      RubyJard::Console.cooked!(@output)
+      Readline.input = @input
+      Readline.output = @output
+      Pry.config.output = @output
       @key_listen_thread&.exit if @key_listen_thread&.alive?
       @pry_input_thread&.exit if @pry_input_thread&.alive?
       @state.exited!
     end
+    # rubocop:enable Metrics/MethodLength
 
     private
 
     def read_key
-      RubyJard::Console.getch(STDIN, KEY_READ_TIMEOUT)
+      RubyJard::Console.getch(@input, KEY_READ_TIMEOUT)
     end
 
     def pry_pty_output
       loop do
         if @state.exiting?
           if @pry_output_pty_read.ready?
-            STDOUT.write @pry_output_pty_read.read_nonblock(2048), from_jard: true
+            write_output(@pry_output_pty_read.read_nonblock(2048))
           else
             @state.exited!
           end
         elsif @state.exited?
           sleep PTY_OUTPUT_TIMEOUT
         else
-          output = @pry_output_pty_read.read_nonblock(2048)
-          unless output.nil?
-            STDOUT.write output, from_jard: true
+          content = @pry_output_pty_read.read_nonblock(2048)
+          unless content.nil?
+            write_output(content)
           end
         end
       rescue IO::WaitReadable, IO::WaitWritable
@@ -316,25 +325,33 @@ module RubyJard
     def pry_hooks
       hooks = Pry::Hooks.default
       hooks.add_hook(:after_read, :jard_proxy_acquire_lock) do |_read_string, _pry|
-        RubyJard::Console.cooked!
+        RubyJard::Console.cooked!(@output)
         @state.processing!
         # Sleep 2 ticks, wait for pry to print out all existing output in the queue
         sleep PTY_OUTPUT_TIMEOUT * 2
       end
       hooks.add_hook(:after_handle_line, :jard_proxy_release_lock) do
-        RubyJard::Console.raw!
+        RubyJard::Console.raw!(@output)
         @state.ready!
       end
       hooks.add_hook(:before_pager, :jard_proxy_before_pager) do
         @openning_pager = true
 
         @state.processing!
-        RubyJard::Console.cooked!
+        RubyJard::Console.cooked!(@output)
       end
       hooks.add_hook(:after_pager, :jard_proxy_after_pager) do
         @openning_pager = false
         @state.ready!
-        RubyJard::Console.raw!
+        RubyJard::Console.raw!(@output)
+      end
+    end
+
+    def write_output(content)
+      if RubyJard::Console.redirected?
+        @output.write content.force_encoding('UTF-8')
+      else
+        @output.write content.force_encoding('UTF-8'), from_jard: true
       end
     end
   end

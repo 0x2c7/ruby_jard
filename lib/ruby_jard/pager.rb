@@ -46,7 +46,13 @@ module RubyJard
         @pager_start_at_the_end = pager_start_at_the_end
         @prompt = prompt
 
-        @window_width, @window_height = RubyJard::Console.screen_size(@pry_instance.output)
+        # There are two cases:
+        # - If the real pager (less) is triggered, it works on a real tty (fetched
+        # from /dev/tty), in which, the same as RubyJard::Console.output
+        # - Otherwise, it writes directly into pry's REPL output.
+        # That's why there should be two output here
+        @tty_output = RubyJard::Console.redirected? ? RubyJard::Console.output : pry_instance.output
+        @window_width, @window_height = RubyJard::Console.screen_size(RubyJard::Console.output)
         @tracker = JardPageTracker.new(@window_height, @window_width)
         @pager = force_open ? open_pager : nil
       end
@@ -93,7 +99,7 @@ module RubyJard
 
         IO.popen(
           less_command.join(' '), 'w',
-          out: @pry_instance.output, err: @pry_instance.output
+          out: @tty_output, err: @tty_output
         )
       end
 

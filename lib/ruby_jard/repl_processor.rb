@@ -30,6 +30,7 @@ module RubyJard
         key_bindings: RubyJard.global_key_bindings
       )
       @previous_flow = RubyJard::ControlFlow.new(:next)
+      @output = RubyJard::Console.output
     end
 
     def at_line
@@ -123,10 +124,10 @@ module RubyJard
       next_frame = find_frame(options[:frame].to_i)
       if next_frame.nil?
         # There must be an error in outer validators
-        RubyJard::ScreenManager.puts 'Error: Frame not found. There should be an error with Jard.'
+        @output.puts 'Error: Frame not found. There should be an error with Jard.'
         process_commands(false)
       elsif next_frame.c_frame?
-        RubyJard::ScreenManager.puts "Error: Frame #{next_frame} is a c-frame. Not able to inspect c layer!"
+        @output.puts "Error: Frame #{next_frame} is a c-frame. Not able to inspect c layer!"
         process_commands(false)
       else
         RubyJard::Session.frame = next_frame.real_pos
@@ -135,7 +136,7 @@ module RubyJard
     end
 
     def handle_continue_command(_options = {})
-      RubyJard::ScreenManager.puts '▸▸ Program resumed ▸▸'
+      @output.puts '▸▸ Program resumed ▸▸'
       Byebug.stop if Byebug.stoppable?
     end
 

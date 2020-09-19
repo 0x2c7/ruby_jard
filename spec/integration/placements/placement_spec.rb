@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Load config file from ENV', integration: true do
+RSpec.describe 'Test different placement positions', integration: true do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/placements') }
 
   context 'when calling jard next to jard' do
@@ -11,6 +11,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
       )
       test.start
       test.assert_screen
+    ensure
       test.stop
     end
   end
@@ -23,6 +24,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
       )
       test.start
       test.assert_screen
+    ensure
       test.stop
     end
   end
@@ -35,6 +37,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
       )
       test.start
       test.assert_screen
+    ensure
       test.stop
     end
   end
@@ -49,6 +52,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
       test.assert_screen
       test.send_keys('next', :Enter)
       test.assert_screen
+    ensure
       test.stop
     end
   end
@@ -63,6 +67,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
       test.assert_screen
       test.send_keys('step', :Enter)
       test.assert_screen
+    ensure
       test.stop
     end
   end
@@ -75,6 +80,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
       )
       test.start
       test.assert_screen
+    ensure
       test.stop
     end
   end
@@ -87,6 +93,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
       )
       test.start
       test.assert_screen
+    ensure
       test.stop
     end
   end
@@ -99,6 +106,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
       )
       test.start
       test.assert_screen
+    ensure
       test.stop
     end
   end
@@ -115,6 +123,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
       test.assert_screen
       test.send_keys('continue', :Enter)
       test.assert_screen
+    ensure
       test.stop
     end
   end
@@ -130,6 +139,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
       test.send_keys('require_relative "../../examples/top_level_example.rb"', :Enter)
       test.send_keys('system("clear")', :Enter)
       test.assert_screen
+    ensure
       test.stop
     end
   end
@@ -144,6 +154,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
       test.assert_screen
       test.send_keys('require_relative "../../examples/instance_method_example.rb"', :Enter)
       test.assert_screen
+    ensure
       test.stop
     end
   end
@@ -164,6 +175,7 @@ RSpec.describe 'Load config file from ENV', integration: true do
       test.assert_screen
       test.send_keys('continue', :Enter)
       test.assert_screen
+    ensure
       test.stop
     end
   end

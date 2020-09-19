@@ -22,9 +22,6 @@ require_relative_folder('./helpers/**/*')
 require_relative_folder('./shared/**/*')
 
 RSpec.configure do |config|
-  config.verbose_retry = true
-  config.display_try_failure_messages = true
-
   config.around :each, :integration do |ex|
     ex.run_with_retry retry: 3
   end

@@ -8,22 +8,38 @@ module RubyJard
   # Wrapper for utilities to control screen
   class Console
     class << self
-      def start_alternative_terminal(output)
-        return unless output.tty?
-
-        output.print tput('smcup')
-      rescue RubyJard::Error
-        # If tput not found, fallback to hard-coded sequence.
-        output.print "\e[?1049h\e[22;0;0t"
+      def redirected?
+        output != $stdout
       end
 
-      def stop_alternative_terminal(output)
-        return unless output.tty?
+      def output
+        return @output if defined?(@output)
 
-        output.print tput('rmcup')
-      rescue RubyJard::Error
-        # If tput not found, fallback to hard-coded sequence.
-        output.print "\e[?1049l\e[23;0;0t"
+        @output =
+          if STDOUT.tty?
+            STDOUT
+          else
+            begin
+              File.open('/dev/tty', 'w+')
+            rescue StandardError
+              STDOUT # Give up now. TODO: should warn, and let program continues
+            end
+          end
+      end
+
+      def input
+        return @input if defined?(@input)
+
+        @input =
+          if STDIN.tty?
+            STDIN
+          else
+            begin
+              File.open('/dev/tty', 'r+')
+            rescue StandardError
+              STDIN # Give up. TODO: should warn, and let program continues
+            end
+          end
       end
 
       def move_to(output, x, y)
@@ -35,7 +51,12 @@ module RubyJard
       def screen_size(output)
         return [0, 0] unless output.tty?
 
-        [TTY::Screen.width, TTY::Screen.height]
+        if output.respond_to?(:winsize)
+          height, width = output.winsize
+          [width, height]
+        else
+          [TTY::Screen.width, TTY::Screen.height]
+        end
       end
 
       def clear_screen(output)
@@ -50,7 +71,7 @@ module RubyJard
         output.print "\e[0J"
       end
 
-      def disable_cursor!(output = STDOUT)
+      def disable_cursor!(output)
         return unless output.tty?
 
         output.print tput('civis')
@@ -59,7 +80,7 @@ module RubyJard
         output.print "\e[?25l"
       end
 
-      def enable_cursor!(output = STDOUT)
+      def enable_cursor!(output)
         return unless output.tty?
 
         output.print tput('cnorm')
@@ -81,7 +102,7 @@ module RubyJard
         nil
       end
 
-      def raw!(output = STDOUT)
+      def raw!(output)
         return unless output.tty?
 
         begin
@@ -91,7 +112,7 @@ module RubyJard
         end
       end
 
-      def cooked!(output = STDOUT)
+      def cooked!(output)
         return unless output.tty?
 
         begin
@@ -102,7 +123,7 @@ module RubyJard
         end
       end
 
-      def disable_echo!(output = STDOUT)
+      def disable_echo!(output)
         return unless output.tty?
 
         begin
@@ -113,7 +134,7 @@ module RubyJard
         end
       end
 
-      def enable_echo!(output = STDOUT)
+      def enable_echo!(output)
         return unless output.tty?
 
         begin

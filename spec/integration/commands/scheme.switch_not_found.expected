@@ -30,7 +30,8 @@ jard >>
 ### START SCREEN ###
 
 jard >> jard color-scheme NotExistedScheme
-Error: Color scheme `NotExistedScheme` not found. Please use `jard color-scheme -l` to list all color schemes.
+Error: Color scheme `NotExistedScheme` not found. Please use `jard color-scheme
+-l` to list all color schemes.
 jard >>
 
 

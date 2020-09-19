@@ -53,7 +53,6 @@ class JardIntegrationTest
   def resize(width, height)
     @width = width
     @height = height
-    @resized = true
     tmux(
       'resize-window',
       '-t', @target,
@@ -144,8 +143,6 @@ class JardIntegrationTest
 
       attempt -= 1
       sleep 0.5
-
-      puts "\t# Fai to capture pane. Retrying..."
     end
 
     attempt = 5
@@ -157,8 +154,6 @@ class JardIntegrationTest
 
       attempt -= 1
       sleep 0.5
-
-      puts "\t# Pane content seems to be different from previous capture. Retrying..."
     end
     @content
   end
@@ -242,15 +237,12 @@ class JardIntegrationTest
   end
 
   def capture_pane
-    if @resized
-      tmux('capture-pane', '-J', '-p', '-t', @target)
-        .split("\n")
-        .map { |line| line[0..@width - 1] }
-        .first(@height)
-        .join("\n")
-    else
-      tmux('capture-pane', '-J', '-p', '-t', @target)
-    end
+    tmux('capture-pane', '-J', '-p', '-t', @target)
+      .split("\n")
+      .map { |line| line.length > @width ? line.chars.each_slice(@width).map(&:join) : line }
+      .flatten
+      .first(@height)
+      .join("\n")
   end
 end
 
