@@ -141,6 +141,7 @@ module RubyJard
     end
 
     def handle_exit_command(_options = {})
+      Byebug.stop if Byebug.stoppable?
       Kernel.exit
     end
 
