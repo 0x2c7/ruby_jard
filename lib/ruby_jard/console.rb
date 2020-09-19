@@ -15,7 +15,11 @@ module RubyJard
           if STDOUT.tty?
             STDOUT
           else
-            File.open('/dev/tty', 'w+')
+            begin
+              File.open('/dev/tty', 'w+')
+            rescue StandardError
+              STDOUT # Give up now. TODO: should warn, and let program continues
+            end
           end
       end
 
@@ -26,7 +30,11 @@ module RubyJard
           if STDIN.tty?
             STDIN
           else
-            File.open('/dev/tty', 'r+')
+            begin
+              File.open('/dev/tty', 'r+')
+            rescue StandardError
+              STDIN # Give up. TODO: should warn, and let program continues
+            end
           end
       end
 
