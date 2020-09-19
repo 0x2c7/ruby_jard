@@ -53,7 +53,6 @@ class JardIntegrationTest
   def resize(width, height)
     @width = width
     @height = height
-    @resized = true
     tmux(
       'resize-window',
       '-t', @target,
@@ -242,15 +241,12 @@ class JardIntegrationTest
   end
 
   def capture_pane
-    if @resized
-      tmux('capture-pane', '-J', '-p', '-t', @target)
-        .split("\n")
-        .map { |line| line[0..@width - 1] }
-        .first(@height)
-        .join("\n")
-    else
-      tmux('capture-pane', '-J', '-p', '-t', @target)
-    end
+    tmux('capture-pane', '-J', '-p', '-t', @target)
+      .split("\n")
+      .map { |line| line.length > @width ? line.chars.each_slice(@width).map(&:join) : line }
+      .flatten
+      .first(@height)
+      .join("\n")
   end
 end
 

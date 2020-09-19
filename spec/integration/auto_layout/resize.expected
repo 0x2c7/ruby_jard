@@ -28,15 +28,25 @@ Resize to 50, 60
 ### START SCREEN ###
 ┌ Source  ../../examples/top_level_example.rb:15 ┐
 │   2                                            │
+│   3 require 'ruby_jard'                        │
 │   4                                            │
+│   5 var_a = 123                                │
 │   6 var_b = 'hello world'                      │
+│   7 var_c = ['Hello', 1, 2, 3]                 │
 │   8 variable_d = { test: 1, this: 'Bye', array:│
+│      nil }                                     │
 │   9 variable_e = /Wait, what/i                 │
+│  10 variable_f = 1.1                           │
 │  11 variable_g = 99..100                       │
+│  12 variable_k = StandardError.new('A random er│
 │     ror')                                      │
+│  13                                            │
 │  14 jard                                       │
+│⮕ 15 variable_h = 15                            │
 │  16                                            │
+│  17 jard                                       │
 │  18 1.times {}                                 │
+│  19                                            │
 │  20 jard                                       │
 │  21 var_a + variable_f + variable_h || 5       │
 │                                                │
@@ -73,10 +83,15 @@ Resize to 50, 40
 ### END RESIZE ###
 ### START SCREEN ###
 ┌ Source  ../../examples/top_level_example.rb:15 ┐
+│   7 var_c = ['Hello', 1, 2, 3]                 │
 │   8 variable_d = { test: 1, this: 'Bye', array:│
+│      nil }                                     │
 │   9 variable_e = /Wait, what/i                 │
+│  10 variable_f = 1.1                           │
 │  11 variable_g = 99..100                       │
+│  12 variable_k = StandardError.new('A random er│
 │     ror')                                      │
+│  13                                            │
 │  14 jard                                       │
 │⮕ 15 variable_h = 15                            │
 │  16                                            │
@@ -164,14 +179,23 @@ Resize to 100, 50
 ### END RESIZE ###
 ### START SCREEN ###
 ┌ Source  ../../examples/top_level_example.rb:15 ──────────────────────────────────────────────────┐
+│   6 var_b = 'hello world'                                                                        │
 │   7 var_c = ['Hello', 1, 2, 3]                                                                   │
+│   8 variable_d = { test: 1, this: 'Bye', array: nil }                                            │
 │   9 variable_e = /Wait, what/i                                                                   │
+│  10 variable_f = 1.1                                                                             │
 │  11 variable_g = 99..100                                                                         │
+│  12 variable_k = StandardError.new('A random error')                                             │
 │  13                                                                                              │
+│  14 jard                                                                                         │
 │⮕ 15 variable_h = 15                                                                              │
+│  16                                                                                              │
 │  17 jard                                                                                         │
+│  18 1.times {}                                                                                   │
 │  19                                                                                              │
+│  20 jard                                                                                         │
 │  21 var_a + variable_f + variable_h || 5                                                         │
+│                                                                                                  │
 │                                                                                                  │
 ├ Variables ───────────────────────────────────────────────────────────────────────────────────────┤
 │  self = main                                                                                     │
@@ -203,14 +227,23 @@ Resize to 140, 70
 ### END RESIZE ###
 ### START SCREEN ###
 ┌ Source  ../../examples/top_level_example.rb:15 ────────────────────┬ Variables ──────────────────────────────────────────────────────────┐
+│   1 # frozen_string_literal: true                                  │  self = main                                                        │
 │   2                                                                │  var_a = 123                                                        │
+│   3 require 'ruby_jard'                                            │  var_b = "hello world"                                              │
 │   4                                                                │▾ var_c (len:4) = [                                                  │
+│   5 var_a = 123                                                    │    ▸ "Hello"                                                        │
 │   6 var_b = 'hello world'                                          │    ▸ 1                                                              │
+│   7 var_c = ['Hello', 1, 2, 3]                                     │    ▸ 2                                                              │
 │   8 variable_d = { test: 1, this: 'Bye', array: nil }              │    ▸ 3                                                              │
+│   9 variable_e = /Wait, what/i                                     │  ]                                                                  │
 │  10 variable_f = 1.1                                               │  variable_d (size:3) = {:test → 1, :this → "Bye", :array → nil}     │
+│  11 variable_g = 99..100                                           │  variable_e = /Wait, what/i                                         │
 │  12 variable_k = StandardError.new('A random error')               │  variable_f = 1.1                                                   │
+│  13                                                                │  variable_g = 99..100                                               │
 │  14 jard                                                           │  variable_h = nil                                                   │
+│⮕ 15 variable_h = 15                                                │  variable_k = #<StandardError: A random error>                      │
 │  16                                                                │                                                                     │
+│  17 jard                                                           │                                                                     │
 │  18 1.times {}                                                     │                                                                     │
 │  19                                                                │                                                                     │
 │  20 jard                                                           │                                                                     │
