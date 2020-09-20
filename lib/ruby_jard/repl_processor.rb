@@ -25,12 +25,15 @@ module RubyJard
   # repl, and triggers Byebug debugger if needed.
   #
   class ReplProcessor < Byebug::CommandProcessor
+    REPEATED_FLOW_THRESHOLD = 20_000
+
     def initialize(context, *args)
       super(context, *args)
       @config = RubyJard.config
       @repl_proxy = RubyJard::ReplProxy.new(
         key_bindings: RubyJard.global_key_bindings
       )
+      @repeated_flow = 0
       @previous_flow = RubyJard::ControlFlow.new(:next)
       @output = RubyJard::Console.output
     end
@@ -54,10 +57,15 @@ module RubyJard
         RubyJard::Session.lock do
           RubyJard::Session.sync(@context)
           unless RubyJard::Session.should_stop?(@context.frame.file)
+            @repeated_flow += 1
+            if @repeated_flow > REPEATED_FLOW_THRESHOLD
+              @previous_flow = RubyJard::ControlFlow.new(:step_out)
+            end
             handle_flow(@previous_flow)
             return
           end
 
+          @repeated_flow = 0
           process_commands
         end
       end
