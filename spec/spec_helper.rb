@@ -37,29 +37,6 @@ RSpec.configure do |config|
     end
   end
 
-  config.retry_callback = proc do
-    if ENV['CI']
-      puts '==== Tmux ===='
-      puts 'Restart Tmux...'
-      begin
-        puts `tmux kill-server`
-      rescue StandardError
-        # Ignore
-      end
-
-      begin
-        puts `kill -9 $(ps aux | grep tmux | awk '{print $2}')`
-      rescue StandardError
-        # Ignore
-      end
-      sleep 3
-      `tmux start-server`
-      `tmux new-session -t dummy -d`
-      `ruby spec/wait_for_tmux.rb`
-      puts '==== End Tmux ===='
-    end
-  end
-
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
 
