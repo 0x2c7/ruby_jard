@@ -216,6 +216,10 @@ module RubyJard
         # Retry
         sleep PTY_OUTPUT_TIMEOUT
       end
+    rescue StandardError
+      # This thread shoud never die, or the user may be freezed, and cannot type anything
+      sleep 0.5
+      retry
     end
 
     def pry_repl(current_binding)
