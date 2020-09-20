@@ -12,22 +12,34 @@ module RubyJard
       FILTER_GEMS = :gems,
       FILTER_EVERYTHING = :everything
     ].freeze
+    attr_reader :cache
+
     def initialize(config: nil, path_classifier: nil)
       @config = config || RubyJard.config
       @path_classifier = path_classifier || RubyJard::PathClassifier.new
+
+      @cache = {}
+      @cache_version = @config.filter_version
     end
 
     def match?(path)
-      case @config.filter
-      when FILTER_EVERYTHING
-        match_everything?(path)
-      when FILTER_GEMS
-        match_gems?(path)
-      when FILTER_APPLICATION
-        match_application?(path)
-      when FILTER_SOURCE_TREE
-        match_source_tree?(path)
+      if @cache_version != @config.filter_version
+        @cache = {}
+        @cache_version = @config.filter_version
       end
+      return @cache[path] unless @cache[path].nil?
+
+      @cache[path] =
+        case @config.filter
+        when FILTER_EVERYTHING
+          match_everything?(path)
+        when FILTER_GEMS
+          match_gems?(path)
+        when FILTER_APPLICATION
+          match_application?(path)
+        when FILTER_SOURCE_TREE
+          match_source_tree?(path)
+        end
     end
 
     private

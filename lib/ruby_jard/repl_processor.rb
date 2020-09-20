@@ -53,7 +53,7 @@ module RubyJard
       allowing_other_threads do
         RubyJard::Session.lock do
           RubyJard::Session.sync(@context)
-          unless RubyJard::Session.should_stop?
+          unless RubyJard::Session.should_stop?(@context.frame.file)
             handle_flow(@previous_flow)
             return
           end

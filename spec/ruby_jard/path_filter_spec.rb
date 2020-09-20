@@ -223,4 +223,99 @@ RSpec.describe RubyJard::PathFilter do
       end
     end
   end
+
+  describe '#match? caching' do
+    let(:path) { Gem.method(:path).source_location.first }
+
+    before do
+      allow(path_classifier).to receive(:classify).and_return([:stdlib, 'rubygems', 'rubygems.rb'])
+    end
+
+    context 'when at first hit' do
+      it 'calculates the result' do
+        filter.match?(path)
+        expect(path_classifier).to have_received(:classify).with(path).once
+      end
+
+      it 'updates cache' do
+        expect(filter.cache).to eql({})
+        filter.match?(path)
+        expect(filter.cache).to eql({ path => false })
+      end
+    end
+
+    context 'when at second hit' do
+      it 'calculates the result' do
+        filter.match?(path)
+        filter.match?(path)
+        filter.match?(path)
+        filter.match?(path)
+        expect(path_classifier).to have_received(:classify).with(path).once
+      end
+
+      it 'reserves cache' do
+        filter.match?(path)
+        expect(filter.cache).to eql({ path => false })
+        filter.match?(path)
+        expect(filter.cache).to eql({ path => false })
+      end
+    end
+
+    context 'when configuration updates filter' do
+      it 'calculates the result again' do
+        filter.match?(path)
+        filter.match?(path)
+        config.filter = :gems
+        filter.match?(path)
+        expect(path_classifier).to have_received(:classify).with(path).twice
+      end
+
+      it 'clears cache' do
+        filter.match?(path)
+        filter.match?("#{path} other")
+        expect(filter.cache).to eql({ path => false, "#{path} other" => false })
+        config.filter = :gems
+        filter.match?(path)
+        expect(filter.cache).to eql({ path => false })
+      end
+    end
+
+    context 'when configuration updates filter_included' do
+      it 'calculates the result again' do
+        filter.match?(path)
+        filter.match?(path)
+        config.filter_included = ['rails']
+        filter.match?(path)
+        expect(path_classifier).to have_received(:classify).with(path).twice
+      end
+
+      it 'clears cache' do
+        filter.match?(path)
+        filter.match?("#{path} other")
+        expect(filter.cache).to eql({ path => false, "#{path} other" => false })
+        config.filter_included = ['rails']
+        filter.match?(path)
+        expect(filter.cache).to eql({ path => false })
+      end
+    end
+
+    context 'when configuration updates filter_excluded' do
+      it 'calculates the result again' do
+        filter.match?(path)
+        filter.match?(path)
+        config.filter_excluded = ['rails']
+        filter.match?(path)
+        expect(path_classifier).to have_received(:classify).with(path).twice
+      end
+
+      it 'clears cache' do
+        filter.match?(path)
+        filter.match?("#{path} other")
+        expect(filter.cache).to eql({ path => false, "#{path} other" => false })
+        config.filter_excluded = ['rails']
+        filter.match?(path)
+        expect(filter.cache).to eql({ path => false })
+      end
+    end
+  end
 end
