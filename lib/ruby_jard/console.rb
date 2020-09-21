@@ -9,7 +9,7 @@ module RubyJard
   class Console
     class << self
       def attachable?
-        return false if !input.tty? || !output.tty?
+        return false unless output.tty?
 
         width, height = screen_size(output)
         width != 0 && height != 0
