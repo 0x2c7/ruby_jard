@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+unless ENV['COVERAGE'].nil?
+  require 'simplecov'
+  SimpleCov.start
+end
+
 require 'bundler/setup'
 require 'rspec/retry'
 require 'ruby_jard'
