@@ -138,7 +138,7 @@ module RubyJard
           width = overview.length + 1 + 12
           spans = [RubyJard::Span.new(content: overview, styles: :text_primary)]
           if RubyJard::Reflection.call_respond_to?(variable, :to_sql) && width < line_limit
-            detail = variable.to_sql
+            detail = variable.to_sql.inspect
             detail = detail[0..line_limit - width - 2] + '…' if width + detail.length < line_limit
             spans << RubyJard::Span.new(content: detail, styles: :text_dim, margin_left: 1)
           end
