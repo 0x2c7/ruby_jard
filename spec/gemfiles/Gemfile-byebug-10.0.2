@@ -17,6 +17,8 @@ gem 'rubocop', '~> 0.88'
 gem 'rubocop-rspec', require: false
 
 group :test do
+  gem 'activerecord'
   gem 'parallel_tests'
   gem 'rspec-retry'
+  gem 'sqlite3'
 end
