@@ -32,8 +32,6 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-    - name: Kill tmux
-      run: tmux kill-server
     - uses: actions/checkout@v2
       with:
         repository: tmux/tmux
@@ -53,6 +51,8 @@ jobs:
       run: ruby spec/wait_for_tmux.rb
     - name: Install dependencies
       run: bundle install
+    - name: Kill tmux
+      run: tmux kill-server || true
     - name: Run tests
       run: bundle exec parallel_rspec spec/
   test-macos:
@@ -93,8 +93,6 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.5
-    - name: Kill tmux
-      run: tmux kill-server
     - uses: actions/checkout@v2
       with:
         repository: tmux/tmux
@@ -114,5 +112,7 @@ jobs:
       run: ruby spec/wait_for_tmux.rb
     - name: Install dependencies
       run: bundle install
+    - name: Kill tmux
+      run: tmux kill-server || true
     - name: Run tests
       run: bundle exec parallel_rspec spec/
