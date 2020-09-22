@@ -90,7 +90,7 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.5
+        ruby-version: 2.6
     - uses: actions/checkout@v2
       with:
         repository: tmux/tmux
@@ -104,7 +104,7 @@ jobs:
       run: tmux -V
     - name: Start tmux
       run: tmux start-server
-    - name: start dummy tmux session
+    - name: Start dummy tmux session
       run: tmux new-session -t dummy -d
     - name: Wait for tmux
       run: ruby spec/wait_for_tmux.rb
