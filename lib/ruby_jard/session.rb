@@ -24,6 +24,14 @@ module RubyJard
       end
 
       def attach
+        unless RubyJard::Console.attachable?
+          $stdout.puts 'Failed to attach. Jard could not detect a valid tty device.'
+          $stdout.puts 'This bug occurs when the process Jard trying to access is a non-interactive environment '\
+            ' such as docker, daemon, sub-processes, etc.'
+          $stdout.puts 'If you are confused, please submit an issue in https://github.com/nguyenquangminh0711/ruby_jard/issues.'
+          return
+        end
+
         instance.start unless instance.started?
 
         Byebug.attach

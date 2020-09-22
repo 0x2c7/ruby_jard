@@ -15,7 +15,7 @@ module RubyJard
         content += ' ' * margin_right if margin_right > 0
       end
 
-      @content = content.to_s
+      @content = content.to_s.gsub(/\r\n/, '\n').gsub(/\n/, '\n')
       @content_length = content_length || @content.length
       @styles = styles
     end

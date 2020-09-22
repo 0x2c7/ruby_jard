@@ -37,16 +37,27 @@ module RubyJard
 
       def decorate(style_names, content)
         attributes = nil
+        foreground = nil
+        background = nil
+
         if style_names.is_a?(Symbol)
           styles = @color_scheme.styles_for(style_names)
         else
           attributes = translate_styles(style_names)
           styles = @color_scheme.styles_for(style_names.shift)
         end
-        foreground = translate_color(styles.shift, true)
-        background = translate_color(styles.shift, false)
+
+        if styles.is_a?(Array)
+          foreground = translate_color(styles.shift, true)
+          background = translate_color(styles.shift, false)
+        elsif !styles.nil?
+          raise RubyJard::Error, "Styles for #{style_names.inspect} must be an array"
+        end
+
         "#{foreground}#{background}#{attributes}#{content}#{CSI_RESET}"
       end
+
+      private
 
       def translate_color(color, foreground)
         if (matches = HEX_PATTERN_6.match(color.to_s))
@@ -69,8 +80,6 @@ module RubyJard
           ''
         end
       end
-
-      private
 
       def translate_styles(styles = [])
         styles.map { |key| STYLES_CSI_MAP[key] }.compact.join

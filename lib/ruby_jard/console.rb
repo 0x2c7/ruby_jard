@@ -8,6 +8,13 @@ module RubyJard
   # Wrapper for utilities to control screen
   class Console
     class << self
+      def attachable?
+        return false unless output.tty?
+
+        width, height = screen_size(output)
+        width != 0 && height != 0
+      end
+
       def redirected?
         output != $stdout
       end
@@ -22,7 +29,7 @@ module RubyJard
             begin
               File.open('/dev/tty', 'w+')
             rescue StandardError
-              STDOUT # Give up now. TODO: should warn, and let program continues
+              STDOUT # Give up now.
             end
           end
       end
@@ -37,7 +44,7 @@ module RubyJard
             begin
               File.open('/dev/tty', 'r+')
             rescue StandardError
-              STDIN # Give up. TODO: should warn, and let program continues
+              STDIN # Give up.
             end
           end
       end

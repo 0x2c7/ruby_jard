@@ -89,7 +89,9 @@ module RubyJard
           if variable.respond_to?(:loaded?) && variable.loaded?
             spans = []
             label = RubyJard::Span.new(
-              content: RubyJard::Reflection.call_to_s(variable).chomp('>'), styles: :text_primary
+              content: RubyJard::Reflection.call_to_s(variable).chomp('>'),
+              styles: :text_primary,
+              margin_right: variable.length >= 1 ? 1 : 0
             )
             spans << label
             spans += @attributes_decorator.inline_values(
@@ -98,6 +100,10 @@ module RubyJard
               depth: depth + 1
             )
             spans << RubyJard::Span.new(content: '>', styles: :text_primary)
+
+            if variable.length <= 0
+              spans << RubyJard::Span.new(content: '(empty)', margin_left: 1, styles: :text_primary)
+            end
 
             spans
           else
@@ -138,7 +144,7 @@ module RubyJard
           width = overview.length + 1 + 12
           spans = [RubyJard::Span.new(content: overview, styles: :text_primary)]
           if RubyJard::Reflection.call_respond_to?(variable, :to_sql) && width < line_limit
-            detail = variable.to_sql
+            detail = variable.to_sql.inspect
             detail = detail[0..line_limit - width - 2] + '…' if width + detail.length < line_limit
             spans << RubyJard::Span.new(content: detail, styles: :text_dim, margin_left: 1)
           end
