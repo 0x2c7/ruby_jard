@@ -74,7 +74,7 @@ RSpec.describe 'RubyJard::Decorators::InspectionDecorator - Rails' do
             description: "Description #{index}"
           )
         end
-        records = ArPost.where('true = false').order(id: :desc).load
+        records = ArPost.where('title like "not found"').order(id: :desc).load
         expect(decorator.decorate_singleline(records, line_limit: 150)).to match_spans(<<~SPANS)
           #<ArPost::ActiveRecord_Relation:??????????????????> (empty)
         SPANS
@@ -93,13 +93,13 @@ RSpec.describe 'RubyJard::Decorators::InspectionDecorator - Rails' do
         end
         records = ArPost.where(
           <<~SQL
-            true = false OR
+            title like 'not found' OR
             false = true OR
             title like 'whatever'
           SQL
         ).order(id: :desc)
         expect(decorator.decorate_singleline(records, line_limit: 150)).to match_spans(<<~SPANS)
-          #<ArPost::ActiveRecord_Relation:?????????????????? "SELECT \\"ar_posts\\".* FROM \\"ar_posts\\" WHERE (true = false OR\\nfalse = true OR\\ntitle like 'whatever'\\n) ORDER BY \\"ar_posts\\".\\"id\\" DESC"> (not loaded)
+          #<ArPost::ActiveRecord_Relation:?????????????????? "SELECT \\"ar_posts\\".* FROM \\"ar_posts\\" WHERE (title like 'not found' OR\\nfalse = true OR\\ntitle like 'whatever'\\n) ORDER BY \\"ar_posts\\".\\"id\\" DESC"> (not loaded)
         SPANS
       ensure
         ArPost.destroy_all
@@ -173,7 +173,7 @@ RSpec.describe 'RubyJard::Decorators::InspectionDecorator - Rails' do
             description: "Description #{index}"
           )
         end
-        records = ArPost.where('true = false').order(id: :desc).load
+        records = ArPost.where('title like "not found"').order(id: :desc).load
         expect(
           decorator.decorate_multiline(
             records,
@@ -197,8 +197,8 @@ RSpec.describe 'RubyJard::Decorators::InspectionDecorator - Rails' do
         end
         records = ArPost.where(
           <<~SQL
-            true = false OR
-            false = true OR
+            title like "not found" OR
+            title like "another not found" OR
             title like 'whatever'
           SQL
         ).order(id: :desc)
@@ -208,7 +208,7 @@ RSpec.describe 'RubyJard::Decorators::InspectionDecorator - Rails' do
             line_limit: 80, first_line_limit: 120, lines: 7
           )
         ).to match_spans(<<~SPANS)
-          #<ArPost::ActiveRecord_Relation:?????????????????? "SELECT \\"ar_posts\\".* FROM \\"ar_posts\\" WHERE (true = false OR\\nfalse = true OR\\ntitle like 'whatever'\\n) ORDER BY \\"ar_posts\\".\\"id\\" DESC"> (not loaded)
+          #<ArPost::ActiveRecord_Relation:?????????????????? "SELECT \\"ar_posts\\".* FROM \\"ar_posts\\" WHERE (title like \\"not found\\" OR\\ntitle like \\"another not found\\" OR\\ntitle like 'whatever'\\n) ORDER BY \\"ar_posts\\".\\"id\\" DESC"> (not loaded)
         SPANS
       ensure
         ArPost.destroy_all
