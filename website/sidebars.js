@@ -14,7 +14,8 @@ module.exports = {
       'guides/Filter',
       'guides/Key bindings',
       'guides/Color schemes',
-      'guides/Configurations'
+      'guides/Configurations',
+      'guides/FAQ'
     ],
     'Flow Commands': [
       'commands/next',
@@ -24,7 +25,8 @@ module.exports = {
       'commands/up',
       'commands/down',
       'commands/frame',
-      'commands/list'
+      'commands/list',
+      'commands/exit'
     ],
     'Control Commands': [
       'commands/filter',

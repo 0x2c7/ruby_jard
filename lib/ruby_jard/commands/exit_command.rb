@@ -14,7 +14,7 @@ module RubyJard
       Examples:
         exit
 
-      Exit program execution. The program will stop at the next breakpoint, or run until it finishes.
+      Exit the execution of the program. Interally, when `jard` receives this command, it removes all debugging hooks, and triggers `::Kernel.exit`. Some long-running processes like `puma` or `sidekiq` may capture this event, treat it as an error, and recover to keep the processes running. In such cases, it's recommended to use `continue` command instead.
       BANNER
 
       def process

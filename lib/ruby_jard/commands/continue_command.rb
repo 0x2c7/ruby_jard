@@ -14,7 +14,7 @@ module RubyJard
       Examples:
         continue
 
-      Continue program execution. The program will stop at the next breakpoint, or run until it finishes.
+      Continue the execution of your program to the end, or stop at the first dynamic break point or `jard` attachment command.
       BANNER
 
       def process

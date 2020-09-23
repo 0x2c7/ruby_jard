@@ -20,5 +20,6 @@ group :test do
   gem 'activerecord'
   gem 'parallel_tests'
   gem 'rspec-retry'
+  gem 'simplecov', require: false
   gem 'sqlite3'
 end
