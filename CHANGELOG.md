@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.1]
+This release fixes bunch of bugs, and performance issues reported by the users after beta launch. No new features are introduced.
+
+- Pry and Byebug backward compatibility: [#39](https://github.com/nguyenquangminh0711/ruby_jard/issues/39), [#45](https://github.com/nguyenquangminh0711/ruby_jard/issues/45)
+- Error with non-UTF8 encoding in the output: [#55](https://github.com/nguyenquangminh0711/ruby_jard/issues/55)
+- Ctrl+D not working: [#34](https://github.com/nguyenquangminh0711/ruby_jard/issues/34)
+- Errors if putting jard with `<%= jard %>` in ERB: [#35](https://github.com/nguyenquangminh0711/ruby_jard/issues/35)
+- Handle standard stream redirections, and prevent Jard from attachment in invalid TTY device: [#38](https://github.com/nguyenquangminh0711/ruby_jard/issues/38), [#46](https://github.com/nguyenquangminh0711/ruby_jard/issues/46), [#53](https://github.com/nguyenquangminh0711/ruby_jard/issues/53)
+- Bring back auto-resize when window size changes: [#40](https://github.com/nguyenquangminh0711/ruby_jard/issues/40)
+- Improve performance after `exit` command: [#49](https://github.com/nguyenquangminh0711/ruby_jard/issues/49)
+- Handle edge cases in Jard color decorator: [#54](https://github.com/nguyenquangminh0711/ruby_jard/issues/54)
+- Escape all special characters and line feeds before printing stuff into the screen: [#57](https://github.com/nguyenquangminh0711/ruby_jard/issues/57)
+
 ## [0.3.0 - Beta 1]
 - Filter feature
 - New variable screen look and feel
