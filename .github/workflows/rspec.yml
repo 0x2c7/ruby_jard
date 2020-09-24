@@ -60,6 +60,8 @@ jobs:
       fail-fast: false
       matrix:
         ruby: [2.5, 2.6, 2.7.1, head]
+    env:
+      CI_PLATFORM: "macos"
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
