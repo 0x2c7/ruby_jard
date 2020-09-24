@@ -1,0 +1,14 @@
+### START SCREEN ###
+Failed to attach. Jard could not detect a valid tty device. 
+This bug occurs when the process Jard trying to access is a non-interactive environment  such as docker, daemon, sub-proc
+esses, etc.                   
+If you are confused, please submit an issue in https://github.com/nguyenquangminh0711/ruby_jard/issues.                  
+Failed to attach. Jard could not detect a valid tty device. 
+This bug occurs when the process Jard trying to access is a non-interactive environment  such as docker, daemon, sub-proc
+esses, etc.                   
+If you are confused, please submit an issue in https://github.com/nguyenquangminh0711/ruby_jard/issues.                  
+Failed to attach. Jard could not detect a valid tty device. 
+This bug occurs when the process Jard trying to access is a non-interactive environment  such as docker, daemon, sub-proc
+esses, etc.                   
+If you are confused, please submit an issue in https://github.com/nguyenquangminh0711/ruby_jard/issues.                  
+### END SCREEN ###

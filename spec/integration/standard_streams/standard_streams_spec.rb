@@ -132,4 +132,18 @@ RSpec.describe 'Test standard_streams', integration: true do
       test.stop
     end
   end
+
+  context 'when a process has controlling terminal detached' do
+    it 'refused to attach' do
+      test = JardIntegrationTest.new(
+        self, work_dir, 'detached.expected',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/detach_example.rb",
+        width: 121, height: 40
+      )
+      test.start
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
 end

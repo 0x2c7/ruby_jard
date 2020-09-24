@@ -69,6 +69,8 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
     - name: Install tmux
       run: brew install tmux
+    - name: Install setsid
+      run: brew install util-linux
     - name: Start tmux
       run: tmux start-server
     - name: start dummy tmux session
