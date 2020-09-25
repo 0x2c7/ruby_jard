@@ -20,6 +20,20 @@ jobs:
       run: bundle install
     - name: Checking offenses
       run: bundle exec rubocop
+
+  test-doc:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.5
+    - name: Install dependencies
+      run: bundle install
+    - name: Testing docs
+      run: bundle exec ruby scripts/generate_command_docs.rb check
+
   test-ubuntu:
     strategy:
       fail-fast: false

@@ -15,6 +15,7 @@ gem 'rake', '~> 12.0'
 gem 'rspec', '~> 3.0'
 gem 'rubocop', '~> 0.89.1'
 gem 'rubocop-rspec', '~> 1.43.1', require: false
+gem 'tty-markdown', '~>0.7.0'
 
 group :test do
   gem 'activerecord'
