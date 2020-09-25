@@ -38,7 +38,7 @@ module RubyJard
     # the program continues. The correctness of the debugger is not affected, while
     # this approach brings better experience. In worst cases, I can recommend the users
     # to put a breakpoint manually instead.
-    REPEATED_FLOW_THRESHOLD = 5_000
+    REPEATED_FLOW_THRESHOLD = 20_000
 
     def initialize(context, *args)
       super(context, *args)
