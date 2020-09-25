@@ -38,7 +38,8 @@ module RubyJard
     # the program continues. The correctness of the debugger is not affected, while
     # this approach brings better experience. In worst cases, I can recommend the users
     # to put a breakpoint manually instead.
-    REPEATED_FLOW_THRESHOLD = 20_000
+    REPEATED_FLOW_TIME_THRESHOLD = 5 # 5 seconds
+    REPEATED_FLOW_COUNT_THRESHOLD = 20_000
 
     def initialize(context, *args)
       super(context, *args)
@@ -47,6 +48,7 @@ module RubyJard
         key_bindings: RubyJard.global_key_bindings
       )
       @repeated_flow = 0
+      @last_repeat_at = nil
       @previous_flow = RubyJard::ControlFlow.new(:next)
       @output = RubyJard::Console.output
     end
@@ -70,8 +72,11 @@ module RubyJard
         RubyJard::Session.lock do
           RubyJard::Session.sync(@context)
           unless RubyJard::Session.should_stop?(@context.frame.file)
+            @last_repeat_at = Time.now.to_f if @last_repeat_at == nil
             @repeated_flow += 1
-            if @repeated_flow > REPEATED_FLOW_THRESHOLD
+
+            if @repeated_flow > REPEATED_FLOW_COUNT_THRESHOLD &&
+               Time.now.to_f - @last_repeat_at > REPEATED_FLOW_TIME_THRESHOLD
               @previous_flow = RubyJard::ControlFlow.new(:step_out)
             end
             handle_flow(@previous_flow)
@@ -79,6 +84,7 @@ module RubyJard
           end
 
           @repeated_flow = 0
+          @last_repeat_at = nil
           process_commands
         end
       end
