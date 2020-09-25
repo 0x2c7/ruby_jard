@@ -2,6 +2,7 @@
 id: output
 slug: output
 ---
+import {LinkedImage} from '../../src/components/LinkedImage'
 
 | Command | Default key binding | Alias |
 | ------- | ------------------- | ----- |
@@ -15,5 +16,4 @@ Show all the program output in a pager, allowing navigation, searching (powered 
 jard output
 ```
 
-import {LinkedImage} from '../../src/components/LinkedImage'
 <LinkedImage link="/img/commands/output.gif" alt="Output example"/>

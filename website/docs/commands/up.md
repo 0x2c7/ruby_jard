@@ -2,6 +2,7 @@
 id: up
 slug: up
 ---
+import {LinkedImage} from '../../src/components/LinkedImage'
 
 | Command | Default key binding | Alias |
 | ------- | ------------------- | ----- |
@@ -20,5 +21,4 @@ up     # Move to upper frame
 up 3   # Move to upper 3 frames
 ```
 
-import {LinkedImage} from '../../src/components/LinkedImage'
 <LinkedImage link="/img/commands/up.gif" alt="Up example"/>
