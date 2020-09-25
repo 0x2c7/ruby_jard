@@ -30,7 +30,10 @@ module RubyJard
                 "Screen `#{screen}` not found. Please input one of the following: #{@screens.names.join(', ')}"
         end
 
-        @config.enabled_screens = @config.enabled_screens.dup.delete(screen)
+        new_enabled_screens = @config.enabled_screens.dup
+        new_enabled_screens.delete(screen)
+        new_enabled_screens.uniq!
+        @config.enabled_screens = new_enabled_screens
 
         RubyJard::ControlFlow.dispatch(:list)
       end
