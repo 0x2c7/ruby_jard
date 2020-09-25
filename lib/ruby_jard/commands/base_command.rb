@@ -2,6 +2,7 @@
 
 module RubyJard
   module Commands
+    # Base command for all Jard commands
     class BaseCommand < Pry::ClassCommand
       def self.help_doc(location)
         help_doc = File.read(File.join(File.dirname(__FILE__), location))
