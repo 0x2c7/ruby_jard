@@ -25,7 +25,20 @@ module RubyJard
   # repl, and triggers Byebug debugger if needed.
   #
   class ReplProcessor < Byebug::CommandProcessor
-    REPEATED_FLOW_THRESHOLD = 20_000
+    # NOTE: This is an experimental feature. If the flow is repeated too much,
+    # the debugger refuses to continue, and step out instead.
+    # Why?
+    # Filtering feature is a killing feature of Jard, but it is not affective,
+    # especially with step command. Other commands, such as next, run fast
+    # enough to get up to the frame it should stop. However, step leads the whole
+    # program down to the rabbit hole. The situation gets worse if a method call
+    # triggers Ruby autoload, leads to millions of repeated flows until the program
+    # gets out. In a simple benchmark, it takes minutes to finish. Therefore, as
+    # soon Jard repeats up to a threashold, it should give up, and step out to let
+    # the program continues. The correctness of the debugger is not affected, while
+    # this approach brings better experience. In worst cases, I can recommend the users
+    # to put a breakpoint manually instead.
+    REPEATED_FLOW_THRESHOLD = 5_000
 
     def initialize(context, *args)
       super(context, *args)
