@@ -1,0 +1,15 @@
+
+[34m┌────────────────────┬─────────────────────┬───────┐[0m
+[34m│[0m Command            [34m│[0m Default key binding [34m│[0m Alias [34m│[0m 
+[34m├────────────────────┼─────────────────────┼───────┤[0m
+[34m│[0m [34mjard show [screen][0m [34m│[0m                     [34m│[0m       [34m│[0m 
+[34m└────────────────────┴─────────────────────┴───────┘[0m
+
+Show a particular screen on the current interface. This option correlates to recent layout’s screens. If a screen is not available in current layout, it won’t be shown.
+
+[34;1mExamples:[0m
+
+[34mjard show source[0m
+[34mjard show variables[0m
+[34mjard show threads[0m
+[34mjard show backtrace[0m

@@ -2,7 +2,6 @@
 id: up
 slug: up
 ---
-
 import {LinkedImage} from '../../src/components/LinkedImage'
 
 | Command | Default key binding | Alias |

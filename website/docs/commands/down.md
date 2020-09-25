@@ -7,7 +7,7 @@ slug: down
 | ------- | ------------------- | ----- |
 | `down` | Shift+F6 |  |
 
-Explore the lower frame. See [up command](/docs/commands/up) for more information.
+Explore the lower frame. See [up](/docs/commands/up) for more information.
 
 **Examples:**
 

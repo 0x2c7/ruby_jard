@@ -3,18 +3,13 @@
 module RubyJard
   module Commands
     # Command used to explore stacktrace.
-    class ColorSchemeCommand < Pry::ClassCommand
+    class ColorSchemeCommand < BaseCommand
       include RubyJard::Commands::ColorHelpers
 
       group 'RubyJard'
       description 'Control the color scheme used in Jard'
-
       match 'color-scheme'
-
-      banner <<-BANNER
-        Usage: color-scheme -l
-               color-scheme [scheme-name]
-      BANNER
+      help_doc './color_scheme_command.doc.txt'
 
       def initialize(context = {})
         super(context)
@@ -43,7 +38,7 @@ module RubyJard
 
           if @color_schemes[color_scheme].nil?
             raise Pry::CommandError,
-                  "Color scheme `#{secondary(color_scheme)}` not found. "\
+                  "Color scheme `#{highlight(color_scheme)}` not found. "\
                   "Please use `#{highlight('jard color-scheme -l')}` to list all color schemes."
           end
 

@@ -2,7 +2,6 @@
 id: step-out
 slug: step-out
 ---
-
 import {LinkedImage} from '../../src/components/LinkedImage'
 
 | Command | Default key binding | Alias |
@@ -19,6 +18,5 @@ This command is useful when you loose your interest in frame, and want to quickl
 step-out     # Step out once
 step-out 3   # Step out 3 times
 ```
-
 
 <LinkedImage link="/img/commands/step-out.gif" alt="Step out example"/>

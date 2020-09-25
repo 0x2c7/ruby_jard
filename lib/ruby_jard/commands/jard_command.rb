@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require 'ruby_jard/commands/jard/show_command'
-require 'ruby_jard/commands/jard/hide_command'
-require 'ruby_jard/commands/jard/color_scheme_command'
-require 'ruby_jard/commands/jard/output_command'
-require 'ruby_jard/commands/jard/filter_command'
+require 'ruby_jard/commands/show_command'
+require 'ruby_jard/commands/hide_command'
+require 'ruby_jard/commands/color_scheme_command'
+require 'ruby_jard/commands/output_command'
+require 'ruby_jard/commands/filter_command'
 
 module RubyJard
   module Commands
     # Command used to explore stacktrace.
     class JardCommand < Pry::ClassCommand
       group 'RubyJard'
-      description 'Show all current program output'
+      description 'Command to control jard configurations'
 
       match 'jard'
 

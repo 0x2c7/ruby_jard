@@ -1,0 +1,34 @@
+
+[34m┌──────────────────────────────────────────────────────────┬─────────────────────┬───────┐[0m
+[34m│[0m Command                                                  [34m│[0m Default key binding [34m│[0m Alias [34m│[0m 
+[34m├──────────────────────────────────────────────────────────┼─────────────────────┼───────┤[0m
+[34m│[0m [34mjard filter[0m                                              [34m│[0m                     [34m│[0m       [34m│[0m 
+[34m├──────────────────────────────────────────────────────────┼─────────────────────┼───────┤[0m
+[34m│[0m [34mjard filter [everything, gems, application, source_tree][0m [34m│[0m                     [34m│[0m       [34m│[0m 
+[34m├──────────────────────────────────────────────────────────┼─────────────────────┼───────┤[0m
+[34m│[0m [34mjard filter [include, exclude] pattern[0m                   [34m│[0m                     [34m│[0m       [34m│[0m 
+[34m├──────────────────────────────────────────────────────────┼─────────────────────┼───────┤[0m
+[34m│[0m [34mjard filter clear[0m                                        [34m│[0m                     [34m│[0m       [34m│[0m 
+[34m└──────────────────────────────────────────────────────────┴─────────────────────┴───────┘[0m
+
+Ruby Jard has a strong filtering system. This system consists of a filter mode, included list, and excluded list. Filter mode is how Ruby Jard reacts to control flow commands. See filter » [34;4mhttps://rubyjard.org/docs/guides/filter[0m for more information.
+
+[34;1mExamples:[0m
+
+[34mjard filter # Show filter status[0m
+
+[34mjard filter application # Switch to application mode[0m
+[34mjard filter gems # Switch to gems mode[0m
+[34mjard filter everything # Switch to everything mode[0m
+[34mjard filter source_tree # Switch to source tree mode[0m
+[34mjard filter include sidekiq # Include sidekiq pattern[0m
+[34mjard filter include aws-*[0m
+[34mjard filter include aws-* active* action* # Multiple patterns separated by <space>[0m
+[34mjard filter include lib/**/*.erb[0m
+[34mjard filter include ~/home/lib/**/*.rb[0m
+[34mjard filter exclude sidekiq # exclude sidekiq pattern[0m
+[34mjard filter exclude aws-*[0m
+[34mjard filter exclude aws-* active* action* # Multiple patterns separated by <space>[0m
+[34mjard filter exclude lib/**/*.erb[0m
+[34mjard filter exclude ~/home/lib/**/*.rb[0m
+[34mjard filter clear # Clear filter[0m

@@ -1,0 +1,13 @@
+
+[34m┌─────────────┬─────────────────────┬───────┐[0m
+[34m│[0m Command     [34m│[0m Default key binding [34m│[0m Alias [34m│[0m 
+[34m├─────────────┼─────────────────────┼───────┤[0m
+[34m│[0m [34mjard output[0m [34m│[0m                     [34m│[0m       [34m│[0m 
+[34m└─────────────┴─────────────────────┴───────┘[0m
+
+Show all the program output in a pager, allowing navigation, searching (powered by GNU Less). Note that the output are only captured only after Jard already started. All the previous output could not be captured.
+
+[34;1mExamples:[0m
+
+[34mjard output[0m
+

@@ -2,7 +2,6 @@
 id: list
 slug: list
 ---
-
 import {LinkedImage} from '../../src/components/LinkedImage'
 
 | Command | Default key binding | Alias |
