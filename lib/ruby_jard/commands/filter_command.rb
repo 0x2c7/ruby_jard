@@ -70,11 +70,14 @@ module RubyJard
                 "Please type `#{highlight('jard filter --help')}` for more information"
         end
         filters = args.map(&:strip)
-        @config.filter_included.append(*filters)
-        @config.filter_included.uniq!
+        included = @config.filter_included.dup.append(*filters).uniq
+        excluded = @config.filter_excluded.dup
         filters.each do |filter|
-          @config.filter_excluded.delete(filter) if @config.filter_excluded.include?(filter)
+          excluded.delete(filter) if excluded.include?(filter)
         end
+
+        @config.filter_included = included
+        @config.filter_excluded = excluded
         RubyJard::ControlFlow.dispatch(:list)
       end
 
@@ -85,17 +88,22 @@ module RubyJard
                 "Please type `#{highlight('jard filter --help')}` for more information"
         end
         filters = args.map(&:strip)
-        @config.filter_excluded.append(*filters)
-        @config.filter_excluded.uniq!
+
+        included = @config.filter_included.dup
+        excluded = @config.filter_excluded.dup.append(*filters).uniq
+
         filters.each do |filter|
-          @config.filter_included.delete(filter) if @config.filter_included.include?(filter)
+          included.delete(filter) if included.include?(filter)
         end
+
+        @config.filter_included = included
+        @config.filter_excluded = excluded
         RubyJard::ControlFlow.dispatch(:list)
       end
 
       def handle_clear
-        @config.filter_excluded.clear
-        @config.filter_included.clear
+        @config.filter_excluded = []
+        @config.filter_included = []
         RubyJard::ControlFlow.dispatch(:list)
       end
     end

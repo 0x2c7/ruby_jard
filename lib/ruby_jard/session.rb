@@ -41,7 +41,7 @@ module RubyJard
 
     OUTPUT_BUFFER_LENGTH = 10_000 # 10k lines
 
-    attr_accessor :output_buffer
+    attr_accessor :output_buffer, :path_filter
 
     def initialize(options = {})
       @options = options
@@ -110,8 +110,8 @@ module RubyJard
       @started == true
     end
 
-    def should_stop?
-      @path_filter.match?(@current_context.frame_file)
+    def should_stop?(path)
+      @path_filter.match?(path)
     end
 
     def sync(context)

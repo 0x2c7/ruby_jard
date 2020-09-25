@@ -25,12 +25,30 @@ module RubyJard
   # repl, and triggers Byebug debugger if needed.
   #
   class ReplProcessor < Byebug::CommandProcessor
+    # NOTE: This is an experimental feature. If the flow is repeated too much,
+    # the debugger refuses to continue, and step out instead.
+    # Why?
+    # Filtering feature is a killing feature of Jard, but it is not affective,
+    # especially with step command. Other commands, such as next, run fast
+    # enough to get up to the frame it should stop. However, step leads the whole
+    # program down to the rabbit hole. The situation gets worse if a method call
+    # triggers Ruby autoload, leads to millions of repeated flows until the program
+    # gets out. In a simple benchmark, it takes minutes to finish. Therefore, as
+    # soon Jard repeats up to a threashold, it should give up, and step out to let
+    # the program continues. The correctness of the debugger is not affected, while
+    # this approach brings better experience. In worst cases, I can recommend the users
+    # to put a breakpoint manually instead.
+    REPEATED_FLOW_TIME_THRESHOLD = 5 # 5 seconds
+    REPEATED_FLOW_COUNT_THRESHOLD = 20_000
+
     def initialize(context, *args)
       super(context, *args)
       @config = RubyJard.config
       @repl_proxy = RubyJard::ReplProxy.new(
         key_bindings: RubyJard.global_key_bindings
       )
+      @repeated_flow = 0
+      @last_repeat_at = nil
       @previous_flow = RubyJard::ControlFlow.new(:next)
       @output = RubyJard::Console.output
     end
@@ -53,11 +71,20 @@ module RubyJard
       allowing_other_threads do
         RubyJard::Session.lock do
           RubyJard::Session.sync(@context)
-          unless RubyJard::Session.should_stop?
+          unless RubyJard::Session.should_stop?(@context.frame.file)
+            @last_repeat_at = Time.now.to_f if @last_repeat_at == nil
+            @repeated_flow += 1
+
+            if @repeated_flow > REPEATED_FLOW_COUNT_THRESHOLD &&
+               Time.now.to_f - @last_repeat_at > REPEATED_FLOW_TIME_THRESHOLD
+              @previous_flow = RubyJard::ControlFlow.new(:step_out)
+            end
             handle_flow(@previous_flow)
             return
           end
 
+          @repeated_flow = 0
+          @last_repeat_at = nil
           process_commands
         end
       end
