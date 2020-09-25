@@ -40,6 +40,7 @@ RSpec.describe 'Test standard_streams', integration: true do
 
       test.start
       test.send_keys("echo \"Not Minh\n19\n\" | bundle exec ruby #{RSPEC_ROOT}/examples/cli.rb", :Enter)
+      sleep 1
       test.assert_screen
       test.send_keys('continue', :Enter)
       test.assert_screen
