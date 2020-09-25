@@ -32,7 +32,7 @@ jobs:
     - name: Install dependencies
       run: bundle install
     - name: Testing docs
-      run: bundle exec ruby scripts/generate_command_docs.rb check
+      run: bundle exec ruby scripts/command_docs.rb check
 
   test-ubuntu:
     strategy:

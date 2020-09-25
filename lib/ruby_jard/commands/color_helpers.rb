@@ -6,7 +6,7 @@ module RubyJard
     # Helper to dedocrate command output
     module ColorHelpers
       def highlight(content)
-        "\e[33m#{content}\e[0m"
+        "\e[34m#{content}\e[0m"
       end
 
       def pick_color_scheme
