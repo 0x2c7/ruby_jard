@@ -1,0 +1,13 @@
+
+[34m┌─────────┬─────────────────────┬───────┐[0m
+[34m│[0m Command [34m│[0m Default key binding [34m│[0m Alias [34m│[0m 
+[34m├─────────┼─────────────────────┼───────┤[0m
+[34m│[0m [34mnext[0m    [34m│[0m F8                  [34m│[0m [34mn[0m     [34m│[0m 
+[34m└─────────┴─────────────────────┴───────┘[0m
+
+Continue to the next line in the current frame, by pass any steppable method call or blocks in the mid way unless they contains dynamic breakpoint or any [34mjard[0m attachment command. If the current frame already reaches the end, it continues to the next line of upper frame and so on.
+
+[34;1mExamples:[0m
+
+[34mnext     # Next instruction[0m
+[34mnext 3   # Next 3 next instructions[0m

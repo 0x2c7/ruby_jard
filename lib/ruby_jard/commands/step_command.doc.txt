@@ -1,0 +1,13 @@
+
+[34m┌─────────┬─────────────────────┬───────┐[0m
+[34m│[0m Command [34m│[0m Default key binding [34m│[0m Alias [34m│[0m 
+[34m├─────────┼─────────────────────┼───────┤[0m
+[34m│[0m [34mstep[0m    [34m│[0m F7                  [34m│[0m [34ms[0m     [34m│[0m 
+[34m└─────────┴─────────────────────┴───────┘[0m
+
+Detect and step into a method call or block in the current line. If there isn’t anything to step in, the program continues to next line. In case there are multiple methods on the same line, Jard hornors Ruby’s execution order.
+
+[34;1mExamples:[0m
+
+[34mstep     # Step once[0m
+[34mstep 3   # Step 3 times[0m

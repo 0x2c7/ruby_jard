@@ -3,21 +3,11 @@
 module RubyJard
   module Commands
     # Command used to explore stacktrace.
-    class ListCommand < Pry::ClassCommand
+    class ListCommand < BaseCommand
       group 'RubyJard'
       description 'Refresh the current UI'
-
       match 'list'
-
-      banner <<-BANNER
-      Usage: list
-      Examples:
-        list
-        l
-        whereami
-
-      Refresh the current UI.
-      BANNER
+      help_doc './list_command.doc.txt'
 
       def process
         RubyJard::ControlFlow.dispatch(:list)

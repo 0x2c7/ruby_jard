@@ -11,7 +11,7 @@ module RubyJard
     # Command used to explore stacktrace.
     class JardCommand < Pry::ClassCommand
       group 'RubyJard'
-      description 'Show all current program output'
+      description 'Command to control jard configurations'
 
       match 'jard'
 

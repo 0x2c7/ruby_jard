@@ -4,12 +4,11 @@ module RubyJard
   module Commands
     ##
     # Show a screen
-    class HideCommand < Pry::ClassCommand
+    class HideCommand < BaseCommand
+      group 'RubyJard'
       description 'Hide a screen'
-      banner <<-BANNER
-        Usage: jard hide [-h] [screen]
-      BANNER
       match 'hide'
+      help_doc './hide_command.doc.txt'
 
       def initialize(context = {})
         super(context)

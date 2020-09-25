@@ -4,11 +4,10 @@ module RubyJard
   module Commands
     ##
     # Show a screen
-    class ShowCommand < Pry::ClassCommand
+    class ShowCommand < BaseCommand
+      group 'RubyJard'
       description 'Show a screen'
-      banner <<-BANNER
-        Usage: jard show [-h] [screen]
-      BANNER
+      help_doc './show_command.doc.txt'
       match 'show'
 
       def initialize(context = {})

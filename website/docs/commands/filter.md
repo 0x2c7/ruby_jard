@@ -3,8 +3,6 @@ id: filter
 slug: filter
 ---
 
-import {LinkedImage} from '../../src/components/LinkedImage'
-
 | Command | Default key binding | Alias |
 | ------- | ------------------- | ----- |
 | `jard filter`  | | |
@@ -20,6 +18,7 @@ Ruby Jard has a strong filtering system. This system consists of a filter mode, 
 jard filter # Show filter status
 ```
 
+import {LinkedImage} from '../../src/components/LinkedImage'
 <LinkedImage link="/img/commands/filter.png" alt="Filter example"/>
 
 ```

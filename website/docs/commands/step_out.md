@@ -3,8 +3,6 @@ id: step-out
 slug: step-out
 ---
 
-import {LinkedImage} from '../../src/components/LinkedImage'
-
 | Command | Default key binding | Alias |
 | ------- | ------------------- | ----- |
 | `step-out` | Shift + F7 | `so` |
@@ -20,5 +18,5 @@ step-out     # Step out once
 step-out 3   # Step out 3 times
 ```
 
-
+import {LinkedImage} from '../../src/components/LinkedImage'
 <LinkedImage link="/img/commands/step-out.gif" alt="Step out example"/>

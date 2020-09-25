@@ -3,19 +3,11 @@
 module RubyJard
   module Commands
     # Command used to continue program execution.
-    class ContinueCommand < Pry::ClassCommand
+    class ContinueCommand < BaseCommand
       group 'RubyJard'
       description 'Continue program execution.'
-
       match 'continue'
-
-      banner <<-BANNER
-      Usage: continue
-      Examples:
-        continue
-
-      Continue the execution of your program to the end, or stop at the first dynamic break point or `jard` attachment command.
-      BANNER
+      help_doc './continue_command.doc.txt'
 
       def process
         RubyJard::ControlFlow.dispatch(:continue)

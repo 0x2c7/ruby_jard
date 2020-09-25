@@ -3,23 +3,13 @@
 module RubyJard
   module Commands
     # Command used to Step into the execution of the current line.
-    class StepOutCommand < Pry::ClassCommand
+    class StepOutCommand < BaseCommand
       include RubyJard::Commands::ValidationHelpers
 
       group 'RubyJard'
       description 'Step out of current frame and move to the execution of the upper frame'
-
       match 'step-out'
-
-      banner <<-BANNER
-        Usage: step-out [times]
-        Examples:
-          step-out
-          step-out 1
-          step-out 7
-
-        Step out of current frame and move to the execution of the upper frame.
-      BANNER
+      help_doc './step_out_command.doc.txt'
 
       def process
         times = validate_positive_integer!(args.first || 1)

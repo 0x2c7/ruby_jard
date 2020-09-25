@@ -1,0 +1,8 @@
+
+[34m┌─────────┬─────────────────────┬───────┐[0m
+[34m│[0m Command [34m│[0m Default key binding [34m│[0m Alias [34m│[0m 
+[34m├─────────┼─────────────────────┼───────┤[0m
+[34m│[0m [34mexit[0m    [34m│[0m                     [34m│[0m       [34m│[0m 
+[34m└─────────┴─────────────────────┴───────┘[0m
+
+Exit the execution of the program. Interally, when [34mjard[0m receives this command, it removes all debugging hooks, and triggers [34m::Kernel.exit[0m. Some long-running processes like [34mpuma[0m or [34msidekiq[0m may capture this event, treat it as an error, and recover to keep the processes running. In such cases, it’s recommended to use [34;4mcontinue[0m instead.

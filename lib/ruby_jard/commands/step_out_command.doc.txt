@@ -1,0 +1,17 @@
+
+
+[34m┌──────────┬─────────────────────┬───────┐[0m
+[34m│[0m Command  [34m│[0m Default key binding [34m│[0m Alias [34m│[0m 
+[34m├──────────┼─────────────────────┼───────┤[0m
+[34m│[0m [34mstep-out[0m [34m│[0m Shift + F7          [34m│[0m [34mso[0m    [34m│[0m 
+[34m└──────────┴─────────────────────┴───────┘[0m
+
+The opposite of step. This command is used to finish the execution of current frame, and jump to the next line of upper frame. In other words, this command is equivalent to the sequence [34mup[0m and [34mnext[0m. If the neighbor frame already finishes, it continues with even higher frame.
+
+This command is useful when you loose your interest in frame, and want to quickly go up again. One example is that you accidentally step into a longgggg loop with nothing useful. Another example is that you step into the library source code and don’t really care what it does underlying.
+
+[34;1mExamples:[0m
+
+[34mstep-out     # Step out once[0m
+[34mstep-out 3   # Step out 3 times[0m
+
