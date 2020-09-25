@@ -13,6 +13,7 @@ require 'ruby_jard/commands/step_out_command'
 require 'ruby_jard/commands/frame_command'
 require 'ruby_jard/commands/list_command'
 require 'ruby_jard/commands/jard_command'
+require 'ruby_jard/commands/help_command'
 
 module RubyJard
   ##
