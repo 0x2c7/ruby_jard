@@ -71,7 +71,7 @@ module RubyJard
           handle_clear
         else
           raise Pry::CommandError,
-                "Invalid filter '#{secondary(sub_command)}'."\
+                "Invalid filter '#{highlight(sub_command)}'."\
                 "Please type `#{highlight('jard filter --help')}` for more information"
         end
       end

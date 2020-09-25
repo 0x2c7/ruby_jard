@@ -5,16 +5,8 @@ module RubyJard
     ##
     # Helper to dedocrate command output
     module ColorHelpers
-      def special(content)
-        color_decorator.decorate(:text_special, content)
-      end
-
-      def secondary(content)
-        color_decorator.decorate(:text_primary, content)
-      end
-
       def highlight(content)
-        color_decorator.decorate(:text_highlighted, content)
+        "\e[33m#{content}\e[0m"
       end
 
       def pick_color_scheme

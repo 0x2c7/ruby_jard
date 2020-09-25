@@ -43,7 +43,7 @@ module RubyJard
 
           if @color_schemes[color_scheme].nil?
             raise Pry::CommandError,
-                  "Color scheme `#{secondary(color_scheme)}` not found. "\
+                  "Color scheme `#{highlight(color_scheme)}` not found. "\
                   "Please use `#{highlight('jard color-scheme -l')}` to list all color schemes."
           end
 
