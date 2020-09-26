@@ -12,10 +12,8 @@ module RubyJard
     class << self
       extend Forwardable
 
-      def_delegators :instance,
-                     :lock,
-                     :sync, :should_stop?,
-                     :step_over, :step_into, :frame=,
+      def_delegators :instance, :start, :should_attach?, :should_stop?, :started?, :stop, :skip, :reduce_skip, :should_skip?,
+                     :lock, :sync, :step_over, :step_into, :frame=,
                      :threads, :current_frame, :current_thread, :current_backtrace,
                      :output_buffer, :append_output_buffer
 
@@ -24,7 +22,7 @@ module RubyJard
       end
 
       def attach
-        unless RubyJard::Console.attachable?
+        unless should_attach?
           $stdout.puts 'Failed to attach. Jard could not detect a valid tty device.'
           $stdout.puts 'This bug occurs when the process Jard trying to access is a non-interactive environment '\
             ' such as docker, daemon, sub-processes, etc.'
@@ -32,7 +30,11 @@ module RubyJard
           return
         end
 
-        instance.start unless instance.started?
+        start unless started?
+        if should_skip?
+          reduce_skip
+          return
+        end
 
         Byebug.attach
         Byebug.current_context.step_out(3, true)
@@ -41,13 +43,16 @@ module RubyJard
 
     OUTPUT_BUFFER_LENGTH = 10_000 # 10k lines
 
-    attr_accessor :output_buffer, :path_filter
+    attr_accessor :output_buffer, :path_filter, :screen_manager
 
     def initialize(options = {})
+      @screen_manager = RubyJard::ScreenManager.new
+
       @options = options
       @started = false
       @session_lock = Mutex.new
       @output_buffer = []
+      @skip = 0
 
       @current_frame = nil
       @current_backtrace = []
@@ -74,24 +79,17 @@ module RubyJard
       Byebug::Context.ignored_files = Byebug::Context.all_files + RubyJard.all_files
 
       $stdout.send(:instance_eval, <<-CODE)
-        def write(*string, from_jard: false)
-          # NOTE: `RubyJard::ScreenManager.instance` is a must. Jard doesn't work well with delegator
-          # TODO: Debug and fix the issues permanently
-          if from_jard
-            super(*string)
-            return
-          end
-
-          unless RubyJard::ScreenManager.instance.updating?
-            RubyJard::Session.instance.append_output_buffer(string)
-          end
-
+        def write(*string)
+          RubyJard::Session.instance.append_output_buffer(string)
           super(*string)
         end
       CODE
 
-      at_exit { stop }
+      @screen_manager.start
+      # Load configurations
+      RubyJard.config
 
+      at_exit { stop }
       @started = true
     end
 
@@ -103,11 +101,16 @@ module RubyJard
     def stop
       return unless started?
 
-      RubyJard::ScreenManager.stop
+      @screen_manager.stop
+      Byebug.stop if Byebug.stoppable?
     end
 
     def started?
       @started == true
+    end
+
+    def should_attach?
+      @screen_manager.console.attachable?
     end
 
     def should_stop?(path)
@@ -170,6 +173,23 @@ module RubyJard
       @session_lock.synchronize do
         yield
       end
+    end
+
+    def skip(times)
+      stop
+      @skip = times
+    end
+
+    def reduce_skip
+      if @skip > 0
+        @skip -= 1
+      else
+        @skip = 0
+      end
+    end
+
+    def should_skip?
+      @skip > 0
     end
 
     private

@@ -44,13 +44,17 @@ module RubyJard
     def initialize(context, *args)
       super(context, *args)
       @config = RubyJard.config
+
+      @session = RubyJard::Session.instance
+      @screen_manager = @session.screen_manager
       @repl_proxy = RubyJard::ReplProxy.new(
+        console: @screen_manager.console,
         key_bindings: RubyJard.global_key_bindings
       )
+
       @repeated_flow = 0
       @last_repeat_at = nil
       @previous_flow = RubyJard::ControlFlow.new(:next)
-      @output = RubyJard::Console.output
     end
 
     def at_line
@@ -69,9 +73,9 @@ module RubyJard
 
     def process_commands_with_lock
       allowing_other_threads do
-        RubyJard::Session.lock do
-          RubyJard::Session.sync(@context)
-          unless RubyJard::Session.should_stop?(@context.frame.file)
+        @session.lock do
+          @session.sync(@context)
+          unless @session.should_stop?(@context.frame.file)
             @last_repeat_at = Time.now.to_f if @last_repeat_at == nil
             @repeated_flow += 1
 
@@ -91,8 +95,8 @@ module RubyJard
     end
 
     def process_commands(redraw = true)
-      RubyJard::Session.sync(@context)
-      RubyJard::ScreenManager.draw_screens if redraw
+      @session.sync(@context)
+      @screen_manager.draw_screens if redraw
 
       return_value = nil
 
@@ -104,7 +108,7 @@ module RubyJard
 
       return_value
     rescue StandardError => e
-      RubyJard::ScreenManager.draw_error(e)
+      @screen_manager.draw_error(e)
       raise
     end
 
@@ -118,34 +122,34 @@ module RubyJard
 
     def handle_next_command(options = {})
       times = options[:times] || 1
-      RubyJard::Session.step_over(times)
+      @session.step_over(times)
     end
 
     def handle_step_command(options = {})
       times = options[:times] || 1
-      RubyJard::Session.step_into(times)
+      @session.step_into(times)
     end
 
     def handle_step_out_command(options = {})
       times = options[:times] || 1
 
-      next_frame = up_n_frames(RubyJard::Session.current_frame.real_pos, times)
-      RubyJard::Session.frame = next_frame
-      RubyJard::Session.step_over(1)
+      next_frame = up_n_frames(@session.current_frame.real_pos, times)
+      @session.frame = next_frame
+      @session.step_over(1)
     end
 
     def handle_up_command(options = {})
       times = options[:times] || 1
 
-      next_frame = up_n_frames(RubyJard::Session.current_frame.real_pos, times)
-      RubyJard::Session.frame = next_frame
+      next_frame = up_n_frames(@session.current_frame.real_pos, times)
+      @session.frame = next_frame
       process_commands
     end
 
     def handle_down_command(options = {})
       times = options[:times] || 1
-      next_frame = down_n_frames(RubyJard::Session.current_frame.real_pos, times)
-      RubyJard::Session.frame = next_frame
+      next_frame = down_n_frames(@session.current_frame.real_pos, times)
+      @session.frame = next_frame
       process_commands
     end
 
@@ -153,24 +157,24 @@ module RubyJard
       next_frame = find_frame(options[:frame].to_i)
       if next_frame.nil?
         # There must be an error in outer validators
-        @output.puts 'Error: Frame not found. There should be an error with Jard.'
+        @screen_manager.console.puts 'Error: Frame not found. There should be an error with Jard.'
         process_commands(false)
       elsif next_frame.c_frame?
-        @output.puts "Error: Frame #{next_frame} is a c-frame. Not able to inspect c layer!"
+        @screen_manager.console.puts "Error: Frame #{next_frame} is a c-frame. Not able to inspect c layer!"
         process_commands(false)
       else
-        RubyJard::Session.frame = next_frame.real_pos
+        @session.frame = next_frame.real_pos
         process_commands(true)
       end
     end
 
     def handle_continue_command(_options = {})
-      @output.puts '▸▸ Program resumed ▸▸'
-      Byebug.stop if Byebug.stoppable?
+      @screen_manager.console.puts '▸▸ Program resumed ▸▸'
+      @session.stop
     end
 
     def handle_exit_command(_options = {})
-      Byebug.stop if Byebug.stoppable?
+      @session.stop
       Kernel.exit
     end
 
@@ -189,9 +193,7 @@ module RubyJard
     end
 
     def handle_switch_filter_command(_options = {})
-      index = RubyJard::PathFilter::FILTERS.index(@config.filter) || -1
-      index = (index + 1) % RubyJard::PathFilter::FILTERS.length
-      @config.filter = RubyJard::PathFilter::FILTERS[index]
+      @config.filter = RubyJard::PathFilter.next_filter(@config.filter)
 
       process_commands
     end
@@ -199,15 +201,15 @@ module RubyJard
     def up_n_frames(real_pos, times)
       next_frame = real_pos
       times.times do
-        next_frame = [next_frame + 1, RubyJard::Session.current_backtrace.length - 1].min
-        while next_frame < RubyJard::Session.current_backtrace.length &&
+        next_frame = [next_frame + 1, @session.current_backtrace.length - 1].min
+        while next_frame < @session.current_backtrace.length &&
               (
-                RubyJard::Session.current_backtrace[next_frame].c_frame? ||
-                RubyJard::Session.current_backtrace[next_frame].hidden?
+                @session.current_backtrace[next_frame].c_frame? ||
+                @session.current_backtrace[next_frame].hidden?
               )
           next_frame += 1
         end
-        return real_pos if next_frame >= RubyJard::Session.current_backtrace.length
+        return real_pos if next_frame >= @session.current_backtrace.length
       end
       next_frame
     end
@@ -218,8 +220,8 @@ module RubyJard
         next_frame = [next_frame - 1, 0].max
         while next_frame >= 0 &&
               (
-                RubyJard::Session.current_backtrace[next_frame].c_frame? ||
-                RubyJard::Session.current_backtrace[next_frame].hidden?
+                @session.current_backtrace[next_frame].c_frame? ||
+                @session.current_backtrace[next_frame].hidden?
               )
 
           next_frame -= 1
@@ -230,7 +232,7 @@ module RubyJard
     end
 
     def find_frame(virtual_pos)
-      RubyJard::Session.current_backtrace.find { |frame| frame.virtual_pos == virtual_pos }
+      @session.current_backtrace.find { |frame| frame.virtual_pos == virtual_pos }
     end
   end
 end
