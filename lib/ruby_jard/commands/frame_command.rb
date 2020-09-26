@@ -13,13 +13,13 @@ module RubyJard
 
       def initialize(context = {})
         super(context)
-        @current_backtrace = (context[:session] || RubyJard::Session).current_backtrace
+        @session = context[:session] || RubyJard::Session.instance
       end
 
       def process
         frame = validate_present!(args.first)
         frame = validate_non_negative_integer!(frame)
-        frame = validate_range!(frame, 0, @current_backtrace.map(&:virtual_pos).compact.max)
+        frame = validate_range!(frame, 0, @session.current_backtrace.map(&:virtual_pos).compact.max)
         RubyJard::ControlFlow.dispatch(:frame, frame: frame)
       end
     end
