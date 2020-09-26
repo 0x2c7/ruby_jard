@@ -10,19 +10,12 @@ module RubyJard
   # be built.
   class Session
     class << self
-      extend Forwardable
-
-      def_delegators :instance, :start, :should_attach?, :should_stop?, :started?, :stop, :skip, :reduce_skip, :should_skip?,
-                     :lock, :sync, :step_over, :step_into, :frame=,
-                     :threads, :current_frame, :current_thread, :current_backtrace,
-                     :output_buffer, :append_output_buffer
-
       def instance
         @instance ||= new
       end
 
       def attach
-        unless should_attach?
+        unless instance.should_attach?
           $stdout.puts 'Failed to attach. Jard could not detect a valid tty device.'
           $stdout.puts 'This bug occurs when the process Jard trying to access is a non-interactive environment '\
             ' such as docker, daemon, sub-processes, etc.'
@@ -30,9 +23,9 @@ module RubyJard
           return
         end
 
-        start unless started?
-        if should_skip?
-          reduce_skip
+        instance.start unless instance.started?
+        if instance.should_skip?
+          instance.reduce_skip
           return
         end
 
