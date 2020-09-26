@@ -136,9 +136,6 @@ module RubyJard
         @key_bindings.push(sequence, action)
       end
 
-      @pry_pty_output_thread = Thread.new { pry_pty_output }
-      @pry_pty_output_thread.name = '<<Jard: Pty Output Thread>>'
-
       Signal.trap('SIGWINCH') do
         # TODO: Shouldn't we delay this interrupt until repl is ready?
         @main_thread.raise FlowInterrupt.new('Resize event', RubyJard::ControlFlow.new(:list))
@@ -161,6 +158,11 @@ module RubyJard
       @pry.binding_stack.clear
 
       @main_thread = Thread.current
+
+      @pry_pty_output_thread = Thread.new { pry_pty_output }
+      @pry_pty_output_thread.abort_on_exception = true
+      @pry_pty_output_thread.report_on_exception = false
+      @pry_pty_output_thread.name = '<<Jard: Pty Output Thread>>'
 
       @pry_input_thread = Thread.new { pry_repl(current_binding) }
       @pry_input_thread.abort_on_exception = true
@@ -185,6 +187,7 @@ module RubyJard
       Pry.config.output = @console.output
       @key_listen_thread&.exit if @key_listen_thread&.alive?
       @pry_input_thread&.exit if @pry_input_thread&.alive?
+      @pry_pty_output_thread&.exit if @pry_pty_output_thread&.alive?
       @state.exited!
     end
     # rubocop:enable Metrics/MethodLength
