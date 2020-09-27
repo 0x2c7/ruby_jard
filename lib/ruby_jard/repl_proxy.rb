@@ -142,11 +142,12 @@ module RubyJard
 
       Signal.trap('SIGWINCH') do
         # TODO: Shouldn't we delay this interrupt until repl is ready?
-        @main_thread.raise FlowInterrupt.new('Resize event', RubyJard::ControlFlow.new(:list))
+        if @main_thread&.alive?
+          @main_thread.raise FlowInterrupt.new('Resize event', RubyJard::ControlFlow.new(:list))
+        end
       end
     end
 
-    # rubocop:disable Metrics/MethodLength
     def repl(current_binding)
       @state.ready!
       @openning_pager = false
@@ -187,7 +188,6 @@ module RubyJard
       @key_listen_thread&.exit if @key_listen_thread&.alive?
       @state.exited!
     end
-    # rubocop:enable Metrics/MethodLength
 
     private
 
