@@ -14,7 +14,7 @@ module RubyJard
         @instance ||= new
       end
 
-      def attach
+      def attach(location)
         unless instance.should_attach?
           $stdout.puts 'Failed to attach. Jard could not detect a valid tty device.'
           $stdout.puts 'This bug occurs when the process Jard trying to access is a non-interactive environment '\
@@ -24,10 +24,7 @@ module RubyJard
         end
 
         instance.start unless instance.started?
-        if instance.should_skip?
-          instance.reduce_skip
-          return
-        end
+        return if instance.check_skip(location)
 
         Byebug.attach
         Byebug.current_context.step_out(3, true)
@@ -50,6 +47,7 @@ module RubyJard
       @session_lock = Mutex.new
       @output_buffer = []
       @skip = 0
+      @skipped_breakpoints = {}
 
       @current_frame = nil
       @current_backtrace = []
@@ -175,18 +173,23 @@ module RubyJard
     def skip(times)
       stop
       @skip = times
+      @skipped_breakpoints = {}
     end
 
-    def reduce_skip
-      if @skip > 0
-        @skip -= 1
-      else
+    def check_skip(location)
+      location_str = "#{location.path}:#{location.lineno}"
+      return true if @skipped_breakpoints[location_str]
+
+      if @skip <= 0
+        # Reset
         @skip = 0
+        @skipped_breakpoints = {}
+        false
+      else
+        @skip -= 1
+        @skipped_breakpoints[location_str] = true
+        true
       end
-    end
-
-    def should_skip?
-      @skip > 0
     end
 
     private

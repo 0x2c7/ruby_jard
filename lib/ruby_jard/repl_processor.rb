@@ -12,6 +12,7 @@ require 'ruby_jard/commands/step_command'
 require 'ruby_jard/commands/step_out_command'
 require 'ruby_jard/commands/frame_command'
 require 'ruby_jard/commands/list_command'
+require 'ruby_jard/commands/skip_command'
 require 'ruby_jard/commands/jard_command'
 require 'ruby_jard/commands/help_command'
 
@@ -170,6 +171,11 @@ module RubyJard
     def handle_continue_command(_options = {})
       @screen_manager.console.puts '▸▸ Program resumed ▸▸'
       @session.stop
+    end
+
+    def handle_skip_command(options)
+      times = options[:times] || 1
+      @session.skip(times)
     end
 
     def handle_exit_command(_options = {})

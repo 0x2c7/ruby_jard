@@ -110,7 +110,7 @@ end
 # Monkey-patch Kernel module to allow putting jard command anywhere.
 module Kernel
   def jard
-    RubyJard::Session.attach
+    RubyJard::Session.attach(caller_locations[0])
   end
 
   if RubyJard.config.alias_to_debugger
