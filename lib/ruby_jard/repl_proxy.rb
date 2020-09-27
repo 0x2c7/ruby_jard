@@ -129,12 +129,16 @@ module RubyJard
 
       @pry_input_pipe_read, @pry_input_pipe_write = IO.pipe
       @pry_output_pty_read, @pry_output_pty_write = PTY.open
-      @pry = pry_instance
 
       @key_bindings = key_bindings || RubyJard::KeyBindings.new
       INTERNAL_KEY_BINDINGS.each do |sequence, action|
         @key_bindings.push(sequence, action)
       end
+
+      @pry_pty_output_thread = Thread.new { pry_pty_output }
+      @pry_pty_output_thread.abort_on_exception = true
+      @pry_pty_output_thread.report_on_exception = false
+      @pry_pty_output_thread.name = '<<Jard: Pty Output Thread>>'
 
       Signal.trap('SIGWINCH') do
         # TODO: Shouldn't we delay this interrupt until repl is ready?
@@ -155,24 +159,18 @@ module RubyJard
       Pry.config.output = @pry_output_pty_write
       Readline.input = @pry_input_pipe_read
       Readline.output = @pry_output_pty_write
-      @pry.binding_stack.clear
 
       @main_thread = Thread.current
-
-      @pry_pty_output_thread = Thread.new { pry_pty_output }
-      @pry_pty_output_thread.abort_on_exception = true
-      @pry_pty_output_thread.report_on_exception = false
-      @pry_pty_output_thread.name = '<<Jard: Pty Output Thread>>'
-
-      @pry_input_thread = Thread.new { pry_repl(current_binding) }
-      @pry_input_thread.abort_on_exception = true
-      @pry_input_thread.report_on_exception = false
-      @pry_input_thread.name = '<<Jard: Pry input thread >>'
 
       @key_listen_thread = Thread.new { listen_key_press }
       @key_listen_thread.abort_on_exception = true
       @key_listen_thread.report_on_exception = false
       @key_listen_thread.name = '<<Jard: Repl key listen >>'
+
+      @pry_input_thread = Thread.new { pry_repl(current_binding) }
+      @pry_input_thread.abort_on_exception = true
+      @pry_input_thread.report_on_exception = false
+      @pry_input_thread.name = '<<Jard: Pry input thread >>'
 
       [@pry_input_thread, @key_listen_thread].map(&:join)
     rescue FlowInterrupt => e
@@ -185,9 +183,8 @@ module RubyJard
       Readline.input = @console.input
       Readline.output = @console.output
       Pry.config.output = @console.output
-      @key_listen_thread&.exit if @key_listen_thread&.alive?
       @pry_input_thread&.exit if @pry_input_thread&.alive?
-      @pry_pty_output_thread&.exit if @pry_pty_output_thread&.alive?
+      @key_listen_thread&.exit if @key_listen_thread&.alive?
       @state.exited!
     end
     # rubocop:enable Metrics/MethodLength
@@ -226,7 +223,7 @@ module RubyJard
 
     def pry_repl(current_binding)
       flow = RubyJard::ControlFlow.listen do
-        @pry.repl(current_binding)
+        pry_instance.repl(current_binding)
       end
       @state.check(:ready?) do
         @main_thread.raise FlowInterrupt.new('Interrupt from repl thread', flow)

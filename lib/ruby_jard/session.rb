@@ -36,10 +36,14 @@ module RubyJard
 
     OUTPUT_BUFFER_LENGTH = 10_000 # 10k lines
 
-    attr_accessor :output_buffer, :path_filter, :screen_manager
+    attr_accessor :output_buffer, :path_filter, :screen_manager, :repl_proxy
 
     def initialize(options = {})
       @screen_manager = RubyJard::ScreenManager.new
+      @repl_proxy = RubyJard::ReplProxy.new(
+        console: @screen_manager.console,
+        key_bindings: RubyJard.global_key_bindings
+      )
 
       @options = options
       @started = false

@@ -47,14 +47,11 @@ module RubyJard
 
       @session = RubyJard::Session.instance
       @screen_manager = @session.screen_manager
-      @repl_proxy = RubyJard::ReplProxy.new(
-        console: @screen_manager.console,
-        key_bindings: RubyJard.global_key_bindings
-      )
+      @repl_proxy = @session.repl_proxy
 
       @repeated_flow = 0
       @last_repeat_at = nil
-      @previous_flow = RubyJard::ControlFlow.new(:next)
+      @previous_flow = nil
     end
 
     def at_line
@@ -76,19 +73,21 @@ module RubyJard
         @session.lock do
           @session.sync(@context)
           unless @session.should_stop?(@context.frame.file)
-            @last_repeat_at = Time.now.to_f if @last_repeat_at == nil
+            @last_repeat_at ||= Time.now.to_f
             @repeated_flow += 1
 
             if @repeated_flow > REPEATED_FLOW_COUNT_THRESHOLD &&
                Time.now.to_f - @last_repeat_at > REPEATED_FLOW_TIME_THRESHOLD
               @previous_flow = RubyJard::ControlFlow.new(:step_out)
             end
+            @previous_flow ||= RubyJard::ControlFlow.new(:next)
             handle_flow(@previous_flow)
             return
           end
 
           @repeated_flow = 0
           @last_repeat_at = nil
+          @previous_flow = nil
           process_commands
         end
       end
