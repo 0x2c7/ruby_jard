@@ -9,7 +9,7 @@ module RubyJard
       group 'RubyJard'
       description 'Continue and skip one, or more next breakpoints.'
       match 'skip'
-      help_doc './next_command.doc.txt'
+      help_doc './skip_command.doc.txt'
 
       def options(opt)
         opt.on :a, :all, 'Skip all breakpoints and continue til the end'

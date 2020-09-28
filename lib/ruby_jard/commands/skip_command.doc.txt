@@ -1,0 +1,17 @@
+
+[34m┌────────────────┬─────────────────────┬───────┐[0m
+[34m│[0m Command        [34m│[0m Default key binding [34m│[0m Alias [34m│[0m 
+[34m├────────────────┼─────────────────────┼───────┤[0m
+[34m│[0m [34mskip [-a -all][0m [34m│[0m                     [34m│[0m       [34m│[0m 
+[34m└────────────────┴─────────────────────┴───────┘[0m
+
+Continue the execution of your program to the end, and skip one, or more next breakpoints it meets. This command is useful when you puts [34mjard[0m command in an iteration or a nested method calls.
+
+[34;1mNote:[0m
+Ruby Jard resets skipping list in next attachment, or when your program exits. If you are running a web server, or background jobs that prevent your program from stopping, and you already skip all breakpoints, your program may not stop, and requires a restart to attach again.
+
+[34;1mExamples:[0m
+
+[34mskip      # Continue and skip the first breakpoint[0m
+[34mskip 2    # Continue and skip the first 2 breakpoints it meets[0m
+[34mskip -all # Continue and skip all breakpoints[0m
