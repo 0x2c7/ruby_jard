@@ -65,7 +65,7 @@ RSpec.describe 'Test skip' do
       test.send_keys('continue', :Enter)
       test.assert_screen
       test.send_keys('skip --all', :Enter)
-      test.assert_screen
+      test.assert_screen_not_include('skip_2_example')
     ensure
       test.stop
     end
