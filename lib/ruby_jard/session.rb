@@ -110,7 +110,7 @@ module RubyJard
       @current_frame = nil
       @current_thread = nil
       @current_backtrace = nil
-      @threads = []
+      @threads = nil
       @skip = 0
       @skipped_breakpoints = {}
     end
