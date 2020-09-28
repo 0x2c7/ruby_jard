@@ -35,26 +35,18 @@ module RubyJard
 
     attr_accessor :output_buffer, :path_filter, :screen_manager, :repl_proxy
 
-    def initialize(options = {})
+    def initialize
       @screen_manager = RubyJard::ScreenManager.new
       @repl_proxy = RubyJard::ReplProxy.new(
         console: @screen_manager.console,
         key_bindings: RubyJard.global_key_bindings
       )
-
-      @options = options
+      @path_filter = RubyJard::PathFilter.new
       @started = false
       @session_lock = Mutex.new
       @output_buffer = []
-      @skip = 0
-      @skipped_breakpoints = {}
 
-      @current_frame = nil
-      @current_backtrace = []
-      @threads = []
-      @current_thread = nil
-
-      @path_filter = RubyJard::PathFilter.new
+      sync(nil)
     end
 
     def start
@@ -118,7 +110,9 @@ module RubyJard
       @current_frame = nil
       @current_thread = nil
       @current_backtrace = nil
-      @threads = nil
+      @threads = []
+      @skip = 0
+      @skipped_breakpoints = {}
     end
 
     def current_frame
@@ -181,9 +175,6 @@ module RubyJard
       return true if @skipped_breakpoints[location_str]
 
       if @skip <= 0
-        # Reset
-        @skip = 0
-        @skipped_breakpoints = {}
         false
       else
         @skip -= 1
