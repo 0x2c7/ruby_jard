@@ -26,6 +26,7 @@ skip 2    # Continue and skip the first 2 breakpoints it meets
 <LinkedImage link="/img/commands/skip-2.gif" alt="Multiple skip example"/>
 
 ```
-skip -all # Continue and skip all breakpoints
+skip -a    # Continue and skip all breakpoints
+skip --all # Continue and skip all breakpoints
 ```
 <LinkedImage link="/img/commands/skip-all.gif" alt="Skip all example"/>

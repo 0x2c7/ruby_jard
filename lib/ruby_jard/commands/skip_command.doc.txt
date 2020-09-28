@@ -14,4 +14,5 @@ Ruby Jard resets skipping list in next attachment, or when your program exits. I
 
 [34mskip      # Continue and skip the first breakpoint[0m
 [34mskip 2    # Continue and skip the first 2 breakpoints it meets[0m
-[34mskip -all # Continue and skip all breakpoints[0m
+[34mskip -a    # Continue and skip all breakpoints[0m
+[34mskip --all # Continue and skip all breakpoints[0m
