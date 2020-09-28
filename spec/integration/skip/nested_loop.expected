@@ -1,0 +1,138 @@
+### START SCREEN ###
+┌ Source  ../../examples/skip_example.rb:6 ────────────────────────────────────┐
+│   1 require 'ruby_jard'                                                      │
+│   2                                                                          │
+│   3 10.times do                                                              │
+│   4   10.times do                                                            │
+│   5     jard                                                                 │
+│⮕  6     a = 1                                                                │
+│   7   end                                                                    │
+│   8   jard                                                                   │
+│   9 end                                                                      │
+│  10 jard                                                                     │
+│  11 sleep 0                                                                  │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/skip_example.rb:6 ────────────────────────────────────┐
+│   1 require 'ruby_jard'                                                      │
+│   2                                                                          │
+│   3 10.times do                                                              │
+│   4   10.times do                                                            │
+│   5     jard                                                                 │
+│⮕  6     a = 1                                                                │
+│   7   end                                                                    │
+│   8   jard                                                                   │
+│   9 end                                                                      │
+│  10 jard                                                                     │
+│  11 sleep 0                                                                  │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["skip", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/skip_example.rb:9 ────────────────────────────────────┐
+│   1 require 'ruby_jard'                                                      │
+│   2                                                                          │
+│   3 10.times do                                                              │
+│   4   10.times do                                                            │
+│   5     jard                                                                 │
+│   6     a = 1                                                                │
+│   7   end                                                                    │
+│   8   jard                                                                   │
+│⮕  9 end                                                                      │
+│  10 jard                                                                     │
+│  11 sleep 0                                                                  │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/skip_example.rb:6 ────────────────────────────────────┐
+│   1 require 'ruby_jard'                                                      │
+│   2                                                                          │
+│   3 10.times do                                                              │
+│   4   10.times do                                                            │
+│   5     jard                                                                 │
+│⮕  6     a = 1                                                                │
+│   7   end                                                                    │
+│   8   jard                                                                   │
+│   9 end                                                                      │
+│  10 jard                                                                     │
+│  11 sleep 0                                                                  │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["skip 2", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/skip_example.rb:11 ───────────────────────────────────┐
+│   3 10.times do                                                              │
+│   4   10.times do                                                            │
+│   5     jard                                                                 │
+│   6     a = 1                                                                │
+│   7   end                                                                    │
+│   8   jard                                                                   │
+│   9 end                                                                      │
+│  10 jard                                                                     │
+│⮕ 11 sleep 0                                                                  │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
