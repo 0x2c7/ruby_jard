@@ -11,10 +11,17 @@ module RubyJard
       match 'skip'
       help_doc './next_command.doc.txt'
 
-      def process
-        times = validate_positive_integer!(args.first || 1)
+      def options(opt)
+        opt.on :a, :all, 'Skip all breakpoints and continue til the end'
+      end
 
-        RubyJard::ControlFlow.dispatch(:skip, times: times.to_i)
+      def process
+        if opts[:all]
+          RubyJard::ControlFlow.dispatch(:skip, times: -1)
+        else
+          times = validate_positive_integer!(args.first || 1)
+          RubyJard::ControlFlow.dispatch(:skip, times: times.to_i)
+        end
       end
     end
   end

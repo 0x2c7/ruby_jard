@@ -174,8 +174,11 @@ module RubyJard
       location_str = "#{location.path}:#{location.lineno}"
       return true if @skipped_breakpoints[location_str]
 
-      if @skip <= 0
+      case @skip
+      when 0
         false
+      when -1
+        true
       else
         @skip -= 1
         @skipped_breakpoints[location_str] = true
