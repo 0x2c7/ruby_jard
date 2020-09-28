@@ -26,6 +26,7 @@ module.exports = {
       'commands/down',
       'commands/frame',
       'commands/list',
+      'commands/skip',
       'commands/exit'
     ],
     'Control Commands': [

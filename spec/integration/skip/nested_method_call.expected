@@ -1,0 +1,159 @@
+### START SCREEN ###
+┌ Source  ../../examples/skip_2_example.rb:5 ──────────────────────────────────┐
+│   1 require 'ruby_jard'                                                      │
+│   2                                                                          │
+│   3 def test(count)                                                          │
+│   4   jard                                                                   │
+│⮕  5   puts 'Test1'                                                           │
+│   6   test2(count - 1) if count > 0                                          │
+│   7 end                                                                      │
+│   8                                                                          │
+│   9 def test2(count)                                                         │
+│  10   jard                                                                   │
+│  11   puts 'Test2'                                                           │
+│  12   test(count - 1) if count > 0                                           │
+│  13 end                                                                      │
+│  14                                                                          │
+│  15 test(50)                                                                 │
+│  16 jard                                                                     │
+│  17 puts 'End'                                                               │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/skip_2_example.rb:11 ─────────────────────────────────┐
+│   3 def test(count)                                                          │
+│   4   jard                                                                   │
+│   5   puts 'Test1'                                                           │
+│   6   test2(count - 1) if count > 0                                          │
+│   7 end                                                                      │
+│   8                                                                          │
+│   9 def test2(count)                                                         │
+│  10   jard                                                                   │
+│⮕ 11   puts 'Test2'                                                           │
+│  12   test(count - 1) if count > 0                                           │
+│  13 end                                                                      │
+│  14                                                                          │
+│  15 test(50)                                                                 │
+│  16 jard                                                                     │
+│  17 puts 'End'                                                               │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/skip_2_example.rb:5 ──────────────────────────────────┐
+│   1 require 'ruby_jard'                                                      │
+│   2                                                                          │
+│   3 def test(count)                                                          │
+│   4   jard                                                                   │
+│⮕  5   puts 'Test1'                                                           │
+│   6   test2(count - 1) if count > 0                                          │
+│   7 end                                                                      │
+│   8                                                                          │
+│   9 def test2(count)                                                         │
+│  10   jard                                                                   │
+│  11   puts 'Test2'                                                           │
+│  12   test(count - 1) if count > 0                                           │
+│  13 end                                                                      │
+│  14                                                                          │
+│  15 test(50)                                                                 │
+│  16 jard                                                                     │
+│  17 puts 'End'                                                               │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["skip", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/skip_2_example.rb:5 ──────────────────────────────────┐
+│   1 require 'ruby_jard'                                                      │
+│   2                                                                          │
+│   3 def test(count)                                                          │
+│   4   jard                                                                   │
+│⮕  5   puts 'Test1'                                                           │
+│   6   test2(count - 1) if count > 0                                          │
+│   7 end                                                                      │
+│   8                                                                          │
+│   9 def test2(count)                                                         │
+│  10   jard                                                                   │
+│  11   puts 'Test2'                                                           │
+│  12   test(count - 1) if count > 0                                           │
+│  13 end                                                                      │
+│  14                                                                          │
+│  15 test(50)                                                                 │
+│  16 jard                                                                     │
+│  17 puts 'End'                                                               │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/skip_2_example.rb:11 ─────────────────────────────────┐
+│   3 def test(count)                                                          │
+│   4   jard                                                                   │
+│   5   puts 'Test1'                                                           │
+│   6   test2(count - 1) if count > 0                                          │
+│   7 end                                                                      │
+│   8                                                                          │
+│   9 def test2(count)                                                         │
+│  10   jard                                                                   │
+│⮕ 11   puts 'Test2'                                                           │
+│  12   test(count - 1) if count > 0                                           │
+│  13 end                                                                      │
+│  14                                                                          │
+│  15 test(50)                                                                 │
+│  16 jard                                                                     │
+│  17 puts 'End'                                                               │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["skip 2", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/skip_2_example.rb:17 ─────────────────────────────────┐
+│   9 def test2(count)                                                         │
+│  10   jard                                                                   │
+│  11   puts 'Test2'                                                           │
+│  12   test(count - 1) if count > 0                                           │
+│  13 end                                                                      │
+│  14                                                                          │
+│  15 test(50)                                                                 │
+│  16 jard                                                                     │
+│⮕ 17 puts 'End'                                                               │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###

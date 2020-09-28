@@ -9,7 +9,7 @@ module RubyJard
     attr_accessor :layout, :rows, :window, :cursor, :selected
 
     def initialize(layout, session: nil)
-      @session = session || RubyJard::Session
+      @session = session || RubyJard::Session.instance
       @layout = layout
       @window = []
       @cursor = nil

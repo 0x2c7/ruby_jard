@@ -14,6 +14,12 @@ module RubyJard
     ].freeze
     attr_reader :cache
 
+    def self.next_filter(current)
+      index = RubyJard::PathFilter::FILTERS.index(current) || -1
+      index = (index + 1) % RubyJard::PathFilter::FILTERS.length
+      RubyJard::PathFilter::FILTERS[index]
+    end
+
     def initialize(config: nil, path_classifier: nil)
       @config = config || RubyJard.config
       @path_classifier = path_classifier || RubyJard::PathClassifier.new

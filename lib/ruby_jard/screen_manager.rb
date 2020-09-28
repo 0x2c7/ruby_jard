@@ -26,32 +26,18 @@ module RubyJard
   # This class acts as a coordinator, in which it combines the data and screen
   # layout template, triggers each screen to draw on the terminal.
   class ScreenManager
-    class << self
-      extend Forwardable
+    attr_reader :console
 
-      def_delegators :instance, :draw_screens, :puts, :draw_error, :start, :stop, :started?, :updating?
-
-      def instance
-        @instance ||= new
-      end
-    end
-
-    attr_reader :output, :output_storage
-
-    def initialize(output: RubyJard::Console.output)
-      @output = output
+    def initialize
+      @console = RubyJard::Console.new
       @screens = {}
       @started = false
-      @updating = false
     end
 
     def start
       return if started?
 
-      # Load configurations
-      RubyJard.config
-      RubyJard::Console.clear_screen(@output)
-
+      @console.clear_screen
       @started = true
     end
 
@@ -59,72 +45,61 @@ module RubyJard
       @started == true
     end
 
-    def updating?
-      @updating == true
-    end
-
     def stop
       return unless started?
 
-      @started = false
+      @console.cooked!
+      @console.enable_echo!
+      @console.enable_cursor!
 
-      RubyJard::Console.cooked!(@output)
-      RubyJard::Console.enable_echo!(@output)
-      RubyJard::Console.enable_cursor!(@output)
+      @started = false
     end
 
     def draw_screens
       start unless started?
-      @updating = true
 
-      RubyJard::Console.clear_screen(@output)
-      RubyJard::Console.disable_cursor!(@output)
-      width, height = RubyJard::Console.screen_size(@output)
+      @console.clear_screen
+      @console.disable_cursor!
+      @console.move_to(0, 0)
 
+      width, height = @console.screen_size
       @layouts = calculate_layouts(width, height)
       @screens = build_screens(@layouts)
-
-      RubyJard::Console.move_to(@output, 0, 0)
 
       draw_box(@screens)
       @screens.each do |screen|
         RubyJard::ScreenDrawer.new(
-          output: @output,
+          console: @console,
           screen: screen,
           color_scheme: pick_color_scheme
         ).draw
       end
 
-      RubyJard::Console.move_to(@output, 0, total_screen_height(@layouts) + 1)
-      RubyJard::Console.clear_screen_to_end(@output)
+      @console.move_to(0, total_screen_height(@layouts) + 1)
+      @console.clear_screen_to_end
     rescue StandardError => e
-      RubyJard::Console.clear_screen(@output)
-      draw_error(e, height)
+      @console.clear_screen
+      draw_error(e)
     ensure
       # You don't want to mess up previous user TTY no matter happens
-      RubyJard::Console.cooked!(@output)
-      RubyJard::Console.enable_echo!(@output)
-      RubyJard::Console.enable_cursor!(@output)
-      @updating = false
+      @console.cooked!
+      @console.enable_echo!
+      @console.enable_cursor!
     end
 
     def scroll; end
 
     def click; end
 
-    def draw_error(exception, height = 0)
-      @output.print RubyJard::Decorators::ColorDecorator::CSI_RESET
-      @output.puts '--- Error ---'
-      @output.puts "Internal error from Jard. I'm sorry to mess up your debugging experience."
-      @output.puts 'It would be great if you can submit an issue in https://github.com/nguyenquangminh0711/ruby_jard/issues'
-      @output.puts ''
-      @output.puts exception
-      if height == 0
-        @output.puts exception.backtrace
-      else
-        @output.puts exception.backtrace.first(10)
-      end
-      @output.puts '-------------'
+    def draw_error(exception)
+      @console.output.print RubyJard::Decorators::ColorDecorator::CSI_RESET
+      @console.output.puts '--- Error ---'
+      @console.output.puts "Internal error from Jard. I'm sorry to mess up your debugging experience."
+      @console.output.puts 'It would be great if you can submit an issue in https://github.com/nguyenquangminh0711/ruby_jard/issues'
+      @console.output.puts ''
+      @console.output.puts exception
+      @console.output.puts exception.backtrace
+      @console.output.puts '-------------'
       RubyJard.error(exception)
     end
 
@@ -159,7 +134,7 @@ module RubyJard
 
     def draw_box(screens)
       RubyJard::BoxDrawer.new(
-        output: @output,
+        console: @console,
         screens: screens,
         color_scheme: pick_color_scheme
       ).draw
@@ -170,18 +145,6 @@ module RubyJard
         screen: screen,
         color_scheme: pick_color_scheme
       ).render
-    end
-
-    def draw_debug(_width, height)
-      @output.print RubyJard::Decorators::ColorDecorator::CSI_RESET
-      unless RubyJard.debug_info.empty?
-        @output.puts '--- Debug ---'
-        RubyJard.debug_info.first(height - 2).each do |line|
-          @output.puts line
-        end
-        @output.puts '-------------'
-      end
-      RubyJard.clear_debug
     end
 
     def fetch_screen(name)

@@ -10,21 +10,12 @@ module RubyJard
   # be built.
   class Session
     class << self
-      extend Forwardable
-
-      def_delegators :instance,
-                     :lock,
-                     :sync, :should_stop?,
-                     :step_over, :step_into, :frame=,
-                     :threads, :current_frame, :current_thread, :current_backtrace,
-                     :output_buffer, :append_output_buffer
-
       def instance
         @instance ||= new
       end
 
-      def attach
-        unless RubyJard::Console.attachable?
+      def attach(location)
+        unless instance.should_attach?
           $stdout.puts 'Failed to attach. Jard could not detect a valid tty device.'
           $stdout.puts 'This bug occurs when the process Jard trying to access is a non-interactive environment '\
             ' such as docker, daemon, sub-processes, etc.'
@@ -33,6 +24,7 @@ module RubyJard
         end
 
         instance.start unless instance.started?
+        return if instance.check_skip(location)
 
         Byebug.attach
         Byebug.current_context.step_out(3, true)
@@ -41,20 +33,20 @@ module RubyJard
 
     OUTPUT_BUFFER_LENGTH = 10_000 # 10k lines
 
-    attr_accessor :output_buffer, :path_filter
+    attr_accessor :output_buffer, :path_filter, :screen_manager, :repl_proxy
 
-    def initialize(options = {})
-      @options = options
+    def initialize
+      @screen_manager = RubyJard::ScreenManager.new
+      @repl_proxy = RubyJard::ReplProxy.new(
+        console: @screen_manager.console,
+        key_bindings: RubyJard.global_key_bindings
+      )
+      @path_filter = RubyJard::PathFilter.new
       @started = false
       @session_lock = Mutex.new
       @output_buffer = []
 
-      @current_frame = nil
-      @current_backtrace = []
-      @threads = []
-      @current_thread = nil
-
-      @path_filter = RubyJard::PathFilter.new
+      sync(nil)
     end
 
     def start
@@ -74,24 +66,17 @@ module RubyJard
       Byebug::Context.ignored_files = Byebug::Context.all_files + RubyJard.all_files
 
       $stdout.send(:instance_eval, <<-CODE)
-        def write(*string, from_jard: false)
-          # NOTE: `RubyJard::ScreenManager.instance` is a must. Jard doesn't work well with delegator
-          # TODO: Debug and fix the issues permanently
-          if from_jard
-            super(*string)
-            return
-          end
-
-          unless RubyJard::ScreenManager.instance.updating?
-            RubyJard::Session.instance.append_output_buffer(string)
-          end
-
+        def write(*string)
+          RubyJard::Session.instance.append_output_buffer(string)
           super(*string)
         end
       CODE
 
-      at_exit { stop }
+      @screen_manager.start
+      # Load configurations
+      RubyJard.config
 
+      at_exit { stop }
       @started = true
     end
 
@@ -103,11 +88,16 @@ module RubyJard
     def stop
       return unless started?
 
-      RubyJard::ScreenManager.stop
+      @screen_manager.stop
+      Byebug.stop if Byebug.stoppable?
     end
 
     def started?
       @started == true
+    end
+
+    def should_attach?
+      @screen_manager.console.attachable?
     end
 
     def should_stop?(path)
@@ -121,6 +111,8 @@ module RubyJard
       @current_thread = nil
       @current_backtrace = nil
       @threads = nil
+      @skip = 0
+      @skipped_breakpoints = {}
     end
 
     def current_frame
@@ -169,6 +161,28 @@ module RubyJard
       # Let's deal with that later.
       @session_lock.synchronize do
         yield
+      end
+    end
+
+    def skip(times)
+      stop
+      @skip = times
+      @skipped_breakpoints = {}
+    end
+
+    def check_skip(location)
+      location_str = "#{location.path}:#{location.lineno}"
+      return true if @skipped_breakpoints[location_str]
+
+      case @skip
+      when 0
+        false
+      when -1
+        true
+      else
+        @skip -= 1
+        @skipped_breakpoints[location_str] = true
+        true
       end
     end
 

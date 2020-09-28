@@ -11,7 +11,7 @@ module RubyJard
 
       def initialize(*args)
         super(*args)
-        @session = (context[:session] || RubyJard::Session)
+        @session = (context[:session] || RubyJard::Session.instance)
       end
 
       def process

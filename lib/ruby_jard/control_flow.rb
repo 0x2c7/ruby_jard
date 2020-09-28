@@ -14,6 +14,7 @@ module RubyJard
       down: [:times],               # lib/ruby_jard/commands/down_command.rb
       next: [:times],               # lib/ruby_jard/commands/next_command.rb
       step: [:times],               # lib/ruby_jard/commands/step_command.rb
+      skip: [:times],               # lib/ruby_jard/commands/skip_command.rb
       step_out: [:times],           # lib/ruby_jard/commands/step_out_command.rb
       key_binding: [:action],       # lib/ruby_jard/commands/step_command.rb
       list: []                      # lib/ruby_jard/commands/list_command.rb
