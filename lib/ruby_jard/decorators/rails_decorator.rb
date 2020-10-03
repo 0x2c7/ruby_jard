@@ -32,38 +32,55 @@ module RubyJard
             margin_right: 1, styles: :text_primary
           )
           spans = [label]
-          spans += @attributes_decorator.inline_pairs(
-            variable.attributes.each_with_index,
-            total: variable.attributes.length, line_limit: line_limit - label.content_length - 2,
-            process_key: false, depth: depth + 1
-          )
+          attributes = variable_attributes(variable)
+          if attributes.nil?
+            spans << RubyJard::Span.new(content: '??? failed to inspect attributes', styles: :text_dim)
+          else
+            spans += @attributes_decorator.inline_pairs(
+              attributes.each_with_index,
+              total: attributes.length, line_limit: line_limit - label.content_length - 2,
+              process_key: false, depth: depth + 1
+            )
+          end
           spans << RubyJard::Span.new(content: '>', styles: :text_primary)
         end
 
         def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
           singleline = decorate_singleline(variable, line_limit: first_line_limit)
+          return [singleline] if singleline.map(&:content_length).sum < line_limit
 
-          if singleline.map(&:content_length).sum < line_limit
-            [singleline]
+          spans = [[RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)]]
+
+          item_count = 0
+          attributes = variable_attributes(variable)
+
+          if attributes.nil?
+            spans << [RubyJard::Span.new(
+              content: '▸ ??? failed to inspect attributes',
+              margin_left: 2, styles: :text_dim
+            )]
           else
-            spans = [RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)]
-
-            item_count = 0
-            variable.attributes.each_with_index do |(key, value), index|
+            attributes.each_with_index do |(key, value), index|
               spans << @attributes_decorator.pair(
                 key, value, line_limit: line_limit, process_key: false, depth: depth + 1
               )
               item_count += 1
               break if index >= lines - 2
             end
-            if variable.attributes.length > item_count
+            if attributes.length > item_count
               spans << [RubyJard::Span.new(
-                content: "▸ #{variable.attributes.length - item_count} more...",
+                content: "▸ #{attributes.length - item_count} more...",
                 margin_left: 2, styles: :text_dim
               )]
             end
-            spans
           end
+          spans
+        end
+
+        def variable_attributes(variable)
+          variable.attributes
+        rescue StandardError
+          nil
         end
       end
 
@@ -86,7 +103,7 @@ module RubyJard
         end
 
         def decorate_singleline(variable, line_limit:, depth: 0)
-          if variable.respond_to?(:loaded?) && variable.loaded?
+          if loaded?(variable)
             spans = []
             label = RubyJard::Span.new(
               content: RubyJard::Reflection.call_to_s(variable).chomp('>'),
@@ -115,7 +132,7 @@ module RubyJard
           singleline = decorate_singleline(variable, line_limit: first_line_limit)
           if singleline.map(&:content_length).sum < line_limit
             [singleline]
-          elsif !variable.respond_to?(:loaded?) || !variable.loaded?
+          elsif !loaded?(variable)
             [relation_summary(variable, first_line_limit)]
           else
             spans = [[RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)]]
@@ -144,13 +161,25 @@ module RubyJard
           width = overview.length + 1 + 12
           spans = [RubyJard::Span.new(content: overview, styles: :text_primary)]
           if RubyJard::Reflection.call_respond_to?(variable, :to_sql) && width < line_limit
-            detail = variable.to_sql.inspect
+            detail = variable_sql(variable)
             detail = detail[0..line_limit - width - 2] + '…' if width + detail.length < line_limit
             spans << RubyJard::Span.new(content: detail, styles: :text_dim, margin_left: 1)
           end
           spans << RubyJard::Span.new(content: '>', styles: :text_primary)
           spans << RubyJard::Span.new(content: '(not loaded)', margin_left: 1, styles: :text_dim)
           spans
+        end
+
+        def loaded?(variable)
+          variable.respond_to?(:loaded?) && variable.loaded?
+        rescue StandardError
+          false
+        end
+
+        def variable_sql(variable)
+          variable.to_sql.inspect
+        rescue StandardError
+          'failed to inspect active relation\'s SQL'
         end
       end
 

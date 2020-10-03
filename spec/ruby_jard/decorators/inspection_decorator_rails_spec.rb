@@ -14,6 +14,17 @@ RSpec.describe 'RubyJard::Decorators::InspectionDecorator - Rails' do
     }
 
     it {
+      klass = Class.new(ArPost) do
+        def attributes
+          raise 'ahihi'
+        end
+      end
+      expect(decorator.decorate_singleline(klass.new, line_limit: line_limit)).to match_spans(<<~SPANS)
+        #<#<Class:??????????????????>:?????????????????? ??? failed to inspect attributes>
+      SPANS
+    }
+
+    it {
       begin
         record = ArPost.create(
           title: "What\nis\nRuby\nJard?",
@@ -105,11 +116,59 @@ RSpec.describe 'RubyJard::Decorators::InspectionDecorator - Rails' do
         ArPost.destroy_all
       end
     }
+
+    it {
+      records = ArPost.where(
+        <<~SQL
+          title like 'not found' OR
+          false = true OR
+          title like 'whatever'
+        SQL
+      ).order(id: :desc)
+      def records.to_sql
+        raise 'ahihi'
+      end
+      expect(decorator.decorate_singleline(records, line_limit: 150)).to match_spans(<<~SPANS)
+        #<ArPost::ActiveRecord_Relation:?????????????????? failed to inspect active relation's SQL…> (not loaded)
+      SPANS
+    }
   end
 
   context 'with #decorate_multiline' do
     let(:line_limit) { 60 }
     let(:first_line_limit) { 80 }
+
+    it {
+      record = ArPet.new(name: 'Hana', age: 15)
+      expect(
+        decorator.decorate_multiline(
+          record,
+          line_limit: line_limit, first_line_limit: first_line_limit, lines: 7
+        )
+      ).to match_spans(<<~SPANS)
+        #<ArPet:??????????????????>
+          ▸ id → nil
+          ▸ name → "Hana"
+          ▸ age → 15
+      SPANS
+    }
+
+    it {
+      klass = Class.new(ArPost) do
+        def attributes
+          raise 'ahihi'
+        end
+      end
+      expect(
+        decorator.decorate_multiline(
+          klass.new,
+          line_limit: line_limit, first_line_limit: first_line_limit, lines: 7
+        )
+      ).to match_spans(<<~SPANS)
+        #<#<Class:??????????????????>:??????????????????>
+          ▸ ??? failed to inspect attributes
+      SPANS
+    }
 
     it {
       begin
@@ -213,6 +272,27 @@ RSpec.describe 'RubyJard::Decorators::InspectionDecorator - Rails' do
       ensure
         ArPost.destroy_all
       end
+    }
+
+    it {
+      records = ArPost.where(
+        <<~SQL
+          title like 'not found' OR
+          false = true OR
+          title like 'whatever'
+        SQL
+      ).order(id: :desc)
+      def records.to_sql
+        raise 'ahihi'
+      end
+      expect(
+        decorator.decorate_multiline(
+          records,
+          line_limit: 80, first_line_limit: 120, lines: 7
+        )
+      ).to match_spans(<<~SPANS)
+        #<ArPost::ActiveRecord_Relation:?????????????????? failed to inspect active relation's SQL…> (not loaded)
+      SPANS
     }
   end
 end
