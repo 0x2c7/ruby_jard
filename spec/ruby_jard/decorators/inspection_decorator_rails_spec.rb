@@ -14,6 +14,17 @@ RSpec.describe 'RubyJard::Decorators::InspectionDecorator - Rails' do
     }
 
     it {
+      klass = Class.new(ArPost) do
+        def attributes
+          raise 'ahihi'
+        end
+      end
+      expect(decorator.decorate_singleline(klass.new, line_limit: line_limit)).to match_spans(<<~SPANS)
+        #<#<Class:??????????????????>:?????????????????? ??? failed to inspect attributes>
+      SPANS
+    }
+
+    it {
       begin
         record = ArPost.create(
           title: "What\nis\nRuby\nJard?",
@@ -110,6 +121,38 @@ RSpec.describe 'RubyJard::Decorators::InspectionDecorator - Rails' do
   context 'with #decorate_multiline' do
     let(:line_limit) { 60 }
     let(:first_line_limit) { 80 }
+
+    it {
+      record = ArPet.new(name: 'Hana', age: 15)
+      expect(
+        decorator.decorate_multiline(
+          record,
+          line_limit: line_limit, first_line_limit: first_line_limit, lines: 7
+        )
+      ).to match_spans(<<~SPANS)
+        #<ArPet:??????????????????>
+          ▸ id → nil
+          ▸ name → "Hana"
+          ▸ age → 15
+      SPANS
+    }
+
+    it {
+      klass = Class.new(ArPost) do
+        def attributes
+          raise 'ahihi'
+        end
+      end
+      expect(
+        decorator.decorate_multiline(
+          klass.new,
+          line_limit: line_limit, first_line_limit: first_line_limit, lines: 7
+        )
+      ).to match_spans(<<~SPANS)
+        #<#<Class:??????????????????>:??????????????????>
+          ▸ ??? failed to inspect attributes
+      SPANS
+    }
 
     it {
       begin

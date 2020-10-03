@@ -32,38 +32,55 @@ module RubyJard
             margin_right: 1, styles: :text_primary
           )
           spans = [label]
-          spans += @attributes_decorator.inline_pairs(
-            variable.attributes.each_with_index,
-            total: variable.attributes.length, line_limit: line_limit - label.content_length - 2,
-            process_key: false, depth: depth + 1
-          )
+          attributes = variable_attributes(variable)
+          if attributes.nil?
+            spans << RubyJard::Span.new(content: '??? failed to inspect attributes', styles: :text_dim)
+          else
+            spans += @attributes_decorator.inline_pairs(
+              attributes.each_with_index,
+              total: attributes.length, line_limit: line_limit - label.content_length - 2,
+              process_key: false, depth: depth + 1
+            )
+          end
           spans << RubyJard::Span.new(content: '>', styles: :text_primary)
         end
 
         def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
           singleline = decorate_singleline(variable, line_limit: first_line_limit)
+          return [singleline] if singleline.map(&:content_length).sum < line_limit
 
-          if singleline.map(&:content_length).sum < line_limit
-            [singleline]
+          spans = [[RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)]]
+
+          item_count = 0
+          attributes = variable_attributes(variable)
+
+          if attributes.nil?
+            spans << [RubyJard::Span.new(
+              content: '▸ ??? failed to inspect attributes',
+              margin_left: 2, styles: :text_dim
+            )]
           else
-            spans = [RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)]
-
-            item_count = 0
-            variable.attributes.each_with_index do |(key, value), index|
+            attributes.each_with_index do |(key, value), index|
               spans << @attributes_decorator.pair(
                 key, value, line_limit: line_limit, process_key: false, depth: depth + 1
               )
               item_count += 1
               break if index >= lines - 2
             end
-            if variable.attributes.length > item_count
+            if attributes.length > item_count
               spans << [RubyJard::Span.new(
-                content: "▸ #{variable.attributes.length - item_count} more...",
+                content: "▸ #{attributes.length - item_count} more...",
                 margin_left: 2, styles: :text_dim
               )]
             end
-            spans
           end
+          spans
+        end
+
+        def variable_attributes(variable)
+          variable.attributes
+        rescue StandardError
+          nil
         end
       end
 
