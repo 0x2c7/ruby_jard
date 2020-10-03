@@ -116,6 +116,22 @@ RSpec.describe 'RubyJard::Decorators::InspectionDecorator - Rails' do
         ArPost.destroy_all
       end
     }
+
+    it {
+      records = ArPost.where(
+        <<~SQL
+          title like 'not found' OR
+          false = true OR
+          title like 'whatever'
+        SQL
+      ).order(id: :desc)
+      def records.to_sql
+        raise 'ahihi'
+      end
+      expect(decorator.decorate_singleline(records, line_limit: 150)).to match_spans(<<~SPANS)
+        #<ArPost::ActiveRecord_Relation:?????????????????? failed to inspect active relation's SQL…> (not loaded)
+      SPANS
+    }
   end
 
   context 'with #decorate_multiline' do
@@ -256,6 +272,27 @@ RSpec.describe 'RubyJard::Decorators::InspectionDecorator - Rails' do
       ensure
         ArPost.destroy_all
       end
+    }
+
+    it {
+      records = ArPost.where(
+        <<~SQL
+          title like 'not found' OR
+          false = true OR
+          title like 'whatever'
+        SQL
+      ).order(id: :desc)
+      def records.to_sql
+        raise 'ahihi'
+      end
+      expect(
+        decorator.decorate_multiline(
+          records,
+          line_limit: 80, first_line_limit: 120, lines: 7
+        )
+      ).to match_spans(<<~SPANS)
+        #<ArPost::ActiveRecord_Relation:?????????????????? failed to inspect active relation's SQL…> (not loaded)
+      SPANS
     }
   end
 end

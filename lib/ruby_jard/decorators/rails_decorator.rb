@@ -103,7 +103,7 @@ module RubyJard
         end
 
         def decorate_singleline(variable, line_limit:, depth: 0)
-          if variable.respond_to?(:loaded?) && variable.loaded?
+          if loaded?(variable)
             spans = []
             label = RubyJard::Span.new(
               content: RubyJard::Reflection.call_to_s(variable).chomp('>'),
@@ -132,7 +132,7 @@ module RubyJard
           singleline = decorate_singleline(variable, line_limit: first_line_limit)
           if singleline.map(&:content_length).sum < line_limit
             [singleline]
-          elsif !variable.respond_to?(:loaded?) || !variable.loaded?
+          elsif !loaded?(variable)
             [relation_summary(variable, first_line_limit)]
           else
             spans = [[RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)]]
@@ -161,13 +161,25 @@ module RubyJard
           width = overview.length + 1 + 12
           spans = [RubyJard::Span.new(content: overview, styles: :text_primary)]
           if RubyJard::Reflection.call_respond_to?(variable, :to_sql) && width < line_limit
-            detail = variable.to_sql.inspect
+            detail = variable_sql(variable)
             detail = detail[0..line_limit - width - 2] + '…' if width + detail.length < line_limit
             spans << RubyJard::Span.new(content: detail, styles: :text_dim, margin_left: 1)
           end
           spans << RubyJard::Span.new(content: '>', styles: :text_primary)
           spans << RubyJard::Span.new(content: '(not loaded)', margin_left: 1, styles: :text_dim)
           spans
+        end
+
+        def loaded?(variable)
+          variable.respond_to?(:loaded?) && variable.loaded?
+        rescue StandardError
+          false
+        end
+
+        def variable_sql(variable)
+          variable.to_sql.inspect
+        rescue StandardError
+          'failed to inspect active relation\'s SQL'
         end
       end
 
