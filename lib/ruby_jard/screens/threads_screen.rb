@@ -5,6 +5,8 @@ module RubyJard
     ##
     # Display all current alive threads, excluding internal threads
     class ThreadsScreen < RubyJard::Screen
+      include ::RubyJard::Span::DSL
+
       def initialize(*args)
         super
         @current_frame_location = @session.current_frame&.frame_location
@@ -50,33 +52,27 @@ module RubyJard
       private
 
       def span_mark(thread)
-        RubyJard::Span.new(
-          margin_right: 1,
-          content: thread.status == 'run' ? '▸' : '•',
-          styles: thread_status_style(thread)
-        )
+        if thread.status == 'run'
+          text_selected('▸ ')
+        else
+          text_dim('• ')
+        end
       end
 
       def span_thread_label(thread)
-        RubyJard::Span.new(
-          content: "Thread #{thread.label}",
-          styles: :text_highlighted
-        )
+        text_highlighted("Thread #{thread.label}")
       end
 
       def span_thread_status(thread)
-        RubyJard::Span.new(
-          content: "(#{thread.status})",
-          styles: thread_status_style(thread)
-        )
+        if thread.status == 'run'
+          text_selected("(#{thread.status})")
+        else
+          text_dim("(#{thread.status})")
+        end
       end
 
       def span_thread_name(thread)
-        RubyJard::Span.new(
-          margin_right: 1,
-          content: thread.name.nil? ? 'untitled' : thread.name,
-          styles: :text_primary
-        )
+        text_primary(thread.name.nil? ? 'untitled ' : "#{thread.name} ")
       end
 
       def span_thread_location(thread)
@@ -92,11 +88,7 @@ module RubyJard
               thread.backtrace_locations[1]&.lineno
             )
           end
-
-        RubyJard::Span.new(
-          content: path_label,
-          styles: :text_primary
-        )
+        text_primary(path_label)
       end
 
       def sort_threads(threads)
@@ -125,14 +117,6 @@ module RubyJard
 
       def current_thread?(thread)
         thread == @current_thread
-      end
-
-      def thread_status_style(thread)
-        if thread.status == 'run'
-          :text_selected
-        else
-          :text_dim
-        end
       end
     end
   end

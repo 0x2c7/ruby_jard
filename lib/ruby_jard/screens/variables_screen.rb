@@ -5,6 +5,8 @@ module RubyJard
     ##
     # Display the relevant variables and constants of current context, scopes
     class VariablesScreen < RubyJard::Screen
+      include ::RubyJard::Span::DSL
+
       KINDS = [
         KIND_SELF = :self,
         KIND_LOC  = :local_variable,
@@ -64,7 +66,7 @@ module RubyJard
         @rows = variables.map do |variable|
           name = span_name(variable)
           size = span_size(variable)
-          assignment = RubyJard::Span.new(margin_right: 1, margin_left: 1, content: '=', styles: :text_primary)
+          assignment = text_primary(' = ')
           inline_limit =
             (@layout.width - 3) * 3 - name.content_length - size.content_length - assignment.content_length
           inspections = @inspector.multiline(
@@ -121,15 +123,9 @@ module RubyJard
 
       def span_mark(variable, nested_inspections)
         if variable[0] == KIND_SELF || nested_inspections.empty?
-          RubyJard::Span.new(
-            content: ' ',
-            styles: :text_dim
-          )
+          text_dim(' ')
         else
-          RubyJard::Span.new(
-            content: '▾',
-            styles: :text_dim
-          )
+          text_dim('▾')
         end
       end
 
@@ -142,19 +138,15 @@ module RubyJard
 
       def span_size(variable)
         value = variable[2]
-        size_label =
-          if RubyJard::Reflection.call_is_a?(value, Array) && !value.empty?
-            "(len:#{value.length})"
-          elsif RubyJard::Reflection.call_is_a?(value, String) && value.length > 20
-            "(len:#{value.length})"
-          elsif RubyJard::Reflection.call_is_a?(value, Hash) && !value.empty?
-            "(size:#{value.length})"
-          end
-        RubyJard::Span.new(
-          margin_left: 1,
-          content: size_label,
-          styles: :text_primary
-        )
+        if RubyJard::Reflection.call_is_a?(value, Array) && !value.empty?
+          text_primary(" (len:#{value.length})")
+        elsif RubyJard::Reflection.call_is_a?(value, String) && value.length > 20
+          text_primary(" (len:#{value.length})")
+        elsif RubyJard::Reflection.call_is_a?(value, Hash) && !value.empty?
+          text_primary(" (size:#{value.length})")
+        else
+          text_primary('')
+        end
       end
 
       private

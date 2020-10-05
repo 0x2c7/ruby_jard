@@ -5,6 +5,8 @@ module RubyJard
     ##
     # A light inspector for a string. String should be escaped, and cut off.
     class StringInspector
+      include ::RubyJard::Span::DSL
+
       def initialize(base)
         @base = base
       end
@@ -29,9 +31,9 @@ module RubyJard
             inspection[0..line_limit - 4] + '…'
           end
         SimpleRow.new(
-          RubyJard::Span.new(content: '"', styles: :string),
-          RubyJard::Span.new(content: str, styles: :string),
-          RubyJard::Span.new(content: '"', styles: :string)
+          text_string('"'),
+          text_string(str),
+          text_string('"')
         )
       end
       # rubocop:enable Lint/UnusedMethodArgument

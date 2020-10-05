@@ -5,6 +5,8 @@ module RubyJard
     ##
     # Display source code of current stopping line and surrounding lines
     class SourceScreen < RubyJard::Screen
+      include ::RubyJard::Span::DSL
+
       def initialize(*args)
         super
         @frame_file = @session.current_frame&.frame_file
@@ -59,12 +61,7 @@ module RubyJard
             line_limit: 3,
             columns: [
               RubyJard::Column.new(
-                spans: [
-                  RubyJard::Span.new(
-                    content: 'This section is anonymous!',
-                    styles: :normal_token
-                  )
-                ]
+                spans: [text_primary('This section is anonymous!')]
               )
             ]
           ),
@@ -73,10 +70,7 @@ module RubyJard
             columns: [
               RubyJard::Column.new(
                 spans: [
-                  RubyJard::Span.new(
-                    content: 'Maybe it is dynamically evaluated, or called via ruby-e, without file information.',
-                    styles: :source_lineno
-                  )
+                  text_primary('Maybe it is dynamically evaluated, or called via ruby-e, without file information.')
                 ]
               )
             ]
@@ -85,19 +79,20 @@ module RubyJard
       end
 
       def span_mark(lineno)
-        RubyJard::Span.new(
-          margin_right: 1,
-          content: @frame_line == lineno ? '⮕' : ' ',
-          styles: :text_selected
-        )
+        if @frame_line == lineno
+          text_selected('⮕ ')
+        else
+          text_selected('  ')
+        end
       end
 
       def span_lineno(lineno)
         padded_lineno = lineno.to_s.rjust(@source_decorator.window_end.to_s.length)
-        RubyJard::Span.new(
-          content: padded_lineno,
-          styles: @frame_line == lineno ? :text_selected : :text_dim
-        )
+        if @frame_line == lineno
+          text_selected(padded_lineno)
+        else
+          text_dim(padded_lineno)
+        end
       end
 
       def loc_spans(loc)

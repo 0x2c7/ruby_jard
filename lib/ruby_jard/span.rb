@@ -15,16 +15,40 @@ module RubyJard
         Span.new(content: content, styles: :text_dim)
       end
 
+      def text_selected(content)
+        Span.new(content: content, styles: :text_selected)
+      end
+
+      def text_special(content)
+        Span.new(content: content, styles: :text_special)
+      end
+
+      def text_highlighted(content)
+        Span.new(content: content, styles: :text_highlighted)
+      end
+
+      def text_constant(content)
+        Span.new(content: content, styles: :constant)
+      end
+
+      def text_method(content)
+        Span.new(content: content, styles: :method)
+      end
+
+      def text_string(content)
+        Span.new(content: content, styles: :string)
+      end
+
       def sym_arrow(styles: :text_highlighted)
-        RubyJard::Span.new(content: ' → ', styles: styles)
+        Span.new(content: ' → ', styles: styles)
       end
 
       def sym_ellipsis(styles: :text_dim)
-        RubyJard::Span.new(content: '…', styles: styles)
+        Span.new(content: '…', styles: styles)
       end
 
       def sym_bullet(styles: :text_dim)
-        RubyJard::Span.new(content: '  ▸ ', styles: styles)
+        Span.new(content: '  ▸ ', styles: styles)
       end
     end
 

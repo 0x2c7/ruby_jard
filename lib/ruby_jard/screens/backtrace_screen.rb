@@ -5,6 +5,8 @@ module RubyJard
     ##
     # Backtrace screen implements the content to display current thread's backtrace to the user.
     class BacktraceScreen < RubyJard::Screen
+      include ::RubyJard::Span::DSL
+
       def initialize(*args)
         super(*args)
         @current_frame = @session.current_frame
@@ -67,15 +69,9 @@ module RubyJard
             frame.virtual_pos.to_s.rjust(@frames_count.to_s.length)
           end
         if frame.real_pos == @current_frame.real_pos
-          RubyJard::Span.new(
-            content: "⮕ #{frame_pos_label}",
-            styles: :text_selected
-          )
+          text_selected("⮕ #{frame_pos_label}")
         else
-          RubyJard::Span.new(
-            content: "  #{frame_pos_label}",
-            styles: :text_dim
-          )
+          text_dim("  #{frame_pos_label}")
         end
       end
 
@@ -96,19 +92,11 @@ module RubyJard
           end
 
         c_frame = frame.c_frame? ? '[c] ' : ''
-        RubyJard::Span.new(
-          content: "#{c_frame}#{class_label}",
-          margin_right: 1,
-          styles: :constant
-        )
+        text_constant("#{c_frame}#{class_label} ")
       end
 
       def span_label_preposition
-        RubyJard::Span.new(
-          content: 'in',
-          margin_right: 1,
-          styles: :text_primary
-        )
+        text_primary('in ')
       end
 
       def span_method_label(frame)
@@ -118,21 +106,14 @@ module RubyJard
           else
             frame.frame_location.base_label
           end
-        RubyJard::Span.new(
-          content: method_label,
-          margin_right: 1,
-          styles: :method
-        )
+        text_method("#{method_label} ")
       end
 
       def span_path(frame)
         path_label, = @path_decorator.decorate(
           frame.frame_location.path, frame.frame_location.lineno
         )
-        RubyJard::Span.new(
-          content: path_label,
-          styles: :text_primary
-        )
+        text_primary(path_label)
       end
 
       def insert_current_frame

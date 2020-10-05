@@ -5,6 +5,8 @@ module RubyJard
     ##
     # Display key binding guidelines and shortcuts.
     class MenuScreen < RubyJard::Screen
+      include ::RubyJard::Span::DSL
+
       def initialize(*args)
         super(*args)
         @filter = RubyJard.config.filter
@@ -34,10 +36,7 @@ module RubyJard
       private
 
       def generate_left_spans
-        filter_mode_span = RubyJard::Span.new(
-          content: "Filter (F2): #{@filter.to_s.gsub(/_/, ' ').capitalize}",
-          styles: :text_special
-        )
+        filter_mode_span = text_special("Filter (F2): #{@filter.to_s.gsub(/_/, ' ').capitalize}")
         filter_details =
           @filter_included.map { |f| "+#{f}" } +
           @filter_excluded.map { |f| "-#{f}" }
@@ -46,11 +45,7 @@ module RubyJard
         else
           filter_exceprt = filter_details.first(3).join(' ')
           filter_more = filter_details.length > 3 ? " (#{filter_details.length - 3} more...)" : nil
-          filter_details_span = RubyJard::Span.new(
-            content: "#{filter_exceprt}#{filter_more}",
-            styles: :text_primary,
-            margin_left: 1
-          )
+          filter_details_span = text_primary(" #{filter_exceprt}#{filter_more}")
           [
             filter_mode_span,
             filter_details_span
@@ -65,11 +60,7 @@ module RubyJard
           'Next (F8)',
           'Continue (F9)'
         ].map do |menu_item|
-          RubyJard::Span.new(
-            content: menu_item,
-            margin_left: 3,
-            styles: :text_primary
-          )
+          text_primary("   #{menu_item}")
         end
       end
 
