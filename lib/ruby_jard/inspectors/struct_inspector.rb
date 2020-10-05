@@ -16,12 +16,12 @@ module RubyJard
         RubyJard::Reflection.call_is_a?(variable, Struct)
       end
 
-      def singleline(variable, line_limit:, depth: 0)
+      def inline(variable, line_limit:, depth: 0)
         row = SimpleRow.new(RubyJard::Span.new(content: '#<struct', margin_right: 1, styles: :text_dim))
         unless variable.class.name.nil?
           row << RubyJard::Span.new(content: variable.class.name.to_s, margin_right: 1, styles: :text_primary)
         end
-        row << singleline_pairs(
+        row << inline_pairs(
           variable.members.each_with_index,
           total: variable.length, line_limit: line_limit - row.content_length - 1,
           process_key: false, depth: depth + 1,
@@ -35,10 +35,10 @@ module RubyJard
           return do_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         end
 
-        singleline = singleline(variable, line_limit: first_line_limit)
+        inline = inline(variable, line_limit: first_line_limit)
 
-        if singleline.content_length < line_limit || variable.length <= 1
-          [singleline]
+        if inline.content_length < line_limit || variable.length <= 1
+          [inline]
         else
           do_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         end

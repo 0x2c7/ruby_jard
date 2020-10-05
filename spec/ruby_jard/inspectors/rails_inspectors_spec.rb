@@ -3,12 +3,12 @@
 RSpec.describe 'Rails Inspectors' do
   subject(:inspector) { RubyJard::Inspectors::Base.new }
 
-  context 'with #singleline' do
+  context 'with #inline' do
     let(:line_limit) { 80 }
 
     it {
       record = ArPet.new(name: 'Hana', age: 15)
-      expect(inspector.singleline(record, line_limit: line_limit)).to match_row(<<~SPANS)
+      expect(inspector.inline(record, line_limit: line_limit)).to match_row(<<~SPANS)
         #<ArPet:?????????????????? id → nil, name → "Hana", age → 15>
       SPANS
     }
@@ -19,7 +19,7 @@ RSpec.describe 'Rails Inspectors' do
           raise 'ahihi'
         end
       end
-      expect(inspector.singleline(klass.new, line_limit: line_limit)).to match_row(<<~SPANS)
+      expect(inspector.inline(klass.new, line_limit: line_limit)).to match_row(<<~SPANS)
         #<#<Class:??????????????????>:?????????????????? ??? failed to inspect attributes>
       SPANS
     }
@@ -32,7 +32,7 @@ RSpec.describe 'Rails Inspectors' do
             Ruby Jard provides a rich Terminal UI that visualizes everything your need, navigates your program with pleasure, stops at matter places only, reduces manual and mental efforts. You can now focus on real debugging.
           DESCRIPTION
         )
-        expect(inspector.singleline(record, line_limit: line_limit)).to match_row(<<~SPANS)
+        expect(inspector.inline(record, line_limit: line_limit)).to match_row(<<~SPANS)
           #<ArPost:?????????????????? id → #{record.id}, title → "What\\nis\\nRuby\\nJard?", …>
         SPANS
       ensure
@@ -51,7 +51,7 @@ RSpec.describe 'Rails Inspectors' do
           description: 'Description 2'
         )
         records = ArPost.where(id: [record1.id, record2.id]).order(id: :desc)
-        expect(inspector.singleline(records, line_limit: line_limit)).to match_row(<<~SPANS)
+        expect(inspector.inline(records, line_limit: line_limit)).to match_row(<<~SPANS)
           #<ArPost::ActiveRecord_Relation:?????????????????? "SELECT \\"ar_posts\\".* FROM \\"ar_posts\\" WHERE \\"ar_posts\\".\\"id\\" IN (#{record1.id}, #{record2.id}) ORDER BY \\"ar_posts\\".\\"id\\" DESC"> (not loaded)
         SPANS
       ensure
@@ -69,7 +69,7 @@ RSpec.describe 'Rails Inspectors' do
           )
         end
         records = ArPost.all.limit(2).order(id: :desc).load
-        expect(inspector.singleline(records, line_limit: 150)).to match_row(<<~SPANS)
+        expect(inspector.inline(records, line_limit: 150)).to match_row(<<~SPANS)
           #<ArPost::ActiveRecord_Relation:?????????????????? #<ArPost:?????????????????? id → #{records[0].id}, …>, #<ArPost:?????????????????? id → #{records[1].id}, …>>
         SPANS
       ensure
@@ -86,7 +86,7 @@ RSpec.describe 'Rails Inspectors' do
           )
         end
         records = ArPost.where('title like "not found"').order(id: :desc).load
-        expect(inspector.singleline(records, line_limit: 150)).to match_row(<<~SPANS)
+        expect(inspector.inline(records, line_limit: 150)).to match_row(<<~SPANS)
           #<ArPost::ActiveRecord_Relation:??????????????????> (empty)
         SPANS
       ensure
@@ -109,7 +109,7 @@ RSpec.describe 'Rails Inspectors' do
             title like 'whatever'
           SQL
         ).order(id: :desc)
-        expect(inspector.singleline(records, line_limit: 150)).to match_row(<<~SPANS)
+        expect(inspector.inline(records, line_limit: 150)).to match_row(<<~SPANS)
           #<ArPost::ActiveRecord_Relation:?????????????????? "SELECT \\"ar_posts\\".* FROM \\"ar_posts\\" WHERE (title like 'not found' OR\\nfalse = true OR\\ntitle like 'whatever'\\n) ORDER BY \\"ar_posts\\".\\"id\\" DESC"> (not loaded)
         SPANS
       ensure
@@ -128,7 +128,7 @@ RSpec.describe 'Rails Inspectors' do
       def records.to_sql
         raise 'ahihi'
       end
-      expect(inspector.singleline(records, line_limit: 150)).to match_row(<<~SPANS)
+      expect(inspector.inline(records, line_limit: 150)).to match_row(<<~SPANS)
         #<ArPost::ActiveRecord_Relation:?????????????????? failed to inspect active relation's SQL…> (not loaded)
       SPANS
     }

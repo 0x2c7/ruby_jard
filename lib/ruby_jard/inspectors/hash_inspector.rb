@@ -3,7 +3,7 @@
 module RubyJard
   module Inspectors
     ##
-    # Decorate Hash data structure, supports singleline and multiline form.
+    # Decorate Hash data structure, supports inline and multiline form.
     class HashInspector
       include NestedHelper
 
@@ -11,10 +11,10 @@ module RubyJard
         @base = base
       end
 
-      def singleline(variable, line_limit:, depth: 0)
+      def inline(variable, line_limit:, depth: 0)
         SimpleRow.new(
           RubyJard::Span.new(content: '{', styles: :text_primary),
-          singleline_pairs(
+          inline_pairs(
             variable.each_with_index,
             total: variable.length, line_limit: line_limit - 2, process_key: true, depth: depth + 1
           ),
@@ -26,12 +26,12 @@ module RubyJard
         if variable.size > lines * 1.5
           return do_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         elsif variable.length <= 1
-          return [singleline(variable, line_limit: first_line_limit)]
+          return [inline(variable, line_limit: first_line_limit)]
         end
 
-        singleline = singleline(variable, line_limit: first_line_limit)
-        if singleline.content_length < line_limit
-          [singleline]
+        inline = inline(variable, line_limit: first_line_limit)
+        if inline.content_length < line_limit
+          [inline]
         else
           do_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         end

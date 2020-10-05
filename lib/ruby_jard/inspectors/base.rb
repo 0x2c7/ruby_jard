@@ -35,11 +35,11 @@ module RubyJard
         ]
       end
 
-      def singleline(variable, line_limit:, depth: 0)
+      def inline(variable, line_limit:, depth: 0)
         @inspectors.each do |inspector|
           next unless inspector.match?(variable)
 
-          row = inspector.singleline(variable, line_limit: line_limit, depth: depth)
+          row = inspector.inline(variable, line_limit: line_limit, depth: depth)
           return row unless row.nil?
         end
         SimpleRow.new(Span.new(content: '???', styles: :text_primary))

@@ -3,7 +3,7 @@
 module RubyJard
   module Inspectors
     ##
-    # Decorate Array data structure, supports singleline and multiline form.
+    # Decorate Array data structure, supports inline and multiline form.
     class ArrayInpsector
       include NestedHelper
 
@@ -15,10 +15,10 @@ module RubyJard
         RubyJard::Reflection.call_is_a?(variable, Array)
       end
 
-      def singleline(variable, line_limit:, depth: 0)
+      def inline(variable, line_limit:, depth: 0)
         SimpleRow.new(
           RubyJard::Span.new(content: '[', styles: :text_primary),
-          singleline_values(
+          inline_values(
             variable.each_with_index, total: variable.length, line_limit: line_limit - 2, depth: depth + 1
           ),
           RubyJard::Span.new(content: ']', styles: :text_primary)
@@ -27,14 +27,14 @@ module RubyJard
 
       def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
         if variable.length <= 1
-          return [singleline(variable, line_limit: first_line_limit, depth: depth)]
+          return [inline(variable, line_limit: first_line_limit, depth: depth)]
         elsif variable.length > lines * 2 || !same_type?(variable, lines)
           return do_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         end
 
-        singleline = singleline(variable, line_limit: first_line_limit, depth: depth)
-        if singleline.content_length < line_limit
-          [singleline]
+        inline = inline(variable, line_limit: first_line_limit, depth: depth)
+        if inline.content_length < line_limit
+          [inline]
         else
           do_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         end

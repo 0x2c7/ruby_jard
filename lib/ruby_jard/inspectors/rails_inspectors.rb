@@ -27,7 +27,7 @@ module RubyJard
         RubyJard::Reflection.call_is_a?(variable, ActiveRecord::Base)
       end
 
-      def singleline(variable, line_limit:, depth: 0)
+      def inline(variable, line_limit:, depth: 0)
         row = SimpleRow.new(
           RubyJard::Span.new(
             content: RubyJard::Reflection.call_to_s(variable).chomp!('>'),
@@ -38,7 +38,7 @@ module RubyJard
         if attributes.nil?
           row << RubyJard::Span.new(content: '??? failed to inspect attributes', styles: :text_dim)
         else
-          row << singleline_pairs(
+          row << inline_pairs(
             attributes.each_with_index,
             total: attributes.length, line_limit: line_limit - row.content_length - 2,
             process_key: false, depth: depth + 1
@@ -48,8 +48,8 @@ module RubyJard
       end
 
       def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
-        singleline = singleline(variable, line_limit: first_line_limit)
-        return [singleline] if singleline.content_length < line_limit
+        inline = inline(variable, line_limit: first_line_limit)
+        return [inline] if inline.content_length < line_limit
 
         rows = [SimpleRow.new(
           RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)
@@ -111,7 +111,7 @@ module RubyJard
         false
       end
 
-      def singleline(variable, line_limit:, depth: 0)
+      def inline(variable, line_limit:, depth: 0)
         if loaded?(variable)
           row = SimpleRow.new(
             RubyJard::Span.new(
@@ -120,7 +120,7 @@ module RubyJard
               margin_right: variable.length >= 1 ? 1 : 0
             )
           )
-          row << singleline_values(
+          row << inline_values(
             variable.each_with_index,
             total: variable.length, line_limit: line_limit - row.content_length - 2,
             depth: depth + 1
@@ -138,9 +138,9 @@ module RubyJard
       end
 
       def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
-        singleline = singleline(variable, line_limit: first_line_limit)
-        if singleline.content_length < line_limit
-          [singleline]
+        inline = inline(variable, line_limit: first_line_limit)
+        if inline.content_length < line_limit
+          [inline]
         elsif !loaded?(variable)
           [relation_summary(variable, first_line_limit)]
         else

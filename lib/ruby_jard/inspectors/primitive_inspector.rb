@@ -29,7 +29,7 @@ module RubyJard
       end
 
       # rubocop:disable Lint/UnusedMethodArgument
-      def singleline(variable, line_limit:, depth:)
+      def inline(variable, line_limit:, depth:)
         inspection = variable.inspect
         inspection = inspection[0..line_limit - 2] + '…' if inspection.length >= line_limit
         SimpleRow.new(
@@ -41,7 +41,7 @@ module RubyJard
       end
 
       def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
-        [singleline(variable, line_limit: first_line_limit, depth: depth)]
+        [inline(variable, line_limit: first_line_limit, depth: depth)]
       end
       # rubocop:enable Lint/UnusedMethodArgument
     end

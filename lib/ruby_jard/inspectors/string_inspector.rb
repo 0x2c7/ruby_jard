@@ -16,11 +16,11 @@ module RubyJard
       # rubocop:disable Lint/UnusedMethodArgument
       def multiline(variable, first_line_limit:, line_limit:, lines:, depth: 0)
         [
-          singleline(variable, line_limit: first_line_limit)
+          inline(variable, line_limit: first_line_limit)
         ]
       end
 
-      def singleline(variable, line_limit:, depth: 0)
+      def inline(variable, line_limit:, depth: 0)
         inspection = variable.inspect[1..-1].chomp!('"')
         str =
           if inspection.length < line_limit - 2

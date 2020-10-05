@@ -3,54 +3,54 @@
 RSpec.describe RubyJard::Inspectors::Base do
   subject(:inspector) { described_class.new }
 
-  context 'with #singleline' do
+  context 'with #inline' do
     let(:line_limit) { 80 }
 
     it {
-      expect(inspector.singleline(true, line_limit: line_limit)).to match_row(<<~SPANS)
+      expect(inspector.inline(true, line_limit: line_limit)).to match_row(<<~SPANS)
         true
       SPANS
     }
 
     it {
-      expect(inspector.singleline(false, line_limit: line_limit)).to match_row(<<~SPANS)
+      expect(inspector.inline(false, line_limit: line_limit)).to match_row(<<~SPANS)
         false
       SPANS
     }
 
     it {
-      expect(inspector.singleline(12_345, line_limit: line_limit)).to match_row(<<~SPANS)
+      expect(inspector.inline(12_345, line_limit: line_limit)).to match_row(<<~SPANS)
         12345
       SPANS
     }
 
     it {
-      expect(inspector.singleline(123.456, line_limit: line_limit)).to match_row(<<~SPANS)
+      expect(inspector.inline(123.456, line_limit: line_limit)).to match_row(<<~SPANS)
         123.456
       SPANS
     }
 
     it {
-      expect(inspector.singleline((123 + 0i), line_limit: line_limit)).to match_row(<<~SPANS)
+      expect(inspector.inline((123 + 0i), line_limit: line_limit)).to match_row(<<~SPANS)
         (123+0i)
       SPANS
     }
 
     it {
-      expect(inspector.singleline(/abcdef.*[a-z0-9]+/i, line_limit: line_limit)).to match_row(<<~SPANS)
+      expect(inspector.inline(/abcdef.*[a-z0-9]+/i, line_limit: line_limit)).to match_row(<<~SPANS)
         /abcdef.*[a-z0-9]+/i
       SPANS
     }
 
     it {
-      expect(inspector.singleline(method(:inspector).to_proc, line_limit: line_limit)).to match_row(<<~SPANS)
+      expect(inspector.inline(method(:inspector).to_proc, line_limit: line_limit)).to match_row(<<~SPANS)
         #<Proc:?????????????????? (lambda)>
       SPANS
     }
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           123_345_789_123_345_789_123_345_789_123_345_789_123_345_789_123_345_789_123_345_789_123_345_789_123_345_789,
           line_limit: line_limit
         )
@@ -61,7 +61,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(Object, line_limit: line_limit)
+        inspector.inline(Object, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         Object
       SPANS
@@ -69,7 +69,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(:some_thing, line_limit: line_limit)
+        inspector.inline(:some_thing, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         :some_thing
       SPANS
@@ -77,7 +77,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(nil, line_limit: line_limit)
+        inspector.inline(nil, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         nil
       SPANS
@@ -85,7 +85,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(0..30, line_limit: line_limit)
+        inspector.inline(0..30, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         0..30
       SPANS
@@ -93,7 +93,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           'abcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefgh',
           line_limit: line_limit
         )
@@ -103,14 +103,14 @@ RSpec.describe RubyJard::Inspectors::Base do
     }
 
     it {
-      expect(inspector.singleline([1, 2, 3], line_limit: line_limit)).to match_row(<<~SPANS)
+      expect(inspector.inline([1, 2, 3], line_limit: line_limit)).to match_row(<<~SPANS)
         [1, 2, 3]
       SPANS
     }
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           [1, 'Tenet is awesome', 'Inception is better', { a: 1, b: 2 }],
           line_limit: line_limit
         )
@@ -121,7 +121,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           [1, 'Tenet is awesome', 'Inception is better', { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7 }],
           line_limit: line_limit
         )
@@ -132,7 +132,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           [1, 'Tenet is awesome ' * 100, 'Inception is better ' * 100, { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7 }],
           line_limit: line_limit
         )
@@ -143,7 +143,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           [1, { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7 }, 'Inception is better ' * 100],
           line_limit: line_limit
         )
@@ -153,20 +153,20 @@ RSpec.describe RubyJard::Inspectors::Base do
     }
 
     it {
-      expect(inspector.singleline((1..21).to_a, line_limit: line_limit)).to match_row(<<~SPANS)
+      expect(inspector.inline((1..21).to_a, line_limit: line_limit)).to match_row(<<~SPANS)
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
       SPANS
     }
 
     it {
-      expect(inspector.singleline((1..100).to_a, line_limit: 80)).to match_row(<<~SPANS)
+      expect(inspector.inline((1..100).to_a, line_limit: 80)).to match_row(<<~SPANS)
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, …]
       SPANS
     }
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           { movies: [{ name: 'Inception', director: 'Nolan' }, { name: 'Interstella', director: 'Nolan' }] },
           line_limit: line_limit
         )
@@ -177,7 +177,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           { var_a: 1, var_b: 2, var_c: 'longggggggggggggggggggggg', var_d: :this_is_a_really_long_symbol },
           line_limit: line_limit
         )
@@ -190,7 +190,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       hash = { other_1: 1, other_2: 2 }
       hash[:self] = hash
       expect(
-        inspector.singleline(hash, line_limit: line_limit)
+        inspector.inline(hash, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         {:other_1 → 1, :other_2 → 2, :self → {:other_1 → 1, …}}
       SPANS
@@ -198,7 +198,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           { level_1: { level_2: { level_3: { level_4: { level_5: 'core' } } } } },
           line_limit: line_limit
         )
@@ -209,7 +209,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           {
             level_1_a: { level_2_a: { level_3_a: 'a', level_3_b: 'b' } },
             level_1_b: { level_2_b: { level_3_c: 'c', level_3_d: 'd' } }
@@ -223,7 +223,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           [
             [{ level_1_a: { level_2_a: 'a', level_2_b: 'b' } }],
             [{ level_1_b: { level_2_c: 'c', level_2_d: 'd' } }]
@@ -237,7 +237,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           [
             [[1, 2], [3, 4]],
             [[5, 6], [7, 8]]
@@ -251,7 +251,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           Struct.new(:name, :director).new('Tenet', 'Christopher Nolan'),
           line_limit: line_limit
         )
@@ -262,7 +262,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           Struct.new(:name, :director, :plot).new(
             'Tenet', 'Christopher Nolan',
             'A secret agent embarks on a dangerous, time-bending mission to prevent the start of World War III.'
@@ -277,7 +277,7 @@ RSpec.describe RubyJard::Inspectors::Base do
     it {
       stub_const('FilmStruct', Struct.new(:name, :director, :plot))
       expect(
-        inspector.singleline(
+        inspector.inline(
           FilmStruct.new(
             'Tenet', 'Christopher Nolan',
             'A secret agent embarks on a dangerous, time-bending mission to prevent the start of World War III.'
@@ -291,7 +291,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           OpenStruct.new(name: 'Tenet', director: 'Christopher Nolan'),
           line_limit: line_limit
         )
@@ -302,7 +302,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(
+        inspector.inline(
           OpenStruct.new(
             name: 'Tenet', director: 'Christopher Nolan',
             plot: 'A secret agent embarks on a dangerous, time-bending mission to prevent the start of World War III.'
@@ -318,7 +318,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       a = Object.new
       3.times { |index| a.instance_variable_set("@var_#{index}".to_sym, index) }
       expect(
-        inspector.singleline(a, line_limit: line_limit)
+        inspector.inline(a, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         #<Object:?????????????????? @var_0 → 0, @var_1 → 1, @var_2 → 2>
       SPANS
@@ -328,7 +328,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       a = Object.new
       10.times { |index| a.instance_variable_set("@var_#{index}".to_sym, index) }
       expect(
-        inspector.singleline(a, line_limit: line_limit)
+        inspector.inline(a, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         #<Object:?????????????????? @var_0 → 0, @var_1 → 1, @var_2 → 2, @var_3 → 3, …>
       SPANS
@@ -338,7 +338,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       a = Object.new
       3.times { |index| a.instance_variable_set("@var_#{index}".to_sym, index.to_s * 30) }
       expect(
-        inspector.singleline(a, line_limit: line_limit)
+        inspector.inline(a, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         #<Object:?????????????????? @var_0 → "0000000000000000000000…", …>
       SPANS
@@ -349,7 +349,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       a = ThisIsATestClass.new
       3.times { |index| a.instance_variable_set("@var_#{index}".to_sym, index.to_s * 30) }
       expect(
-        inspector.singleline(a, line_limit: line_limit)
+        inspector.inline(a, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         #<ThisIsATestClass:?????????????????? @var_0 → "0000000000000000000000…", …>
       SPANS
@@ -357,7 +357,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.singleline(BasicObject.new, line_limit: line_limit)
+        inspector.inline(BasicObject.new, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         #<BasicObject:??????????????????>
       SPANS
@@ -368,7 +368,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       a = ThisIsATestClass.new
       3.times { |index| RubyJard::Reflection.call_instance_variable_set(a, "@var_#{index}".to_sym, index) }
       expect(
-        inspector.singleline(a, line_limit: line_limit)
+        inspector.inline(a, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         #<ThisIsATestClass:?????????????????? @var_0 → 0, @var_1 → 1, @var_2 → 2>
       SPANS
@@ -390,7 +390,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       a = ThisIsATestClass.new
       3.times { |index| RubyJard::Reflection.call_instance_variable_set(a, "@var_#{index}".to_sym, index) }
       expect(
-        inspector.singleline(a, line_limit: line_limit)
+        inspector.inline(a, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         #<ThisIsATestClass:??????????????????>
       SPANS
@@ -403,7 +403,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       a.instance_variable_set(:@var_b, b)
       b.instance_variable_set(:@var_c, c)
       expect(
-        inspector.singleline(a, line_limit: line_limit)
+        inspector.inline(a, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         #<Object:?????????????????? @var_b → #<Object:?????????????????? …>>
       SPANS
@@ -416,7 +416,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       a.instance_variable_set(:@var_b, b)
       a.instance_variable_set(:@var_c, c)
       expect(
-        inspector.singleline(a, line_limit: line_limit)
+        inspector.inline(a, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         #<Object:?????????????????? @var_b → #<Object:??????????????????>, …>
       SPANS
@@ -431,7 +431,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       b.instance_variable_set(:@var_c, c)
       b.instance_variable_set(:@int_2, 2000)
       expect(
-        inspector.singleline(a, line_limit: 100)
+        inspector.inline(a, line_limit: 100)
       ).to match_row(<<~SPANS)
         #<Object:?????????????????? @var_b → #<Object:?????????????????? …>, @int_1 → 1000>
       SPANS
@@ -443,7 +443,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       a.instance_variable_set(:@var_1, 1)
       b.instance_variable_set(:@var_2, 2)
       expect(
-        inspector.singleline([a, b], line_limit: 100)
+        inspector.inline([a, b], line_limit: 100)
       ).to match_row(<<~SPANS)
         [#<Object:?????????????????? @var_1 → 1>, #<Object:?????????????????? @var_2 → 2>]
       SPANS
@@ -457,7 +457,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       b.instance_variable_set(:@var_2, 2)
       c.instance_variable_set(:@var_3, 3)
       expect(
-        inspector.singleline([a, b, c], line_limit: 100)
+        inspector.inline([a, b, c], line_limit: 100)
       ).to match_row(<<~SPANS)
         [#<Object:?????????????????? …>, #<Object:?????????????????? …>, #<Object:?????????????????? …>]
       SPANS
@@ -467,7 +467,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       a = [1, 2, 3]
       a << a
       expect(
-        inspector.singleline(a, line_limit: line_limit)
+        inspector.inline(a, line_limit: line_limit)
       ).to match_row(<<~SPANS)
         [1, 2, 3, [1, 2, 3, [1, 2, 3, […]]]]
       SPANS
@@ -482,7 +482,7 @@ RSpec.describe RubyJard::Inspectors::Base do
       b.instance_variable_set(:@var_c, c)
       c.instance_variable_set(:@var_a, a)
       expect(
-        inspector.singleline(a, line_limit: 100)
+        inspector.inline(a, line_limit: 100)
       ).to match_row(<<~SPANS)
         #<J1X:?????????????????? @var_b → #<J1X:?????????????????? @var_c → #<J1X:?????????????????? …>>>
       SPANS
@@ -491,7 +491,7 @@ RSpec.describe RubyJard::Inspectors::Base do
     it {
       stub_const('MyError', Class.new(StandardError))
       expect(
-        inspector.singleline(MyError.new('This is my fault'), line_limit: line_limit)
+        inspector.inline(MyError.new('This is my fault'), line_limit: line_limit)
       ).to match_row(<<~SPANS)
         #<MyError: This is my fault>
       SPANS
