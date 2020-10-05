@@ -28,6 +28,7 @@ module RubyJard
         RubyJard::Reflection.call_is_a?(variable, ActiveRecord::Base)
       end
 
+      # rubocop:disable Style/ConditionalAssignment
       def inline(variable, line_limit:, depth: 0)
         row = SimpleRow.new(
           text_primary(RubyJard::Reflection.call_to_s(variable).chomp!('>')),
@@ -46,6 +47,7 @@ module RubyJard
         end
         row << text_primary('>')
       end
+      # rubocop:enable Style/ConditionalAssignment
 
       def multiline(variable, lines:, line_limit:, depth: 0)
         inline = inline(variable, line_limit: line_limit * 2)
