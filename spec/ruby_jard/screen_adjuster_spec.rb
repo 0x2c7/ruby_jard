@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.describe RubyJard::ScreenAdjuster do
-  let(:parent_template_a) { RubyJard::Templates::LayoutTemplate.new }
+  let(:parent_template_a) { RubyJard::LayoutTemplate.new }
 
-  let(:template_1) { RubyJard::Templates::ScreenTemplate.new }
+  let(:template_1) { RubyJard::ScreenTemplate.new }
   let(:layout_1) do
     RubyJard::Layout.new(
       box_width: 75, box_height: 41,
@@ -15,7 +15,7 @@ RSpec.describe RubyJard::ScreenAdjuster do
     )
   end
 
-  let(:template_2) { RubyJard::Templates::ScreenTemplate.new }
+  let(:template_2) { RubyJard::ScreenTemplate.new }
   let(:layout_2) do
     RubyJard::Layout.new(
       box_width: 75, box_height: 12,
@@ -68,7 +68,7 @@ RSpec.describe RubyJard::ScreenAdjuster do
       )
     end
 
-    let(:template_2) { RubyJard::Templates::ScreenTemplate.new }
+    let(:template_2) { RubyJard::ScreenTemplate.new }
     let(:layout_4) do
       RubyJard::Layout.new(
         box_width: 75, box_height: 12,
@@ -123,7 +123,7 @@ RSpec.describe RubyJard::ScreenAdjuster do
       )
     end
 
-    let(:template_2) { RubyJard::Templates::ScreenTemplate.new }
+    let(:template_2) { RubyJard::ScreenTemplate.new }
     let(:layout_4) do
       RubyJard::Layout.new(
         box_width: 82, box_height: 12,
@@ -233,7 +233,7 @@ RSpec.describe RubyJard::ScreenAdjuster do
 
   context 'when first screen needs to expand and second one has min_height attribute' do
     let(:screen_1) { RubyJard::Screen.new(layout_1) }
-    let(:template_2) { RubyJard::Templates::ScreenTemplate.new(min_height: 3) }
+    let(:template_2) { RubyJard::ScreenTemplate.new(min_height: 3) }
     let(:screen_2) { RubyJard::Screen.new(layout_2) }
 
     let(:adjuster) { described_class.new([screen_1, screen_2]) }
@@ -272,7 +272,7 @@ RSpec.describe RubyJard::ScreenAdjuster do
         box_x: 72, box_y: 0,
         width: 73, height: 10,
         x: 73, y: 1,
-        template: RubyJard::Templates::ScreenTemplate.new,
+        template: RubyJard::ScreenTemplate.new,
         parent_template: parent_template_a
       )
     end
@@ -284,7 +284,7 @@ RSpec.describe RubyJard::ScreenAdjuster do
         box_x: 72, box_y: 12,
         width: 73, height: 39,
         x: 73, y: 13,
-        template: RubyJard::Templates::ScreenTemplate.new,
+        template: RubyJard::ScreenTemplate.new,
         parent_template: parent_template_a
       )
     end
@@ -353,7 +353,7 @@ RSpec.describe RubyJard::ScreenAdjuster do
   end
 
   context 'when both screens have spaces left but the first one has expand mode' do
-    let(:template_1) { RubyJard::Templates::ScreenTemplate.new(adjust_mode: :expand) }
+    let(:template_1) { RubyJard::ScreenTemplate.new(adjust_mode: :expand) }
     let(:screen_1) { RubyJard::Screen.new(layout_1) }
     let(:screen_2) { RubyJard::Screen.new(layout_2) }
 
@@ -387,8 +387,8 @@ RSpec.describe RubyJard::ScreenAdjuster do
   end
 
   context 'when both screens have spaces left and both have expand mode' do
-    let(:template_1) { RubyJard::Templates::ScreenTemplate.new(adjust_mode: :expand) }
-    let(:template_2) { RubyJard::Templates::ScreenTemplate.new(adjust_mode: :expand) }
+    let(:template_1) { RubyJard::ScreenTemplate.new(adjust_mode: :expand) }
+    let(:template_2) { RubyJard::ScreenTemplate.new(adjust_mode: :expand) }
     let(:screen_1) { RubyJard::Screen.new(layout_1) }
     let(:screen_2) { RubyJard::Screen.new(layout_2) }
 
@@ -422,14 +422,14 @@ RSpec.describe RubyJard::ScreenAdjuster do
   end
 
   context 'when the layout includes 2 columns' do
-    let(:parent_template_b) { RubyJard::Templates::LayoutTemplate.new }
+    let(:parent_template_b) { RubyJard::LayoutTemplate.new }
     let(:layout_3) do
       RubyJard::Layout.new(
         box_width: 73, box_height: 36,
         box_x: 0, box_y: 0,
         width: 71, height: 34,
         x: 1, y: 1,
-        template: RubyJard::Templates::ScreenTemplate.new,
+        template: RubyJard::ScreenTemplate.new,
         parent_template: parent_template_b
       )
     end
@@ -439,7 +439,7 @@ RSpec.describe RubyJard::ScreenAdjuster do
         box_x: 0, box_y: 35,
         width: 71, height: 15,
         x: 1, y: 36,
-        template: RubyJard::Templates::ScreenTemplate.new,
+        template: RubyJard::ScreenTemplate.new,
         parent_template: parent_template_b
       )
     end

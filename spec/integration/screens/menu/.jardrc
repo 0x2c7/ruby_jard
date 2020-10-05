@@ -2,14 +2,9 @@
 
 RubyJard::Layouts.add_layout(
   'standalone-menu',
-  RubyJard::Templates::LayoutTemplate.new(
-    fill_height: false,
-    children: [
-      RubyJard::Templates::ScreenTemplate.new(
-        height: 3,
-        screen: :menu
-      )
-    ]
+  RubyJard::LayoutTemplate.new(
+    RubyJard::ScreenTemplate.new(:menu, height: 3),
+    fill_height: false
   )
 )
 config.layout = 'standalone-menu'
