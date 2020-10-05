@@ -16,7 +16,7 @@ module RubyJard
 
     attr_accessor :spans, :content_length, :width, :content_width, :word_wrap
 
-    def initialize(spans: [], width: 0, word_wrap: WORD_WRAP_NORMAL)
+    def initialize(*spans, width: 0, word_wrap: WORD_WRAP_NORMAL)
       @spans = spans
       @width = width
       @content_length = spans.map(&:content_length).inject(&:+) || 0

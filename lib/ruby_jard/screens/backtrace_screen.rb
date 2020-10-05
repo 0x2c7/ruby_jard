@@ -38,23 +38,15 @@ module RubyJard
 
       def build
         @rows = @frames.map do |frame|
-          RubyJard::Row.new(
-            line_limit: 2,
-            columns: [
-              RubyJard::Column.new(
-                spans: [
-                  span_frame_pos(frame)
-                ]
-              ),
-              RubyJard::Column.new(
-                spans: [
-                  span_class_label(frame),
-                  span_label_preposition,
-                  span_method_label(frame),
-                  span_path(frame)
-                ]
-              )
-            ]
+          Row.new(
+            Column.new(span_frame_pos(frame)),
+            Column.new(
+              span_class_label(frame),
+              span_label_preposition,
+              span_method_label(frame),
+              span_path(frame)
+            ),
+            line_limit: 2
           )
         end
       end

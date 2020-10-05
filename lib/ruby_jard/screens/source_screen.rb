@@ -35,20 +35,16 @@ module RubyJard
         codes = @source_decorator.codes
         @rows = codes.map.with_index do |loc, index|
           lineno = @source_decorator.window_start + index
-          RubyJard::Row.new(
-            line_limit: 3,
-            columns: [
-              RubyJard::Column.new(
-                spans: [
-                  span_mark(lineno),
-                  span_lineno(lineno)
-                ]
-              ),
-              RubyJard::Column.new(
-                word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
-                spans: loc_spans(loc)
-              )
-            ]
+          Row.new(
+            Column.new(
+              span_mark(lineno),
+              span_lineno(lineno)
+            ),
+            Column.new(
+              *loc_spans(loc),
+              word_wrap: Column::WORD_WRAP_BREAK_WORD
+            ),
+            line_limit: 3
           )
         end
       end
@@ -57,23 +53,19 @@ module RubyJard
 
       def handle_anonymous_evaluation
         @rows = [
-          RubyJard::Row.new(
-            line_limit: 3,
-            columns: [
-              RubyJard::Column.new(
-                spans: [text_primary('This section is anonymous!')]
-              )
-            ]
+          Row.new(
+            RubyJard::Column.new(
+              spans: [text_primary('This section is anonymous!')]
+            ),
+            line_limit: 3
           ),
           RubyJard::Row.new(
-            line_limit: 3,
-            columns: [
-              RubyJard::Column.new(
-                spans: [
-                  text_primary('Maybe it is dynamically evaluated, or called via ruby-e, without file information.')
-                ]
-              )
-            ]
+            RubyJard::Column.new(
+              spans: [
+                text_primary('Maybe it is dynamically evaluated, or called via ruby-e, without file information.')
+              ]
+            ),
+            line_limit: 3
           )
         ]
       end

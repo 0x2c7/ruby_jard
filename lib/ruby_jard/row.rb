@@ -8,7 +8,7 @@ module RubyJard
 
     attr_accessor :columns, :line_limit, :content, :rendered
 
-    def initialize(line_limit: 1, columns: [])
+    def initialize(*columns, line_limit: 1)
       @content = []
       @columns = columns
       @line_limit = line_limit
@@ -35,7 +35,7 @@ module RubyJard
   # A row having only one column
   class SimpleRow < Row
     def initialize(*spans)
-      super(line_limit: 999, columns: [RubyJard::Column.new])
+      super(RubyJard::Column.new, line_limit: 999)
 
       spans.each do |span|
         self << span

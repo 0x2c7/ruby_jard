@@ -24,27 +24,19 @@ module RubyJard
       def build
         threads = sort_threads(@threads)
         @rows = threads.map do |thread|
-          RubyJard::Row.new(
-            line_limit: 2,
-            columns: [
-              RubyJard::Column.new(
-                spans: [
-                  span_mark(thread),
-                  span_thread_label(thread)
-                ]
-              ),
-              RubyJard::Column.new(
-                spans: [
-                  span_thread_status(thread)
-                ]
-              ),
-              RubyJard::Column.new(
-                spans: [
-                  span_thread_name(thread),
-                  span_thread_location(thread)
-                ]
-              )
-            ]
+          Row.new(
+            Column.new(
+              span_mark(thread),
+              span_thread_label(thread)
+            ),
+            Column.new(
+              span_thread_status(thread)
+            ),
+            Column.new(
+              span_thread_name(thread),
+              span_thread_location(thread)
+            ),
+            line_limit: 2
           )
         end
       end

@@ -18,19 +18,18 @@ module RubyJard
       def build
         left_spans = generate_left_spans
         right_spans = generate_right_spans
-        @rows = [RubyJard::Row.new(
-          line_limit: 1,
-          columns: [
-            RubyJard::Column.new(
-              word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
-              spans: [
+        @rows = [
+          Row.new(
+            Column.new(
+              *[
                 left_spans,
                 align(left_spans, right_spans),
                 right_spans
-              ].flatten
+              ].flatten,
+              word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD
             )
-          ]
-        )]
+          )
+        ]
       end
 
       private
