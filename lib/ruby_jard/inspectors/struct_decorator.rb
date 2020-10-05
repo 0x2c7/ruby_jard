@@ -3,12 +3,12 @@
 module RubyJard
   module Inpsectors
     ##
-    # Decorator for Struct.
+    # Inspector for Struct.
     # TODO: This one should handle Open Struct too
-    class StructDecorator
-      def initialize(generic_decorator)
-        @generic_decorator = generic_decorator
-        @attributes_decorator = AttributesDecorator.new(generic_decorator)
+    class StructInspector
+      def initialize(base)
+        @base = base
+        @attributes_inspector = AttributesInspector.new(base)
       end
 
       def match?(variable)
@@ -20,7 +20,7 @@ module RubyJard
         unless variable.class.name.nil?
           row << RubyJard::Span.new(content: variable.class.name.to_s, margin_right: 1, styles: :text_primary)
         end
-        row << @attributes_decorator.inline_pairs(
+        row << @attributes_inspector.inline_pairs(
           variable.members.each_with_index,
           total: variable.length, line_limit: line_limit - row.content_length - 1,
           process_key: false, depth: depth + 1,
@@ -56,7 +56,7 @@ module RubyJard
 
         item_count = 0
         variable.members.each_with_index do |member, index|
-          rows << @attributes_decorator.pair(
+          rows << @attributes_inspector.pair(
             member, variable[member], line_limit: line_limit, process_key: false, depth: depth + 1
           )
           item_count += 1

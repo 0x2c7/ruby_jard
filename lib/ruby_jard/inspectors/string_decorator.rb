@@ -3,10 +3,10 @@
 module RubyJard
   module Inpsectors
     ##
-    # A light decorator for a string. String should be escaped, and cut off.
-    class StringDecorator
-      def initialize(generic_decorator)
-        @generic_decorator = generic_decorator
+    # A light inspector for a string. String should be escaped, and cut off.
+    class StringInspector
+      def initialize(base)
+        @base = base
       end
 
       def match?(variable)

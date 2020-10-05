@@ -11,10 +11,10 @@ module RubyJard
     # - Collection of key-value pairs
     # - Individual value
     # - Individual pair
-    # This decorator should not be used directly.
-    class AttributesDecorator
-      def initialize(generic_decorator)
-        @generic_decorator = generic_decorator
+    # This inspector should not be used directly.
+    class AttributesInspector
+      def initialize(base)
+        @base = base
       end
 
       def inline_pairs(enum, total:, line_limit:, process_key:, value_proc: nil, depth: 0)
@@ -25,7 +25,7 @@ module RubyJard
 
         enum.each do |(key, value), index|
           key_inspection = inspect_key(key, item_limit, process_key: process_key, depth: depth)
-          value_inspection = @generic_decorator.decorate_singleline(
+          value_inspection = @base.decorate_singleline(
             value_proc.nil? ? value : value_proc.call(key),
             line_limit: pair_limit(depth, item_limit - key_inspection.content_length), depth: depth
           )
@@ -59,7 +59,7 @@ module RubyJard
 
         row << key_inspection
         row << arrow_span
-        value_inspection = @generic_decorator.decorate_singleline(
+        value_inspection = @base.decorate_singleline(
           value, line_limit: pair_limit(depth, line_limit - row.content_length), depth: depth
         )
 
@@ -73,7 +73,7 @@ module RubyJard
         item_limit = total == 0 ? 0 : value_limit(line_limit / total)
 
         enum.each do |value, index|
-          value_inspection = @generic_decorator.decorate_singleline(
+          value_inspection = @base.decorate_singleline(
             value, line_limit: value_limit(item_limit), depth: depth
           )
 
@@ -95,7 +95,7 @@ module RubyJard
 
         row = SimpleRow.new
         row << indent_span
-        value_inspection = @generic_decorator.decorate_singleline(
+        value_inspection = @base.decorate_singleline(
           value, line_limit: value_limit(line_limit - row.content_length), depth: depth
         )
 
@@ -106,7 +106,7 @@ module RubyJard
 
       def inspect_key(key, item_limit, process_key:, depth: 0)
         if process_key
-          @generic_decorator.decorate_singleline(
+          @base.decorate_singleline(
             key, line_limit: item_limit, depth: depth
           )
         else

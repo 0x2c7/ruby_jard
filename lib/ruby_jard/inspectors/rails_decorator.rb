@@ -3,7 +3,7 @@
 module RubyJard
   module Inpsectors
     ##
-    # A collection of rails-specific decorators.
+    # A collection of rails-specific inspectors.
     # Why?
     # Because Rails is magic, and it is like stepping on a minefield. Rails objects
     # can trigger side-effects (like calling database queries, or even API queries).
@@ -14,10 +14,10 @@ module RubyJard
     ##
     # Individual Active Record object is trivial. The object is a mapping from a DB
     # entity to Ruby object. It is always in the memory.
-    class ActiveRecordBaseDecorator
-      def initialize(generic_decorator)
-        @generic_decorator = generic_decorator
-        @attributes_decorator = AttributesDecorator.new(generic_decorator)
+    class ActiveRecordBaseInspector
+      def initialize(base)
+        @base = base
+        @attributes_inspector = AttributesInspector.new(base)
       end
 
       def match?(variable)
@@ -37,7 +37,7 @@ module RubyJard
         if attributes.nil?
           row << RubyJard::Span.new(content: '??? failed to inspect attributes', styles: :text_dim)
         else
-          row << @attributes_decorator.inline_pairs(
+          row << @attributes_inspector.inline_pairs(
             attributes.each_with_index,
             total: attributes.length, line_limit: line_limit - row.content_length - 2,
             process_key: false, depth: depth + 1
@@ -66,7 +66,7 @@ module RubyJard
           )
         else
           attributes.each_with_index do |(key, value), index|
-            rows << @attributes_decorator.pair(
+            rows << @attributes_inspector.pair(
               key, value, line_limit: line_limit, process_key: false, depth: depth + 1
             )
             item_count += 1
@@ -95,10 +95,10 @@ module RubyJard
     # When creating an active record relation, Rails won't trigger any SQL query, until
     # to_ary events. It is required to check for records loaded before recursively display
     # its children. Hint if the relation is not loaded yet.
-    class ActiveRecordRelationDecorator
-      def initialize(generic_decorator)
-        @generic_decorator = generic_decorator
-        @attributes_decorator = AttributesDecorator.new(generic_decorator)
+    class ActiveRecordRelationInspector
+      def initialize(base)
+        @base = base
+        @attributes_inspector = AttributesInspector.new(base)
       end
 
       def match?(variable)
@@ -118,7 +118,7 @@ module RubyJard
               margin_right: variable.length >= 1 ? 1 : 0
             )
           )
-          row << @attributes_decorator.inline_values(
+          row << @attributes_inspector.inline_values(
             variable.each_with_index,
             total: variable.length, line_limit: line_limit - row.content_length - 2,
             depth: depth + 1
@@ -148,7 +148,7 @@ module RubyJard
 
           item_count = 0
           variable.each_with_index do |value, index|
-            rows << @attributes_decorator.value(value, line_limit: line_limit, depth: depth + 1)
+            rows << @attributes_inspector.value(value, line_limit: line_limit, depth: depth + 1)
 
             item_count += 1
             break if index >= lines - 2

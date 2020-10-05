@@ -13,7 +13,7 @@ module RubyJard
   module Inpsectors
     ##
     # Generate beauty inspection of a particular variable.
-    # This class is a specialized decorator
+    # This class is a specialized decorator.
     # The inspection doesn't aim to become a better version of PP. Instead,
     # it's scope is to generate an overview of a variable within a limited
     # space. So, it only keeps useful information, and tries to reach the
@@ -25,13 +25,13 @@ module RubyJard
         # Order matters here. Primitive has highest priority, object is the last fallback
         @inspectors = [
           PrimitiveInspector.new(self),
-          ArrayDecorator.new(self),
-          StringDecorator.new(self),
-          HashDecorator.new(self),
-          StructDecorator.new(self),
-          ActiveRecordBaseDecorator.new(self),
-          ActiveRecordRelationDecorator.new(self),
-          ObjectDecorator.new(self)
+          ArrayInpsector.new(self),
+          StringInspector.new(self),
+          HashInspector.new(self),
+          StructInspector.new(self),
+          ActiveRecordBaseInspector.new(self),
+          ActiveRecordRelationInspector.new(self),
+          ObjectInspector.new(self)
         ]
       end
 

@@ -2,6 +2,7 @@
 
 module RubyJard
   module Inpsectors
+    # Inpsect Ruby primitive types
     class PrimitiveInspector
       PRIMITIVE_TYPES = {
         # Intertal classes for those values may differ between Ruby versions

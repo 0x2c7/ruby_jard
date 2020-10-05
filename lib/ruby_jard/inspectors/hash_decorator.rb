@@ -4,16 +4,16 @@ module RubyJard
   module Inpsectors
     ##
     # Decorate Hash data structure, supports singleline and multiline form.
-    class HashDecorator
-      def initialize(generic_decorator)
-        @generic_decorator = generic_decorator
-        @attributes_decorator = AttributesDecorator.new(generic_decorator)
+    class HashInspector
+      def initialize(base)
+        @base = base
+        @attributes_inspector = AttributesInspector.new(base)
       end
 
       def decorate_singleline(variable, line_limit:, depth: 0)
         SimpleRow.new(
           RubyJard::Span.new(content: '{', styles: :text_primary),
-          @attributes_decorator.inline_pairs(
+          @attributes_inspector.inline_pairs(
             variable.each_with_index,
             total: variable.length, line_limit: line_limit - 2, process_key: true, depth: depth + 1
           ),
@@ -47,7 +47,7 @@ module RubyJard
 
         item_count = 0
         variable.each_with_index do |(key, value), index|
-          rows << @attributes_decorator.pair(
+          rows << @attributes_inspector.pair(
             key, value, line_limit: line_limit, process_key: true, depth: depth + 1
           )
           item_count += 1
