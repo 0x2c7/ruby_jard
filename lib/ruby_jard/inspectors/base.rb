@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
+require 'ruby_jard/inspectors/nested_helper'
 require 'ruby_jard/inspectors/primitive_inspector'
 require 'ruby_jard/inspectors/array_inspector'
 require 'ruby_jard/inspectors/string_inspector'
 require 'ruby_jard/inspectors/hash_inspector'
 require 'ruby_jard/inspectors/struct_inspector'
 require 'ruby_jard/inspectors/object_inspector'
-require 'ruby_jard/inspectors/attributes_inspector'
 require 'ruby_jard/inspectors/rails_inspectors'
 
 module RubyJard

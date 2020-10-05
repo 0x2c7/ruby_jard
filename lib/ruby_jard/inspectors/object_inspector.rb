@@ -8,11 +8,12 @@ module RubyJard
     # parse the result.
     # Otherwise, it use `Kernel#to_s`, and try to push instance variables into the result.
     class ObjectInspector
+      include NestedHelper
+
       DEFAULT_INSPECTION_PATTERN = /#<(.*:0x[0-9a-z]+)(.*)>/i.freeze
 
       def initialize(base)
         @base = base
-        @attributes_inspector = AttributesInspector.new(base)
       end
 
       def match?(_variable)
@@ -36,7 +37,7 @@ module RubyJard
         item_count = 0
         instance_variables = RubyJard::Reflection.call_instance_variables(variable)
         instance_variables.each do |key|
-          rows << @attributes_inspector.pair(
+          rows << multiline_pair(
             key, RubyJard::Reflection.call_instance_variable_get(variable, key),
             line_limit: line_limit, process_key: false, depth: depth + 1
           )
@@ -83,7 +84,7 @@ module RubyJard
           )
           if with_children && !instance_variables.empty?
             row << RubyJard::Span.new(content: ' ', styles: :text_primary)
-            row << @attributes_inspector.inline_pairs(
+            row << singleline_pairs(
               instance_variables.each_with_index, total: instance_variables.length,
               line_limit: line_limit - row.content_length - 1,
               depth: depth + 1, process_key: false,

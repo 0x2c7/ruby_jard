@@ -15,9 +15,10 @@ module RubyJard
     # Individual Active Record object is trivial. The object is a mapping from a DB
     # entity to Ruby object. It is always in the memory.
     class ActiveRecordBaseInspector
+      include NestedHelper
+
       def initialize(base)
         @base = base
-        @attributes_inspector = AttributesInspector.new(base)
       end
 
       def match?(variable)
@@ -37,7 +38,7 @@ module RubyJard
         if attributes.nil?
           row << RubyJard::Span.new(content: '??? failed to inspect attributes', styles: :text_dim)
         else
-          row << @attributes_inspector.inline_pairs(
+          row << singleline_pairs(
             attributes.each_with_index,
             total: attributes.length, line_limit: line_limit - row.content_length - 2,
             process_key: false, depth: depth + 1
@@ -66,7 +67,7 @@ module RubyJard
           )
         else
           attributes.each_with_index do |(key, value), index|
-            rows << @attributes_inspector.pair(
+            rows << multiline_pair(
               key, value, line_limit: line_limit, process_key: false, depth: depth + 1
             )
             item_count += 1
@@ -96,9 +97,10 @@ module RubyJard
     # to_ary events. It is required to check for records loaded before recursively display
     # its children. Hint if the relation is not loaded yet.
     class ActiveRecordRelationInspector
+      include NestedHelper
+
       def initialize(base)
         @base = base
-        @attributes_inspector = AttributesInspector.new(base)
       end
 
       def match?(variable)
@@ -118,7 +120,7 @@ module RubyJard
               margin_right: variable.length >= 1 ? 1 : 0
             )
           )
-          row << @attributes_inspector.inline_values(
+          row << singleline_values(
             variable.each_with_index,
             total: variable.length, line_limit: line_limit - row.content_length - 2,
             depth: depth + 1
@@ -148,7 +150,7 @@ module RubyJard
 
           item_count = 0
           variable.each_with_index do |value, index|
-            rows << @attributes_inspector.value(value, line_limit: line_limit, depth: depth + 1)
+            rows << multiline_value(value, line_limit: line_limit, depth: depth + 1)
 
             item_count += 1
             break if index >= lines - 2

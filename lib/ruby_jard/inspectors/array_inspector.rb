@@ -5,9 +5,10 @@ module RubyJard
     ##
     # Decorate Array data structure, supports singleline and multiline form.
     class ArrayInpsector
+      include NestedHelper
+
       def initialize(base)
         @base = base
-        @attributes_inspector = AttributesInspector.new(base)
       end
 
       def match?(variable)
@@ -17,7 +18,7 @@ module RubyJard
       def singleline(variable, line_limit:, depth: 0)
         SimpleRow.new(
           RubyJard::Span.new(content: '[', styles: :text_primary),
-          @attributes_inspector.inline_values(
+          singleline_values(
             variable.each_with_index, total: variable.length, line_limit: line_limit - 2, depth: depth + 1
           ),
           RubyJard::Span.new(content: ']', styles: :text_primary)
@@ -50,7 +51,7 @@ module RubyJard
 
         item_count = 0
         variable.each_with_index do |value, index|
-          columns << @attributes_inspector.value(value, line_limit: line_limit, depth: depth + 1)
+          columns << multiline_value(value, line_limit: line_limit, depth: depth + 1)
 
           item_count += 1
           break if index >= lines - 2
