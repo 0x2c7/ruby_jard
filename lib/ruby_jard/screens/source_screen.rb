@@ -51,25 +51,6 @@ module RubyJard
 
       private
 
-      def handle_anonymous_evaluation
-        @rows = [
-          Row.new(
-            RubyJard::Column.new(
-              spans: [text_primary('This section is anonymous!')]
-            ),
-            line_limit: 3
-          ),
-          RubyJard::Row.new(
-            RubyJard::Column.new(
-              spans: [
-                text_primary('Maybe it is dynamically evaluated, or called via ruby-e, without file information.')
-              ]
-            ),
-            line_limit: 3
-          )
-        ]
-      end
-
       def span_mark(lineno)
         if @frame_line == lineno
           text_selected('⮕ ')

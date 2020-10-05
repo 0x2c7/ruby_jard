@@ -66,15 +66,19 @@ module RubyJard
 
       width, height = @console.screen_size
       @layouts = calculate_layouts(width, height)
-      @screens = build_screens(@layouts)
+      @screens = RubyJard.benchmark(:build_screens) { build_screens(@layouts) }
 
-      draw_box(@screens)
+      RubyJard.benchmark(:draw_box) do
+        draw_box(@screens)
+      end
       @screens.each do |screen|
-        RubyJard::ScreenDrawer.new(
-          console: @console,
-          screen: screen,
-          color_scheme: pick_color_scheme
-        ).draw
+        RubyJard.benchmark("draw_screen #{screen.class}") do
+          RubyJard::ScreenDrawer.new(
+            console: @console,
+            screen: screen,
+            color_scheme: pick_color_scheme
+          ).draw
+        end
       end
 
       @console.move_to(0, total_screen_height(@layouts) + 1)
@@ -120,8 +124,10 @@ module RubyJard
       screens = layouts.map do |layout|
         screen_class = fetch_screen(layout.template.screen)
         screen = screen_class.new(layout)
-        screen.build
-        render_screen(screen)
+        RubyJard.benchmark("build_screen #{screen.class}") do
+          screen.build
+          render_screen(screen)
+        end
         screen
       end
       RubyJard::ScreenAdjuster.new(screens).adjust

@@ -47,18 +47,19 @@ module RubyJard
   class Error < StandardError; end
 
   def self.benchmark(name)
-    @benchmark_depth ||= 0
-    @benchmark_depth += 1
+    return yield if ENV['JARD_BENCHMARK'].nil?
+
     return_value = nil
     time = Benchmark.realtime { return_value = yield }
-    debug("#{' ' * @benchmark_depth}Benchmark `#{name}`: #{time}")
-    @benchmark_depth -= 1
+
+    File.open('./jard_benchmark.txt', 'a') do |f|
+      f.puts "Benchmark `#{name}`: #{time}"
+    end
+
     return_value
   end
 
   def self.debug(*info)
-    @debug_info ||= []
-    @debug_info += info
     File.open('./jard_debugs.txt', 'a') do |f|
       info.each do |line|
         f.puts line
@@ -74,14 +75,6 @@ module RubyJard
     end
   rescue StandardError
     # Ignore
-  end
-
-  def self.debug_info
-    @debug_info ||= []
-  end
-
-  def self.clear_debug
-    @debug_info = []
   end
 
   def self.global_key_bindings
