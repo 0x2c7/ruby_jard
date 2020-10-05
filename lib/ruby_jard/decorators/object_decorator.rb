@@ -15,6 +15,10 @@ module RubyJard
         @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
       end
 
+      def match?(_variable)
+        true
+      end
+
       def decorate_singleline(variable, line_limit:, depth: 0)
         if native_inspect?(variable)
           decorate_native_inspection(variable, line_limit: line_limit, depth: depth)

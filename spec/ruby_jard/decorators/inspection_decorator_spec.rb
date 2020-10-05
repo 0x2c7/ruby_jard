@@ -497,14 +497,6 @@ RSpec.describe RubyJard::Decorators::InspectionDecorator do
         #<MyError: This is my fault>
       SPANS
     }
-
-    it {
-      expect(
-        decorator.decorate_singleline(decorator, line_limit: 150)
-      ).to match_row(<<~SPANS)
-        #<RubyJard::Decorators::InspectionDecorator:?????????????????? @array_decorator → #<RubyJard::Decorators::ArrayDecorator:?????????????????? …>, …>
-      SPANS
-    }
   end
 
   context 'with #decorate_multiline' do
@@ -1130,23 +1122,6 @@ RSpec.describe RubyJard::Decorators::InspectionDecorator do
         )
       ).to match_rows(<<~SPANS)
         #<MyError: This is my fault>
-      SPANS
-    }
-
-    it {
-      expect(
-        decorator.decorate_multiline(
-          decorator,
-          line_limit: line_limit, first_line_limit: first_line_limit, lines: 7
-        )
-      ).to match_rows(<<~SPANS)
-        #<RubyJard::Decorators::InspectionDecorator:??????????????????>
-          ▸ @array_decorator → #<RubyJard::Decorators::ArrayDecorator:?????????????????? …>
-          ▸ @string_decorator → #<RubyJard::Decorators::StringDecorator:?????????????????? …>
-          ▸ @hash_decorator → #<RubyJard::Decorators::HashDecorator:?????????????????? …>
-          ▸ @struct_decorator → #<RubyJard::Decorators::StructDecorator:?????????????????? …>
-          ▸ @rails_decorator → #<RubyJard::Decorators::RailsDecorator:?????????????????? …>
-          ▸ 2 more...
       SPANS
     }
   end
