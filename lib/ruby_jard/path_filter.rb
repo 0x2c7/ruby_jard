@@ -24,6 +24,7 @@ module RubyJard
       @config = config || RubyJard.config
       @path_classifier = path_classifier || RubyJard::PathClassifier.new
 
+      # TODO: Better caching: LRU or ring buffer
       @cache = {}
       @cache_version = @config.filter_version
     end
