@@ -64,21 +64,28 @@ module RubyJard
       def build
         variables = fetch_relevant_variables
         @rows = variables.map do |variable|
-          name = span_name(variable)
-          size = span_size(variable)
-          assignment = text_primary(' = ')
-          inline_limit =
-            (@layout.width - 3) * 3 - name.content_length - size.content_length - assignment.content_length
           inspections = @inspector.multiline(
-            variable[2], first_line_limit: inline_limit, line_limit: @layout.width - 3, lines: 7
+            variable[2], line_limit: @layout.width - 3, lines: 7
           )
-          base_inspection = inspections.shift
-          mark = span_mark(variable, inspections)
-          [
-            base_row(name, size, assignment, mark, base_inspection),
-            nested_rows(variable, inspections)
-          ]
-        end.flatten.compact
+          inspections = [inspections.first] if variable[0] == KIND_SELF
+          inspections.map.with_index do |inspection, index|
+            spans = inspection.spans
+            if index == 0
+              spans = [span_name(variable), span_size(variable), text_primary(' = ')] + spans
+              Row.new(
+                Column.new(span_mark(inspections)),
+                Column.new(*spans, word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD),
+                line_limit: 3
+              )
+            else
+              Row.new(
+                Column.new,
+                Column.new(*spans, word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD),
+                line_limit: 3
+              )
+            end
+          end
+        end.flatten
       end
 
       def fetch_relevant_variables
@@ -91,30 +98,8 @@ module RubyJard
         )
       end
 
-      def base_row(name, size, assignment, mark, base_inspection)
-        Row.new(
-          Column.new(mark),
-          Column.new(
-            *[name, size, assignment, base_inspection.spans].flatten.compact,
-            word_wrap: Column::WORD_WRAP_BREAK_WORD
-          ),
-          line_limit: 3
-        )
-      end
-
-      def nested_rows(variable, nested_inspections)
-        return nil if nested_inspections.empty? || variable[0] == KIND_SELF
-
-        nested_inspections.map do |row|
-          Row.new(
-            Column.new,
-            Column.new(*row.spans, word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD)
-          )
-        end
-      end
-
-      def span_mark(variable, nested_inspections)
-        if variable[0] == KIND_SELF || nested_inspections.empty?
+      def span_mark(inspections)
+        if inspections.length <= 1
           text_dim(' ')
         else
           text_dim('▾')

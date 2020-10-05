@@ -47,8 +47,8 @@ module RubyJard
         row << text_primary('>')
       end
 
-      def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
-        inline = inline(variable, line_limit: first_line_limit)
+      def multiline(variable, lines:, line_limit:, depth: 0)
+        inline = inline(variable, line_limit: line_limit * 2)
         return [inline] if inline.content_length < line_limit
 
         rows = [SimpleRow.new(
@@ -115,16 +115,16 @@ module RubyJard
           row << text_primary(' (empty)') if variable.length <= 0
           row
         else
-          relation_summary(variable, line_limit)
+          relation_summary(variable, line_limit: line_limit)
         end
       end
 
-      def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
-        inline = inline(variable, line_limit: first_line_limit)
+      def multiline(variable, lines:, line_limit:, depth: 0)
+        inline = inline(variable, line_limit: line_limit * 2)
         if inline.content_length < line_limit
           [inline]
         elsif !loaded?(variable)
-          [relation_summary(variable, first_line_limit)]
+          [relation_summary(variable, line_limit: line_limit * 2)]
         else
           rows = [SimpleRow.new(text_primary(RubyJard::Reflection.call_to_s(variable)))]
 
@@ -144,7 +144,7 @@ module RubyJard
 
       private
 
-      def relation_summary(variable, line_limit)
+      def relation_summary(variable, line_limit:)
         overview = RubyJard::Reflection.call_to_s(variable).chomp('>')
         width = overview.length + 1 + 12
         row = SimpleRow.new(text_primary(overview))

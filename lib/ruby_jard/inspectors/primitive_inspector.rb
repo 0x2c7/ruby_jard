@@ -40,8 +40,8 @@ module RubyJard
         )
       end
 
-      def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
-        [inline(variable, line_limit: first_line_limit, depth: depth)]
+      def multiline(variable, lines:, line_limit:, depth: 0)
+        [inline(variable, line_limit: line_limit * 2, depth: depth)]
       end
       # rubocop:enable Lint/UnusedMethodArgument
     end

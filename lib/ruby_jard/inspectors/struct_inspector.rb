@@ -32,12 +32,12 @@ module RubyJard
         row << text_dim('>')
       end
 
-      def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
+      def multiline(variable, lines:, line_limit:, depth: 0)
         if variable.size > lines * 1.5
           return do_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         end
 
-        inline = inline(variable, line_limit: first_line_limit)
+        inline = inline(variable, line_limit: line_limit * 2)
 
         if inline.content_length < line_limit || variable.length <= 1
           [inline]

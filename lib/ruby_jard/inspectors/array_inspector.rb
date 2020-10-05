@@ -26,14 +26,14 @@ module RubyJard
         )
       end
 
-      def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
+      def multiline(variable, lines:, line_limit:, depth: 0)
         if variable.length <= 1
-          return [inline(variable, line_limit: first_line_limit, depth: depth)]
+          return [inline(variable, line_limit: line_limit * 2, depth: depth)]
         elsif variable.length > lines * 2 || !same_type?(variable, lines)
           return do_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         end
 
-        inline = inline(variable, line_limit: first_line_limit, depth: depth)
+        inline = inline(variable, line_limit: line_limit * 2, depth: depth)
         if inline.content_length < line_limit
           [inline]
         else

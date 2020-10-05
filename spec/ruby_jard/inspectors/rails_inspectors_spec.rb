@@ -136,15 +136,11 @@ RSpec.describe 'Rails Inspectors' do
 
   context 'with #multiline' do
     let(:line_limit) { 60 }
-    let(:first_line_limit) { 80 }
 
     it {
       record = ArPet.new(name: 'Hana', age: 15)
       expect(
-        inspector.multiline(
-          record,
-          line_limit: line_limit, first_line_limit: first_line_limit, lines: 7
-        )
+        inspector.multiline(record, line_limit: line_limit, lines: 7)
       ).to match_rows(<<~SPANS)
         #<ArPet:??????????????????>
           ▸ id → nil
@@ -160,10 +156,7 @@ RSpec.describe 'Rails Inspectors' do
         end
       end
       expect(
-        inspector.multiline(
-          klass.new,
-          line_limit: line_limit, first_line_limit: first_line_limit, lines: 7
-        )
+        inspector.multiline(klass.new, line_limit: line_limit, lines: 7)
       ).to match_rows(<<~SPANS)
         #<#<Class:??????????????????>:??????????????????>
           ▸ ??? failed to inspect attributes
@@ -182,10 +175,7 @@ RSpec.describe 'Rails Inspectors' do
         )
         records = ArPost.where(id: [record1.id, record2.id]).order(id: :desc)
         expect(
-          inspector.multiline(
-            records,
-            line_limit: line_limit, first_line_limit: first_line_limit, lines: 7
-          )
+          inspector.multiline(records, line_limit: line_limit, lines: 7)
         ).to match_rows(<<~SPANS)
           #<ArPost::ActiveRecord_Relation:?????????????????? "SELECT \\"ar_posts\\".* FROM \\"ar_posts\\" WHERE \\"ar_posts\\".\\"id\\" IN (#{record1.id}, #{record2.id}) ORDER BY \\"ar_posts\\".\\"id\\" DESC"> (not loaded)
         SPANS
@@ -205,10 +195,7 @@ RSpec.describe 'Rails Inspectors' do
         end
         records = ArPost.all.order(id: :desc).load
         expect(
-          inspector.multiline(
-            records,
-            line_limit: 80, first_line_limit: 120, lines: 7
-          )
+          inspector.multiline(records, line_limit: 80, lines: 7)
         ).to match_rows(<<~SPANS)
           #<ArPost::ActiveRecord_Relation:??????????????????>
             ▸ #<ArPost:?????????????????? id → #{records[0].id}, title → "Title 10", …>
@@ -234,10 +221,7 @@ RSpec.describe 'Rails Inspectors' do
         end
         records = ArPost.where('title like "not found"').order(id: :desc).load
         expect(
-          inspector.multiline(
-            records,
-            line_limit: 80, first_line_limit: 120, lines: 7
-          )
+          inspector.multiline(records, line_limit: 80, lines: 7)
         ).to match_rows(<<~SPANS)
           #<ArPost::ActiveRecord_Relation:??????????????????> (empty)
         SPANS
@@ -262,10 +246,7 @@ RSpec.describe 'Rails Inspectors' do
           SQL
         ).order(id: :desc)
         expect(
-          inspector.multiline(
-            records,
-            line_limit: 80, first_line_limit: 120, lines: 7
-          )
+          inspector.multiline(records, line_limit: 80, lines: 7)
         ).to match_rows(<<~SPANS)
           #<ArPost::ActiveRecord_Relation:?????????????????? "SELECT \\"ar_posts\\".* FROM \\"ar_posts\\" WHERE (title like \\"not found\\" OR\\ntitle like \\"another not found\\" OR\\ntitle like 'whatever'\\n) ORDER BY \\"ar_posts\\".\\"id\\" DESC"> (not loaded)
         SPANS
@@ -286,10 +267,7 @@ RSpec.describe 'Rails Inspectors' do
         raise 'ahihi'
       end
       expect(
-        inspector.multiline(
-          records,
-          line_limit: 80, first_line_limit: 120, lines: 7
-        )
+        inspector.multiline(records, line_limit: 80, lines: 7)
       ).to match_rows(<<~SPANS)
         #<ArPost::ActiveRecord_Relation:?????????????????? failed to inspect active relation's SQL…> (not loaded)
       SPANS

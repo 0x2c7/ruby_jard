@@ -45,13 +45,12 @@ module RubyJard
         SimpleRow.new(text_primary('???'))
       end
 
-      def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
+      def multiline(variable, lines:, line_limit:, depth: 0)
         @inspectors.each do |inspector|
           next unless inspector.match?(variable)
 
           rows = inspector.multiline(
             variable,
-            first_line_limit: first_line_limit,
             lines: lines,
             line_limit: line_limit,
             depth: depth

@@ -29,11 +29,11 @@ module RubyJard
         end
       end
 
-      def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
-        inline = inline(variable, line_limit: first_line_limit)
+      def multiline(variable, lines:, line_limit:, depth: 0)
+        inline = inline(variable, line_limit: line_limit * 2)
         return [inline] if inline.content_length < line_limit
 
-        rows = [decorate_native_inspection(variable, line_limit: first_line_limit, with_children: false)]
+        rows = [decorate_native_inspection(variable, line_limit: line_limit * 2, with_children: false)]
 
         item_count = 0
         instance_variables = RubyJard::Reflection.call_instance_variables(variable)
