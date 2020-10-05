@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Inpsectors
+  module Inspectors
     ##
     # Default decorator for non-primitive data structure. It is aimed to replace default `inspect`.
     # If a variable re-implement `#inspect`, it hornors this decision, but still try to

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Inpsectors
+  module Inspectors
     ##
     # Decorate Hash data structure, supports singleline and multiline form.
     class HashInspector

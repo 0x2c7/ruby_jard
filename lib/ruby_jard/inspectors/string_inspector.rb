@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Inpsectors
+  module Inspectors
     ##
     # A light inspector for a string. String should be escaped, and cut off.
     class StringInspector

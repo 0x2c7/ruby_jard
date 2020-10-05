@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Inpsectors
+  module Inspectors
     ##
     # A collection of rails-specific inspectors.
     # Why?

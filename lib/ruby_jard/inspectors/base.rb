@@ -10,7 +10,7 @@ require 'ruby_jard/inspectors/attributes_inspector'
 require 'ruby_jard/inspectors/rails_inspectors'
 
 module RubyJard
-  module Inpsectors
+  module Inspectors
     ##
     # Generate beauty inspection of a particular variable.
     # This class is a specialized decorator.

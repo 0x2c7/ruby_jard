@@ -50,7 +50,7 @@ module RubyJard
         @inline_tokens = generate_inline_tokens(@frame_file, @frame_line)
         @file_tokens = generate_file_tokens(@frame_file)
 
-        @inspector = RubyJard::Inpsectors::Base.new
+        @inspector = RubyJard::Inspectors::Base.new
 
         @selected = 0
       end

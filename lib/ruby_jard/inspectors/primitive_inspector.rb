@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Inpsectors
+  module Inspectors
     # Inpsect Ruby primitive types
     class PrimitiveInspector
       PRIMITIVE_TYPES = {

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Inpsectors
+  module Inspectors
     ##
     # Inspector for Struct.
     # TODO: This one should handle Open Struct too
