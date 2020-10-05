@@ -5,6 +5,7 @@ module RubyJard
     ##
     # Decorator to decorate a file of source code
     # It loads a window of source code that centers the current line position.
+    # TODO: Remove this file. Merge with source screen
     class SourceDecorator
       attr_reader :codes, :window_start, :window_end
 
