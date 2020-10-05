@@ -16,11 +16,24 @@ module RubyJard
 
     attr_accessor :spans, :content_length, :width, :content_width, :word_wrap
 
-    def initialize(spans: [], word_wrap: WORD_WRAP_NORMAL)
+    def initialize(spans: [], width: 0, word_wrap: WORD_WRAP_NORMAL)
       @spans = spans
-      @width = 0
-      @content_length = 0
+      @width = width
+      @content_length = spans.map(&:content_length).inject(&:+) || 0
       @word_wrap = word_wrap
+    end
+
+    def <<(span)
+      if span.is_a?(Array)
+        span.each { |s| self << s }
+      else
+        raise RubyJard::Error, 'RubyJard::Span object expected' unless span.is_a?(RubyJard::Span)
+
+        @spans << span
+        @content_length += span.content_length
+      end
+
+      self
     end
   end
 end

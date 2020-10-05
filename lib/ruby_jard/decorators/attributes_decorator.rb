@@ -18,110 +18,88 @@ module RubyJard
       end
 
       def inline_pairs(enum, total:, line_limit:, process_key:, value_proc: nil, depth: 0)
-        return [ellipsis_span] if too_deep?(depth, line_limit)
+        return SimpleRow.new(ellipsis_span) if too_deep?(depth, line_limit)
 
-        spans = []
-        width = 1
-        item_limit = total == 0 ? 0 : [line_limit / total, pair_limit(depth)].max
+        row = SimpleRow.new
+        item_limit = total == 0 ? 0 : pair_limit(depth, line_limit / total)
 
         enum.each do |(key, value), index|
           key_inspection = inspect_key(key, item_limit, process_key: process_key, depth: depth)
-          key_inspection_length = key_inspection.map(&:content_length).sum
-
           value_inspection = @generic_decorator.decorate_singleline(
             value_proc.nil? ? value : value_proc.call(key),
-            line_limit: [item_limit - key_inspection_length, pair_limit(depth)].max, depth: depth
+            line_limit: pair_limit(depth, item_limit - key_inspection.content_length), depth: depth
           )
-          value_inspection_length = value_inspection.map(&:content_length).sum
 
-          if index > 0
-            spans << separator_span
-            width += 2
-          end
+          row << separator_span if index > 0
 
-          if width + key_inspection_length + value_inspection_length + 5 > line_limit
-            spans << ellipsis_span
+          if row.content_length + key_inspection.content_length + value_inspection.content_length + 6 > line_limit
+            row << ellipsis_span
             break
           end
 
-          spans += key_inspection
-          width += key_inspection_length
-
-          spans << arrow_span
-          width += 3
-
-          spans += value_inspection
-          width += value_inspection_length
+          row << key_inspection
+          row << arrow_span
+          row << value_inspection
         end
 
-        spans
+        row
       end
 
       def pair(key, value, line_limit:, process_key:, depth: 0)
-        return [ellipsis_span] if too_deep?(depth, line_limit)
+        return SimpleRow.new(ellipsis_span) if too_deep?(depth, line_limit)
 
-        spans = []
-        spans << indent_span
-        width = indent_span.content_length
+        row = SimpleRow.new
+        row << indent_span
 
-        key_inspection = inspect_key(key, line_limit - width, process_key: process_key, depth: depth)
-        key_inspection_length = key_inspection.map(&:content_length).sum
-
-        spans += key_inspection
-        width += key_inspection_length
-
-        spans << arrow_span
-        width += 3
-
-        value_inspection = @generic_decorator.decorate_singleline(
-          value, line_limit: [line_limit - width, pair_limit(depth)].max, depth: depth
+        key_inspection = inspect_key(
+          key,
+          line_limit - indent_span.content_length,
+          process_key: process_key, depth: depth
         )
 
-        spans + value_inspection
+        row << key_inspection
+        row << arrow_span
+        value_inspection = @generic_decorator.decorate_singleline(
+          value, line_limit: pair_limit(depth, line_limit - row.content_length), depth: depth
+        )
+
+        row << value_inspection
       end
 
       def inline_values(enum, total:, line_limit:, depth: 0)
-        return [ellipsis_span] if too_deep?(depth, line_limit)
+        return SimpleRow.new(ellipsis_span) if too_deep?(depth, line_limit)
 
-        spans = []
-        width = 1
-        item_limit = total == 0 ? 0 : [line_limit / total, value_limit(depth)].max
+        row = SimpleRow.new
+        item_limit = total == 0 ? 0 : value_limit(line_limit / total)
 
         enum.each do |value, index|
           value_inspection = @generic_decorator.decorate_singleline(
-            value, line_limit: [item_limit, value_limit(depth)].max, depth: depth
+            value, line_limit: value_limit(item_limit), depth: depth
           )
-          value_inspection_length = value_inspection.map(&:content_length).sum
 
-          if index > 0
-            spans << separator_span
-            width += 2
-          end
+          row << separator_span if index > 0
 
-          if width + value_inspection_length + 2 > line_limit
-            spans << ellipsis_span
+          if row.content_length + value_inspection.content_length + 2 > line_limit
+            row << ellipsis_span
             break
           end
 
-          spans += value_inspection
-          width += value_inspection_length
+          row << value_inspection
         end
 
-        spans
+        row
       end
 
       def value(value, line_limit:, depth: 0)
         return [ellipsis_span] if too_deep?(depth, line_limit)
 
-        spans = []
-        spans << indent_span
-        width = indent_span.content_length
-
+        row = SimpleRow.new
+        row << indent_span
         value_inspection = @generic_decorator.decorate_singleline(
-          value, line_limit: [line_limit - width, value_limit(depth)].max, depth: depth
+          value, line_limit: value_limit(line_limit - row.content_length), depth: depth
         )
 
-        spans + value_inspection
+        row << value_inspection
       end
 
       private
@@ -132,7 +110,7 @@ module RubyJard
             key, line_limit: item_limit, depth: depth
           )
         else
-          [RubyJard::Span.new(content: key.to_s, styles: :text_primary)]
+          SimpleRow.new(RubyJard::Span.new(content: key.to_s, styles: :text_primary))
         end
       end
 
@@ -159,13 +137,13 @@ module RubyJard
         depth > TYPICAL_DEPTH
       end
 
-      def pair_limit(depth)
+      def pair_limit(depth, desired)
         # The deeper structure, the less meaningful the actual data is
-        30 - depth * 5
+        [30 - depth * 5, desired].max
       end
 
-      def value_limit(_depth)
-        30
+      def value_limit(desired)
+        [30, desired].max
       end
     end
   end

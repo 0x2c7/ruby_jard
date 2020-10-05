@@ -96,7 +96,7 @@ module RubyJard
             RubyJard::Column.new(spans: [mark]),
             RubyJard::Column.new(
               word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
-              spans: [name, size, assignment, base_inspection].flatten.compact
+              spans: [name, size, assignment, base_inspection.spans].flatten.compact
             )
           ]
         )
@@ -105,14 +105,14 @@ module RubyJard
       def nested_rows(variable, nested_inspections)
         return nil if nested_inspections.empty? || variable[0] == KIND_SELF
 
-        nested_inspections.map do |spans|
+        nested_inspections.map do |row|
           RubyJard::Row.new(
             line_limit: 1,
             columns: [
               RubyJard::Column.new,
               RubyJard::Column.new(
                 word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
-                spans: spans
+                spans: row.spans
               )
             ]
           )

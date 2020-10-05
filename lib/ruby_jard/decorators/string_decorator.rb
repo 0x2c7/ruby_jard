@@ -28,12 +28,11 @@ module RubyJard
           else
             inspection[0..line_limit - 4] + '…'
           end
-        [
-
+        SimpleRow.new(
           RubyJard::Span.new(content: '"', styles: :string),
           RubyJard::Span.new(content: str, styles: :string),
           RubyJard::Span.new(content: '"', styles: :string)
-        ]
+        )
       end
       # rubocop:enable Lint/UnusedMethodArgument
     end

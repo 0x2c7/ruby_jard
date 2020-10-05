@@ -56,28 +56,28 @@ module RubyJard
         @klass_decorators.each do |klass_decorator|
           next unless klass_decorator.match?(variable)
 
-          spans = klass_decorator.decorate_singleline(variable, line_limit: line_limit, depth: depth)
-          return spans unless spans.nil?
+          row = klass_decorator.decorate_singleline(variable, line_limit: line_limit, depth: depth)
+          return row unless row.nil?
         end
         @object_decorator.decorate_singleline(variable, line_limit: line_limit, depth: depth)
       end
 
       def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
         if primitive?(variable)
-          return decorate_primitive(variable, first_line_limit)
+          return [decorate_primitive(variable, first_line_limit)]
         end
 
         @klass_decorators.each do |klass_decorator|
           next unless klass_decorator.match?(variable)
 
-          spans = klass_decorator.decorate_multiline(
+          rows = klass_decorator.decorate_multiline(
             variable,
             first_line_limit: first_line_limit,
             lines: lines,
             line_limit: line_limit,
             depth: depth
           )
-          return spans unless spans.nil?
+          return rows unless rows.nil?
         end
         @object_decorator.decorate_multiline(
           variable,
@@ -97,12 +97,12 @@ module RubyJard
       def decorate_primitive(variable, line_limit)
         inspection = variable.inspect
         inspection = inspection[0..line_limit - 2] + '…' if inspection.length >= line_limit
-        [
+        SimpleRow.new(
           RubyJard::Span.new(
             content: inspection,
             styles: PRIMITIVE_TYPES[RubyJard::Reflection.call_class(variable).name]
           )
-        ]
+        )
       end
     end
   end

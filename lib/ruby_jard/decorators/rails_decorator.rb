@@ -27,54 +27,61 @@ module RubyJard
         end
 
         def decorate_singleline(variable, line_limit:, depth: 0)
-          label = RubyJard::Span.new(
-            content: RubyJard::Reflection.call_to_s(variable).chomp!('>'),
-            margin_right: 1, styles: :text_primary
+          row = SimpleRow.new(
+            RubyJard::Span.new(
+              content: RubyJard::Reflection.call_to_s(variable).chomp!('>'),
+              margin_right: 1, styles: :text_primary
+            )
           )
-          spans = [label]
           attributes = variable_attributes(variable)
           if attributes.nil?
-            spans << RubyJard::Span.new(content: '??? failed to inspect attributes', styles: :text_dim)
+            row << RubyJard::Span.new(content: '??? failed to inspect attributes', styles: :text_dim)
           else
-            spans += @attributes_decorator.inline_pairs(
+            row << @attributes_decorator.inline_pairs(
               attributes.each_with_index,
-              total: attributes.length, line_limit: line_limit - label.content_length - 2,
+              total: attributes.length, line_limit: line_limit - row.content_length - 2,
               process_key: false, depth: depth + 1
             )
           end
-          spans << RubyJard::Span.new(content: '>', styles: :text_primary)
+          row << RubyJard::Span.new(content: '>', styles: :text_primary)
         end
 
         def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
           singleline = decorate_singleline(variable, line_limit: first_line_limit)
-          return [singleline] if singleline.map(&:content_length).sum < line_limit
+          return [singleline] if singleline.content_length < line_limit
 
-          spans = [[RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)]]
+          rows = [SimpleRow.new(
+            RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)
+          )]
 
           item_count = 0
           attributes = variable_attributes(variable)
 
           if attributes.nil?
-            spans << [RubyJard::Span.new(
-              content: '▸ ??? failed to inspect attributes',
-              margin_left: 2, styles: :text_dim
-            )]
+            rows << SimpleRow.new(
+              RubyJard::Span.new(
+                content: '▸ ??? failed to inspect attributes',
+                margin_left: 2, styles: :text_dim
+              )
+            )
           else
             attributes.each_with_index do |(key, value), index|
-              spans << @attributes_decorator.pair(
+              rows << @attributes_decorator.pair(
                 key, value, line_limit: line_limit, process_key: false, depth: depth + 1
               )
               item_count += 1
               break if index >= lines - 2
             end
             if attributes.length > item_count
-              spans << [RubyJard::Span.new(
-                content: "▸ #{attributes.length - item_count} more...",
-                margin_left: 2, styles: :text_dim
-              )]
+              rows << SimpleRow.new(
+                RubyJard::Span.new(
+                  content: "▸ #{attributes.length - item_count} more...",
+                  margin_left: 2, styles: :text_dim
+                )
+              )
             end
           end
-          spans
+          rows
         end
 
         def variable_attributes(variable)
@@ -104,25 +111,25 @@ module RubyJard
 
         def decorate_singleline(variable, line_limit:, depth: 0)
           if loaded?(variable)
-            spans = []
-            label = RubyJard::Span.new(
-              content: RubyJard::Reflection.call_to_s(variable).chomp('>'),
-              styles: :text_primary,
-              margin_right: variable.length >= 1 ? 1 : 0
+            row = SimpleRow.new(
+              RubyJard::Span.new(
+                content: RubyJard::Reflection.call_to_s(variable).chomp('>'),
+                styles: :text_primary,
+                margin_right: variable.length >= 1 ? 1 : 0
+              )
             )
-            spans << label
-            spans += @attributes_decorator.inline_values(
+            row << @attributes_decorator.inline_values(
               variable.each_with_index,
-              total: variable.length, line_limit: line_limit - label.content_length - 2,
+              total: variable.length, line_limit: line_limit - row.content_length - 2,
               depth: depth + 1
             )
-            spans << RubyJard::Span.new(content: '>', styles: :text_primary)
+            row << RubyJard::Span.new(content: '>', styles: :text_primary)
 
             if variable.length <= 0
-              spans << RubyJard::Span.new(content: '(empty)', margin_left: 1, styles: :text_primary)
+              row << RubyJard::Span.new(content: '(empty)', margin_left: 1, styles: :text_primary)
             end
 
-            spans
+            row
           else
             relation_summary(variable, line_limit)
           end
@@ -130,27 +137,31 @@ module RubyJard
 
         def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
           singleline = decorate_singleline(variable, line_limit: first_line_limit)
-          if singleline.map(&:content_length).sum < line_limit
+          if singleline.content_length < line_limit
             [singleline]
           elsif !loaded?(variable)
             [relation_summary(variable, first_line_limit)]
           else
-            spans = [[RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)]]
+            rows = [SimpleRow.new(
+              RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)
+            )]
 
             item_count = 0
             variable.each_with_index do |value, index|
-              spans << @attributes_decorator.value(value, line_limit: line_limit, depth: depth + 1)
+              rows << @attributes_decorator.value(value, line_limit: line_limit, depth: depth + 1)
 
               item_count += 1
               break if index >= lines - 2
             end
             if variable.length > item_count
-              spans << [RubyJard::Span.new(
-                content: "▸ #{variable.length - item_count} more...",
-                margin_left: 2, styles: :text_dim
-              )]
+              rows << SimpleRow.new(
+                RubyJard::Span.new(
+                  content: "▸ #{variable.length - item_count} more...",
+                  margin_left: 2, styles: :text_dim
+                )
+              )
             end
-            spans
+            rows
           end
         end
 
@@ -159,15 +170,15 @@ module RubyJard
         def relation_summary(variable, line_limit)
           overview = RubyJard::Reflection.call_to_s(variable).chomp('>')
           width = overview.length + 1 + 12
-          spans = [RubyJard::Span.new(content: overview, styles: :text_primary)]
+          row = SimpleRow.new(RubyJard::Span.new(content: overview, styles: :text_primary))
           if RubyJard::Reflection.call_respond_to?(variable, :to_sql) && width < line_limit
             detail = variable_sql(variable)
             detail = detail[0..line_limit - width - 2] + '…' if width + detail.length < line_limit
-            spans << RubyJard::Span.new(content: detail, styles: :text_dim, margin_left: 1)
+            row << RubyJard::Span.new(content: detail, styles: :text_dim, margin_left: 1)
           end
-          spans << RubyJard::Span.new(content: '>', styles: :text_primary)
-          spans << RubyJard::Span.new(content: '(not loaded)', margin_left: 1, styles: :text_dim)
-          spans
+          row << RubyJard::Span.new(content: '>', styles: :text_primary)
+          row << RubyJard::Span.new(content: '(not loaded)', margin_left: 1, styles: :text_dim)
+          row
         end
 
         def loaded?(variable)

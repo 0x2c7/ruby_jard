@@ -8,12 +8,15 @@ module RubyJard
 
     attr_accessor :columns, :line_limit, :content, :rendered
 
-    def initialize(line_limit: 1, columns: [], ellipsis: true)
+    def initialize(line_limit: 1, columns: [])
       @content = []
       @columns = columns
-      @ellipsis = ellipsis
       @line_limit = line_limit
       @rendered = false
+    end
+
+    def spans
+      @columns.map(&:spans).flatten
     end
 
     def rendered?
@@ -27,5 +30,36 @@ module RubyJard
     def reset_rendered
       @rendered = false
     end
+  end
+
+  # A row having only one column
+  class SimpleRow < Row
+    def initialize(*spans)
+      super(line_limit: 999, columns: [RubyJard::Column.new])
+
+      spans.each do |span|
+        self << span
+      end
+    end
+
+    def content_length
+      @columns.first.content_length
+    end
+
+    # rubocop:disable Style/CaseLikeIf
+    def <<(other)
+      if other.is_a?(Span)
+        @columns.first << other
+      elsif other.is_a?(SimpleRow)
+        @columns.first << other.spans
+      elsif other.is_a?(Row)
+        other.columns.each do |column|
+          @columns.first << column.spans
+        end
+      end
+
+      self
+    end
+    # rubocop:enable Style/CaseLikeIf
   end
 end

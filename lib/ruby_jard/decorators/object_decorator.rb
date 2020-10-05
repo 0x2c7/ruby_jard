@@ -25,14 +25,14 @@ module RubyJard
 
       def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
         singleline = decorate_singleline(variable, line_limit: first_line_limit)
-        return [singleline] if singleline.map(&:content_length).sum < line_limit
+        return [singleline] if singleline.content_length < line_limit
 
-        spans = [decorate_native_inspection(variable, line_limit: first_line_limit, with_children: false)]
+        rows = [decorate_native_inspection(variable, line_limit: first_line_limit, with_children: false)]
 
         item_count = 0
         instance_variables = RubyJard::Reflection.call_instance_variables(variable)
         instance_variables.each do |key|
-          spans << @attributes_decorator.pair(
+          rows << @attributes_decorator.pair(
             key, RubyJard::Reflection.call_instance_variable_get(variable, key),
             line_limit: line_limit, process_key: false, depth: depth + 1
           )
@@ -42,15 +42,15 @@ module RubyJard
         end
 
         if instance_variables.length > item_count
-          spans << [
+          rows << SimpleRow.new(
             RubyJard::Span.new(
               content: "▸ #{instance_variables.length - item_count} more...",
               margin_left: 2, styles: :text_dim
             )
-          ]
+          )
         end
 
-        spans
+        rows
       end
 
       private
@@ -73,25 +73,24 @@ module RubyJard
 
         if match
           instance_variables = RubyJard::Reflection.call_instance_variables(variable)
-          spans = [
+          row = SimpleRow.new(
             RubyJard::Span.new(content: '#<', styles: :text_primary),
             RubyJard::Span.new(content: match[1], styles: :text_primary)
-          ]
+          )
           if with_children && !instance_variables.empty?
-            spans << RubyJard::Span.new(content: ' ', styles: :text_primary)
-            spans += @attributes_decorator.inline_pairs(
+            row << RubyJard::Span.new(content: ' ', styles: :text_primary)
+            row << @attributes_decorator.inline_pairs(
               instance_variables.each_with_index, total: instance_variables.length,
-              line_limit: line_limit - spans.map(&:content_length).sum - 1,
+              line_limit: line_limit - row.content_length - 1,
               depth: depth + 1, process_key: false,
               value_proc: ->(key) { RubyJard::Reflection.call_instance_variable_get(variable, key) }
             )
           end
-          spans << RubyJard::Span.new(content: '>', styles: :text_primary)
-          spans
+          row << RubyJard::Span.new(content: '>', styles: :text_primary)
         elsif raw_inspection.length <= line_limit
-          [RubyJard::Span.new(content: raw_inspection[0..line_limit], styles: :text_primary)]
+          SimpleRow.new(RubyJard::Span.new(content: raw_inspection[0..line_limit], styles: :text_primary))
         else
-          [RubyJard::Span.new(content: raw_inspection[0..line_limit - 3] + '…>', styles: :text_primary)]
+          SimpleRow.new(RubyJard::Span.new(content: raw_inspection[0..line_limit - 3] + '…>', styles: :text_primary))
         end
       end
 
@@ -105,16 +104,16 @@ module RubyJard
             else
               match[2][0..line_limit - match[1].length - 4] + '…'
             end
-          [
+          SimpleRow.new(
             RubyJard::Span.new(content: '#<', styles: :text_primary),
             RubyJard::Span.new(content: match[1], styles: :text_primary),
             RubyJard::Span.new(content: detail, styles: :text_dim),
             RubyJard::Span.new(content: '>', styles: :text_primary)
-          ]
+          )
         elsif raw_inspection.length <= line_limit
-          [RubyJard::Span.new(content: raw_inspection[0..line_limit], styles: :text_primary)]
+          SimpleRow.new(RubyJard::Span.new(content: raw_inspection[0..line_limit], styles: :text_primary))
         else
-          [RubyJard::Span.new(content: raw_inspection[0..line_limit - 3] + '…>', styles: :text_primary)]
+          SimpleRow.new(RubyJard::Span.new(content: raw_inspection[0..line_limit - 3] + '…>', styles: :text_primary))
         end
       end
     end
