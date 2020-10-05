@@ -37,29 +37,20 @@ module RubyJard
     def initialize(*spans)
       super(RubyJard::Column.new, line_limit: 999)
 
-      spans.each do |span|
-        self << span
-      end
+      spans.each { |s| self << s }
     end
 
     def content_length
       @columns.first.content_length
     end
 
-    # rubocop:disable Style/CaseLikeIf
     def <<(other)
       if other.is_a?(Span)
         @columns.first << other
-      elsif other.is_a?(SimpleRow)
-        @columns.first << other.spans
-      elsif other.is_a?(Row)
-        other.columns.each do |column|
-          @columns.first << column.spans
-        end
+        return self
       end
-
+      @columns.first << other.spans
       self
     end
-    # rubocop:enable Style/CaseLikeIf
   end
 end

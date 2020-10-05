@@ -57,7 +57,8 @@ module RubyJard
     attr_accessor :content, :content_length, :styles
 
     def initialize(content: '', content_length: nil, styles: [])
-      @content = content.to_s.gsub(/\r\n/, '\n').gsub(/\n/, '\n')
+      @content = content
+      @content = content.to_s.gsub(/\r\n/, '\n').gsub(/\n/, '\n') if content.include?("\n")
       @content_length = content_length || @content.length
       @styles = styles
     end
