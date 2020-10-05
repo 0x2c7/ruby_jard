@@ -28,7 +28,8 @@ module RubyJard
           StringDecorator.new(self),
           HashDecorator.new(self),
           StructDecorator.new(self),
-          RailsDecorator.new(self),
+          ActiveRecordBaseDecorator.new(self),
+          ActiveRecordRelationDecorator.new(self),
           ObjectDecorator.new(self)
         ]
       end
