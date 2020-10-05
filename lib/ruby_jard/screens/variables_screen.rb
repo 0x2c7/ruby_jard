@@ -247,7 +247,7 @@ module RubyJard
 
         loc_decorator = RubyJard::Decorators::LocDecorator.new
         source_decorator = RubyJard::Decorators::SourceDecorator.new(file, line, 1)
-        _spans, tokens = loc_decorator.decorate(
+        tokens = loc_decorator.tokens(
           source_decorator.codes[line - source_decorator.window_start],
           file
         )
@@ -267,7 +267,7 @@ module RubyJard
         loc_decorator = RubyJard::Decorators::LocDecorator.new
         # TODO: This is a mess
         source_decorator = RubyJard::Decorators::SourceDecorator.new(file, 1, 10_000)
-        _spans, tokens = loc_decorator.decorate(source_decorator.codes.join("\n"), file)
+        tokens = loc_decorator.tokens(source_decorator.codes.join("\n"), file)
 
         file_tokens = {}
         tokens.each_slice(2) do |token, kind|

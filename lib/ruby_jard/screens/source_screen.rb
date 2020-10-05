@@ -71,8 +71,7 @@ module RubyJard
       def loc_spans(loc)
         return [] if @frame_file.nil?
 
-        spans, _tokens = @loc_decorator.decorate(loc, @frame_file)
-        spans
+        @loc_decorator.decorate(loc, @frame_file)
       end
     end
   end
