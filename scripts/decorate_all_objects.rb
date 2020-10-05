@@ -19,7 +19,7 @@ def decorate_all_objects
     items.each do |item|
       puts "\t=== Jard Inpsect"
       begin
-        lines = inspection_decorator.decorate_multiline(item, first_line_limit: 120, line_limit: 80, lines: 7)
+        lines = inspection_decorator.multiline(item, first_line_limit: 120, line_limit: 80, lines: 7)
 
         lines.each do |line|
           content = line.map { |span| color_decorator.decorate(span.styles, span.content) }.join

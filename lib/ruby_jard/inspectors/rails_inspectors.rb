@@ -26,7 +26,7 @@ module RubyJard
         RubyJard::Reflection.call_is_a?(variable, ActiveRecord::Base)
       end
 
-      def decorate_singleline(variable, line_limit:, depth: 0)
+      def singleline(variable, line_limit:, depth: 0)
         row = SimpleRow.new(
           RubyJard::Span.new(
             content: RubyJard::Reflection.call_to_s(variable).chomp!('>'),
@@ -46,8 +46,8 @@ module RubyJard
         row << RubyJard::Span.new(content: '>', styles: :text_primary)
       end
 
-      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
-        singleline = decorate_singleline(variable, line_limit: first_line_limit)
+      def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
+        singleline = singleline(variable, line_limit: first_line_limit)
         return [singleline] if singleline.content_length < line_limit
 
         rows = [SimpleRow.new(
@@ -109,7 +109,7 @@ module RubyJard
         false
       end
 
-      def decorate_singleline(variable, line_limit:, depth: 0)
+      def singleline(variable, line_limit:, depth: 0)
         if loaded?(variable)
           row = SimpleRow.new(
             RubyJard::Span.new(
@@ -135,8 +135,8 @@ module RubyJard
         end
       end
 
-      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
-        singleline = decorate_singleline(variable, line_limit: first_line_limit)
+      def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
+        singleline = singleline(variable, line_limit: first_line_limit)
         if singleline.content_length < line_limit
           [singleline]
         elsif !loaded?(variable)

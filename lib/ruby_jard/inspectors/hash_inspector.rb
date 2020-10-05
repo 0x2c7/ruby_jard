@@ -10,7 +10,7 @@ module RubyJard
         @attributes_inspector = AttributesInspector.new(base)
       end
 
-      def decorate_singleline(variable, line_limit:, depth: 0)
+      def singleline(variable, line_limit:, depth: 0)
         SimpleRow.new(
           RubyJard::Span.new(content: '{', styles: :text_primary),
           @attributes_inspector.inline_pairs(
@@ -21,18 +21,18 @@ module RubyJard
         )
       end
 
-      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
+      def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
         if variable.size > lines * 1.5
-          return do_decorate_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
+          return do_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         elsif variable.length <= 1
-          return [decorate_singleline(variable, line_limit: first_line_limit)]
+          return [singleline(variable, line_limit: first_line_limit)]
         end
 
-        singleline = decorate_singleline(variable, line_limit: first_line_limit)
+        singleline = singleline(variable, line_limit: first_line_limit)
         if singleline.content_length < line_limit
           [singleline]
         else
-          do_decorate_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
+          do_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         end
       end
 
@@ -42,7 +42,7 @@ module RubyJard
 
       private
 
-      def do_decorate_multiline(variable, lines:, line_limit:, depth: 0)
+      def do_multiline(variable, lines:, line_limit:, depth: 0)
         rows = [SimpleRow.new(RubyJard::Span.new(content: '{', styles: :text_primary))]
 
         item_count = 0

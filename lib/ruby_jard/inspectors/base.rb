@@ -35,21 +35,21 @@ module RubyJard
         ]
       end
 
-      def decorate_singleline(variable, line_limit:, depth: 0)
+      def singleline(variable, line_limit:, depth: 0)
         @inspectors.each do |inspector|
           next unless inspector.match?(variable)
 
-          row = inspector.decorate_singleline(variable, line_limit: line_limit, depth: depth)
+          row = inspector.singleline(variable, line_limit: line_limit, depth: depth)
           return row unless row.nil?
         end
         SimpleRow.new(Span.new(content: '???', styles: :text_primary))
       end
 
-      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
+      def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
         @inspectors.each do |inspector|
           next unless inspector.match?(variable)
 
-          rows = inspector.decorate_multiline(
+          rows = inspector.multiline(
             variable,
             first_line_limit: first_line_limit,
             lines: lines,

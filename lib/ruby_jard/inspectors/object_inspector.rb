@@ -19,7 +19,7 @@ module RubyJard
         true
       end
 
-      def decorate_singleline(variable, line_limit:, depth: 0)
+      def singleline(variable, line_limit:, depth: 0)
         if native_inspect?(variable)
           decorate_native_inspection(variable, line_limit: line_limit, depth: depth)
         else
@@ -27,8 +27,8 @@ module RubyJard
         end
       end
 
-      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
-        singleline = decorate_singleline(variable, line_limit: first_line_limit)
+      def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
+        singleline = singleline(variable, line_limit: first_line_limit)
         return [singleline] if singleline.content_length < line_limit
 
         rows = [decorate_native_inspection(variable, line_limit: first_line_limit, with_children: false)]

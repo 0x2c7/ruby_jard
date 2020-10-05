@@ -15,7 +15,7 @@ module RubyJard
         RubyJard::Reflection.call_is_a?(variable, Struct)
       end
 
-      def decorate_singleline(variable, line_limit:, depth: 0)
+      def singleline(variable, line_limit:, depth: 0)
         row = SimpleRow.new(RubyJard::Span.new(content: '#<struct', margin_right: 1, styles: :text_dim))
         unless variable.class.name.nil?
           row << RubyJard::Span.new(content: variable.class.name.to_s, margin_right: 1, styles: :text_primary)
@@ -29,23 +29,23 @@ module RubyJard
         row << RubyJard::Span.new(content: '>', styles: :text_dim)
       end
 
-      def decorate_multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
+      def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
         if variable.size > lines * 1.5
-          return do_decorate_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
+          return do_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         end
 
-        singleline = decorate_singleline(variable, line_limit: first_line_limit)
+        singleline = singleline(variable, line_limit: first_line_limit)
 
         if singleline.content_length < line_limit || variable.length <= 1
           [singleline]
         else
-          do_decorate_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
+          do_multiline(variable, lines: lines, line_limit: line_limit, depth: depth)
         end
       end
 
       private
 
-      def do_decorate_multiline(variable, lines:, line_limit:, depth: 0)
+      def do_multiline(variable, lines:, line_limit:, depth: 0)
         rows = []
         start = SimpleRow.new(RubyJard::Span.new(content: '#<struct', styles: :text_dim))
         unless variable.class.name.nil?
