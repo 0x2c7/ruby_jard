@@ -42,7 +42,7 @@ module RubyJard
           row = inspector.inline(variable, line_limit: line_limit, depth: depth)
           return row unless row.nil?
         end
-        SimpleRow.new(Span.new(content: '???', styles: :text_primary))
+        SimpleRow.new(text_primary('???'))
       end
 
       def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
@@ -58,7 +58,7 @@ module RubyJard
           )
           return rows unless rows.nil?
         end
-        [SimpleRow.new(Span.new(content: '???', styles: :text_primary))]
+        [SimpleRow.new(text_primary('???'))]
       end
     end
   end

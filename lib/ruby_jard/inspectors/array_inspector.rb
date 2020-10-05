@@ -6,6 +6,7 @@ module RubyJard
     # Decorate Array data structure, supports inline and multiline form.
     class ArrayInpsector
       include NestedHelper
+      include ::RubyJard::Span::DSL
 
       def initialize(base)
         @base = base
@@ -17,11 +18,11 @@ module RubyJard
 
       def inline(variable, line_limit:, depth: 0)
         SimpleRow.new(
-          RubyJard::Span.new(content: '[', styles: :text_primary),
+          text_primary('['),
           inline_values(
             variable.each_with_index, total: variable.length, line_limit: line_limit - 2, depth: depth + 1
           ),
-          RubyJard::Span.new(content: ']', styles: :text_primary)
+          text_primary(']')
         )
       end
 
@@ -47,33 +48,27 @@ module RubyJard
       end
 
       def do_multiline(variable, lines:, line_limit:, depth: 0)
-        columns = [SimpleRow.new(RubyJard::Span.new(content: '[', styles: :text_primary))]
+        rows = [SimpleRow.new(text_primary('['))]
 
         item_count = 0
         variable.each_with_index do |value, index|
-          columns << multiline_value(value, line_limit: line_limit, depth: depth + 1)
+          rows << multiline_value(value, line_limit: line_limit, depth: depth + 1)
 
           item_count += 1
           break if index >= lines - 2
         end
 
-        columns << last_line(variable.length, item_count)
+        rows << last_line(variable.length, item_count)
       end
 
       def last_line(total, item_count)
         if total > item_count
           SimpleRow.new(
-            RubyJard::Span.new(
-              content: "▸ #{total - item_count} more...",
-              margin_left: 2, styles: :text_dim
-            ),
-            RubyJard::Span.new(
-              content: ']',
-              styles: :text_primary
-            )
+            text_dim("  ▸ #{total - item_count} more..."),
+            text_primary(']')
           )
         else
-          SimpleRow.new(RubyJard::Span.new(content: ']', styles: :text_primary))
+          SimpleRow.new(text_primary(']'))
         end
       end
     end

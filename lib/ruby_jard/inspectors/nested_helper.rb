@@ -14,7 +14,7 @@ module RubyJard
       DO_NOT_WASTE_LENGTH = 40
 
       def inline_pairs(enum, total:, line_limit:, process_key:, value_proc: nil, depth: 0)
-        return SimpleRow.new(ellipsis_span) if too_deep?(depth, line_limit)
+        return SimpleRow.new(sym_ellipsis) if too_deep?(depth, line_limit)
 
         row = SimpleRow.new
         item_limit = total == 0 ? 0 : line_limit_for_pair(depth, line_limit / total)
@@ -26,15 +26,15 @@ module RubyJard
             line_limit: line_limit_for_pair(depth, item_limit - key_inspection.content_length), depth: depth
           )
 
-          row << separator_span if index > 0
+          row << text_primary(', ') if index > 0
 
           if row.content_length + key_inspection.content_length + value_inspection.content_length + 6 > line_limit
-            row << ellipsis_span
+            row << sym_ellipsis
             break
           end
 
           row << key_inspection
-          row << arrow_span
+          row << sym_arrow
           row << value_inspection
         end
 
@@ -42,19 +42,18 @@ module RubyJard
       end
 
       def multiline_pair(key, value, line_limit:, process_key:, depth: 0)
-        return SimpleRow.new(ellipsis_span) if too_deep?(depth, line_limit)
+        return SimpleRow.new(sym_ellipsis) if too_deep?(depth, line_limit)
 
-        row = SimpleRow.new
-        row << bullet_span
+        row = SimpleRow.new(sym_bullet)
 
         key_inspection = inspect_nested_key(
           key,
-          line_limit - bullet_span.content_length,
+          line_limit - sym_bullet.content_length,
           process_key: process_key, depth: depth
         )
 
         row << key_inspection
-        row << arrow_span
+        row << sym_arrow
         value_inspection = @base.inline(
           value, line_limit: line_limit_for_pair(depth, line_limit - row.content_length), depth: depth
         )
@@ -63,7 +62,7 @@ module RubyJard
       end
 
       def inline_values(enum, total:, line_limit:, depth: 0)
-        return SimpleRow.new(ellipsis_span) if too_deep?(depth, line_limit)
+        return SimpleRow.new(sym_ellipsis) if too_deep?(depth, line_limit)
 
         row = SimpleRow.new
         item_limit = total == 0 ? 0 : line_limit_for_value(line_limit / total)
@@ -73,10 +72,10 @@ module RubyJard
             value, line_limit: line_limit_for_value(item_limit), depth: depth
           )
 
-          row << separator_span if index > 0
+          row << text_primary(', ') if index > 0
 
           if row.content_length + value_inspection.content_length + 2 > line_limit
-            row << ellipsis_span
+            row << sym_ellipsis
             break
           end
 
@@ -87,14 +86,12 @@ module RubyJard
       end
 
       def multiline_value(value, line_limit:, depth: 0)
-        return [ellipsis_span] if too_deep?(depth, line_limit)
+        return [sym_ellipsis] if too_deep?(depth, line_limit)
 
-        row = SimpleRow.new
-        row << bullet_span
+        row = SimpleRow.new(sym_bullet)
         value_inspection = @base.inline(
           value, line_limit: line_limit_for_value(line_limit - row.content_length), depth: depth
         )
-
         row << value_inspection
       end
 
@@ -102,28 +99,10 @@ module RubyJard
 
       def inspect_nested_key(key, item_limit, process_key:, depth: 0)
         if process_key
-          @base.inline(
-            key, line_limit: item_limit, depth: depth
-          )
+          @base.inline(key, line_limit: item_limit, depth: depth)
         else
-          SimpleRow.new(RubyJard::Span.new(content: key.to_s, styles: :text_primary))
+          SimpleRow.new(text_primary(key.to_s))
         end
-      end
-
-      def arrow_span
-        RubyJard::Span.new(content: '→', margin_left: 1, margin_right: 1, styles: :text_highlighted)
-      end
-
-      def separator_span
-        RubyJard::Span.new(content: ',', margin_right: 1, styles: :text_primary)
-      end
-
-      def ellipsis_span
-        RubyJard::Span.new(content: '…', styles: :text_dim)
-      end
-
-      def bullet_span
-        RubyJard::Span.new(content: '▸', margin_right: 1, margin_left: 2, styles: :text_dim)
       end
 
       def too_deep?(depth, line_limit)

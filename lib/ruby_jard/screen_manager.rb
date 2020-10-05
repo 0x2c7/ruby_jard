@@ -2,6 +2,10 @@
 
 require 'ruby_jard/console'
 
+require 'ruby_jard/row'
+require 'ruby_jard/column'
+require 'ruby_jard/span'
+
 require 'ruby_jard/decorators/color_decorator'
 require 'ruby_jard/decorators/path_decorator'
 require 'ruby_jard/decorators/loc_decorator'
@@ -13,9 +17,6 @@ require 'ruby_jard/screens'
 require 'ruby_jard/color_schemes'
 require 'ruby_jard/layouts'
 
-require 'ruby_jard/row'
-require 'ruby_jard/column'
-require 'ruby_jard/span'
 require 'ruby_jard/row_renderer'
 require 'ruby_jard/screen_renderer'
 require 'ruby_jard/screen_adjuster'

@@ -7,6 +7,7 @@ module RubyJard
     # TODO: This one should handle Open Struct too
     class StructInspector
       include NestedHelper
+      include ::RubyJard::Span::DSL
 
       def initialize(base)
         @base = base
@@ -17,9 +18,10 @@ module RubyJard
       end
 
       def inline(variable, line_limit:, depth: 0)
-        row = SimpleRow.new(RubyJard::Span.new(content: '#<struct', margin_right: 1, styles: :text_dim))
+        row = SimpleRow.new(text_dim('#<struct '))
         unless variable.class.name.nil?
-          row << RubyJard::Span.new(content: variable.class.name.to_s, margin_right: 1, styles: :text_primary)
+          row << text_primary(variable.class.name.to_s)
+          row << text_primary(' ')
         end
         row << inline_pairs(
           variable.members.each_with_index,
@@ -27,7 +29,7 @@ module RubyJard
           process_key: false, depth: depth + 1,
           value_proc: ->(key) { variable[key] }
         )
-        row << RubyJard::Span.new(content: '>', styles: :text_dim)
+        row << text_dim('>')
       end
 
       def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
@@ -48,11 +50,12 @@ module RubyJard
 
       def do_multiline(variable, lines:, line_limit:, depth: 0)
         rows = []
-        start = SimpleRow.new(RubyJard::Span.new(content: '#<struct', styles: :text_dim))
+        start = SimpleRow.new(text_dim('#<struct'))
         unless variable.class.name.nil?
-          start << RubyJard::Span.new(content: variable.class.name.to_s, margin_left: 1, styles: :text_primary)
+          start << text_primary(' ')
+          start << text_primary(variable.class.name.to_s)
         end
-        start << RubyJard::Span.new(content: '>', styles: :text_dim)
+        start << text_dim('>')
         rows << start
 
         item_count = 0
@@ -68,12 +71,7 @@ module RubyJard
       end
 
       def last_line(total, item_count)
-        SimpleRow.new(
-          RubyJard::Span.new(
-            content: "▸ #{total - item_count} more...",
-            margin_left: 2, styles: :text_dim
-          )
-        )
+        SimpleRow.new(text_dim("  ▸ #{total - item_count} more..."))
       end
     end
   end

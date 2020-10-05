@@ -9,6 +9,7 @@ module RubyJard
     # Otherwise, it use `Kernel#to_s`, and try to push instance variables into the result.
     class ObjectInspector
       include NestedHelper
+      include ::RubyJard::Span::DSL
 
       DEFAULT_INSPECTION_PATTERN = /#<(.*:0x[0-9a-z]+)(.*)>/i.freeze
 
@@ -47,12 +48,7 @@ module RubyJard
         end
 
         if instance_variables.length > item_count
-          rows << SimpleRow.new(
-            RubyJard::Span.new(
-              content: "▸ #{instance_variables.length - item_count} more...",
-              margin_left: 2, styles: :text_dim
-            )
-          )
+          rows << SimpleRow.new(text_dim("  ▸ #{instance_variables.length - item_count} more..."))
         end
 
         rows
@@ -79,11 +75,11 @@ module RubyJard
         if match
           instance_variables = RubyJard::Reflection.call_instance_variables(variable)
           row = SimpleRow.new(
-            RubyJard::Span.new(content: '#<', styles: :text_primary),
-            RubyJard::Span.new(content: match[1], styles: :text_primary)
+            text_primary('#<'),
+            text_primary(match[1])
           )
           if with_children && !instance_variables.empty?
-            row << RubyJard::Span.new(content: ' ', styles: :text_primary)
+            row << text_primary(' ')
             row << inline_pairs(
               instance_variables.each_with_index, total: instance_variables.length,
               line_limit: line_limit - row.content_length - 1,
@@ -91,11 +87,11 @@ module RubyJard
               value_proc: ->(key) { RubyJard::Reflection.call_instance_variable_get(variable, key) }
             )
           end
-          row << RubyJard::Span.new(content: '>', styles: :text_primary)
+          row << text_primary('>')
         elsif raw_inspection.length <= line_limit
-          SimpleRow.new(RubyJard::Span.new(content: raw_inspection[0..line_limit], styles: :text_primary))
+          SimpleRow.new(text_primary(raw_inspection[0..line_limit]))
         else
-          SimpleRow.new(RubyJard::Span.new(content: raw_inspection[0..line_limit - 3] + '…>', styles: :text_primary))
+          SimpleRow.new(text_primary(raw_inspection[0..line_limit - 3] + '…>'))
         end
       end
 
@@ -110,15 +106,15 @@ module RubyJard
               match[2][0..line_limit - match[1].length - 4] + '…'
             end
           SimpleRow.new(
-            RubyJard::Span.new(content: '#<', styles: :text_primary),
-            RubyJard::Span.new(content: match[1], styles: :text_primary),
-            RubyJard::Span.new(content: detail, styles: :text_dim),
-            RubyJard::Span.new(content: '>', styles: :text_primary)
+            text_primary('#<'),
+            text_primary(match[1]),
+            text_dim(detail),
+            text_primary('>')
           )
         elsif raw_inspection.length <= line_limit
-          SimpleRow.new(RubyJard::Span.new(content: raw_inspection[0..line_limit], styles: :text_primary))
+          SimpleRow.new(text_primary(raw_inspection[0..line_limit]))
         else
-          SimpleRow.new(RubyJard::Span.new(content: raw_inspection[0..line_limit - 3] + '…>', styles: :text_primary))
+          SimpleRow.new(text_primary(raw_inspection[0..line_limit - 3] + '…>'))
         end
       end
     end

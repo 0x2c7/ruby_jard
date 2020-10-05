@@ -16,6 +16,7 @@ module RubyJard
     # entity to Ruby object. It is always in the memory.
     class ActiveRecordBaseInspector
       include NestedHelper
+      include ::RubyJard::Span::DSL
 
       def initialize(base)
         @base = base
@@ -29,14 +30,13 @@ module RubyJard
 
       def inline(variable, line_limit:, depth: 0)
         row = SimpleRow.new(
-          RubyJard::Span.new(
-            content: RubyJard::Reflection.call_to_s(variable).chomp!('>'),
-            margin_right: 1, styles: :text_primary
-          )
+          text_primary(RubyJard::Reflection.call_to_s(variable).chomp!('>')),
+          text_primary(' ')
         )
         attributes = variable_attributes(variable)
+
         if attributes.nil?
-          row << RubyJard::Span.new(content: '??? failed to inspect attributes', styles: :text_dim)
+          row << text_dim('??? failed to inspect attributes')
         else
           row << inline_pairs(
             attributes.each_with_index,
@@ -44,7 +44,7 @@ module RubyJard
             process_key: false, depth: depth + 1
           )
         end
-        row << RubyJard::Span.new(content: '>', styles: :text_primary)
+        row << text_primary('>')
       end
 
       def multiline(variable, first_line_limit:, lines:, line_limit:, depth: 0)
@@ -52,19 +52,14 @@ module RubyJard
         return [inline] if inline.content_length < line_limit
 
         rows = [SimpleRow.new(
-          RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)
+          text_primary(RubyJard::Reflection.call_to_s(variable))
         )]
 
         item_count = 0
         attributes = variable_attributes(variable)
 
         if attributes.nil?
-          rows << SimpleRow.new(
-            RubyJard::Span.new(
-              content: '▸ ??? failed to inspect attributes',
-              margin_left: 2, styles: :text_dim
-            )
-          )
+          rows << SimpleRow.new(text_dim('  ▸ ??? failed to inspect attributes'))
         else
           attributes.each_with_index do |(key, value), index|
             rows << multiline_pair(
@@ -74,12 +69,7 @@ module RubyJard
             break if index >= lines - 2
           end
           if attributes.length > item_count
-            rows << SimpleRow.new(
-              RubyJard::Span.new(
-                content: "▸ #{attributes.length - item_count} more...",
-                margin_left: 2, styles: :text_dim
-              )
-            )
+            rows << SimpleRow.new(text_dim("  ▸ #{attributes.length - item_count} more..."))
           end
         end
         rows
@@ -98,6 +88,7 @@ module RubyJard
     # its children. Hint if the relation is not loaded yet.
     class ActiveRecordRelationInspector
       include NestedHelper
+      include ::RubyJard::Span::DSL
 
       def initialize(base)
         @base = base
@@ -113,24 +104,15 @@ module RubyJard
 
       def inline(variable, line_limit:, depth: 0)
         if loaded?(variable)
-          row = SimpleRow.new(
-            RubyJard::Span.new(
-              content: RubyJard::Reflection.call_to_s(variable).chomp('>'),
-              styles: :text_primary,
-              margin_right: variable.length >= 1 ? 1 : 0
-            )
-          )
+          row = SimpleRow.new(text_primary(RubyJard::Reflection.call_to_s(variable).chomp('>')))
+          row << text_primary(' ') if variable.length >= 1
           row << inline_values(
             variable.each_with_index,
             total: variable.length, line_limit: line_limit - row.content_length - 2,
             depth: depth + 1
           )
-          row << RubyJard::Span.new(content: '>', styles: :text_primary)
-
-          if variable.length <= 0
-            row << RubyJard::Span.new(content: '(empty)', margin_left: 1, styles: :text_primary)
-          end
-
+          row << text_primary('>')
+          row << text_primary(' (empty)') if variable.length <= 0
           row
         else
           relation_summary(variable, line_limit)
@@ -144,9 +126,7 @@ module RubyJard
         elsif !loaded?(variable)
           [relation_summary(variable, first_line_limit)]
         else
-          rows = [SimpleRow.new(
-            RubyJard::Span.new(content: RubyJard::Reflection.call_to_s(variable), styles: :text_primary)
-          )]
+          rows = [SimpleRow.new(text_primary(RubyJard::Reflection.call_to_s(variable)))]
 
           item_count = 0
           variable.each_with_index do |value, index|
@@ -156,12 +136,7 @@ module RubyJard
             break if index >= lines - 2
           end
           if variable.length > item_count
-            rows << SimpleRow.new(
-              RubyJard::Span.new(
-                content: "▸ #{variable.length - item_count} more...",
-                margin_left: 2, styles: :text_dim
-              )
-            )
+            rows << SimpleRow.new(text_dim("  ▸ #{variable.length - item_count} more..."))
           end
           rows
         end
@@ -172,14 +147,15 @@ module RubyJard
       def relation_summary(variable, line_limit)
         overview = RubyJard::Reflection.call_to_s(variable).chomp('>')
         width = overview.length + 1 + 12
-        row = SimpleRow.new(RubyJard::Span.new(content: overview, styles: :text_primary))
+        row = SimpleRow.new(text_primary(overview))
         if RubyJard::Reflection.call_respond_to?(variable, :to_sql) && width < line_limit
           detail = variable_sql(variable)
           detail = detail[0..line_limit - width - 2] + '…' if width + detail.length < line_limit
-          row << RubyJard::Span.new(content: detail, styles: :text_dim, margin_left: 1)
+          row << text_dim(' ')
+          row << text_dim(detail)
         end
-        row << RubyJard::Span.new(content: '>', styles: :text_primary)
-        row << RubyJard::Span.new(content: '(not loaded)', margin_left: 1, styles: :text_dim)
+        row << text_primary('>')
+        row << text_dim(' (not loaded)')
         row
       end
 

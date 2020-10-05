@@ -5,6 +5,29 @@ module RubyJard
   # Smallest unit of texts. A span includes content, margin, and styles of a particular
   # text chunk. All decorators and presenters return single/a list of spans.
   class Span
+    # DSL to simplify span creation
+    module DSL
+      def text_primary(content)
+        Span.new(content: content, styles: :text_primary)
+      end
+
+      def text_dim(content)
+        Span.new(content: content, styles: :text_dim)
+      end
+
+      def sym_arrow(styles: :text_highlighted)
+        RubyJard::Span.new(content: ' → ', styles: styles)
+      end
+
+      def sym_ellipsis(styles: :text_dim)
+        RubyJard::Span.new(content: '…', styles: styles)
+      end
+
+      def sym_bullet(styles: :text_dim)
+        RubyJard::Span.new(content: '  ▸ ', styles: styles)
+      end
+    end
+
     extend Forwardable
 
     attr_accessor :content, :content_length, :styles
