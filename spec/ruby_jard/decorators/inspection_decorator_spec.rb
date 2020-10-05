@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # TODO: split this test into separated files. Each file only contain tests for 1 type
-RSpec.describe RubyJard::Decorators::InspectionDecorator do
+RSpec.describe RubyJard::Inpsectors::Base do
   subject(:decorator) { described_class.new }
 
   context 'with #decorate_singleline' do

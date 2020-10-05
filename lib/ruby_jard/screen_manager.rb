@@ -6,7 +6,8 @@ require 'ruby_jard/decorators/color_decorator'
 require 'ruby_jard/decorators/path_decorator'
 require 'ruby_jard/decorators/loc_decorator'
 require 'ruby_jard/decorators/source_decorator'
-require 'ruby_jard/decorators/inspection_decorator'
+
+require 'ruby_jard/inspectors/base'
 
 require 'ruby_jard/screens'
 require 'ruby_jard/color_schemes'

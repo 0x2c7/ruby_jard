@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe 'RubyJard::Decorators::InspectionDecorator - Rails' do
-  subject(:decorator) { RubyJard::Decorators::InspectionDecorator.new }
+  subject(:decorator) { RubyJard::Inpsectors::Base.new }
 
   context 'with #decorate_singleline' do
     let(:line_limit) { 80 }

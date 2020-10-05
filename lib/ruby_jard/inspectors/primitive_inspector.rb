@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Decorators
+  module Inpsectors
     class PrimitiveInspector
       PRIMITIVE_TYPES = {
         # Intertal classes for those values may differ between Ruby versions

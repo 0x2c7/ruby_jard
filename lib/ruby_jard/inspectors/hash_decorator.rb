@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Decorators
+  module Inpsectors
     ##
     # Decorate Hash data structure, supports singleline and multiline form.
     class HashDecorator
       def initialize(generic_decorator)
         @generic_decorator = generic_decorator
-        @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
+        @attributes_decorator = AttributesDecorator.new(generic_decorator)
       end
 
       def decorate_singleline(variable, line_limit:, depth: 0)

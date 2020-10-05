@@ -1,25 +1,26 @@
 # frozen_string_literal: true
 
-require 'ruby_jard/decorators/primitive_inspector'
-require 'ruby_jard/decorators/array_decorator'
-require 'ruby_jard/decorators/string_decorator'
-require 'ruby_jard/decorators/hash_decorator'
-require 'ruby_jard/decorators/struct_decorator'
-require 'ruby_jard/decorators/object_decorator'
-require 'ruby_jard/decorators/attributes_decorator'
-require 'ruby_jard/decorators/rails_decorator'
+require 'ruby_jard/inspectors/primitive_inspector'
+require 'ruby_jard/inspectors/array_decorator'
+require 'ruby_jard/inspectors/string_decorator'
+require 'ruby_jard/inspectors/hash_decorator'
+require 'ruby_jard/inspectors/struct_decorator'
+require 'ruby_jard/inspectors/object_decorator'
+require 'ruby_jard/inspectors/attributes_decorator'
+require 'ruby_jard/inspectors/rails_decorator'
 
 module RubyJard
-  module Decorators
+  module Inpsectors
     ##
     # Generate beauty inspection of a particular variable.
+    # This class is a specialized decorator
     # The inspection doesn't aim to become a better version of PP. Instead,
     # it's scope is to generate an overview of a variable within a limited
     # space. So, it only keeps useful information, and tries to reach the
     # very shallow layers of a nested data structure.
     # This class is inspired by Ruby's PP:
     # https://github.com/ruby/ruby/blob/master/lib/pp.rb
-    class InspectionDecorator
+    class Base
       def initialize
         # Order matters here. Primitive has highest priority, object is the last fallback
         @inspectors = [

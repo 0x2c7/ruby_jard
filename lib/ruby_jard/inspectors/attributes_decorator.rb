@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Decorators
+  module Inpsectors
     TYPICAL_DEPTH = 3
     MAX_DEPTH = 5
     DO_NOT_WASTE_LENGTH = 40

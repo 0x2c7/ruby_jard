@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Decorators
+  module Inpsectors
     ##
     # A collection of rails-specific decorators.
     # Why?
@@ -17,7 +17,7 @@ module RubyJard
     class ActiveRecordBaseDecorator
       def initialize(generic_decorator)
         @generic_decorator = generic_decorator
-        @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
+        @attributes_decorator = AttributesDecorator.new(generic_decorator)
       end
 
       def match?(variable)
@@ -98,7 +98,7 @@ module RubyJard
     class ActiveRecordRelationDecorator
       def initialize(generic_decorator)
         @generic_decorator = generic_decorator
-        @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
+        @attributes_decorator = AttributesDecorator.new(generic_decorator)
       end
 
       def match?(variable)

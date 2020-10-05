@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Decorators
+  module Inpsectors
     ##
     # A light decorator for a string. String should be escaped, and cut off.
     class StringDecorator

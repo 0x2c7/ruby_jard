@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Decorators
+  module Inpsectors
     ##
     # Decorate Array data structure, supports singleline and multiline form.
     class ArrayDecorator
       def initialize(generic_decorator)
         @generic_decorator = generic_decorator
-        @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
+        @attributes_decorator = AttributesDecorator.new(generic_decorator)
       end
 
       def match?(variable)

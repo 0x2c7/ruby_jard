@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Decorators
+  module Inpsectors
     ##
     # Default decorator for non-primitive data structure. It is aimed to replace default `inspect`.
     # If a variable re-implement `#inspect`, it hornors this decision, but still try to
@@ -12,7 +12,7 @@ module RubyJard
 
       def initialize(generic_decorator)
         @generic_decorator = generic_decorator
-        @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
+        @attributes_decorator = AttributesDecorator.new(generic_decorator)
       end
 
       def match?(_variable)

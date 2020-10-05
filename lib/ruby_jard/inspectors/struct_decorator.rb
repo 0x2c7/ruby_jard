@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 module RubyJard
-  module Decorators
+  module Inpsectors
     ##
     # Decorator for Struct.
     # TODO: This one should handle Open Struct too
     class StructDecorator
       def initialize(generic_decorator)
         @generic_decorator = generic_decorator
-        @attributes_decorator = RubyJard::Decorators::AttributesDecorator.new(generic_decorator)
+        @attributes_decorator = AttributesDecorator.new(generic_decorator)
       end
 
       def match?(variable)

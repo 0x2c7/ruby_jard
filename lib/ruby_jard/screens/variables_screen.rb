@@ -50,7 +50,7 @@ module RubyJard
         @inline_tokens = generate_inline_tokens(@frame_file, @frame_line)
         @file_tokens = generate_file_tokens(@frame_file)
 
-        @inspection_decorator = RubyJard::Decorators::InspectionDecorator.new
+        @inspector = RubyJard::Inpsectors::Base.new
 
         @selected = 0
       end
@@ -67,7 +67,7 @@ module RubyJard
           assignment = RubyJard::Span.new(margin_right: 1, margin_left: 1, content: '=', styles: :text_primary)
           inline_limit =
             (@layout.width - 3) * 3 - name.content_length - size.content_length - assignment.content_length
-          inspections = @inspection_decorator.decorate_multiline(
+          inspections = @inspector.decorate_multiline(
             variable[2], first_line_limit: inline_limit, line_limit: @layout.width - 3, lines: 7
           )
           base_inspection = inspections.shift
