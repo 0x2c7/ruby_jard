@@ -212,7 +212,7 @@ function Home() {
                   You don't like the default layout? Too much information for you? You can define your own layout too!
                 </p>
                 <p>
-                  Ruby Jard comes with flexible configurations in mind. Check out <a href={useBaseUrl('docs/configurations')}>the document page</a>.
+                  Ruby Jard comes with flexible configurations in mind. Check out <a href={useBaseUrl('docs/guides/configurations')}>the document page</a>.
                 </p>
               </div>
               <div className={clsx('col col--6', styles.featureImage)}>
