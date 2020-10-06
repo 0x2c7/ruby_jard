@@ -96,7 +96,9 @@ module RubyJard
 
     def process_commands(redraw = true)
       @session.sync(@context)
-      @screen_manager.draw_screens if redraw
+      RubyJard.benchmark(:redraw_screens) do
+        @screen_manager.draw_screens if redraw
+      end
 
       return_value = nil
 
@@ -104,7 +106,9 @@ module RubyJard
         return_value = @repl_proxy.repl(frame._binding)
       end
 
-      handle_flow(flow)
+      RubyJard.benchmark(:handle_flow) do
+        handle_flow(flow)
+      end
 
       return_value
     rescue StandardError => e

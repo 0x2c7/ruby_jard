@@ -306,6 +306,8 @@ module RubyJard
     end
 
     def pry_command_set
+      # TODO: Create a dedicated registry to store Jard commands, and merge with Pry default commands
+      # This approach allows Jard and Binding.pry co-exist even after Jard already started
       set = Pry::CommandSet.new
       set.import_from(
         Pry.config.commands,

@@ -8,12 +8,15 @@ module RubyJard
 
     attr_accessor :columns, :line_limit, :content, :rendered
 
-    def initialize(line_limit: 1, columns: [], ellipsis: true)
+    def initialize(*columns, line_limit: 1)
       @content = []
       @columns = columns
-      @ellipsis = ellipsis
       @line_limit = line_limit
       @rendered = false
+    end
+
+    def spans
+      @columns.map(&:spans).flatten
     end
 
     def rendered?
@@ -26,6 +29,28 @@ module RubyJard
 
     def reset_rendered
       @rendered = false
+    end
+  end
+
+  # A row having only one column
+  class SimpleRow < Row
+    def initialize(*spans)
+      super(RubyJard::Column.new, line_limit: 999)
+
+      spans.each { |s| self << s }
+    end
+
+    def content_length
+      @columns.first.content_length
+    end
+
+    def <<(other)
+      if other.is_a?(Span)
+        @columns.first << other
+        return self
+      end
+      @columns.first << other.spans
+      self
     end
   end
 end

@@ -6,6 +6,7 @@ module RubyJard
   # match a key binding sequence from input.
   # As this class is performant-sensitive, a lookup tree is built
   # and updated whenever a new key is added.
+  # TODO: Write tests for this file
   class KeyBindings
     attr_reader :indexes
 

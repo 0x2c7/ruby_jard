@@ -23,7 +23,6 @@ module RubyJard
         background:        [GRAY5, BACKGROUND],
         border:            [GRAY3, BACKGROUND],
         title:             [WHITE, GREEN],
-        title_highlighted: [WHITE, YELLOW],
         title_secondary:   [GRAY5, GRAY2],
         title_background:  [GRAY3, BACKGROUND],
         text_primary:      [GRAY5, BACKGROUND],

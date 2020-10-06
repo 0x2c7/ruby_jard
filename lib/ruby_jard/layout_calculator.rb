@@ -33,7 +33,7 @@ module RubyJard
     private
 
     def calculate_layout(template, width, height, x, y, parent_template)
-      if template.is_a?(RubyJard::Templates::ScreenTemplate)
+      if template.is_a?(RubyJard::ScreenTemplate)
         layout = RubyJard::Layout.new(
           template: template, parent_template: parent_template,
           width: width - 2, height: height - 2, x: x + 1, y: y + 1,
@@ -84,7 +84,7 @@ module RubyJard
     end
 
     def visible?(template)
-      if template.is_a?(RubyJard::Templates::ScreenTemplate)
+      if template.is_a?(RubyJard::ScreenTemplate)
         @config.enabled_screens.include?(template.screen.to_s.strip)
       else
         template.children.any? { |child| visible?(child) }

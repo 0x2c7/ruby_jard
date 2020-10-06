@@ -25,8 +25,6 @@ module RubyJard
         title:             [WHITE, GREEN],
         title_secondary:   [GRAY5, GRAY2],
         title_background:  [GRAY3, BACKGROUND],
-        source_line_mark:  [YELLOW, BACKGROUND],
-        source_lineno:     [GRAY4, BACKGROUND],
         text_primary:      [GRAY5, BACKGROUND],
         text_dim:          [GRAY5, BACKGROUND],
         text_highlighted:  [BLUE, BACKGROUND],

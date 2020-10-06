@@ -2,30 +2,17 @@
 
 module RubyJard
   class Layouts
-    NarrowHorizontalLayout = RubyJard::Templates::LayoutTemplate.new(
+    NarrowHorizontalLayout = LayoutTemplate.new(
+      LayoutTemplate.new(
+        ScreenTemplate.new(:source, width_ratio: 60),
+        ScreenTemplate.new(:variables, width_ratio: 40),
+        height_ratio: 80,
+        width_ratio: 100
+      ),
+      ScreenTemplate.new(:menu, height: 2),
       min_width: 80,
       min_height: 10,
-      fill_height: false,
-      children: [
-        RubyJard::Templates::LayoutTemplate.new(
-          height_ratio: 80,
-          width_ratio: 100,
-          children: [
-            RubyJard::Templates::ScreenTemplate.new(
-              screen: :source,
-              width_ratio: 60
-            ),
-            RubyJard::Templates::ScreenTemplate.new(
-              screen: :variables,
-              width_ratio: 40
-            )
-          ]
-        ),
-        RubyJard::Templates::ScreenTemplate.new(
-          height: 2,
-          screen: :menu
-        )
-      ]
+      fill_height: false
     )
   end
 end

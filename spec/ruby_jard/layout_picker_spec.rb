@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 RSpec.describe RubyJard::LayoutPicker do
-  let(:fallback_layout) { RubyJard::Templates::LayoutTemplate.new }
+  let(:fallback_layout) { RubyJard::LayoutTemplate.new }
   let(:layouts) { RubyJard::Layouts.new(fallback_layout) }
-  let(:layout_1) { RubyJard::Templates::LayoutTemplate.new(min_width: 120, min_height: 24) }
-  let(:layout_2) { RubyJard::Templates::LayoutTemplate.new(min_width: 80, min_height: 24) }
-  let(:layout_3) { RubyJard::Templates::LayoutTemplate.new(min_width: 40, min_height: 24) }
-  let(:layout_4) { RubyJard::Templates::LayoutTemplate.new(min_width: 80, min_height: 10) }
+  let(:layout_1) { RubyJard::LayoutTemplate.new(min_width: 120, min_height: 24) }
+  let(:layout_2) { RubyJard::LayoutTemplate.new(min_width: 80, min_height: 24) }
+  let(:layout_3) { RubyJard::LayoutTemplate.new(min_width: 40, min_height: 24) }
+  let(:layout_4) { RubyJard::LayoutTemplate.new(min_width: 80, min_height: 10) }
 
   let(:config) { RubyJard::Config.new }
   let(:picker) { described_class.new(width, height, layouts: layouts, config: config) }

@@ -11,8 +11,6 @@ module RubyJard
     end
 
     def render
-      # Move this logic into a class called SreenRenderer
-      calculate_content_lengths
       column_widths = calculate_column_widths
       adjust_column_widths(column_widths)
       calculate_window
@@ -21,14 +19,6 @@ module RubyJard
     end
 
     private
-
-    def calculate_content_lengths
-      @screen.rows.each do |row|
-        row.columns.each do |column|
-          column.content_length = column.spans.map(&:content_length).inject(&:+) || 0
-        end
-      end
-    end
 
     def calculate_column_widths
       column_widths = {}

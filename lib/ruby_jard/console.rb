@@ -6,6 +6,7 @@ require 'English'
 
 module RubyJard
   # Wrapper for utilities to control screen
+  # TODO: Write tests for this file
   class Console
     def self.instance
       @instance ||= new

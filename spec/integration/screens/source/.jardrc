@@ -2,15 +2,9 @@
 
 RubyJard::Layouts.add_layout(
   'standalone-source',
-  RubyJard::Templates::LayoutTemplate.new(
-    fill_height: false,
-    children: [
-      RubyJard::Templates::ScreenTemplate.new(
-        height_ratio: 90,
-        width_ratio: 100,
-        screen: :source
-      )
-    ]
+  RubyJard::LayoutTemplate.new(
+    RubyJard::ScreenTemplate.new(:source, height_ratio: 90, width_ratio: 100),
+    fill_height: false
   )
 )
 config.layout = 'standalone-source'

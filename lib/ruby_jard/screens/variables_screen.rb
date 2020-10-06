@@ -5,6 +5,8 @@ module RubyJard
     ##
     # Display the relevant variables and constants of current context, scopes
     class VariablesScreen < RubyJard::Screen
+      include ::RubyJard::Span::DSL
+
       KINDS = [
         KIND_SELF = :self,
         KIND_LOC  = :local_variable,
@@ -50,7 +52,8 @@ module RubyJard
         @inline_tokens = generate_inline_tokens(@frame_file, @frame_line)
         @file_tokens = generate_file_tokens(@frame_file)
 
-        @inspection_decorator = RubyJard::Decorators::InspectionDecorator.new
+        @inspector = RubyJard::Inspectors::Base.new
+        @reflection = RubyJard::Reflection.instance
 
         @selected = 0
       end
@@ -62,21 +65,28 @@ module RubyJard
       def build
         variables = fetch_relevant_variables
         @rows = variables.map do |variable|
-          name = span_name(variable)
-          size = span_size(variable)
-          assignment = RubyJard::Span.new(margin_right: 1, margin_left: 1, content: '=', styles: :text_primary)
-          inline_limit =
-            (@layout.width - 3) * 3 - name.content_length - size.content_length - assignment.content_length
-          inspections = @inspection_decorator.decorate_multiline(
-            variable[2], first_line_limit: inline_limit, line_limit: @layout.width - 3, lines: 7
+          inspections = @inspector.multiline(
+            variable[2], line_limit: @layout.width - 3, lines: 7
           )
-          base_inspection = inspections.shift
-          mark = span_mark(variable, inspections)
-          [
-            base_row(name, size, assignment, mark, base_inspection),
-            nested_rows(variable, inspections)
-          ]
-        end.flatten.compact
+          inspections = [inspections.first] if variable[0] == KIND_SELF
+          inspections.map.with_index do |inspection, index|
+            spans = inspection.spans
+            if index == 0
+              spans = [span_name(variable), span_size(variable), text_primary(' = ')] + spans
+              Row.new(
+                Column.new(span_mark(inspections)),
+                Column.new(*spans, word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD),
+                line_limit: 3
+              )
+            else
+              Row.new(
+                Column.new,
+                Column.new(*spans, word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD),
+                line_limit: 3
+              )
+            end
+          end
+        end.flatten
       end
 
       def fetch_relevant_variables
@@ -89,47 +99,11 @@ module RubyJard
         )
       end
 
-      def base_row(name, size, assignment, mark, base_inspection)
-        RubyJard::Row.new(
-          line_limit: 3,
-          columns: [
-            RubyJard::Column.new(spans: [mark]),
-            RubyJard::Column.new(
-              word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
-              spans: [name, size, assignment, base_inspection].flatten.compact
-            )
-          ]
-        )
-      end
-
-      def nested_rows(variable, nested_inspections)
-        return nil if nested_inspections.empty? || variable[0] == KIND_SELF
-
-        nested_inspections.map do |spans|
-          RubyJard::Row.new(
-            line_limit: 1,
-            columns: [
-              RubyJard::Column.new,
-              RubyJard::Column.new(
-                word_wrap: RubyJard::Column::WORD_WRAP_BREAK_WORD,
-                spans: spans
-              )
-            ]
-          )
-        end
-      end
-
-      def span_mark(variable, nested_inspections)
-        if variable[0] == KIND_SELF || nested_inspections.empty?
-          RubyJard::Span.new(
-            content: ' ',
-            styles: :text_dim
-          )
+      def span_mark(inspections)
+        if inspections.length <= 1
+          text_dim(' ')
         else
-          RubyJard::Span.new(
-            content: '▾',
-            styles: :text_dim
-          )
+          text_dim('▾')
         end
       end
 
@@ -142,26 +116,22 @@ module RubyJard
 
       def span_size(variable)
         value = variable[2]
-        size_label =
-          if RubyJard::Reflection.call_is_a?(value, Array) && !value.empty?
-            "(len:#{value.length})"
-          elsif RubyJard::Reflection.call_is_a?(value, String) && value.length > 20
-            "(len:#{value.length})"
-          elsif RubyJard::Reflection.call_is_a?(value, Hash) && !value.empty?
-            "(size:#{value.length})"
-          end
-        RubyJard::Span.new(
-          margin_left: 1,
-          content: size_label,
-          styles: :text_primary
-        )
+        if @reflection.call_is_a?(value, Array) && !value.empty?
+          text_primary(" (len:#{value.length})")
+        elsif @reflection.call_is_a?(value, String) && value.length > 20
+          text_primary(" (len:#{value.length})")
+        elsif @reflection.call_is_a?(value, Hash) && !value.empty?
+          text_primary(" (size:#{value.length})")
+        else
+          text_primary('')
+        end
       end
 
       private
 
       def fetch_local_variables
         return [] if @frame_binding == nil
-        return [] unless RubyJard::Reflection.call_is_a?(@frame_binding, ::Binding)
+        return [] unless @reflection.call_is_a?(@frame_binding, ::Binding)
 
         variables = @frame_binding.local_variables
         # Exclude Pry's sticky locals
@@ -183,12 +153,12 @@ module RubyJard
         return [] if @frame_self == nil
 
         instance_variables =
-          RubyJard::Reflection
+          @reflection
           .call_instance_variables(@frame_self)
           .select { |v| relevant?(KIND_INS, v) }
 
         instance_variables.map do |variable|
-          [KIND_INS, variable, RubyJard::Reflection.call_instance_variable_get(@frame_self, variable)]
+          [KIND_INS, variable, @reflection.call_instance_variable_get(@frame_self, variable)]
         rescue NameError
           nil
         end.compact
@@ -215,9 +185,9 @@ module RubyJard
 
       def fetch_constant(constant_source, const)
         return nil if %w[NIL TRUE FALSE].include?(const.to_s)
-        return nil unless RubyJard::Reflection.call_const_defined?(constant_source, const)
+        return nil unless @reflection.call_const_defined?(constant_source, const)
 
-        [KIND_CON, const, RubyJard::Reflection.call_const_get(constant_source, const)]
+        [KIND_CON, const, @reflection.call_const_get(constant_source, const)]
       rescue NameError
         nil
       end
@@ -278,7 +248,7 @@ module RubyJard
 
         loc_decorator = RubyJard::Decorators::LocDecorator.new
         source_decorator = RubyJard::Decorators::SourceDecorator.new(file, line, 1)
-        _spans, tokens = loc_decorator.decorate(
+        tokens = loc_decorator.tokens(
           source_decorator.codes[line - source_decorator.window_start],
           file
         )
@@ -298,7 +268,7 @@ module RubyJard
         loc_decorator = RubyJard::Decorators::LocDecorator.new
         # TODO: This is a mess
         source_decorator = RubyJard::Decorators::SourceDecorator.new(file, 1, 10_000)
-        _spans, tokens = loc_decorator.decorate(source_decorator.codes.join("\n"), file)
+        tokens = loc_decorator.tokens(source_decorator.codes.join("\n"), file)
 
         file_tokens = {}
         tokens.each_slice(2) do |token, kind|

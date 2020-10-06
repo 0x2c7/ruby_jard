@@ -8,15 +8,19 @@ module RubyJard
     # Decorate a line of code fetched from the source file.
     # The line is tokenized, and feed into JardEncoder to append color (with
     # Span).
+    # TODO: Write tests for this file
     class LocDecorator
       def initialize
         @encoder = JardLocEncoder.new
       end
 
+      def tokens(loc, file = nil)
+        CodeRay.scan(loc, extension(file))
+      end
+
       def decorate(loc, file = nil)
         tokens = CodeRay.scan(loc, extension(file))
-        spans = @encoder.encode_tokens(tokens)
-        [spans, tokens]
+        @encoder.encode_tokens(tokens)
       end
 
       private

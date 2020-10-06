@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'ruby_jard/layout'
-require 'ruby_jard/templates/layout_template'
-require 'ruby_jard/templates/screen_template'
+require 'ruby_jard/layout_template'
+require 'ruby_jard/screen_template'
 require 'ruby_jard/layout_picker'
 require 'ruby_jard/layout_calculator'
 
@@ -27,8 +27,8 @@ module RubyJard
     end
 
     def add_layout(name, layout_class)
-      unless layout_class.is_a?(RubyJard::Templates::LayoutTemplate)
-        raise RubyJard::Error, "#{layout_class} must be a #{RubyJard::Templates::LayoutTemplate}"
+      unless layout_class.is_a?(RubyJard::LayoutTemplate)
+        raise RubyJard::Error, "#{layout_class} must be a #{RubyJard::LayoutTemplate}"
       end
 
       @layout_registry[name] = layout_class
