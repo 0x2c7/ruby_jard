@@ -222,8 +222,12 @@ module RubyJard
     end
 
     def pry_repl(current_binding)
-      flow = RubyJard::ControlFlow.listen do
-        pry_instance.repl(current_binding)
+      flow = nil
+      loop do
+        flow = RubyJard::ControlFlow.listen do
+          pry_instance.repl(current_binding)
+        end
+        break if flow != nil
       end
       @state.check(:ready?) do
         @main_thread.raise FlowInterrupt.new('Interrupt from repl thread', flow)
