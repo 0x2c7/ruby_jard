@@ -66,3 +66,21 @@ InpsectorBench.new.execute
 # Big arr inline    16.223891   0.000000  16.223891 ( 16.225869)
 # Big arr multiline 18.647541   0.000000  18.647541 ( 18.649372)
 # Big arr baseline  Forever
+#
+# Commit 1466b9f25c71e236c7561ed24b41219e57aba0f1
+# user     system      total        real
+# String inline      0.105376   0.007392   0.112768 (  0.113027)
+# String multiline   0.112024   0.000021   0.112045 (  0.112094)
+# String baseline    0.033947   0.000320   0.034267 (  0.034306)
+# Array inline       1.237948   0.000000   1.237948 (  1.238292)
+# Array multiline    1.236173   0.000000   1.236173 (  1.236279)
+# Array baseline     0.634234   0.000000   0.634234 (  0.634829)
+# Hash inline        1.416262   0.000000   1.416262 (  1.416259)
+# Hash multiline     2.111986   0.000000   2.111986 (  2.111999)
+# Hash baseline      0.321968   0.000000   0.321968 (  0.321984)
+# Object inline      0.652878   0.000000   0.652878 (  0.652913)
+# Object multiline   2.141283   0.000000   2.141283 (  2.141366)
+# Object baseline    0.360957   0.000000   0.360957 (  0.360964)
+# Big arr inline     6.660659   0.000000   6.660659 (  6.660611)
+# Big arr multiline  7.684002   0.000000   7.684002 (  7.683965)
+# Big arr baseline   Forever
