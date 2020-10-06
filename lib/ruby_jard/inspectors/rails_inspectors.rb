@@ -20,18 +20,19 @@ module RubyJard
 
       def initialize(base)
         @base = base
+        @reflection = RubyJard::Reflection.instance
       end
 
       def match?(variable)
         return false unless defined?(ActiveRecord::Base)
 
-        RubyJard::Reflection.call_is_a?(variable, ActiveRecord::Base)
+        @reflection.call_is_a?(variable, ActiveRecord::Base)
       end
 
       # rubocop:disable Style/ConditionalAssignment
       def inline(variable, line_limit:, depth: 0)
         row = SimpleRow.new(
-          text_primary(RubyJard::Reflection.call_to_s(variable).chomp!('>')),
+          text_primary(@reflection.call_to_s(variable).chomp!('>')),
           text_primary(' ')
         )
         attributes = variable_attributes(variable)
@@ -54,7 +55,7 @@ module RubyJard
         return [inline] if inline.content_length < line_limit
 
         rows = [SimpleRow.new(
-          text_primary(RubyJard::Reflection.call_to_s(variable))
+          text_primary(@reflection.call_to_s(variable))
         )]
 
         item_count = 0
@@ -94,19 +95,20 @@ module RubyJard
 
       def initialize(base)
         @base = base
+        @reflection = RubyJard::Reflection.instance
       end
 
       def match?(variable)
         return false unless defined?(ActiveRecord::Relation)
 
-        RubyJard::Reflection.call_class(variable) < ActiveRecord::Relation
+        @reflection.call_class(variable) < ActiveRecord::Relation
       rescue StandardError
         false
       end
 
       def inline(variable, line_limit:, depth: 0)
         if loaded?(variable)
-          row = SimpleRow.new(text_primary(RubyJard::Reflection.call_to_s(variable).chomp('>')))
+          row = SimpleRow.new(text_primary(@reflection.call_to_s(variable).chomp('>')))
           row << text_primary(' ') if variable.length >= 1
           row << inline_values(
             variable.each_with_index,
@@ -128,7 +130,7 @@ module RubyJard
         elsif !loaded?(variable)
           [relation_summary(variable, line_limit: line_limit * 2)]
         else
-          rows = [SimpleRow.new(text_primary(RubyJard::Reflection.call_to_s(variable)))]
+          rows = [SimpleRow.new(text_primary(@reflection.call_to_s(variable)))]
 
           item_count = 0
           variable.each_with_index do |value, index|
@@ -147,10 +149,10 @@ module RubyJard
       private
 
       def relation_summary(variable, line_limit:)
-        overview = RubyJard::Reflection.call_to_s(variable).chomp('>')
+        overview = @reflection.call_to_s(variable).chomp('>')
         width = overview.length + 1 + 12
         row = SimpleRow.new(text_primary(overview))
-        if RubyJard::Reflection.call_respond_to?(variable, :to_sql) && width < line_limit
+        if @reflection.call_respond_to?(variable, :to_sql) && width < line_limit
           detail = variable_sql(variable)
           detail = detail[0..line_limit - width - 2] + '…' if width + detail.length < line_limit
           row << text_dim(' ')

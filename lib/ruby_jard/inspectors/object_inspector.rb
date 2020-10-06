@@ -15,6 +15,7 @@ module RubyJard
 
       def initialize(base)
         @base = base
+        @reflection = RubyJard::Reflection.instance
       end
 
       def match?(_variable)
@@ -36,10 +37,10 @@ module RubyJard
         rows = [decorate_native_inspection(variable, line_limit: line_limit * 2, with_children: false)]
 
         item_count = 0
-        instance_variables = RubyJard::Reflection.call_instance_variables(variable)
+        instance_variables = @reflection.call_instance_variables(variable)
         instance_variables.each do |key|
           rows << multiline_pair(
-            key, RubyJard::Reflection.call_instance_variable_get(variable, key),
+            key, @reflection.call_instance_variable_get(variable, key),
             line_limit: line_limit, process_key: false, depth: depth + 1
           )
 
@@ -57,23 +58,23 @@ module RubyJard
       private
 
       def native_inspect?(variable)
-        return true unless RubyJard::Reflection.call_respond_to?(variable, :inspect)
+        return true unless @reflection.call_respond_to?(variable, :inspect)
 
-        RubyJard::Reflection.bind_call(::Kernel, :method, variable, :inspect).owner == ::Kernel
+        @reflection.call_method(variable, :inspect).owner == ::Kernel
       end
 
       def call_inspect(variable)
         variable.inspect
       rescue StandardError
-        RubyJard::Reflection.call_to_s(variable)
+        @reflection.call_to_s(variable)
       end
 
       def decorate_native_inspection(variable, line_limit:, depth: 0, with_children: true)
-        raw_inspection = RubyJard::Reflection.call_to_s(variable)
+        raw_inspection = @reflection.call_to_s(variable)
         match = raw_inspection.match(DEFAULT_INSPECTION_PATTERN)
 
         if match
-          instance_variables = RubyJard::Reflection.call_instance_variables(variable)
+          instance_variables = @reflection.call_instance_variables(variable)
           row = SimpleRow.new(
             text_primary('#<'),
             text_primary(match[1])
@@ -84,7 +85,7 @@ module RubyJard
               instance_variables.each_with_index, total: instance_variables.length,
               line_limit: line_limit - row.content_length - 1,
               depth: depth + 1, process_key: false,
-              value_proc: ->(key) { RubyJard::Reflection.call_instance_variable_get(variable, key) }
+              value_proc: ->(key) { @reflection.call_instance_variable_get(variable, key) }
             )
           end
           row << text_primary('>')

@@ -9,10 +9,11 @@ module RubyJard
 
       def initialize(base)
         @base = base
+        @reflection = RubyJard::Reflection.instance
       end
 
       def match?(variable)
-        RubyJard::Reflection.call_is_a?(variable, String)
+        @reflection.call_is_a?(variable, String)
       end
 
       # rubocop:disable Lint/UnusedMethodArgument

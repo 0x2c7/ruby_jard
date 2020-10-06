@@ -22,10 +22,12 @@ module RubyJard
         Proc.name => :text_primary # TODO: create a new class to handle proc.
       }.freeze
 
-      def initialize(_inspector); end
+      def initialize(_inspector)
+        @reflection = RubyJard::Reflection.instance
+      end
 
       def match?(variable)
-        !PRIMITIVE_TYPES[RubyJard::Reflection.call_class(variable).name].nil?
+        !PRIMITIVE_TYPES[@reflection.call_class(variable).name].nil?
       end
 
       # rubocop:disable Lint/UnusedMethodArgument
@@ -35,7 +37,7 @@ module RubyJard
         SimpleRow.new(
           RubyJard::Span.new(
             content: inspection,
-            styles: PRIMITIVE_TYPES[RubyJard::Reflection.call_class(variable).name]
+            styles: PRIMITIVE_TYPES[@reflection.call_class(variable).name]
           )
         )
       end

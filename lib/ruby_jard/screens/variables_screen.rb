@@ -53,6 +53,7 @@ module RubyJard
         @file_tokens = generate_file_tokens(@frame_file)
 
         @inspector = RubyJard::Inspectors::Base.new
+        @reflection = RubyJard::Reflection.instance
 
         @selected = 0
       end
@@ -115,11 +116,11 @@ module RubyJard
 
       def span_size(variable)
         value = variable[2]
-        if RubyJard::Reflection.call_is_a?(value, Array) && !value.empty?
+        if @reflection.call_is_a?(value, Array) && !value.empty?
           text_primary(" (len:#{value.length})")
-        elsif RubyJard::Reflection.call_is_a?(value, String) && value.length > 20
+        elsif @reflection.call_is_a?(value, String) && value.length > 20
           text_primary(" (len:#{value.length})")
-        elsif RubyJard::Reflection.call_is_a?(value, Hash) && !value.empty?
+        elsif @reflection.call_is_a?(value, Hash) && !value.empty?
           text_primary(" (size:#{value.length})")
         else
           text_primary('')
@@ -130,7 +131,7 @@ module RubyJard
 
       def fetch_local_variables
         return [] if @frame_binding == nil
-        return [] unless RubyJard::Reflection.call_is_a?(@frame_binding, ::Binding)
+        return [] unless @reflection.call_is_a?(@frame_binding, ::Binding)
 
         variables = @frame_binding.local_variables
         # Exclude Pry's sticky locals
@@ -152,12 +153,12 @@ module RubyJard
         return [] if @frame_self == nil
 
         instance_variables =
-          RubyJard::Reflection
+          @reflection
           .call_instance_variables(@frame_self)
           .select { |v| relevant?(KIND_INS, v) }
 
         instance_variables.map do |variable|
-          [KIND_INS, variable, RubyJard::Reflection.call_instance_variable_get(@frame_self, variable)]
+          [KIND_INS, variable, @reflection.call_instance_variable_get(@frame_self, variable)]
         rescue NameError
           nil
         end.compact
@@ -184,9 +185,9 @@ module RubyJard
 
       def fetch_constant(constant_source, const)
         return nil if %w[NIL TRUE FALSE].include?(const.to_s)
-        return nil unless RubyJard::Reflection.call_const_defined?(constant_source, const)
+        return nil unless @reflection.call_const_defined?(constant_source, const)
 
-        [KIND_CON, const, RubyJard::Reflection.call_const_get(constant_source, const)]
+        [KIND_CON, const, @reflection.call_const_get(constant_source, const)]
       rescue NameError
         nil
       end

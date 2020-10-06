@@ -10,10 +10,11 @@ module RubyJard
 
       def initialize(base)
         @base = base
+        @reflection = RubyJard::Reflection.instance
       end
 
       def match?(variable)
-        RubyJard::Reflection.call_is_a?(variable, Array)
+        @reflection.call_is_a?(variable, Array)
       end
 
       def inline(variable, line_limit:, depth: 0)
@@ -44,7 +45,7 @@ module RubyJard
       private
 
       def same_type?(variable, sample)
-        variable.first(sample).map { |item| RubyJard::Reflection.call_class(item) }.uniq.length <= 1
+        variable.first(sample).map { |item| @reflection.call_class(item) }.uniq.length <= 1
       end
 
       def do_multiline(variable, lines:, line_limit:, depth: 0)

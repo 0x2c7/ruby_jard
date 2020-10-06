@@ -366,7 +366,7 @@ RSpec.describe RubyJard::Inspectors::Base do
     it {
       stub_const('ThisIsATestClass', Class.new(BasicObject))
       a = ThisIsATestClass.new
-      3.times { |index| RubyJard::Reflection.call_instance_variable_set(a, "@var_#{index}".to_sym, index) }
+      3.times { |index| RubyJard::Reflection.instance.call_instance_variable_set(a, "@var_#{index}".to_sym, index) }
       expect(
         inspector.inline(a, line_limit: line_limit)
       ).to match_row(<<~SPANS)
@@ -388,7 +388,7 @@ RSpec.describe RubyJard::Inspectors::Base do
         end
       )
       a = ThisIsATestClass.new
-      3.times { |index| RubyJard::Reflection.call_instance_variable_set(a, "@var_#{index}".to_sym, index) }
+      3.times { |index| RubyJard::Reflection.instance.call_instance_variable_set(a, "@var_#{index}".to_sym, index) }
       expect(
         inspector.inline(a, line_limit: line_limit)
       ).to match_row(<<~SPANS)
@@ -982,7 +982,7 @@ RSpec.describe RubyJard::Inspectors::Base do
     it {
       stub_const('ThisIsATestClass', Class.new(BasicObject))
       a = ThisIsATestClass.new
-      3.times { |index| RubyJard::Reflection.call_instance_variable_set(a, "@var_#{index}".to_sym, index) }
+      3.times { |index| RubyJard::Reflection.instance.call_instance_variable_set(a, "@var_#{index}".to_sym, index) }
       expect(
         inspector.multiline(a, line_limit: line_limit, lines: 7)
       ).to match_rows(<<~SPANS)
@@ -1007,7 +1007,7 @@ RSpec.describe RubyJard::Inspectors::Base do
         end
       )
       a = ThisIsATestClass.new
-      3.times { |index| RubyJard::Reflection.call_instance_variable_set(a, "@var_#{index}".to_sym, index) }
+      3.times { |index| RubyJard::Reflection.instance.call_instance_variable_set(a, "@var_#{index}".to_sym, index) }
       expect(
         inspector.multiline(a, line_limit: line_limit, lines: 7)
       ).to match_rows(<<~SPANS)

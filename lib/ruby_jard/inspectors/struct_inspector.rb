@@ -11,10 +11,11 @@ module RubyJard
 
       def initialize(base)
         @base = base
+        @reflection = RubyJard::Reflection.instance
       end
 
       def match?(variable)
-        RubyJard::Reflection.call_is_a?(variable, Struct)
+        @reflection.call_is_a?(variable, Struct)
       end
 
       def inline(variable, line_limit:, depth: 0)

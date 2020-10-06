@@ -10,6 +10,7 @@ module RubyJard
 
       def initialize(base)
         @base = base
+        @reflection = RubyJard::Reflection.instance
       end
 
       def inline(variable, line_limit:, depth: 0)
@@ -39,7 +40,7 @@ module RubyJard
       end
 
       def match?(variable)
-        RubyJard::Reflection.call_is_a?(variable, Hash)
+        @reflection.call_is_a?(variable, Hash)
       end
 
       private

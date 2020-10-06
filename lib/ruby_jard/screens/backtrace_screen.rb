@@ -26,6 +26,7 @@ module RubyJard
         @hidden_frames_count = @session.current_backtrace.length - @frames.length
 
         @path_decorator = RubyJard::Decorators::PathDecorator.new
+        @reflection = RubyJard::Reflection.instance
       end
 
       def title
@@ -68,10 +69,10 @@ module RubyJard
       end
 
       def span_class_label(frame)
-        self_class = RubyJard::Reflection.call_class(frame.frame_self)
+        self_class = @reflection.call_class(frame.frame_self)
         class_label =
           if frame.frame_class.nil? || self_class == frame.frame_class
-            if ::RubyJard::Reflection.call_is_a?(frame.frame_self, Class)
+            if @reflection.call_is_a?(frame.frame_self, Class)
               frame.frame_self.name
             else
               self_class.name
