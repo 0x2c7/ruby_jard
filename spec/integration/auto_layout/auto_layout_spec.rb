@@ -88,4 +88,67 @@ RSpec.describe 'Auto layout', integration: true do
       test.stop
     end
   end
+
+  context 'when a window is resized during evaluation' do
+    it 'defers the resizing event until finish' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'resize_evaluation.expected',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('3.times { sleep 1 }', :Enter)
+      sleep 1
+      test.resize(50, 60)
+      sleep 3
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
+
+  context 'when a window is resized multiple time' do
+    it 'ignores the sequential resizing event' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'resize_multiple.expected',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('3.times { sleep 1 }', :Enter)
+      sleep 1
+      test.resize(50, 60)
+      test.resize(50, 62)
+      test.resize(50, 63)
+      sleep 3
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
+
+  context 'when there is input during evaluation after resize event' do
+    it 'repeat output after resize events' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'resize_output.expected',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
+      )
+      test.start
+      test.assert_screen
+      # rubocop:disable Lint/InterpolationCheck
+      test.send_keys('puts "Input before"; 3.times { |i| sleep 1; puts "Input #{i}" }', :Enter)
+      # rubocop:enable Lint/InterpolationCheck
+      sleep 0.5
+      test.resize(50, 60)
+      test.resize(50, 62)
+      test.resize(50, 63)
+      sleep 4
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
 end
