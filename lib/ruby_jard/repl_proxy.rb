@@ -140,18 +140,22 @@ module RubyJard
       @pry_pty_output_thread.report_on_exception = false
       @pry_pty_output_thread.name = '<<Jard: Pty Output Thread>>'
 
+      @deffered_output = 0
       Signal.trap('SIGWINCH') do
-        # TODO: Shouldn't we delay this interrupt until repl is ready?
+        @deffered_output = @console.stdout_storage.length
+        sleep PTY_OUTPUT_TIMEOUT while @state.processing?
         if @main_thread&.alive?
           @main_thread.raise FlowInterrupt.new('Resize event', RubyJard::ControlFlow.new(:list))
         end
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
     def repl(current_binding)
+      dispatch_deffered_output
+
       @state.ready!
       @openning_pager = false
-
       @console.disable_echo!
       @console.raw!
 
@@ -188,8 +192,22 @@ module RubyJard
       @key_listen_thread&.exit if @key_listen_thread&.alive?
       @state.exited!
     end
+    # rubocop:enable Metrics/MethodLength
 
     private
+
+    def dispatch_deffered_output
+      return if @deffered_output.nil?
+
+      ((@deffered_output + 1)..@console.stdout_storage.length).each do |line|
+        next if @console.stdout_storage[line - 1].nil?
+
+        @console.stdout_storage[line - 1].each do |s|
+          @pry_output_pty_write.write(s)
+        end
+      end
+      @deffered_output = nil
+    end
 
     def read_key
       @console.getch(KEY_READ_TIMEOUT)
@@ -222,12 +240,8 @@ module RubyJard
     end
 
     def pry_repl(current_binding)
-      flow = nil
-      loop do
-        flow = RubyJard::ControlFlow.listen do
-          pry_instance.repl(current_binding)
-        end
-        break if flow != nil
+      flow = RubyJard::ControlFlow.listen do
+        pry_instance.repl(current_binding)
       end
       @state.check(:ready?) do
         @main_thread.raise FlowInterrupt.new('Interrupt from repl thread', flow)
