@@ -1,0 +1,91 @@
+### START SCREEN ###
+┌ Source  ../../examples/top_level_example.rb:15 ──────────────────────────────┐
+│   7 var_c = ['Hello', 1, 2, 3]                                               │
+│   8 variable_d = { test: 1, this: 'Bye', array: nil }                        │
+│   9 variable_e = /Wait, what/i                                               │
+│  10 variable_f = 1.1                                                         │
+│  11 variable_g = 99..100                                                     │
+│  12 variable_k = StandardError.new('A random error')                         │
+│  13                                                                          │
+│  14 jard                                                                     │
+│⮕ 15 variable_h = 15                                                          │
+│  16                                                                          │
+│  17 jard                                                                     │
+│  18 1.times {}                                                               │
+│  19                                                                          │
+│  20 jard                                                                     │
+│  21 var_a + variable_f + variable_h || 5                                     │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["3.times { sleep 1 }", :Enter]
+### END SEND_KEYS ###
+### START RESIZE ###
+Resize to 50, 60
+### END RESIZE ###
+### START RESIZE ###
+Resize to 50, 62
+### END RESIZE ###
+### START RESIZE ###
+Resize to 50, 63
+### END RESIZE ###
+### START SCREEN ###
+┌ Source  ../../examples/top_level_example.rb:15 ┐
+│   1 # frozen_string_literal: true              │
+│   2                                            │
+│   3 require 'ruby_jard'                        │
+│   4                                            │
+│   5 var_a = 123                                │
+│   6 var_b = 'hello world'                      │
+│   7 var_c = ['Hello', 1, 2, 3]                 │
+│   8 variable_d = { test: 1, this: 'Bye', array:│
+│      nil }                                     │
+│   9 variable_e = /Wait, what/i                 │
+│  10 variable_f = 1.1                           │
+│  11 variable_g = 99..100                       │
+│  12 variable_k = StandardError.new('A random er│
+│     ror')                                      │
+│  13                                            │
+│  14 jard                                       │
+│⮕ 15 variable_h = 15                            │
+│  16                                            │
+│  17 jard                                       │
+│  18 1.times {}                                 │
+│  19                                            │
+│  20 jard                                       │
+│  21 var_a + variable_f + variable_h || 5       │
+│                                                │
+│                                                │
+│                                                │
+│                                                │
+│                                                │
+├ Variables ─────────────────────────────────────┤
+│  self = main                                   │
+│  var_a = 123                                   │
+│  var_b = "hello world"                         │
+│▾ var_c (len:4) = [                             │
+│    ▸ "Hello"                                   │
+│    ▸ 1                                         │
+│    ▸ 2                                         │
+│    ▸ 3                                         │
+│  ]                                             │
+│  variable_d (size:3) = {:test → 1, :this → "Bye│
+│  ", :array → nil}                              │
+│  variable_e = /Wait, what/i                    │
+│  variable_f = 1.1                              │
+│  variable_g = 99..100                          │
+│  variable_h = nil                              │
+│  variable_k = #<StandardError: A random error> │
+│                                                │
+│                                                │
+│                                                │
+├────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Ou »│
+└────────────────────────────────────────────────┘
+jard >>     
+### END SCREEN ###
