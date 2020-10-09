@@ -140,19 +140,12 @@ module RubyJard
       @pry_pty_output_thread.report_on_exception = false
       @pry_pty_output_thread.name = '<<Jard: Pty Output Thread>>'
 
-      @deffered_output = 0
-      Signal.trap('SIGWINCH') do
-        @deffered_output = @console.stdout_storage.length
-        sleep PTY_OUTPUT_TIMEOUT while @state.processing?
-        if @main_thread&.alive?
-          @main_thread.raise FlowInterrupt.new('Resize event', RubyJard::ControlFlow.new(:list))
-        end
-      end
+      Signal.trap('SIGWINCH') { resize! }
     end
 
     # rubocop:disable Metrics/MethodLength
     def repl(current_binding)
-      dispatch_deffered_output
+      finish_resizing
 
       @state.ready!
       @openning_pager = false
@@ -196,17 +189,29 @@ module RubyJard
 
     private
 
-    def dispatch_deffered_output
-      return if @deffered_output.nil?
+    def resize!
+      return if @resizing == true
 
-      ((@deffered_output + 1)..@console.stdout_storage.length).each do |line|
+      @resizing = true
+      @resizing_output_mark = @console.stdout_storage.length
+      sleep PTY_OUTPUT_TIMEOUT while @state.processing?
+      if @main_thread&.alive?
+        @main_thread.raise FlowInterrupt.new('Resize event', RubyJard::ControlFlow.new(:list))
+      end
+    end
+
+    def finish_resizing
+      return if @resizing_output_mark.nil? || @resizing != true
+
+      ((@resizing_output_mark + 1)..@console.stdout_storage.length).each do |line|
         next if @console.stdout_storage[line - 1].nil?
 
         @console.stdout_storage[line - 1].each do |s|
           @pry_output_pty_write.write(s)
         end
       end
-      @deffered_output = nil
+      @resizing_output_mark = nil
+      @resizing = false
     end
 
     def read_key
