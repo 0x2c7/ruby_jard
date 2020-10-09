@@ -145,13 +145,13 @@ module RubyJard
 
     # rubocop:disable Metrics/MethodLength
     def repl(current_binding)
+      reopen_streams
       finish_resizing
 
       @state.ready!
       @openning_pager = false
       @console.disable_echo!
       @console.raw!
-
       # Internally, Pry sneakily updates Readline to global output config
       # when STDOUT is piping regardless of what I pass into Pry instance.
       Pry.config.output = @pry_output_pty_write
@@ -214,6 +214,16 @@ module RubyJard
       @resizing = false
     end
 
+    def reopen_streams
+      if @pry_input_pipe_read.closed? || @pry_input_pipe_write.closed?
+        @pry_input_pipe_read, @pry_input_pipe_write = IO.pipe
+      end
+
+      if @pry_output_pty_read.closed? || @pry_output_pty_write.closed?
+        @pry_output_pty_read, @pry_output_pty_write = PTY.open
+      end
+    end
+
     def read_key
       @console.getch(KEY_READ_TIMEOUT)
     end
@@ -248,6 +258,8 @@ module RubyJard
       flow = RubyJard::ControlFlow.listen do
         pry_instance.repl(current_binding)
       end
+      return if flow.nil?
+
       @state.check(:ready?) do
         @main_thread.raise FlowInterrupt.new('Interrupt from repl thread', flow)
       end
@@ -255,6 +267,7 @@ module RubyJard
 
     def listen_key_press
       loop do
+        break if @pry_input_pipe_write.closed?
         break if @state.exiting? || @state.exited?
 
         if @state.processing? && @openning_pager
@@ -270,6 +283,8 @@ module RubyJard
           end
         end
       end
+    rescue IOError
+      # Nothing we can do about it, let the program continues
     end
 
     def handle_key_binding(key_binding)
