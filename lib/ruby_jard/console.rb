@@ -8,11 +8,18 @@ module RubyJard
   # Wrapper for utilities to control screen
   # TODO: Write tests for this file
   class Console
-    def self.instance
-      @instance ||= new
+    attr_reader :input, :output
+
+    OUTPUT_BUFFER_LENGTH = 10_000 # 10k lines
+
+    def self.stdout_storage
+      @stdout_storage ||= []
     end
 
-    attr_reader :input, :output
+    def self.backup_stdout(string)
+      stdout_storage.shift if stdout_storage.length > OUTPUT_BUFFER_LENGTH
+      stdout_storage << string
+    end
 
     def initialize
       @input =
@@ -39,6 +46,17 @@ module RubyJard
             STDOUT.dup # Give up now.
           end
         end
+
+      STDOUT.instance_eval <<-CODE
+        def write(*string)
+          RubyJard::Console.backup_stdout(string)
+          super(*string)
+        end
+      CODE
+    end
+
+    def stdout_storage
+      self.class.stdout_storage
     end
 
     def print(*args)

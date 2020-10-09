@@ -11,7 +11,7 @@ module RubyJard
 
       def initialize(*args)
         super(*args)
-        @session = (context[:session] || RubyJard::Session.instance)
+        @stdout_storage = RubyJard::Console.stdout_storage
       end
 
       def process
@@ -21,7 +21,7 @@ module RubyJard
           pager_start_at_the_end: true,
           prompt: 'Program output'
         ) do |pager|
-          @session.output_buffer.each do |string|
+          @stdout_storage.each do |string|
             string.each do |s|
               pager.write(s)
             end

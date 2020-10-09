@@ -31,9 +31,7 @@ module RubyJard
       end
     end
 
-    OUTPUT_BUFFER_LENGTH = 10_000 # 10k lines
-
-    attr_accessor :output_buffer, :path_filter, :screen_manager, :repl_proxy
+    attr_accessor :path_filter, :screen_manager, :repl_proxy
 
     def initialize
       @screen_manager = RubyJard::ScreenManager.new
@@ -44,7 +42,6 @@ module RubyJard
       @path_filter = RubyJard::PathFilter.new
       @started = false
       @session_lock = Mutex.new
-      @output_buffer = []
 
       sync(nil)
     end
@@ -65,24 +62,12 @@ module RubyJard
       # Exclude all files in Ruby Jard source code from the stacktrace.
       Byebug::Context.ignored_files = Byebug::Context.all_files + RubyJard.all_files
 
-      $stdout.send(:instance_eval, <<-CODE)
-        def write(*string)
-          RubyJard::Session.instance.append_output_buffer(string)
-          super(*string)
-        end
-      CODE
-
       @screen_manager.start
       # Load configurations
       RubyJard.config
 
       at_exit { stop }
       @started = true
-    end
-
-    def append_output_buffer(string)
-      @output_buffer.shift if @output_buffer.length > OUTPUT_BUFFER_LENGTH
-      @output_buffer << string
     end
 
     def stop
