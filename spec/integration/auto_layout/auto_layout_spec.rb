@@ -151,4 +151,25 @@ RSpec.describe 'Auto layout', integration: true do
       test.stop
     end
   end
+
+  context 'when there is pending input in REPL during resize event' do
+    it 'reserves input text to after resizing' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'resize_pending_input.expected',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/top_level_example.rb"
+      )
+      test.start
+      test.assert_screen
+      test.send_keys('a = 1 +')
+      test.resize(50, 60)
+      test.resize(50, 63)
+      sleep 0.5
+      test.assert_screen
+      test.send_keys(' 2', :Enter)
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
 end

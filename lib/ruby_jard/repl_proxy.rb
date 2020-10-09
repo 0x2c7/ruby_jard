@@ -195,6 +195,7 @@ module RubyJard
       @resizing = true
       @resizing_output_mark = @console.stdout_storage.length
       sleep PTY_OUTPUT_TIMEOUT while @state.processing?
+      @resizing_readline_buffer = Readline.line_buffer
       if @main_thread&.alive?
         @main_thread.raise FlowInterrupt.new('Resize event', RubyJard::ControlFlow.new(:list))
       end
@@ -210,6 +211,10 @@ module RubyJard
           @pry_output_pty_write.write(s)
         end
       end
+      unless @resizing_readline_buffer.nil?
+        @pry_input_pipe_write.write(@resizing_readline_buffer)
+      end
+      @resizing_readline_buffer = nil
       @resizing_output_mark = nil
       @resizing = false
     end
