@@ -1,0 +1,160 @@
+### START SCREEN ###
+┌ Source  ../../examples/multithread_example.rb:14 ────────────────────────────┐
+│   6     @index = 1                                                           │
+│   7   end                                                                    │
+│   8                                                                          │
+│   9   def process(index)                                                     │
+│  10     a = index                                                            │
+│  11     b = Thread.current[:index]                                           │
+│  12     sleep 0.1 until @index >= index                                      │
+│  13     jard                                                                 │
+│⮕ 14   end                                                                    │
+│  15                                                                          │
+│  16   def start                                                              │
+│  17     threads = (1..4).map do |index|                                      │
+│  18       Thread.new do                                                      │
+│  19         Thread.current[:index] = index                                   │
+│  20         process(index)                                                   │
+│  21       end                                                                │
+│  22     end                                                                  │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["@index = 2", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["a", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["b", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["a + b", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+│  11     b = Thread.current[:index]                                           │
+│  12     sleep 0.1 until @index >= index                                      │
+│  13     jard                                                                 │
+│⮕ 14   end                                                                    │
+│  15                                                                          │
+│  16   def start                                                              │
+│  17     threads = (1..4).map do |index|                                      │
+│  18       Thread.new do                                                      │
+│  19         Thread.current[:index] = index                                   │
+│  20         process(index)                                                   │
+│  21       end                                                                │
+│  22     end                                                                  │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >> @index = 2  
+=> 2                
+jard >> a           
+=> 1                
+jard >> b           
+=> 1                
+jard >> a + b       
+=> 2                
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/multithread_example.rb:14 ────────────────────────────┐
+│   6     @index = 1                                                           │
+│   7   end                                                                    │
+│   8                                                                          │
+│   9   def process(index)                                                     │
+│  10     a = index                                                            │
+│  11     b = Thread.current[:index]                                           │
+│  12     sleep 0.1 until @index >= index                                      │
+│  13     jard                                                                 │
+│⮕ 14   end                                                                    │
+│  15                                                                          │
+│  16   def start                                                              │
+│  17     threads = (1..4).map do |index|                                      │
+│  18       Thread.new do                                                      │
+│  19         Thread.current[:index] = index                                   │
+│  20         process(index)                                                   │
+│  21       end                                                                │
+│  22     end                                                                  │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["a", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["b", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["a + b", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+│   9   def process(index)                                                     │
+│  10     a = index                                                            │
+│  11     b = Thread.current[:index]                                           │
+│  12     sleep 0.1 until @index >= index                                      │
+│  13     jard                                                                 │
+│⮕ 14   end                                                                    │
+│  15                                                                          │
+│  16   def start                                                              │
+│  17     threads = (1..4).map do |index|                                      │
+│  18       Thread.new do                                                      │
+│  19         Thread.current[:index] = index                                   │
+│  20         process(index)                                                   │
+│  21       end                                                                │
+│  22     end                                                                  │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >> a           
+=> 2                
+jard >> b           
+=> 2                
+jard >> a + b       
+=> 4                
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["@index = 4", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/multithread_example.rb:29 ────────────────────────────┐
+│  21       end                                                                │
+│  22     end                                                                  │
+│  23     threads.map(&:join)                                                  │
+│  24   end                                                                    │
+│  25 end                                                                      │
+│  26                                                                          │
+│  27 Test.new.start                                                           │
+│  28 jard                                                                     │
+│⮕ 29 sleep 0                                                                  │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###

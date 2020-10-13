@@ -1,0 +1,94 @@
+### START SCREEN ###
+┌ Source  (-e ruby script):3 ──────────────────────────────────────────────────┐
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["sleep 3", :Enter]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+[:"C-c"]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+[:"C-c"]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+[:"C-c"]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+[:"C-c"]
+### END SEND_KEYS ###
+### START SCREEN ###
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >> sleep 3     
+^CInterrupt:        
+from (pry):1:in `sleep'                 
+jard >>             
+jard >>             
+jard >>             
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["23", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >> sleep 3     
+^CInterrupt:        
+from (pry):1:in `sleep'                 
+jard >>             
+jard >>             
+jard >>             
+jard >> 23          
+=> 23               
+jard >>             
+### END SCREEN ###

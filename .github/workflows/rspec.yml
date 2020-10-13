@@ -57,16 +57,16 @@ jobs:
       run: cd tmux && sh autogen.sh && ./configure && make && sudo make install
     - name: Tmux version
       run: tmux -V
+    - name: Install dependencies
+      run: bundle install
+    - name: Kill tmux
+      run: tmux kill-server || true
     - name: Start tmux
       run: tmux start-server
     - name: Start dummy tmux session
       run: tmux new-session -t dummy -d
     - name: Wait for tmux
       run: ruby spec/wait_for_tmux.rb
-    - name: Install dependencies
-      run: bundle install
-    - name: Kill tmux
-      run: tmux kill-server || true
     - name: Run tests
       run: bundle exec parallel_rspec spec/
   test-macos:
@@ -95,40 +95,3 @@ jobs:
       run: bundle install
     - name: Run tests
       run: bundle exec parallel_rspec -n 2 spec/
-  test-byebug:
-    strategy:
-      fail-fast: false
-      matrix:
-        byebug: [9.1.0, 10.0.2]
-    env:
-      BUNDLE_GEMFILE: "./spec/gemfiles/Gemfile-byebug-${{ matrix.byebug }}"
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.5
-    - uses: actions/checkout@v2
-      with:
-        repository: tmux/tmux
-        path: 'tmux'
-        ref: '3.1b'
-    - name: Install dependencies for tmux
-      run: sudo apt install -y libevent-dev
-    - name: Install tmux
-      run: cd tmux && sh autogen.sh && ./configure && make && sudo make install
-    - name: Tmux version
-      run: tmux -V
-    - name: Start tmux
-      run: tmux start-server
-    - name: Start dummy tmux session
-      run: tmux new-session -t dummy -d
-    - name: Wait for tmux
-      run: ruby spec/wait_for_tmux.rb
-    - name: Install dependencies
-      run: bundle install
-    - name: Kill tmux
-      run: tmux kill-server || true
-    - name: Run tests
-      run: bundle exec parallel_rspec spec/

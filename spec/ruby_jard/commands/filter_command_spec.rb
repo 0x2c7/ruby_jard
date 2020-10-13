@@ -62,6 +62,64 @@ RSpec.describe RubyJard::Commands::FilterCommand do
     end
   end
 
+  context 'with `filter switch`' do
+    before do
+      config.filter = :gems
+    end
+
+    it 'switches around filters' do
+      flow = nil
+      expect do
+        flow = RubyJard::ControlFlow.listen do
+          command_object.process_line 'filter switch'
+        end
+      end.to change(config, :filter).from(:gems).to(:everything)
+      expect(flow).to be_a(::RubyJard::ControlFlow)
+      expect(flow.command).to be(:list)
+
+      expect do
+        flow = RubyJard::ControlFlow.listen do
+          command_object.process_line 'filter switch'
+        end
+      end.to change(config, :filter).from(:everything).to(:source_tree)
+      expect(flow).to be_a(::RubyJard::ControlFlow)
+      expect(flow.command).to be(:list)
+
+      expect do
+        flow = RubyJard::ControlFlow.listen do
+          command_object.process_line 'filter switch'
+        end
+      end.to change(config, :filter).from(:source_tree).to(:application)
+      expect(flow).to be_a(::RubyJard::ControlFlow)
+      expect(flow.command).to be(:list)
+
+      expect do
+        flow = RubyJard::ControlFlow.listen do
+          command_object.process_line 'filter switch'
+        end
+      end.to change(config, :filter).from(:application).to(:gems)
+      expect(flow).to be_a(::RubyJard::ControlFlow)
+      expect(flow.command).to be(:list)
+    end
+
+    context 'when filter is non-standard' do
+      before do
+        config.filter = :invalid_filter
+      end
+
+      it 'switches the first standard filter' do
+        flow = nil
+        expect do
+          flow = RubyJard::ControlFlow.listen do
+            command_object.process_line 'filter switch'
+          end
+        end.to change(config, :filter).from(:invalid_filter).to(:source_tree)
+        expect(flow).to be_a(::RubyJard::ControlFlow)
+        expect(flow.command).to be(:list)
+      end
+    end
+  end
+
   context 'with `filter [mode]`' do
     context 'when mode not found' do
       it 'returns error' do

@@ -69,14 +69,14 @@ class JardIntegrationTest
     begin
       pids = tmux('list-panes', '-t', @target, '-F', '\\#\{pane_pid\}')
       pids.split("\n").map(&:strip).each { |pid| `kill #{pid}` if !pid.nil? && !pid.empty? }
-    rescue StandardError => e
-      puts "Fail to kill spawn processes: #{e.message}. Let's use ps kill them manually."
+    rescue StandardError
+      # Ignore
     end
 
     begin
       tmux('kill-session', '-t', @target)
-    rescue StandardError => e
-      puts "Fail to kill tmux session: #{e.message}. Let's use tmux to kill them manually."
+    rescue StandardError
+      # Ignore
     end
 
     JardIntegrationTest.tests.delete(self)
@@ -175,10 +175,8 @@ class JardIntegrationTest
     if $CHILD_STATUS.success?
       output
     else
-      "Fail to call `#{command}`: #{$CHILD_STATUS}"
+      raise "Fail to call `#{command}`. Status: #{$CHILD_STATUS}. Output: #{output}"
     end
-  rescue StandardError => e
-    "Fail to call `#{command}`. Error: #{e}"
   end
 
   def recording_actual?
