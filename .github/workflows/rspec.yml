@@ -100,8 +100,8 @@ jobs:
       fail-fast: false
       matrix:
         byebug: [9.1.0, 10.0.2]
-    env:
-      BUNDLE_GEMFILE: "./spec/gemfiles/Gemfile-byebug-${{ matrix.byebug }}"
+    # env:
+    #   BUNDLE_GEMFILE: "./spec/gemfiles/Gemfile-byebug-${{ matrix.byebug }}"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
