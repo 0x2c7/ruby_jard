@@ -175,10 +175,8 @@ class JardIntegrationTest
     if $CHILD_STATUS.success?
       output
     else
-      raise "Fail to call `#{command}`: #{$CHILD_STATUS}"
+      raise "Fail to call `#{command}`. Status: #{$CHILD_STATUS}. Output: #{output}"
     end
-  rescue StandardError => e
-    raise "Fail to call `#{command}`. Error: #{e}"
   end
 
   def recording_actual?
