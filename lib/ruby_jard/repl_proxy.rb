@@ -244,8 +244,10 @@ module RubyJard
           end
         end
       end
-    rescue IOError
-      # Nothing we can do about it, let the program continues
+    rescue StandardError
+      # This thread shoud never die, or the user may be freezed, and cannot type anything
+      sleep 0.5
+      retry
     end
 
     def handle_key_binding(key_binding)
@@ -292,7 +294,7 @@ module RubyJard
         attr_reader :console
 
         def _jard_handle_line(line, *args)
-          index = line.rindex(RubyJard::ReplProxy::COMMAND_ESCAPE_SEQUENCE)
+          index = line.to_s.rindex(RubyJard::ReplProxy::COMMAND_ESCAPE_SEQUENCE)
           if !index.nil?
             command = line[(index + RubyJard::ReplProxy::COMMAND_ESCAPE_SEQUENCE.length)..-1]
             _original_handle_line(command, *args)
