@@ -120,8 +120,6 @@ jobs:
       run: cd tmux && sh autogen.sh && ./configure && make && sudo make install
     - name: Tmux version
       run: tmux -V
-    - name: Install dependencies
-      run: bundle install
     - name: Kill tmux
       run: tmux kill-server || true
     - name: Start tmux
@@ -130,5 +128,7 @@ jobs:
       run: tmux new-session -t dummy -d
     - name: Wait for tmux
       run: ruby spec/wait_for_tmux.rb
+    - name: Install dependencies
+      run: bundle install
     - name: Run tests
       run: bundle exec parallel_rspec spec/
