@@ -10,6 +10,7 @@ import {LinkedImage} from '../../src/components/LinkedImage'
 | `jard filter [everything, gems, application, source_tree]`  | | |
 | `jard filter [include, exclude] pattern` | | |
 | `jard filter clear` | | |
+| `jard filter switch` | | |
 
 Ruby Jard has a strong filtering system. This system consists of a filter mode, included list, and excluded list. Filter mode is how Ruby Jard reacts to control flow commands. See [filter](/docs/guides/filter) for more information.
 
@@ -46,4 +47,8 @@ jard filter exclude ~/home/lib/**/*.rb
 
 ```
 jard filter clear # Clear filter
+```
+
+```
+jard filter switch # Switch to the next filter in the list
 ```

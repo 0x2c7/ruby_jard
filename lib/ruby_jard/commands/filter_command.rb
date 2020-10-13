@@ -36,6 +36,8 @@ module RubyJard
           handle_excluded
         when :clear
           handle_clear
+        when :switch
+          handle_switch
         else
           raise Pry::CommandError,
                 "Invalid filter '#{highlight(sub_command)}'."\
@@ -104,6 +106,11 @@ module RubyJard
       def handle_clear
         @config.filter_excluded = []
         @config.filter_included = []
+        RubyJard::ControlFlow.dispatch(:list)
+      end
+
+      def handle_switch
+        @config.filter = RubyJard::PathFilter.next_filter(@config.filter)
         RubyJard::ControlFlow.dispatch(:list)
       end
     end
