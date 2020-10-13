@@ -98,6 +98,7 @@ module RubyJard
     def click; end
 
     def draw_error(exception)
+      @console.clear_screen_to_end
       @console.output.print RubyJard::Decorators::ColorDecorator::CSI_RESET
       @console.output.puts '--- Error ---'
       @console.output.puts "Internal error from Jard. I'm sorry to mess up your debugging experience."
