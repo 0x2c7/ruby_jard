@@ -187,7 +187,6 @@ module RubyJard
       Kernel.exit
     end
 
-
     def handle_list_command(_options = {})
       process_commands
     end
