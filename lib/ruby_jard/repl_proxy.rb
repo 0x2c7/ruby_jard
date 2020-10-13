@@ -25,6 +25,25 @@ module RubyJard
   # between *raw* mode and *cooked* mode while Pry interacts with TTY.
   # - Control flow instructions are threw out, and captured by ReplProcessor.
   #
+  #                             +------- Intercept key binding
+  #                             v                ^
+  #   Resize signal +---> Escape sequence        |
+  #                             +                |
+  # +-----------------+         v        +-------+-------+
+  # |    Thread 1     |        PIPE <----+ Listen Thread <--+ STDIN
+  # +-----------------+         +        +---------------+
+  #                             |
+  # +-----------------+         v
+  # | Stopping thread +--> Pry REPL loop +----> Capture and dispatch command
+  # +-----------------+         +
+  #                             |
+  # +-----------------+         v        +---------------+
+  # |    Thread 2     |        PTY  +----> Output Thread +--> STDOUT
+  # +-----------------+         +        +---------------+
+  #                             |
+  #                             |
+  #                             +-------> Discard escape sequence
+  #
   # As a result, Jard may support key-binding customization without breaking pry functionalities.
   class ReplProxy
     # Some commands overlaps with Jard, Ruby, and even cause confusion for
@@ -46,6 +65,8 @@ module RubyJard
       'disable-pry'    # No need to complicate things
     ].freeze
 
+    # Escape sequence used to mark command from key binding
+    COMMAND_ESCAPE_SEQUENCE = '\e]711;Command~'
     INTERNAL_KEY_BINDINGS = {
       RubyJard::Keys::CTRL_C => (KEY_BINDING_INTERRUPT = :interrupt)
     }.freeze
@@ -53,18 +74,6 @@ module RubyJard
     KEY_READ_TIMEOUT = 0.2           # 200ms
     PTY_OUTPUT_TIMEOUT = 1.to_f / 60 # 60hz
 
-    ##
-    # A tool to communicate between functional threads and main threads
-    class FlowInterrupt < StandardError
-      attr_reader :flow
-
-      def initialize(msg = '', flow = nil)
-        super(msg)
-        @flow = flow
-      end
-    end
-
-    ##
     # A class to store the state with multi-thread guarding
     # Ready => Processing/Exiting
     # Processing => Ready again
@@ -140,10 +149,9 @@ module RubyJard
       @pry_pty_output_thread.report_on_exception = false
       @pry_pty_output_thread.name = '<<Jard: Pty Output Thread>>'
 
-      Signal.trap('SIGWINCH') { resize! }
+      Signal.trap('SIGWINCH') { start_resizing }
     end
 
-    # rubocop:disable Metrics/MethodLength
     def repl(current_binding)
       reopen_streams
       finish_resizing
@@ -165,59 +173,19 @@ module RubyJard
       @key_listen_thread.report_on_exception = false
       @key_listen_thread.name = '<<Jard: Repl key listen >>'
 
-      @pry_input_thread = Thread.new { pry_repl(current_binding) }
-      @pry_input_thread.abort_on_exception = true
-      @pry_input_thread.report_on_exception = false
-      @pry_input_thread.name = '<<Jard: Pry input thread >>'
-
-      [@pry_input_thread, @key_listen_thread].map(&:join)
-    rescue FlowInterrupt => e
+      pry_repl(current_binding)
+    ensure
       @state.exiting!
       sleep PTY_OUTPUT_TIMEOUT until @state.exited?
-      RubyJard::ControlFlow.dispatch(e.flow)
-    ensure
       @console.enable_echo!
       @console.cooked!
       Readline.input = @console.input
       Readline.output = @console.output
       Pry.config.output = @console.output
-      @pry_input_thread&.exit if @pry_input_thread&.alive?
       @key_listen_thread&.exit if @key_listen_thread&.alive?
-      @state.exited!
     end
-    # rubocop:enable Metrics/MethodLength
 
     private
-
-    def resize!
-      return if @resizing == true
-
-      @resizing = true
-      @resizing_output_mark = @console.stdout_storage.length
-      sleep PTY_OUTPUT_TIMEOUT while @state.processing?
-      @resizing_readline_buffer = Readline.line_buffer
-      if @main_thread&.alive?
-        @main_thread.raise FlowInterrupt.new('Resize event', RubyJard::ControlFlow.new(:list))
-      end
-    end
-
-    def finish_resizing
-      return if @resizing_output_mark.nil? || @resizing != true
-
-      ((@resizing_output_mark + 1)..@console.stdout_storage.length).each do |line|
-        next if @console.stdout_storage[line - 1].nil?
-
-        @console.stdout_storage[line - 1].each do |s|
-          @pry_output_pty_write.write(s)
-        end
-      end
-      unless @resizing_readline_buffer.nil?
-        @pry_input_pipe_write.write(@resizing_readline_buffer)
-      end
-      @resizing_readline_buffer = nil
-      @resizing_output_mark = nil
-      @resizing = false
-    end
 
     def reopen_streams
       if @pry_input_pipe_read.closed? || @pry_input_pipe_write.closed?
@@ -229,8 +197,8 @@ module RubyJard
       end
     end
 
-    def read_key
-      @console.getch(KEY_READ_TIMEOUT)
+    def pry_repl(current_binding)
+      pry_instance.repl(current_binding)
     end
 
     def pry_pty_output
@@ -259,17 +227,6 @@ module RubyJard
       retry
     end
 
-    def pry_repl(current_binding)
-      flow = RubyJard::ControlFlow.listen do
-        pry_instance.repl(current_binding)
-      end
-      return if flow.nil?
-
-      @state.check(:ready?) do
-        @main_thread.raise FlowInterrupt.new('Interrupt from repl thread', flow)
-      end
-    end
-
     def listen_key_press
       loop do
         break if @pry_input_pipe_write.closed?
@@ -279,10 +236,9 @@ module RubyJard
           # Discard all keys unfortunately
           sleep PTY_OUTPUT_TIMEOUT
         else
-          key = @key_bindings.match { read_key }
+          key = @key_bindings.match { @console.getch(KEY_READ_TIMEOUT) }
           if key.is_a?(RubyJard::KeyBinding)
-            continue = handle_key_binding(key)
-            break unless continue
+            handle_key_binding(key)
           elsif !key.empty?
             @pry_input_pipe_write.write(key)
           end
@@ -296,19 +252,16 @@ module RubyJard
       case key_binding.action
       when KEY_BINDING_INTERRUPT
         handle_interrupt_command
-        true
       else
-        flow = RubyJard::ControlFlow.new(:key_binding, action: key_binding.action)
         @state.check(:ready?) do
-          @main_thread.raise FlowInterrupt.new('Interrupt from repl thread', flow)
+          dispatch_command(key_binding.action)
         end
-        false
       end
     end
 
     def handle_interrupt_command
       @state.check(:ready?) do
-        @pry_input_thread&.raise Interrupt if @pry_input_thread&.alive?
+        @main_thread&.raise Interrupt if @main_thread&.alive?
       end
       loop do
         begin
@@ -316,8 +269,12 @@ module RubyJard
         rescue Interrupt
           # Interrupt spam. Ignore.
         end
-        break unless @pry_input_thread&.pending_interrupt?
+        break unless @main_thread&.pending_interrupt?
       end
+    end
+
+    def dispatch_command(command)
+      @pry_input_pipe_write.write("#{COMMAND_ESCAPE_SEQUENCE}#{command}\n")
     end
 
     def pry_instance
@@ -334,8 +291,14 @@ module RubyJard
       class << pry_instance
         attr_reader :console
 
-        def _jard_handle_line(*args)
-          _original_handle_line(*args)
+        def _jard_handle_line(line, *args)
+          index = line.rindex(RubyJard::ReplProxy::COMMAND_ESCAPE_SEQUENCE)
+          if !index.nil?
+            command = line[(index + RubyJard::ReplProxy::COMMAND_ESCAPE_SEQUENCE.length)..-1]
+            _original_handle_line(command, *args)
+          else
+            _original_handle_line(line, *args)
+          end
           exec_hook :after_handle_line, *args, self
         end
         alias_method :_original_handle_line, :handle_line
@@ -398,7 +361,37 @@ module RubyJard
       end
     end
 
+    def start_resizing
+      return if @resizing == true
+
+      @resizing = true
+      @resizing_output_mark = @console.stdout_storage.length
+      @resizing_readline_buffer = Readline.line_buffer unless @state.processing?
+      dispatch_command('list')
+    end
+
+    # Flush previous output in the storage higher than a mark, restore pending input if capable
+    def finish_resizing
+      return if @resizing_output_mark.nil? || @resizing != true
+
+      ((@resizing_output_mark + 1)..@console.stdout_storage.length).each do |line|
+        next if @console.stdout_storage[line - 1].nil?
+
+        @console.stdout_storage[line - 1].each do |s|
+          @pry_output_pty_write.write(s)
+        end
+      end
+      unless @resizing_readline_buffer.nil?
+        @pry_input_pipe_write.write(@resizing_readline_buffer)
+      end
+      @resizing_readline_buffer = nil
+      @resizing_output_mark = nil
+      @resizing = false
+    end
+
     def write_output(content)
+      return if content.include?(COMMAND_ESCAPE_SEQUENCE)
+
       @console.write content.force_encoding('UTF-8')
     end
   end

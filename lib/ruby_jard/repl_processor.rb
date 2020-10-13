@@ -187,15 +187,6 @@ module RubyJard
       Kernel.exit
     end
 
-    def handle_key_binding_command(options = {})
-      method_name = "handle_#{options[:action]}_command"
-      if respond_to?(method_name, true)
-        send(method_name)
-      else
-        raise RubyJard::Error,
-              "Fail to handle key binding `#{options[:action]}`"
-      end
-    end
 
     def handle_list_command(_options = {})
       process_commands
