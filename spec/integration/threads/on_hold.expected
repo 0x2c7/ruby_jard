@@ -50,11 +50,11 @@ jard >>
 │Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
 └──────────────────────────────────────────────────────────────────────────────┘
 jard >> a
-=> 2
+=> 1
 jard >> b
-=> 2
+=> 1
 jard >> a + b
-=> 4
+=> 2
 jard >>
 ### END SCREEN ###
 ### START SEND_KEYS ###
@@ -112,10 +112,10 @@ jard >>
 │Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
 └──────────────────────────────────────────────────────────────────────────────┘
 jard >> a
-=> 4
+=> 3
 jard >> b
-=> 4
+=> 3
 jard >> a + b
-=> 8
+=> 6
 jard >>
 ### END SCREEN ###
