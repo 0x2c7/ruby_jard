@@ -6,14 +6,14 @@
 │   4 def process(index)                                                       │
 │   5   a = index                                                              │
 │   6   b = Thread.current[:index]                                             │
-│   7   jard if index % 2 == 0                                                 │
+│   7   jard if index % 2 == 1                                                 │
 │⮕  8 end                                                                      │
 │   9                                                                          │
 │  10 threads = (1..4).map do |index|                                          │
 │  11   Thread.new do                                                          │
 │  12     Thread.current[:index] = index                                       │
 │  13     process(index)                                                       │
-│  14     sleep 0.5                                                            │
+│  14     sleep 1                                                              │
 │  15   end                                                                    │
 │  16 end                                                                      │
 │  17 threads.map(&:join)                                                      │
@@ -35,14 +35,14 @@ jard >>
 │   4 def process(index)                                                       │
 │   5   a = index                                                              │
 │   6   b = Thread.current[:index]                                             │
-│   7   jard if index % 2 == 0                                                 │
+│   7   jard if index % 2 == 1                                                 │
 │⮕  8 end                                                                      │
 │   9                                                                          │
 │  10 threads = (1..4).map do |index|                                          │
 │  11   Thread.new do                                                          │
 │  12     Thread.current[:index] = index                                       │
 │  13     process(index)                                                       │
-│  14     sleep 0.5                                                            │
+│  14     sleep 1                                                              │
 │  15   end                                                                    │
 │  16 end                                                                      │
 │  17 threads.map(&:join)                                                      │
@@ -68,14 +68,14 @@ jard >>
 │   4 def process(index)                                                       │
 │   5   a = index                                                              │
 │   6   b = Thread.current[:index]                                             │
-│   7   jard if index % 2 == 0                                                 │
+│   7   jard if index % 2 == 1                                                 │
 │⮕  8 end                                                                      │
 │   9                                                                          │
 │  10 threads = (1..4).map do |index|                                          │
 │  11   Thread.new do                                                          │
 │  12     Thread.current[:index] = index                                       │
 │  13     process(index)                                                       │
-│  14     sleep 0.5                                                            │
+│  14     sleep 1                                                              │
 │  15   end                                                                    │
 │  16 end                                                                      │
 │  17 threads.map(&:join)                                                      │
@@ -97,14 +97,14 @@ jard >>
 │   4 def process(index)                                                       │
 │   5   a = index                                                              │
 │   6   b = Thread.current[:index]                                             │
-│   7   jard if index % 2 == 0                                                 │
+│   7   jard if index % 2 == 1                                                 │
 │⮕  8 end                                                                      │
 │   9                                                                          │
 │  10 threads = (1..4).map do |index|                                          │
 │  11   Thread.new do                                                          │
 │  12     Thread.current[:index] = index                                       │
 │  13     process(index)                                                       │
-│  14     sleep 0.5                                                            │
+│  14     sleep 1                                                              │
 │  15   end                                                                    │
 │  16 end                                                                      │
 │  17 threads.map(&:join)                                                      │
