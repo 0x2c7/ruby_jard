@@ -12,7 +12,7 @@ import {LinkedImage} from '../../src/components/LinkedImage'
 | `jard filter clear` | | |
 | `jard filter switch` | | |
 
-Ruby Jard has a strong filtering system. This system consists of a filter mode, included list, and excluded list. Filter mode is how Ruby Jard reacts to control flow commands. See [filter](/docs/guides/filter) for more information.
+Ruby Jard has a powerful filtering system. This system consists of a filter mode, include list, and exclude list. Filter mode is how Ruby Jard reacts to control flow commands. See the [filter docs](/docs/guides/filter) for more information.
 
 **Examples:**
 

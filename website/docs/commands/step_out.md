@@ -8,9 +8,9 @@ import {LinkedImage} from '../../src/components/LinkedImage'
 | ------- | ------------------- | ----- |
 | `step-out` | Shift + F7 | `so` |
 
-The opposite of step. This command is used to finish the execution of current frame, and jump to the next line of upper frame. In other words, this command is equivalent to the sequence `up` and `next`. If the neighbor frame already finishes, it continues with even higher frame.
+The opposite of step. This command is used to finish the execution of the current frame and jump to the next line of the parent frame. In other words, this command is equivalent to the sequence `up` and `next`. If the parent frame has already finished, Jard continues to the next line in that frame's parent and so on.
 
-This command is useful when you loose your interest in frame, and want to quickly go up again. One example is that you accidentally step into a longgggg loop with nothing useful. Another example is that you step into the library source code and don't really care what it does underlying.
+This command is useful when you lose interest in a frame and want to easily return to the parent. For example, you might have accidentally stepped into a longgggg loop or into library source code.
 
 **Examples:**
 

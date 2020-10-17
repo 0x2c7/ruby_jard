@@ -3,10 +3,10 @@ id: Color schemes
 slug: color-schemes
 ---
 
-Ruby Jard bundles 6 built-in schemes, 4 dark ones, and 2 light ones. You can use [color scheme commands](/docs/commands/color-scheme) to up the flight, or define in [configuration file](/docs/guides/configurations).
+Ruby Jard bundles 6 built-in schemes: 4 dark ones and 2 light ones. You can use [color scheme commands](/docs/commands/color-scheme) to set the current scheme, or define in [configuration file](/docs/guides/configurations).
 
 ### 256
-Default scheme, 256 basic colors, supported by all terminals
+Default scheme. 256 basic colors, supported by all terminals
 
 ![256 Color scheme](/img/color_schemes/256.png)
 
@@ -33,7 +33,7 @@ Light 256 basic colors
 
 ### Your custom theme
 
-Add those lines into your [configuration file](/docs/guides/configurations). Ruby Jard supports two types of colors: 24-bit color or [ANSI 8-bit color](https://en.wikipedia.org/wiki/ANSI_escape_code).
+Add these lines into your [configuration file](/docs/guides/configurations). Ruby Jard supports two types of colors: 24-bit color and [ANSI 8-bit color](https://en.wikipedia.org/wiki/ANSI_escape_code).
 
 ```ruby
 class MyColorScheme < ColorScheme

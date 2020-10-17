@@ -8,7 +8,7 @@ import {LinkedImage} from '../../src/components/LinkedImage'
 | ------- | ------------------- | ----- |
 | `jard output` | | |
 
-Show all the program output in a pager, allowing navigation, searching (powered by GNU Less). Note that the output are only captured only after Jard already started. All the previous output could not be captured.
+Show all program output in a pager, allowing navigation and searching (powered by GNU Less). Note that only the output emitted after Jard has started is captured. All the previous output will not be captured.
 
 **Examples:**
 

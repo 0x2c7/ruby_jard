@@ -7,9 +7,9 @@ slug: frame
 | ------- | ------------------- | ----- |
 | `frame [-h] [frame_id]` ||  |
 
-Explore a particular frame with id `<frame_id>`. It's faster than `up` and `down`. See [up](/docs/commands/up) for more information.
+Explore a particular frame with id `<frame_id>`. This is faster than `up` and `down`. See the [up docs](/docs/commands/up) for more information.
 
-[up](/docs/commands/up), [down](/docs/commands/down), and [frame](/docs/commands/frame) commands correlates to [filter](/docs/guides/filter). All hidden frames are ignored, all C frames are ignored too.
+[up](/docs/commands/up), [down](/docs/commands/down), and [frame](/docs/commands/frame) commands respect [filter](/docs/guides/filter). All hidden frames are ignored, all C frames are ignored too.
 
 **Examples:**
 

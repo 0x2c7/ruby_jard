@@ -7,7 +7,7 @@ slug: next
 | ------- | ------------------- | ----- |
 | `next` | F8 | `n` |
 
-Continue to the next line in the current frame, by pass any steppable method call or blocks in the mid way unless they contains dynamic breakpoint or any `jard` attachment command. If the current frame already reaches the end, it continues to the next line of upper frame and so on.
+Continue to the next line in the current frame. Bypasses any steppable method call or block in between unless they contain a dynamic breakpoint or a `jard` attachment command. If execution has reached the end of the current frame, next continues to the next line of the parent frame and so on.
 
 **Examples:**
 
