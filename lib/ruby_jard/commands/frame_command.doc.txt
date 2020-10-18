@@ -5,9 +5,9 @@
 [34m│[0m [34mframe [-h] [frame_id][0m [34m│[0m                     [34m│[0m       [34m│[0m 
 [34m└───────────────────────┴─────────────────────┴───────┘[0m
 
-Explore a particular frame with id [34m<frame_id>[0m. It’s faster than [34mup[0m and [34mdown[0m. See [34;4mup[0m for more information.
+Explore a particular frame with id [34m<frame_id>[0m. This is faster than [34mup[0m and [34mdown[0m. See the up docs » [34;4mup[0m for more information.
 
-[34;4mup[0m, [34;4mdown[0m, and [34;4mframe[0m commands correlates to filter » [34;4mhttps://rubyjard.org/docs/guides/filter[0m. All hidden frames are ignored, all C frames are ignored too.
+[34;4mup[0m, [34;4mdown[0m, and [34;4mframe[0m commands respect filter » [34;4mhttps://rubyjard.org/docs/guides/filter[0m. All hidden frames are ignored, all C frames are ignored too.
 
 [34;1mExamples:[0m
 

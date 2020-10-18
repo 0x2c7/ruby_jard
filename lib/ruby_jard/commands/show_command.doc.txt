@@ -5,7 +5,7 @@
 [34m│[0m [34mjard show [screen][0m [34m│[0m                     [34m│[0m       [34m│[0m 
 [34m└────────────────────┴─────────────────────┴───────┘[0m
 
-Show a particular screen on the current interface. This option correlates to recent layout’s screens. If a screen is not available in current layout, it won’t be shown.
+Show a particular screen in the current interface. This option correlates to recent layout’s screens. If a screen is not available in current layout, it won’t be shown.
 
 [34;1mExamples:[0m
 

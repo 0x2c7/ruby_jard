@@ -5,4 +5,4 @@
 [34m│[0m [34mcontinue[0m [34m│[0m F9                  [34m│[0m [34mc[0m     [34m│[0m 
 [34m└──────────┴─────────────────────┴───────┘[0m
 
-Continue the execution of your program to the end, or stop at the first dynamic break point or [34mjard[0m attachment command.
+Continue the execution of your program until it finishes, or stop at the first dynamic break point or [34mjard[0m attachment command.

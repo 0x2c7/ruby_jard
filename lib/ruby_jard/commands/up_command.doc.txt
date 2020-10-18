@@ -5,11 +5,11 @@
 [34m│[0m [34mup[0m      [34m│[0m F6                  [34m│[0m       [34m│[0m 
 [34m└─────────┴─────────────────────┴───────┘[0m
 
-Explore the upper frame. When you use this command, all associated displaying screens will be updated accordingly, but your program current position is still at the latest frame. This command is mostly used to explore, and view the trace, input parameters, or how your program stops at the current position. When use this command, you should have a glance at Variable panel, and Source panel to see the variables at destination frame.
+Explore the parent frame. When you use this command, all associated display screens will be updated accordingly, but your program’s current position is still the latest frame. This command is mostly used to explore and introspect the stack, input parameters, or how your program has stopped at the current position. When using this command, take a look at the Variable and Source panels to see the variables defined in the current frame.
 
-You can combine with [34mnext[0m or [34mstep[0m to perform powerful execution redirection at the destination frame. Let’s look at an example. You are debugging a chain of 10 rack middlewares, you go deep into the #9 middleware, found something, then want to go back to #5 middleware. It’s pretty boring and frustrated to just use [34mnext[0m or [34mstep-out[0m and hope it eventually goes back. Now use [34mup[0m for some times (or [34mframe[0m, described below) to go to your desired frame, and use [34mnext[0m there. Tada, it’s magical, just like teleport.
+You can combine [34mup[0m with [34mnext[0m or [34mstep[0m to perform powerful execution redirection at from the current frame. Let’s look at an example. You are debugging a chain of 10 rack middlewares and you go deep into the ninth middleware. You find something and want to go back to the fifth middleware. It’s pretty tedious and frustrating to use [34mnext[0m or [34mstep-out[0m and hope you eventually end up in the right place. Consider using [34mup[0m a few times (or [34mframe[0m, described below) to go to the desired frame, then use [34mnext[0m. Tada! It’s magical, like teleporting yourself to the right position.
 
-[34;4mup[0m, [34;4mdown[0m, and [34;4mframe[0m commands correlates to filter » [34;4mhttps://rubyjard.org/docs/guides/filter[0m. All hidden frames are ignored, all C frames are ignored too.
+[34;4mup[0m, [34;4mdown[0m, and [34;4mframe[0m commands respect filter » [34;4mhttps://rubyjard.org/docs/guides/filter[0m. All hidden frames and C frames are ignored.
 
 [34;1mExamples:[0m
 

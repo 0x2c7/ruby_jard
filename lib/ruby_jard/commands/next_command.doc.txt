@@ -5,7 +5,7 @@
 [34m│[0m [34mnext[0m    [34m│[0m F8                  [34m│[0m [34mn[0m     [34m│[0m 
 [34m└─────────┴─────────────────────┴───────┘[0m
 
-Continue to the next line in the current frame, by pass any steppable method call or blocks in the mid way unless they contains dynamic breakpoint or any [34mjard[0m attachment command. If the current frame already reaches the end, it continues to the next line of upper frame and so on.
+Continue to the next line in the current frame. Bypasses any steppable method call or block in between unless they contain a dynamic breakpoint or a [34mjard[0m attachment command. If execution has reached the end of the current frame, next continues to the next line of the parent frame and so on.
 
 [34;1mExamples:[0m
 

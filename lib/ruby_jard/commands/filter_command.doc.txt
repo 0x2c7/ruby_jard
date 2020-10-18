@@ -13,7 +13,7 @@
 [34m│[0m [34mjard filter switch[0m                                       [34m│[0m                     [34m│[0m       [34m│[0m 
 [34m└──────────────────────────────────────────────────────────┴─────────────────────┴───────┘[0m
 
-Ruby Jard has a strong filtering system. This system consists of a filter mode, included list, and excluded list. Filter mode is how Ruby Jard reacts to control flow commands. See filter » [34;4mhttps://rubyjard.org/docs/guides/filter[0m for more information.
+Ruby Jard has a powerful filtering system. This system consists of a filter mode, include list, and exclude list. Filter mode is how Ruby Jard reacts to control flow commands. See the filter docs » [34;4mhttps://rubyjard.org/docs/guides/filter[0m for more information.
 
 [34;1mExamples:[0m
 
