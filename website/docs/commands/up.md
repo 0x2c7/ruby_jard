@@ -8,11 +8,11 @@ import {LinkedImage} from '../../src/components/LinkedImage'
 | ------- | ------------------- | ----- |
 | `up` | F6 |  |
 
-Explore the upper frame. When you use this command, all associated displaying screens will be updated accordingly, but your program current position is still at the latest frame. This command is mostly used to explore, and view the trace, input parameters, or how your program stops at the current position. When use this command, you should have a glance at Variable panel, and Source panel to see the variables at destination frame.
+Explore the parent frame. When you use this command, all associated display screens will be updated accordingly, but your program's current position is still the latest frame. This command is mostly used to explore and introspect the stack, input parameters, or how your program has stopped at the current position. When using this command, take a look at the Variable and Source panels to see the variables defined in the current frame.
 
-You can combine with `next` or `step` to perform powerful execution redirection at the destination frame. Let's look at an example. You are debugging a chain of 10 rack middlewares, you go deep into the #9 middleware, found something, then want to go back to #5 middleware. It's pretty boring and frustrated to just use `next` or `step-out` and hope it eventually goes back. Now use `up` for some times (or `frame`, described below) to go to your desired frame, and use `next` there. Tada, it's magical, just like teleport.
+You can combine `up` with `next` or `step` to perform powerful execution redirection at from the current frame. Let's look at an example. You are debugging a chain of 10 rack middlewares and you go deep into the ninth middleware. You find something and want to go back to the fifth middleware. It's pretty tedious and frustrating to use `next` or `step-out` and hope you eventually end up in the right place. Consider using `up` a few times (or `frame`, described below) to go to the desired frame, then use `next`. Tada! It's magical, like teleporting yourself to the right position.
 
-[up](/docs/commands/up), [down](/docs/commands/down), and [frame](/docs/commands/frame) commands correlates to [filter](/docs/guides/filter). All hidden frames are ignored, all C frames are ignored too.
+[up](/docs/commands/up), [down](/docs/commands/down), and [frame](/docs/commands/frame) commands respect [filter](/docs/guides/filter). All hidden frames and C frames are ignored.
 
 **Examples:**
 
