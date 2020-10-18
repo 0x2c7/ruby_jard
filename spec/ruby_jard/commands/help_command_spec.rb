@@ -41,7 +41,7 @@ RSpec.describe RubyJard::Commands::HelpCommand do
     it 'returns help from a particular command' do
       command_object.process_line 'help exit'
       expect(output.string).to match(/Default key binding/)
-      expect(output.string).to match(/Exit the execution of the program/)
+      expect(output.string).to match(/Stop the execution of the program/)
     end
   end
 
