@@ -2,6 +2,7 @@
 
 require 'pty'
 require 'ruby_jard/pager'
+require 'ruby_jard/pry_proxy'
 
 module RubyJard
   ##
@@ -45,26 +46,7 @@ module RubyJard
   #                             +-------> Discard escape sequence
   #
   # As a result, Jard may support key-binding customization without breaking pry functionalities.
-  class ReplProxy
-    # Some commands overlaps with Jard, Ruby, and even cause confusion for
-    # users. It's better ignore or re-implement those commands.
-    PRY_EXCLUDED_COMMANDS = [
-      'pry-backtrace', # Redundant method for normal user
-      'watch',         # Conflict with byebug and jard watch
-      'edit',          # Sorry, but a file should not be editted while debugging, as it made breakpoints shifted
-      'play',          # What if the played files or methods include jard again?
-      'stat',          # Included in jard UI
-      'backtrace',     # Re-implemented later
-      'break',         # Re-implemented later
-      'exit-all',      # Conflicted with continue
-      'exit-program',  # We already have `exit` native command
-      '!pry',          # No need to complicate things
-      'jump-to',       # No need to complicate things
-      'nesting',       # No need to complicate things
-      'switch-to',     # No need to complicate things
-      'disable-pry'    # No need to complicate things
-    ].freeze
-
+  class ReplManager
     # Escape sequence used to mark command from key binding
     COMMAND_ESCAPE_SEQUENCE = '\e]711;Command~'
     INTERNAL_KEY_BINDINGS = {
@@ -160,12 +142,6 @@ module RubyJard
       @openning_pager = false
       @console.disable_echo!
       @console.raw!
-      # Internally, Pry sneakily updates Readline to global output config
-      # when STDOUT is piping regardless of what I pass into Pry instance.
-      Pry.config.output = @pry_output_pty_write
-      Readline.input = @pry_input_pipe_read
-      Readline.output = @pry_output_pty_write
-
       @main_thread = Thread.current
 
       @key_listen_thread = Thread.new { listen_key_press }
@@ -179,9 +155,6 @@ module RubyJard
       sleep PTY_OUTPUT_TIMEOUT until @state.exited?
       @console.enable_echo!
       @console.cooked!
-      Readline.input = @console.input
-      Readline.output = @console.output
-      Pry.config.output = @console.output
       @key_listen_thread&.exit if @key_listen_thread&.alive?
     end
 
@@ -280,87 +253,35 @@ module RubyJard
     end
 
     def pry_instance
-      pry_instance = Pry.new(
-        prompt: pry_jard_prompt,
-        quiet: true,
-        commands: pry_command_set,
-        hooks: pry_hooks,
-        output: @pry_output_pty_write
+      PryProxy.new(
+        original_input: @console.input,
+        original_output: @console.output,
+        redirected_input: @pry_input_pipe_read,
+        redirected_output: @pry_output_pty_write,
+        state_hooks: {
+          after_read: proc {
+            @console.cooked!
+            @state.processing!
+            # Sleep 2 ticks, wait for pry to print out all existing output in the queue
+            sleep PTY_OUTPUT_TIMEOUT * 2
+          },
+          after_handle_line: proc {
+            @console.raw!
+            @state.ready!
+          },
+          before_pager: proc {
+            @openning_pager = true
+
+            @state.processing!
+            @console.cooked!
+          },
+          after_pager: proc {
+            @openning_pager = false
+            @state.ready!
+            @console.raw!
+          }
+        }
       )
-      # I'll be burned in hell for this
-      # TODO: Contact pry author to add :after_handle_line hook
-      pry_instance.instance_variable_set(:@console, @console)
-      class << pry_instance
-        attr_reader :console
-
-        def _jard_handle_line(line, *args)
-          index = line.to_s.rindex(RubyJard::ReplProxy::COMMAND_ESCAPE_SEQUENCE)
-          if !index.nil?
-            command = line[(index + RubyJard::ReplProxy::COMMAND_ESCAPE_SEQUENCE.length)..-1]
-            _original_handle_line(command, *args)
-          else
-            _original_handle_line(line, *args)
-          end
-          exec_hook :after_handle_line, *args, self
-        end
-        alias_method :_original_handle_line, :handle_line
-        alias_method :handle_line, :_jard_handle_line
-
-        def pager
-          RubyJard::Pager.new(self)
-        end
-      end
-      pry_instance
-    end
-
-    def pry_command_set
-      # TODO: Create a dedicated registry to store Jard commands, and merge with Pry default commands
-      # This approach allows Jard and Binding.pry co-exist even after Jard already started
-      set = Pry::CommandSet.new
-      set.import_from(
-        Pry.config.commands,
-        *(Pry.config.commands.list_commands - PRY_EXCLUDED_COMMANDS)
-      )
-      set
-    end
-
-    def pry_jard_prompt
-      Pry::Prompt.new(
-        :jard,
-        'Custom pry promt for Jard', [
-          proc do |_context, _nesting, _pry_instance|
-            'jard >> '
-          end,
-          proc do |_context, _nesting, _pry_instance|
-            'jard *> '
-          end
-        ]
-      )
-    end
-
-    def pry_hooks
-      hooks = Pry::Hooks.default
-      hooks.add_hook(:after_read, :jard_proxy_acquire_lock) do |_read_string, _pry|
-        @console.cooked!
-        @state.processing!
-        # Sleep 2 ticks, wait for pry to print out all existing output in the queue
-        sleep PTY_OUTPUT_TIMEOUT * 2
-      end
-      hooks.add_hook(:after_handle_line, :jard_proxy_release_lock) do
-        @console.raw!
-        @state.ready!
-      end
-      hooks.add_hook(:before_pager, :jard_proxy_before_pager) do
-        @openning_pager = true
-
-        @state.processing!
-        @console.cooked!
-      end
-      hooks.add_hook(:after_pager, :jard_proxy_after_pager) do
-        @openning_pager = false
-        @state.ready!
-        @console.raw!
-      end
     end
 
     def start_resizing

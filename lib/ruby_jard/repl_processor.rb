@@ -48,7 +48,7 @@ module RubyJard
 
       @session = RubyJard::Session.instance
       @screen_manager = @session.screen_manager
-      @repl_proxy = @session.repl_proxy
+      @repl_manager = @session.repl_manager
 
       @repeated_flow = 0
       @last_repeat_at = nil
@@ -103,7 +103,7 @@ module RubyJard
       return_value = nil
 
       flow = RubyJard::ControlFlow.listen do
-        return_value = @repl_proxy.repl(frame._binding)
+        return_value = @repl_manager.repl(frame._binding)
       end
 
       RubyJard.benchmark(:handle_flow) do

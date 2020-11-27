@@ -39,9 +39,8 @@ module RubyJard
     # Pager using GNU Less
     class LessPager < Pry::Pager::NullPager
       def initialize(pry_instance, force_open: false, pager_start_at_the_end: false, prompt: nil)
-        super(pry_instance.output)
         @pry_instance = pry_instance
-        @console = pry_instance.console
+        @console = RubyJard::Session.instance.screen_manager.console
         @buffer = ''
 
         @pager_start_at_the_end = pager_start_at_the_end
@@ -52,10 +51,11 @@ module RubyJard
         # from /dev/tty), in which, the same as RubyJard::Console.output
         # - Otherwise, it writes directly into pry's REPL output.
         # That's why there should be two output here
-        @tty_output = @console.redirected? ? @console.output : pry_instance.output
+        @tty_output = @console.redirected? ? @console.output : @pry_instance.output
         @window_width, @window_height = @console.screen_size
         @tracker = JardPageTracker.new(@window_height, @window_width)
         @pager = force_open ? open_pager : nil
+        super(@pry_instance.output)
       end
 
       def write(str)
