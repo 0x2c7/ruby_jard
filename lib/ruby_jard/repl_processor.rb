@@ -1,21 +1,5 @@
 # frozen_string_literal: true
 
-require 'ruby_jard/commands/base_command'
-require 'ruby_jard/commands/validation_helpers'
-require 'ruby_jard/commands/color_helpers'
-require 'ruby_jard/commands/continue_command'
-require 'ruby_jard/commands/exit_command'
-require 'ruby_jard/commands/up_command'
-require 'ruby_jard/commands/down_command'
-require 'ruby_jard/commands/next_command'
-require 'ruby_jard/commands/step_command'
-require 'ruby_jard/commands/step_out_command'
-require 'ruby_jard/commands/frame_command'
-require 'ruby_jard/commands/list_command'
-require 'ruby_jard/commands/skip_command'
-require 'ruby_jard/commands/jard_command'
-require 'ruby_jard/commands/help_command'
-
 module RubyJard
   ##
   # Byebug allows customizing processor with a series of hooks (https://github.com/deivid-rodriguez/byebug/blob/e1fb8209d56922f7bafd128af84e61568b6cd6a7/lib/byebug/processors/command_processor.rb)

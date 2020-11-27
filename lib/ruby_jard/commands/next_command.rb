@@ -20,5 +20,5 @@ module RubyJard
   end
 end
 
-Pry::Commands.add_command(RubyJard::Commands::NextCommand)
-Pry::Commands.alias_command 'n', 'next'
+RubyJard::PryProxy::Commands.add_command(RubyJard::Commands::NextCommand)
+RubyJard::PryProxy::Commands.alias_command 'n', 'next'

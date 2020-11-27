@@ -4,7 +4,7 @@ RSpec.describe RubyJard::Commands::HelpCommand do
   subject(:command_object) do
     described_class.new(
       pry_instance: pry_instance, output: output,
-      command_set: Pry.config.commands
+      command_set: RubyJard::PryProxy::Commands
     )
   end
 
@@ -30,8 +30,6 @@ RSpec.describe RubyJard::Commands::HelpCommand do
       expect(output.string).to match(%r{https://rubyjard.org/docs})
       expect(output.string).to match(/step-out/)
       expect(output.string).to match(/continue/)
-      expect(output.string).to match(/amend-line/)
-      expect(output.string).to match(/pry-version/)
       expect(output.string).not_to match(/color-scheme/)
       expect(output.string).not_to match(/help -a/)
     end

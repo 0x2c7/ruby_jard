@@ -27,4 +27,4 @@ module RubyJard
   end
 end
 
-Pry::Commands.add_command(RubyJard::Commands::SkipCommand)
+RubyJard::PryProxy::Commands.add_command(RubyJard::Commands::SkipCommand)

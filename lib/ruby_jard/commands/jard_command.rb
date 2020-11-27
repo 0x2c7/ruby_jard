@@ -49,4 +49,4 @@ module RubyJard
   end
 end
 
-Pry::Commands.add_command(RubyJard::Commands::JardCommand)
+RubyJard::PryProxy::Commands.add_command(RubyJard::Commands::JardCommand)

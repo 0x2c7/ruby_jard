@@ -16,5 +16,5 @@ module RubyJard
   end
 end
 
-Pry::Commands.add_command(RubyJard::Commands::ContinueCommand)
-Pry::Commands.alias_command 'c', 'continue'
+RubyJard::PryProxy::Commands.add_command(RubyJard::Commands::ContinueCommand)
+RubyJard::PryProxy::Commands.alias_command 'c', 'continue'

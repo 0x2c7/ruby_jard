@@ -57,7 +57,6 @@ module RubyJard
       Byebug::Setting[:autoirb] = false
       Byebug::Setting[:autopry] = false
 
-      require 'ruby_jard/repl_processor'
       Byebug::Context.processor = RubyJard::ReplProcessor
       # Exclude all files in Ruby Jard source code from the stacktrace.
       Byebug::Context.ignored_files = Byebug::Context.all_files + RubyJard.all_files

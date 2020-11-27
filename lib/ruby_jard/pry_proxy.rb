@@ -98,12 +98,14 @@ module RubyJard
     end
 
     def pry_command_set
-      # TODO: Create a dedicated registry to store Jard commands, and merge with Pry default commands
-      # This approach allows Jard and Binding.pry co-exist even after Jard already started
       set = Pry::CommandSet.new
       set.import_from(
         Pry::Commands,
         *(Pry::Commands.list_commands - PRY_EXCLUDED_COMMANDS)
+      )
+      set.import_from(
+        PryProxy::Commands,
+        *PryProxy::Commands.list_commands
       )
       set
     end
@@ -127,3 +129,19 @@ module RubyJard
 end
 
 RubyJard::PryProxy.init
+
+require 'ruby_jard/commands/base_command'
+require 'ruby_jard/commands/validation_helpers'
+require 'ruby_jard/commands/color_helpers'
+require 'ruby_jard/commands/continue_command'
+require 'ruby_jard/commands/exit_command'
+require 'ruby_jard/commands/up_command'
+require 'ruby_jard/commands/down_command'
+require 'ruby_jard/commands/next_command'
+require 'ruby_jard/commands/step_command'
+require 'ruby_jard/commands/step_out_command'
+require 'ruby_jard/commands/frame_command'
+require 'ruby_jard/commands/list_command'
+require 'ruby_jard/commands/skip_command'
+require 'ruby_jard/commands/jard_command'
+require 'ruby_jard/commands/help_command'

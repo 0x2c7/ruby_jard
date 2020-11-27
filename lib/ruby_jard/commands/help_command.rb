@@ -93,4 +93,4 @@ module RubyJard
   end
 end
 
-Pry::Commands.add_command(RubyJard::Commands::HelpCommand)
+RubyJard::PryProxy::Commands.add_command(RubyJard::Commands::HelpCommand)

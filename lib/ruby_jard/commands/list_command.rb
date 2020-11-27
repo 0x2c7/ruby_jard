@@ -16,6 +16,6 @@ module RubyJard
   end
 end
 
-Pry::Commands.add_command(RubyJard::Commands::ListCommand)
-Pry::Commands.alias_command 'l', 'list'
-Pry::Commands.alias_command 'whereami', 'list'
+RubyJard::PryProxy::Commands.add_command(RubyJard::Commands::ListCommand)
+RubyJard::PryProxy::Commands.alias_command 'l', 'list'
+RubyJard::PryProxy::Commands.alias_command 'whereami', 'list'

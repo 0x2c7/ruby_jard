@@ -20,5 +20,5 @@ module RubyJard
   end
 end
 
-Pry::Commands.add_command(RubyJard::Commands::StepCommand)
-Pry::Commands.alias_command 's', 'step'
+RubyJard::PryProxy::Commands.add_command(RubyJard::Commands::StepCommand)
+RubyJard::PryProxy::Commands.alias_command 's', 'step'

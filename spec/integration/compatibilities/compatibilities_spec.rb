@@ -56,4 +56,28 @@ RSpec.describe 'Byebug compatibility', integration: true do
       test.stop
     end
   end
+
+  context 'when attach into program with mixed binding.pry and jard command' do
+    it 'binding.pry command still works along with Jard' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'compatibility_binding_pry_mixed.expected',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/binding_pry_mixed_example.rb",
+        width: 130, height: 30
+      )
+      test.start
+      test.assert_screen
+
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+
+      test.send_keys('exit', :Enter)
+      test.assert_screen
+
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
 end
