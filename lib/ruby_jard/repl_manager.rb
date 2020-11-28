@@ -56,68 +56,8 @@ module RubyJard
     KEY_READ_TIMEOUT = 0.2           # 200ms
     PTY_OUTPUT_TIMEOUT = 1.to_f / 60 # 60hz
 
-    # A class to store the state with multi-thread guarding
-    # Ready => Processing/Exiting
-    # Processing => Ready again
-    # Exiting => Exited
-    # Exited => Ready
-    class ReplState
-      STATES = [
-        STATE_READY      = 0,
-        STATE_EXITING    = 1,
-        STATE_PROCESSING = 2,
-        STATE_EXITED     = 3
-      ].freeze
-      def initialize
-        @state = STATE_EXITED
-        @mutex = Mutex.new
-      end
-
-      def check(method_name)
-        @mutex.synchronize { yield if send(method_name) }
-      end
-
-      def ready?
-        @state == STATE_READY
-      end
-
-      def ready!
-        if ready? || processing? || exited?
-          @mutex.synchronize { @state = STATE_READY }
-        end
-      end
-
-      def processing?
-        @state == STATE_PROCESSING
-      end
-
-      def processing!
-        return unless ready?
-
-        @mutex.synchronize { @state = STATE_PROCESSING }
-      end
-
-      def exiting?
-        @state == STATE_EXITING
-      end
-
-      def exiting!
-        @mutex.synchronize { @state = STATE_EXITING }
-      end
-
-      def exited?
-        @state == STATE_EXITED
-      end
-
-      def exited!
-        @mutex.synchronize { @state = STATE_EXITED }
-      end
-    end
-
     def initialize(console:, key_bindings: nil)
       @console = console
-      @state = ReplState.new
-
       @pry_input_pipe_read, @pry_input_pipe_write = IO.pipe
       @pry_output_pty_read, @pry_output_pty_write = PTY.open
 
