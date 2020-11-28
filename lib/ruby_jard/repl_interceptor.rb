@@ -29,6 +29,11 @@ module RubyJard
 
     def stop
       @key_listen_thread&.exit if @key_listen_thread&.alive?
+      if interceptable?
+        sleep PTY_OUTPUT_TIMEOUT until @state.exited?
+      else
+        @state.exited!
+      end
     end
 
     def dispatch_command(command)
@@ -61,14 +66,18 @@ module RubyJard
       @output_writer
     end
 
-    def redirectable?
+    def interceptable?
+      return false if defined?(Reline) && Readline == Reline
+      return false if RubyJard::Reflection.instance.call_method(::Readline, :input=).source_location != nil
+      return false if RubyJard::Reflection.instance.call_method(::Readline, :output=).source_location != nil
+
       true
     end
 
     private
 
     def reopen_streams
-      unless redirectable?
+      unless interceptable?
         @input_reader = @console.input
         @input_writer = @console.input
         @output_reader = @console.output
@@ -86,7 +95,7 @@ module RubyJard
     end
 
     def start_output_bridge
-      return unless redirectable?
+      return unless interceptable?
 
       @output_bridge_thread = Thread.new { output_bridge }
       @output_bridge_thread.abort_on_exception = true
@@ -95,7 +104,7 @@ module RubyJard
     end
 
     def start_key_listen_thread
-      return unless redirectable?
+      return unless interceptable?
 
       @main_thread = Thread.current
       @key_listen_thread = Thread.new { listen_key_press }
@@ -147,10 +156,9 @@ module RubyJard
           end
         end
       end
-    rescue StandardError => e
+    rescue StandardError
       # This thread shoud never die, or the user may be freezed, and cannot type anything
       sleep 0.5
-      RubyJard.debug(e.inspect)
       retry
     end
 

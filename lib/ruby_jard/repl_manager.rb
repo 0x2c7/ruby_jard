@@ -64,51 +64,49 @@ module RubyJard
 
       @state.ready!
       @state.clear_pager!
-      @console.disable_echo!
-      @console.raw!
       @interceptor.start
 
-      pry_repl(current_binding)
+      set_console_raw!
+      unless @interceptor.interceptable?
+        @console.output.puts '*Warning*: Key bindings are disabled! '\
+          'There maybe a gem or a module touching Readline whose Jard depends on.'
+      end
+
+      pry_proxy.repl(current_binding)
     ensure
+      set_console_cooked!
       @state.exiting!
-      sleep PTY_OUTPUT_TIMEOUT until @state.exited?
-      @console.enable_echo!
-      @console.cooked!
       @interceptor.stop
     end
 
     private
 
-    def pry_repl(current_binding)
-      pry_instance.repl(current_binding)
-    end
-
-    def pry_instance
-      PryProxy.new(
+    def pry_proxy
+      @pry_proxy = PryProxy.new(
         original_input: @interceptor.original_input,
         original_output: @interceptor.original_output,
         redirected_input: @interceptor.redirected_input,
         redirected_output: @interceptor.redirected_output,
         state_hooks: {
           after_read: proc {
-            @console.cooked!
+            set_console_cooked!
             @state.processing!
             # Sleep 2 ticks, wait for pry to print out all existing output in the queue
             sleep PTY_OUTPUT_TIMEOUT * 2
           },
           after_handle_line: proc {
-            @console.raw!
+            set_console_raw!
             @state.ready!
           },
           before_pager: proc {
             @state.processing!
             @state.set_pager!
-            @console.cooked!
+            set_console_cooked!
           },
           after_pager: proc {
             @state.ready!
             @state.clear_pager!
-            @console.raw!
+            set_console_raw!
           }
         }
       )
@@ -119,7 +117,7 @@ module RubyJard
 
       @resizing = true
       @resizing_output_mark = @console.stdout_storage.length
-      @resizing_readline_buffer = Readline.line_buffer unless @state.processing?
+      @resizing_readline_buffer = @pry_proxy&.line_buffer unless @state.processing?
       @interceptor.dispatch_command('list')
     end
 
@@ -140,6 +138,20 @@ module RubyJard
       @resizing_readline_buffer = nil
       @resizing_output_mark = nil
       @resizing = false
+    end
+
+    def set_console_cooked!
+      return unless @interceptor.interceptable?
+
+      @console.enable_echo!
+      @console.cooked!
+    end
+
+    def set_console_raw!
+      return unless @interceptor.interceptable?
+
+      @console.disable_echo!
+      @console.raw!
     end
   end
 end

@@ -81,6 +81,10 @@ module RubyJard
       RubyJard::Pager.new(self)
     end
 
+    def line_buffer
+      Readline.line_buffer
+    end
+
     private
 
     def pry_jard_prompt
