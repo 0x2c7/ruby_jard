@@ -73,8 +73,8 @@ module RubyJard
       OriginalReadline.output = @redirected_output
       PryReplProxy.new(self, target: target).start
     ensure
-      Readline.input = @original_input
-      Readline.output = @original_output
+      OriginalReadline.input = @original_input
+      OriginalReadline.output = @original_output
     end
 
     def pager
