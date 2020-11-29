@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'pty'
 require 'ruby_jard/pager'
 require 'ruby_jard/pry_proxy'
 
@@ -8,9 +7,7 @@ module RubyJard
   ##
   # Manage the dance between REPL components
   class ReplManager
-    # Escape sequence used to mark command from key binding
-    COMMAND_ESCAPE_SEQUENCE = '\e]711;Command~'
-    PTY_OUTPUT_TIMEOUT = 1.to_f / 60 # 60hz
+    OUTPUT_TICK = 1.to_f / 60 # 60hz
 
     def initialize(console:, key_bindings: nil)
       @console = console
@@ -53,7 +50,7 @@ module RubyJard
             set_console_cooked!
             @state.processing!
             # Sleep 2 ticks, wait for pry to print out all existing output in the queue
-            sleep PTY_OUTPUT_TIMEOUT * 2
+            sleep OUTPUT_TICK * 2
           },
           after_handle_line: proc {
             set_console_raw!

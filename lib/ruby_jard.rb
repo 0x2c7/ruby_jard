@@ -17,6 +17,7 @@ require 'ruby_jard/repl_processor'
 require 'ruby_jard/repl_manager'
 require 'ruby_jard/repl_interceptor'
 require 'ruby_jard/repl_state'
+require 'ruby_jard/repl_sequence'
 require 'ruby_jard/screen_manager'
 require 'ruby_jard/reflection'
 

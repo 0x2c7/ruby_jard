@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+begin
+  require 'pty'
+rescue LoadError
+  # Ignore, fallback not to use interceptor
+end
+
 module RubyJard
   # Pry depends heavily on GNU Readline, or any Readline-like input libraries. Those libraries
   # serve limited use cases, and specific interface to support those. Unfortunately, to serve
@@ -44,8 +50,8 @@ module RubyJard
       RubyJard::Keys::CTRL_C => (KEY_BINDING_INTERRUPT = :interrupt)
     }.freeze
 
-    KEY_READ_TIMEOUT = 0.2           # 200ms
-    PTY_OUTPUT_TIMEOUT = 1.to_f / 60 # 60hz
+    KEY_READ_TIMEOUT = 0.2    # 200ms
+    OUTPUT_TICK = 1.to_f / 60 # 60hz
 
     def initialize(state, console, key_bindings)
       @state = state
@@ -68,14 +74,16 @@ module RubyJard
     def stop
       @key_listen_thread&.exit if @key_listen_thread&.alive?
       if interceptable?
-        sleep PTY_OUTPUT_TIMEOUT until @state.exited?
+        sleep OUTPUT_TICK until @state.exited?
       else
         @state.exited!
       end
     end
 
     def dispatch_command(command)
-      @input_writer.write("#{RubyJard::ReplManager::COMMAND_ESCAPE_SEQUENCE}#{command}\n")
+      @input_writer.write(
+        "#{RubyJard::ReplSequence.encode(command)}\n"
+      )
     end
 
     def feed_output(content)
@@ -105,6 +113,7 @@ module RubyJard
     end
 
     def interceptable?
+      return false unless defined?(PTY)
       return false if defined?(Reline) && Readline == Reline
       return false if RubyJard::Reflection.instance.call_method(::Readline, :input=).source_location != nil
       return false if RubyJard::Reflection.instance.call_method(::Readline, :output=).source_location != nil
@@ -160,7 +169,7 @@ module RubyJard
             @state.exited!
           end
         elsif @state.exited?
-          sleep PTY_OUTPUT_TIMEOUT
+          sleep OUTPUT_TICK
         else
           content = @output_reader.read_nonblock(2048)
           unless content.nil?
@@ -169,7 +178,7 @@ module RubyJard
         end
       rescue IO::WaitReadable, IO::WaitWritable
         # Retry
-        sleep PTY_OUTPUT_TIMEOUT
+        sleep OUTPUT_TICK
       end
     rescue StandardError
       # This thread shoud never die, or the user may be freezed, and cannot type anything
@@ -184,7 +193,7 @@ module RubyJard
 
         if @state.processing? && @state.pager?
           # Discard all keys unfortunately
-          sleep PTY_OUTPUT_TIMEOUT
+          sleep OUTPUT_TICK
         else
           key = @key_bindings.match { @console.getch(KEY_READ_TIMEOUT) }
           if key.is_a?(RubyJard::KeyBinding)
@@ -217,7 +226,7 @@ module RubyJard
       end
       loop do
         begin
-          sleep PTY_OUTPUT_TIMEOUT
+          sleep OUTPUT_TICK
         rescue Interrupt
           # Interrupt spam. Ignore.
         end
@@ -226,7 +235,7 @@ module RubyJard
     end
 
     def write_output(content)
-      return if content.include?(RubyJard::ReplManager::COMMAND_ESCAPE_SEQUENCE)
+      return if RubyJard::ReplSequence.detect(content)
 
       @console.write content.force_encoding('UTF-8')
     end

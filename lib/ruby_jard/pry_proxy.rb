@@ -57,12 +57,11 @@ module RubyJard
     end
 
     def handle_line(line, *args)
-      index = line.to_s.rindex(RubyJard::ReplManager::COMMAND_ESCAPE_SEQUENCE)
-      if !index.nil?
-        command = line[(index + RubyJard::ReplManager::COMMAND_ESCAPE_SEQUENCE.length)..-1]
-        super(command, *args)
-      else
+      command = RubyJard::ReplSequence.detect(line)
+      if command.nil?
         super(line, *args)
+      else
+        super(command, *args)
       end
     ensure
       exec_hook :after_handle_line, *args, self
