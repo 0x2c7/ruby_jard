@@ -20,8 +20,8 @@ gem 'tty-markdown', '~>0.7.0'
 group :test do
   gem 'activerecord'
   gem 'parallel_tests'
+  gem 'reline'
   gem 'rspec-retry'
   gem 'simplecov', require: false
   gem 'sqlite3'
-  gem 'reline'
 end
