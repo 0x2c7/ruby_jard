@@ -30,7 +30,7 @@ module RubyJard
       set_console_raw!
       unless @interceptor.interceptable?
         @console.output.puts '*Warning*: Key bindings are disabled! '\
-          'There maybe a gem or a module touching Readline whose Jard depends on.'
+          'There maybe something touching Jard\'s Readline depedency'
       end
 
       pry_proxy.repl(current_binding)
@@ -58,7 +58,7 @@ module RubyJard
           after_handle_line: proc {
             set_console_raw!
             @state.ready!
-            @interceptor.dispatch_command('list') if @resizing && !@resizing_dispatched
+            dispatch_resize! if @resizing && !@resizing_dispatched
           },
           before_pager: proc {
             @state.processing!
@@ -79,12 +79,19 @@ module RubyJard
 
       @resizing = true
       @resizing_output_mark = @console.stdout_storage.length
-      if @state.processing?
-        @resizing_dispatched = false
-      else
+      @resizing_dispatched = false
+      unless @state.processing?
         @resizing_readline_buffer = @pry_proxy&.line_buffer
+        dispatch_resize!
+      end
+    end
+
+    def dispatch_resize!
+      @resizing_dispatched = true
+      if @interceptor.interceptable?
         @interceptor.dispatch_command('list')
-        @resizing_dispatched = true
+      else
+        RubyJard::ControlFlow.dispatch(:list)
       end
     end
 

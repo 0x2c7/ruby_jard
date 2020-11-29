@@ -75,11 +75,7 @@ module RubyJard
     end
 
     def dispatch_command(command)
-      if interceptable?
-        @input_writer.write("#{RubyJard::ReplManager::COMMAND_ESCAPE_SEQUENCE}#{command}\n")
-      else
-        RubyJard::ControlFlow.dispatch(command.to_sym)
-      end
+      @input_writer.write("#{RubyJard::ReplManager::COMMAND_ESCAPE_SEQUENCE}#{command}\n")
     end
 
     def feed_output(content)
