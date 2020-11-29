@@ -1,0 +1,84 @@
+### START SCREEN ###
+┌ Source  ../../examples/pty_not_found.rb:12 ──────────────────────────────────┐
+│   4                                                                          │
+│   5 Object.send(:remove_const, :PTY)                                         │
+│   6                                                                          │
+│   7 require 'ruby_jard'                                                      │
+│   8                                                                          │
+│   9 class Calculator                                                         │
+│  10   def calculate(a, b, c)                                                 │
+│  11     jard                                                                 │
+│⮕ 12     d = a + b                                                            │
+│  13     jard                                                                 │
+│  14     e = d + 10                                                           │
+│  15     jard                                                                 │
+│  16     e + c                                                                │
+│  17   end                                                                    │
+│  18 end                                                                      │
+│  19                                                                          │
+│  20 Calculator.new.calculate(1, 2, 3)                                        │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+*Warning*: One of Jard's depedencies (PTY or Readline) is not available or patch
+ed by another gem. Key bindings are disabled. There may be other side effects.  
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/pty_not_found.rb:14 ──────────────────────────────────┐
+│   6                                                                          │
+│   7 require 'ruby_jard'                                                      │
+│   8                                                                          │
+│   9 class Calculator                                                         │
+│  10   def calculate(a, b, c)                                                 │
+│  11     jard                                                                 │
+│  12     d = a + b                                                            │
+│  13     jard                                                                 │
+│⮕ 14     e = d + 10                                                           │
+│  15     jard                                                                 │
+│  16     e + c                                                                │
+│  17   end                                                                    │
+│  18 end                                                                      │
+│  19                                                                          │
+│  20 Calculator.new.calculate(1, 2, 3)                                        │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+*Warning*: One of Jard's depedencies (PTY or Readline) is not available or patch
+ed by another gem. Key bindings are disabled. There may be other side effects.  
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/pty_not_found.rb:16 ──────────────────────────────────┐
+│   8                                                                          │
+│   9 class Calculator                                                         │
+│  10   def calculate(a, b, c)                                                 │
+│  11     jard                                                                 │
+│  12     d = a + b                                                            │
+│  13     jard                                                                 │
+│  14     e = d + 10                                                           │
+│  15     jard                                                                 │
+│⮕ 16     e + c                                                                │
+│  17   end                                                                    │
+│  18 end                                                                      │
+│  19                                                                          │
+│  20 Calculator.new.calculate(1, 2, 3)                                        │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+*Warning*: One of Jard's depedencies (PTY or Readline) is not available or patch
+ed by another gem. Key bindings are disabled. There may be other side effects.  
+jard >>             
+### END SCREEN ###

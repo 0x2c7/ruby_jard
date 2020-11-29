@@ -80,4 +80,44 @@ RSpec.describe 'Byebug compatibility', integration: true do
       test.stop
     end
   end
+
+  context 'when PTY not found' do
+    it 'ignores interceptor and use direct input instead' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'compatibility_pty_not_found.expected',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/pty_not_found.rb"
+      )
+      test.start
+      test.assert_screen
+
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
+
+  context 'when Readline is patched' do
+    it 'ignores interceptor and use direct input instead' do
+      test = JardIntegrationTest.new(
+        self, work_dir,
+        'compatibility_readline_patched.expected',
+        "bundle exec ruby #{RSPEC_ROOT}/examples/readline_patched.rb"
+      )
+      test.start
+      test.assert_screen
+
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+
+      test.send_keys('continue', :Enter)
+      test.assert_screen
+    ensure
+      test.stop
+    end
+  end
 end

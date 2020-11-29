@@ -14,8 +14,6 @@ module RubyJard
 
   # Proxy for Pry instance. Safely overidding some attributes
   class PryProxy < ::Pry
-    # Some gems want to replace original Readline
-    OriginalReadline = ::Readline
     # Some commands overlaps with Jard, Ruby, and even cause confusion for
     # users. It's better ignore or re-implement those commands.
     PRY_EXCLUDED_COMMANDS = [
@@ -46,7 +44,7 @@ module RubyJard
       @original_output = options[:original_output]
       @state_hooks = options[:state_hooks] || {}
       options = options.merge(
-        input: OriginalReadline,
+        input: ::Readline,
         output: @redirected_output,
         prompt: pry_jard_prompt,
         commands: pry_command_set,
@@ -68,12 +66,12 @@ module RubyJard
     end
 
     def repl(target = nil)
-      OriginalReadline.input = @redirected_input
-      OriginalReadline.output = @redirected_output
+      ::Readline.input = @redirected_input
+      ::Readline.output = @redirected_output
       PryReplProxy.new(self, target: target).start
     ensure
-      OriginalReadline.input = @original_input
-      OriginalReadline.output = @original_output
+      ::Readline.input = @original_input
+      ::Readline.output = @original_output
     end
 
     def pager

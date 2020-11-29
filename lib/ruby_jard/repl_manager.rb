@@ -26,8 +26,8 @@ module RubyJard
 
       set_console_raw!
       unless @interceptor.interceptable?
-        @console.output.puts '*Warning*: Key bindings are disabled! '\
-          'There maybe something touching Jard\'s Readline depedency'
+        @console.output.puts '*Warning*: One of Jard\'s depedencies (PTY or Readline) is not available or '\
+          'patched by another gem. Key bindings are disabled. There may be other side effects.'
       end
 
       pry_proxy.repl(current_binding)

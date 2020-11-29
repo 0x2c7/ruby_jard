@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gemspec
 
@@ -23,4 +23,5 @@ group :test do
   gem 'rspec-retry'
   gem 'simplecov', require: false
   gem 'sqlite3'
+  gem 'reline'
 end
