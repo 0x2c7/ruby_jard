@@ -1,6 +1,44 @@
 # frozen_string_literal: true
 
 module RubyJard
+  # Pry depends heavily on GNU Readline, or any Readline-like input libraries. Those libraries
+  # serve limited use cases, and specific interface to support those. Unfortunately, to serve
+  # Jard's keyboard functionalities, those libraries must support individual keyboard events,
+  # programmatically input control, etc. Ruby's GNU Readline binding obviously doesn't support
+  # those fancy features. Other pure-ruby implementation such as coolline, tty-reader is not
+  # a perfit fit, while satisfying performance and boringly stablility of GNU Readline. Indeed,
+  # while testing those libraries, I meet some weird quirks, lagging, cursor jumping around.
+  # Putting efforts in a series of monkey patches help a little bit, but it harms in long-term.
+  # Re-implementing is just like jumping into another rabbit hole.
+  #
+  # That's why I come up with another approach:
+  # - Create a proxy wrapping around pry instance, so that it reads characters one by one, in
+  # *raw* mode
+  # - Keyboard combinations are captured and handled before piping the rest to the pry instance
+  # - The proxy interacts with Pry's REPL loop via Pry hooks (Thank God) to seamlessly switch
+  # between *raw* mode and *cooked* mode while Pry interacts with TTY.
+  # - Control flow instructions are threw out, and captured by ReplProcessor.
+  #
+  #                             +------- Intercept key binding
+  #                             v                ^
+  #   Resize signal +---> Escape sequence        |
+  #                             +                |
+  # +-----------------+         v        +-------+-------+
+  # |    Thread 1     |        PIPE <----+ Listen Thread <--+ STDIN
+  # +-----------------+         +        +---------------+
+  #                             |
+  # +-----------------+         v
+  # | Stopping thread +--> Pry REPL loop +----> Capture and dispatch command
+  # +-----------------+         +
+  #                             |
+  # +-----------------+         v        +---------------+
+  # |    Thread 2     |        PTY  +----> Output Thread +--> STDOUT
+  # +-----------------+         +        +---------------+
+  #                             |
+  #                             |
+  #                             +-------> Discard escape sequence
+  #
+  # As a result, Jard may support key-binding customization without breaking pry functionalities.
   class ReplInterceptor
     INTERNAL_KEY_BINDINGS = {
       RubyJard::Keys::CTRL_C => (KEY_BINDING_INTERRUPT = :interrupt)
@@ -37,7 +75,11 @@ module RubyJard
     end
 
     def dispatch_command(command)
-      @input_writer.write("#{RubyJard::ReplManager::COMMAND_ESCAPE_SEQUENCE}#{command}\n")
+      if interceptable?
+        @input_writer.write("#{RubyJard::ReplManager::COMMAND_ESCAPE_SEQUENCE}#{command}\n")
+      else
+        RubyJard::ControlFlow.dispatch(command.to_sym)
+      end
     end
 
     def feed_output(content)
