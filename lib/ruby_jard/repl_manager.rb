@@ -22,25 +22,27 @@ module RubyJard
 
       @state.ready!
       @state.clear_pager!
-      @interceptor.start
-
       set_console_raw!
+
+      @interceptor.start
       unless @interceptor.interceptable?
         @console.output.puts '*Warning*: One of Jard\'s depedencies (PTY or Readline) is not available or '\
           'patched by another gem. Key bindings are disabled. There may be other side effects.'
       end
 
-      pry_proxy.repl(current_binding)
+      @pry_proxy = create_pry_proxy
+      @pry_proxy.start(current_binding)
     ensure
-      set_console_cooked!
       @state.exiting!
       @interceptor.stop
+      @pry_proxy.stop
+      set_console_cooked!
     end
 
     private
 
-    def pry_proxy
-      @pry_proxy = PryProxy.new(
+    def create_pry_proxy
+      PryProxy.new(
         original_input: @interceptor.original_input,
         original_output: @interceptor.original_output,
         redirected_input: @interceptor.redirected_input,

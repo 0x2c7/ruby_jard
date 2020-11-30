@@ -65,11 +65,13 @@ module RubyJard
       exec_hook :after_handle_line, *args, self
     end
 
-    def repl(target = nil)
+    def start(target = nil)
       ::Readline.input = @redirected_input
       ::Readline.output = @redirected_output
       PryReplProxy.new(self, target: target).start
-    ensure
+    end
+
+    def stop
       ::Readline.input = @original_input
       ::Readline.output = @original_output
     end
