@@ -72,12 +72,8 @@ module RubyJard
     end
 
     def stop
+      sleep OUTPUT_TICK * 2 if interceptable?
       @key_listen_thread&.exit if @key_listen_thread&.alive?
-      if interceptable?
-        sleep OUTPUT_TICK until @state.exited?
-      else
-        @state.exited!
-      end
     end
 
     def dispatch_command(command)
@@ -166,7 +162,7 @@ module RubyJard
           if @output_reader.ready?
             write_output(@output_reader.read_nonblock(2048))
           else
-            @state.exited!
+            sleep OUTPUT_TICK
           end
         elsif @state.exited?
           sleep OUTPUT_TICK

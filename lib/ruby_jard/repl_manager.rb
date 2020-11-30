@@ -37,6 +37,7 @@ module RubyJard
       @interceptor.stop
       @pry_proxy.stop
       set_console_cooked!
+      @state.exited!
     end
 
     private
