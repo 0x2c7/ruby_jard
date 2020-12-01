@@ -7,6 +7,14 @@ assignees: ''
 
 ---
 
+Before you submit a bug report, please ensure that the bug is still present with the `master` branch:
+
+```ruby
+gem 'ruby_jard', git: 'https://github.com/nguyenquangminh0711/ruby_jard', ref: 'master'
+```
+
+If it doesn't, please wait for the next release and use the master branch in the mean time. Thank you.
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
