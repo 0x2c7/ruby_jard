@@ -31,11 +31,11 @@ module RubyJard
       end
     end
 
-    attr_accessor :path_filter, :screen_manager, :repl_proxy
+    attr_accessor :path_filter, :screen_manager, :repl_manager
 
     def initialize
       @screen_manager = RubyJard::ScreenManager.new
-      @repl_proxy = RubyJard::ReplProxy.new(
+      @repl_manager = RubyJard::ReplManager.new(
         console: @screen_manager.console,
         key_bindings: RubyJard.global_key_bindings
       )
@@ -57,7 +57,6 @@ module RubyJard
       Byebug::Setting[:autoirb] = false
       Byebug::Setting[:autopry] = false
 
-      require 'ruby_jard/repl_processor'
       Byebug::Context.processor = RubyJard::ReplProcessor
       # Exclude all files in Ruby Jard source code from the stacktrace.
       Byebug::Context.ignored_files = Byebug::Context.all_files + RubyJard.all_files

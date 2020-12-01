@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gemspec
 
@@ -20,6 +20,7 @@ gem 'tty-markdown', '~>0.7.0'
 group :test do
   gem 'activerecord'
   gem 'parallel_tests'
+  gem 'reline', require: false
   gem 'rspec-retry'
   gem 'simplecov', require: false
   gem 'sqlite3'

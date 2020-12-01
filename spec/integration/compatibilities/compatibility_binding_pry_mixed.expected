@@ -1,0 +1,131 @@
+### START SCREEN ###
+┌ Source  ../../examples/binding_pry_mixed_example.rb:17 ───────┬ Variables ─────────────────────────────────────────────────────┐
+│   9     d2 = d * 2                                            │  self = #<Calculator:??????????????????>                       │
+│  10     d1 + d2                                               │  a = 1                                                         │
+│  11   end                                                     │  b = 2                                                         │
+│  12 end                                                       │  c = 3                                                         │
+│  13                                                           │  d = nil                                                       │
+│  14 class Calculator                                          │  e = nil                                                       │
+│  15   def calculate(a, b, c)                                  │                                                                │
+│  16     jard                                                  │                                                                │
+│⮕ 17     d = a + b                                             │                                                                │
+│  18     binding.pry                                           │                                                                │
+│  19     e = SubCalculator.new.calculate(d)                    │                                                                │
+│  20     binding.pry                                           │                                                                │
+│  21     e + c                                                 │                                                                │
+│  22   end                                                     │                                                                │
+│  23 end                                                       │                                                                │
+│  24                                                           │                                                                │
+│  25 Calculator.new.calculate(1, 2, 3)                         │                                                                │
+├ Backtrace  2 frames ──────────────────────────────────────────┤                                                                │
+│⮕ 0 Calculator in calculate                                    ├ Threads  1 threads ────────────────────────────────────────────┤
+│    at ../../examples/binding_pry_mixed_example.rb:17          │▸ Thread 1 (run) untitled                                       │
+│  1 Object in <main>                                           │                 at ../../examples/binding_pry_mixed_example.r »│
+│    at ../../examples/binding_pry_mixed_example.rb:25          │                                                                │
+├───────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application                                             Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+│  19     e = SubCalculator.new.calculate(d)                    │                                                                │
+│  20     binding.pry                                           │                                                                │
+│  21     e + c                                                 │                                                                │
+│  22   end                                                     │                                                                │
+│  23 end                                                       │                                                                │
+│  24                                                           │                                                                │
+│  25 Calculator.new.calculate(1, 2, 3)                         │                                                                │
+├ Backtrace  2 frames ──────────────────────────────────────────┤                                                                │
+│⮕ 0 Calculator in calculate                                    ├ Threads  1 threads ────────────────────────────────────────────┤
+│    at ../../examples/binding_pry_mixed_example.rb:17          │▸ Thread 1 (run) untitled                                       │
+│  1 Object in <main>                                           │                 at ../../examples/binding_pry_mixed_example.r »│
+│    at ../../examples/binding_pry_mixed_example.rb:25          │                                                                │
+├───────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application                                             Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >> continue
+▸▸ Program resumed ▸▸
+
+From: ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+
+    15: def calculate(a, b, c)
+    16:   jard
+    17:   d = a + b
+ => 18:   binding.pry
+    19:   e = SubCalculator.new.calculate(d)
+    20:   binding.pry
+    21:   e + c
+    22: end
+
+[1] pry(#<Calculator>)>
+### END SCREEN ###
+### START SEND_KEYS ###
+["exit", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/binding_pry_mixed_example.rb:9 ────────┬ Variables ─────────────────────────────────────────────────────┐
+│   2                                                           │  self = #<SubCalculator:??????????????????>                    │
+│   3 require 'ruby_jard'                                       │  d = 3                                                         │
+│   4                                                           │  d1 = 6                                                        │
+│   5 class SubCalculator                                       │  d2 = nil                                                      │
+│   6   def calculate(d)                                        │                                                                │
+│   7     d1 = d * 2                                            │                                                                │
+│   8     jard                                                  │                                                                │
+│⮕  9     d2 = d * 2                                            │                                                                │
+│  10     d1 + d2                                               │                                                                │
+│  11   end                                                     │                                                                │
+│  12 end                                                       │                                                                │
+│  13                                                           │                                                                │
+│  14 class Calculator                                          │                                                                │
+│  15   def calculate(a, b, c)                                  │                                                                │
+│  16     jard                                                  │                                                                │
+├ Backtrace  3 frames ──────────────────────────────────────────┤                                                                │
+│⮕ 0 SubCalculator in calculate                                 │                                                                │
+│    at ../../examples/binding_pry_mixed_example.rb:9           │                                                                │
+│  1 Calculator in calculate                                    ├ Threads  1 threads ────────────────────────────────────────────┤
+│    at ../../examples/binding_pry_mixed_example.rb:19          │▸ Thread 1 (run) untitled                                       │
+│  2 Object in <main>                                           │                 at ../../examples/binding_pry_mixed_example.r »│
+│    at ../../examples/binding_pry_mixed_example.rb:25          │                                                                │
+├───────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application                                             Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >>
+### END SCREEN ###
+### START SEND_KEYS ###
+["continue", :Enter]
+### END SEND_KEYS ###
+### START SCREEN ###
+│  12 end                                                       │                                                                │
+│  13                                                           │                                                                │
+│  14 class Calculator                                          │                                                                │
+│  15   def calculate(a, b, c)                                  │                                                                │
+│  16     jard                                                  │                                                                │
+├ Backtrace  3 frames ──────────────────────────────────────────┤                                                                │
+│⮕ 0 SubCalculator in calculate                                 │                                                                │
+│    at ../../examples/binding_pry_mixed_example.rb:9           │                                                                │
+│  1 Calculator in calculate                                    ├ Threads  1 threads ────────────────────────────────────────────┤
+│    at ../../examples/binding_pry_mixed_example.rb:19          │▸ Thread 1 (run) untitled                                       │
+│  2 Object in <main>                                           │                 at ../../examples/binding_pry_mixed_example.r »│
+│    at ../../examples/binding_pry_mixed_example.rb:25          │                                                                │
+├───────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application                                             Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue (F9)│
+└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+jard >> continue
+▸▸ Program resumed ▸▸
+
+From: ????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+
+    15: def calculate(a, b, c)
+    16:   jard
+    17:   d = a + b
+    18:   binding.pry
+    19:   e = SubCalculator.new.calculate(d)
+ => 20:   binding.pry
+    21:   e + c
+    22: end
+
+[1] pry(#<Calculator>)>
+### END SCREEN ###

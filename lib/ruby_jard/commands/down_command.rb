@@ -19,4 +19,4 @@ module RubyJard
   end
 end
 
-Pry::Commands.add_command(RubyJard::Commands::DownCommand)
+RubyJard::PryProxy::Commands.add_command(RubyJard::Commands::DownCommand)
