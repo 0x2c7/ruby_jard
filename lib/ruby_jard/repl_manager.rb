@@ -9,10 +9,10 @@ module RubyJard
   class ReplManager
     OUTPUT_TICK = 1.to_f / 60 # 60hz
 
-    def initialize(console:, key_bindings: nil)
+    def initialize(console:)
       @console = console
       @state = RubyJard::ReplState.new
-      @interceptor = RubyJard::ReplInterceptor.new(@state, @console, key_bindings)
+      @interceptor = RubyJard::ReplInterceptor.new(@state, @console)
 
       Signal.trap('SIGWINCH') { start_resizing }
     end

@@ -10,9 +10,12 @@ module RubyJard
   class KeyBindings
     attr_reader :indexes
 
-    def initialize
+    def initialize(sequences)
       @key_bindings = []
       @indexes = {}
+      sequences.each do |sequence, action|
+        push(sequence, action)
+      end
     end
 
     def to_a

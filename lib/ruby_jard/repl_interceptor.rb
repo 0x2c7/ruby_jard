@@ -46,21 +46,13 @@ module RubyJard
   #
   # As a result, Jard may support key-binding customization without breaking pry functionalities.
   class ReplInterceptor
-    INTERNAL_KEY_BINDINGS = {
-      RubyJard::Keys::CTRL_C => (KEY_BINDING_INTERRUPT = :interrupt)
-    }.freeze
-
     KEY_READ_TIMEOUT = 0.2    # 200ms
     OUTPUT_TICK = 1.to_f / 60 # 60hz
 
-    def initialize(state, console, key_bindings)
+    def initialize(state, console)
       @state = state
       @console = console
-
-      @key_bindings = key_bindings || RubyJard::KeyBindings.new
-      INTERNAL_KEY_BINDINGS.each do |sequence, action|
-        @key_bindings.push(sequence, action)
-      end
+      @key_bindings = RubyJard.config.key_bindings
 
       reopen_streams
       start_output_bridge
@@ -209,7 +201,7 @@ module RubyJard
 
     def handle_key_binding(key_binding)
       case key_binding.action
-      when KEY_BINDING_INTERRUPT
+      when 'interrupt'
         handle_interrupt_command
       else
         @state.check(:ready?) do

@@ -38,7 +38,7 @@ module RubyJard
       end
     end
 
-    attr_accessor :color_scheme, :alias_to_debugger, :layout
+    attr_accessor :color_scheme, :alias_to_debugger, :layout, :key_bindings
     attr_reader :enabled_screens, :filter_version, :filter, :filter_included, :filter_excluded
 
     CONFIG_FILE_NAME = '.jardrc'
@@ -48,7 +48,19 @@ module RubyJard
       DEFAULT_LAYOUT = nil, # Pick layout automatically
       DEFAULT_FILTER = RubyJard::PathFilter::FILTER_APPLICATION,
       DEFAULT_FILTER_INCLUDED = [].freeze,
-      DEFAULT_FILTER_EXCLUDED = [].freeze
+      DEFAULT_FILTER_EXCLUDED = [].freeze,
+      DEFAULT_KEY_BINDINGS = {
+        RubyJard::Keys::F2       => 'jard filter switch',
+        RubyJard::Keys::F5       => 'list',
+        RubyJard::Keys::F6       => 'up',
+        RubyJard::Keys::SHIFT_F6 => 'down',
+        RubyJard::Keys::F7       => 'step',
+        RubyJard::Keys::SHIFT_F7 => 'step-out',
+        RubyJard::Keys::F8       => 'next',
+        RubyJard::Keys::F9       => 'continue',
+        RubyJard::Keys::CTRL_D   => 'continue',
+        RubyJard::Keys::CTRL_C   => 'interrupt'
+      }.freeze
     ].freeze
 
     def initialize
@@ -62,6 +74,8 @@ module RubyJard
       @alias_to_debugger = DEFAULT_ALIAS_TO_DEBUGGER.freeze
       @layout = DEFAULT_LAYOUT.freeze
       @enabled_screens = RubyJard::Screens.names.dup.freeze
+
+      @key_bindings = RubyJard::KeyBindings.new(DEFAULT_KEY_BINDINGS)
     end
 
     def config

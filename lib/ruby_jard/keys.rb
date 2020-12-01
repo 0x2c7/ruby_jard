@@ -34,16 +34,5 @@ module RubyJard
     SHIFT_F10 = "\e[21;2~"
     SHIFT_F11 = "\e[23;2~"
     SHIFT_F12 = "\e[24;2~"
-    DEFAULT_KEY_BINDINGS = {
-      F2       => (ACTION_FILTER   = 'jard filter switch'),
-      F5       => (ACTION_LIST     = 'list'),
-      F6       => (ACTION_UP       = 'up'),
-      SHIFT_F6 => (ACTION_DOWN     = 'down'),
-      F7       => (ACTION_STEP     = 'step'),
-      SHIFT_F7 => (ACTION_STEP_OUT = 'step-out'),
-      F8       => (ACTION_NEXT     = 'next'),
-      F9       => (ACTION_CONTINUE = 'continue'),
-      CTRL_D   => ACTION_CONTINUE
-    }.freeze
   end
 end
