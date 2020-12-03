@@ -7,8 +7,8 @@ module RubyJard
     class BacktraceScreen < RubyJard::Screen
       include ::RubyJard::Span::DSL
 
-      def initialize(*args)
-        super(*args)
+      def initialize(**args)
+        super(**args)
         @current_frame = @session.current_frame
         @frames =
           @session

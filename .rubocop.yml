@@ -83,7 +83,7 @@ Style/NilComparison:
   Enabled: false
 Style/NonNilCheck:
   Enabled: false
-Style/WordArry:
+Style/WordArray:
   Enabled: false
 
 RSpec/MultipleExpectations:

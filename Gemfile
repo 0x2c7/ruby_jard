@@ -22,6 +22,5 @@ group :test do
   gem 'parallel_tests'
   gem 'reline', require: false
   gem 'rspec-retry'
-  gem 'simplecov', require: false
   gem 'sqlite3'
 end

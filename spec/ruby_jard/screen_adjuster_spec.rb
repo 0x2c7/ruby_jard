@@ -36,7 +36,7 @@ RSpec.describe RubyJard::ScreenAdjuster do
   end
 
   context 'when there is only 1 screen' do
-    let(:screen_1) { RubyJard::Screen.new(layout_1) }
+    let(:screen_1) { RubyJard::Screen.new(layout: layout_1) }
     let(:adjuster) { described_class.new([screen_1]) }
 
     before do
@@ -80,8 +80,8 @@ RSpec.describe RubyJard::ScreenAdjuster do
       )
     end
 
-    let(:screen_3) { RubyJard::Screen.new(layout_3) }
-    let(:screen_4) { RubyJard::Screen.new(layout_4) }
+    let(:screen_3) { RubyJard::Screen.new(layout: layout_3) }
+    let(:screen_4) { RubyJard::Screen.new(layout: layout_4) }
     let(:adjuster) { described_class.new([screen_3, screen_4]) }
 
     before do
@@ -135,8 +135,8 @@ RSpec.describe RubyJard::ScreenAdjuster do
       )
     end
 
-    let(:screen_3) { RubyJard::Screen.new(layout_3) }
-    let(:screen_4) { RubyJard::Screen.new(layout_4) }
+    let(:screen_3) { RubyJard::Screen.new(layout: layout_3) }
+    let(:screen_4) { RubyJard::Screen.new(layout: layout_4) }
     let(:adjuster) { described_class.new([screen_3, screen_4]) }
 
     before do
@@ -167,8 +167,8 @@ RSpec.describe RubyJard::ScreenAdjuster do
   end
 
   context 'when all of the screens still have spaces left' do
-    let(:screen_1) { RubyJard::Screen.new(layout_1) }
-    let(:screen_2) { RubyJard::Screen.new(layout_2) }
+    let(:screen_1) { RubyJard::Screen.new(layout: layout_1) }
+    let(:screen_2) { RubyJard::Screen.new(layout: layout_2) }
     let(:adjuster) { described_class.new([screen_1, screen_2]) }
 
     before do
@@ -199,8 +199,8 @@ RSpec.describe RubyJard::ScreenAdjuster do
   end
 
   context 'when first screen needs to expand and second one is shrinkable' do
-    let(:screen_1) { RubyJard::Screen.new(layout_1) }
-    let(:screen_2) { RubyJard::Screen.new(layout_2) }
+    let(:screen_1) { RubyJard::Screen.new(layout: layout_1) }
+    let(:screen_2) { RubyJard::Screen.new(layout: layout_2) }
 
     let(:adjuster) { described_class.new([screen_1, screen_2]) }
 
@@ -232,9 +232,9 @@ RSpec.describe RubyJard::ScreenAdjuster do
   end
 
   context 'when first screen needs to expand and second one has min_height attribute' do
-    let(:screen_1) { RubyJard::Screen.new(layout_1) }
+    let(:screen_1) { RubyJard::Screen.new(layout: layout_1) }
     let(:template_2) { RubyJard::ScreenTemplate.new(min_height: 3) }
-    let(:screen_2) { RubyJard::Screen.new(layout_2) }
+    let(:screen_2) { RubyJard::Screen.new(layout: layout_2) }
 
     let(:adjuster) { described_class.new([screen_1, screen_2]) }
 
@@ -276,7 +276,7 @@ RSpec.describe RubyJard::ScreenAdjuster do
         parent_template: parent_template_a
       )
     end
-    let(:screen_3) { RubyJard::Screen.new(layout_3) }
+    let(:screen_3) { RubyJard::Screen.new(layout: layout_3) }
 
     let(:layout_4) do
       RubyJard::Layout.new(
@@ -288,7 +288,7 @@ RSpec.describe RubyJard::ScreenAdjuster do
         parent_template: parent_template_a
       )
     end
-    let(:screen_4) { RubyJard::Screen.new(layout_4) }
+    let(:screen_4) { RubyJard::Screen.new(layout: layout_4) }
 
     let(:adjuster) { described_class.new([screen_3, screen_4]) }
 
@@ -320,8 +320,8 @@ RSpec.describe RubyJard::ScreenAdjuster do
   end
 
   context 'when all of screens are full' do
-    let(:screen_1) { RubyJard::Screen.new(layout_1) }
-    let(:screen_2) { RubyJard::Screen.new(layout_2) }
+    let(:screen_1) { RubyJard::Screen.new(layout: layout_1) }
+    let(:screen_2) { RubyJard::Screen.new(layout: layout_2) }
 
     let(:adjuster) { described_class.new([screen_1, screen_2]) }
 
@@ -354,8 +354,8 @@ RSpec.describe RubyJard::ScreenAdjuster do
 
   context 'when both screens have spaces left but the first one has expand mode' do
     let(:template_1) { RubyJard::ScreenTemplate.new(adjust_mode: :expand) }
-    let(:screen_1) { RubyJard::Screen.new(layout_1) }
-    let(:screen_2) { RubyJard::Screen.new(layout_2) }
+    let(:screen_1) { RubyJard::Screen.new(layout: layout_1) }
+    let(:screen_2) { RubyJard::Screen.new(layout: layout_2) }
 
     let(:adjuster) { described_class.new([screen_1, screen_2]) }
 
@@ -389,8 +389,8 @@ RSpec.describe RubyJard::ScreenAdjuster do
   context 'when both screens have spaces left and both have expand mode' do
     let(:template_1) { RubyJard::ScreenTemplate.new(adjust_mode: :expand) }
     let(:template_2) { RubyJard::ScreenTemplate.new(adjust_mode: :expand) }
-    let(:screen_1) { RubyJard::Screen.new(layout_1) }
-    let(:screen_2) { RubyJard::Screen.new(layout_2) }
+    let(:screen_1) { RubyJard::Screen.new(layout: layout_1) }
+    let(:screen_2) { RubyJard::Screen.new(layout: layout_2) }
 
     let(:adjuster) { described_class.new([screen_1, screen_2]) }
 
@@ -444,10 +444,10 @@ RSpec.describe RubyJard::ScreenAdjuster do
       )
     end
 
-    let(:screen_1) { RubyJard::Screen.new(layout_1) }
-    let(:screen_2) { RubyJard::Screen.new(layout_2) }
-    let(:screen_3) { RubyJard::Screen.new(layout_3) }
-    let(:screen_4) { RubyJard::Screen.new(layout_4) }
+    let(:screen_1) { RubyJard::Screen.new(layout: layout_1) }
+    let(:screen_2) { RubyJard::Screen.new(layout: layout_2) }
+    let(:screen_3) { RubyJard::Screen.new(layout: layout_3) }
+    let(:screen_4) { RubyJard::Screen.new(layout: layout_4) }
 
     let(:adjuster) { described_class.new([screen_1, screen_2, screen_3, screen_4]) }
 

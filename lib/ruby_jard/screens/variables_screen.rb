@@ -40,8 +40,8 @@ module RubyJard
       }.freeze
       TOKEN_KINDS = TOKEN_KIND_MAPS.keys.flatten
 
-      def initialize(*args)
-        super
+      def initialize(**args)
+        super(**args)
 
         @frame_file = @session.current_frame&.frame_file
         @frame_line = @session.current_frame&.frame_line

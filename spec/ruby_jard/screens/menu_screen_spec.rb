@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe RubyJard::Screens::MenuScreen do
-  subject(:menu_screen) { described_class.new(layout, config: config) }
+  subject(:menu_screen) { described_class.new(layout: layout, config: config) }
 
   let(:config) { RubyJard::Config.new }
   let(:layout) do
@@ -55,12 +55,12 @@ RSpec.describe RubyJard::Screens::MenuScreen do
     end
   end
 
-  context ' when an command does not have a corresponding key binding' do
+  context 'when an command does not have a corresponding key binding' do
     it 'displays excludes their labels' do
       config.key_bindings = {
         RubyJard::Keys::META_D        => 'step',
         RubyJard::Keys::META_O        => 'step-out',
-        RubyJard::Keys::CTRL_META_N   => 'next',
+        RubyJard::Keys::CTRL_META_N   => 'next'
       }
 
       menu_screen.build

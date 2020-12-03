@@ -8,10 +8,10 @@ module RubyJard
   class Screen
     attr_accessor :layout, :rows, :window, :cursor, :selected
 
-    def initialize(layout, session: nil, config: nil)
+    def initialize(layout:, session: nil, config: nil)
+      @layout = layout
       @session = session || RubyJard::Session.instance
       @config = config || RubyJard.config
-      @layout = layout
       @window = []
       @cursor = nil
       @selected = 0

@@ -7,8 +7,8 @@ module RubyJard
     class ThreadsScreen < RubyJard::Screen
       include ::RubyJard::Span::DSL
 
-      def initialize(*args)
-        super
+      def initialize(**args)
+        super(**args)
         @current_frame_location = @session.current_frame&.frame_location
         @current_thread = @session.current_thread
         @threads = @session.threads

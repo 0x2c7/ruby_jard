@@ -7,8 +7,8 @@ module RubyJard
     class MenuScreen < RubyJard::Screen
       include ::RubyJard::Span::DSL
 
-      def initialize(*args)
-        super(*args)
+      def initialize(**args)
+        super(**args)
         @key_bindings = @config.key_bindings
         @filter = @config.filter
         @filter_included = @config.filter_included
