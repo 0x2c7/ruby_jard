@@ -1,0 +1,297 @@
+### START SCREEN ###
+┌ Source  ../../examples/complicated_instance_example.rb:10 ───────────────────┐
+│   2                                                                          │
+│   3 require 'ruby_jard'                                                      │
+│   4 require_relative './complicated_instance_2_example'                      │
+│   5                                                                          │
+│   6 module ModuleX                                                           │
+│   7   def self.a_test_method                                                 │
+│   8     @module_variable_1 = 1                                               │
+│   9     jard                                                                 │
+│⮕ 10     @module_variable_2 = 2                                               │
+│  11     @module_variable_4 = 4                                               │
+│  12     super_method                                                         │
+│  13   end                                                                    │
+│  14                                                                          │
+│  15   class ClassA < ParentClassA                                            │
+│  16     @class_variable_1 = 1                                                │
+│  17                                                                          │
+│  18     include ModuleY                                                      │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+[:"C-M-n"]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/complicated_instance_example.rb:11 ───────────────────┐
+│   3 require 'ruby_jard'                                                      │
+│   4 require_relative './complicated_instance_2_example'                      │
+│   5                                                                          │
+│   6 module ModuleX                                                           │
+│   7   def self.a_test_method                                                 │
+│   8     @module_variable_1 = 1                                               │
+│   9     jard                                                                 │
+│  10     @module_variable_2 = 2                                               │
+│⮕ 11     @module_variable_4 = 4                                               │
+│  12     super_method                                                         │
+│  13   end                                                                    │
+│  14                                                                          │
+│  15   class ClassA < ParentClassA                                            │
+│  16     @class_variable_1 = 1                                                │
+│  17                                                                          │
+│  18     include ModuleY                                                      │
+│  19     prepend ModuleZ                                                      │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+[:"C-M-n"]
+### END SEND_KEYS ###
+### START SEND_KEYS ###
+[:"M-d"]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/complicated_instance_2_example.rb:7 ──────────────────┐
+│   1 # frozen_string_literal: true                                            │
+│   2                                                                          │
+│   3 module ModuleX                                                           │
+│   4   @module_variable_3 = 3                                                 │
+│   5   @module_variable_4 = 4                                                 │
+│   6   def self.super_method                                                  │
+│⮕  7     @module_variable_5 = 5                                               │
+│   8     jard                                                                 │
+│   9     @module_variable_6 = 6                                               │
+│  10     @module_variable_2 = 2                                               │
+│  11   end                                                                    │
+│  12 end                                                                      │
+│  13                                                                          │
+│  14 module ModuleY                                                           │
+│  15   @class_variable_4 = 4                                                  │
+│  16   @class_variable_5 = 5                                                  │
+│  17 end                                                                      │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+[:"C-F1"]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/complicated_instance_example.rb:12 ───────────────────┐
+│   4 require_relative './complicated_instance_2_example'                      │
+│   5                                                                          │
+│   6 module ModuleX                                                           │
+│   7   def self.a_test_method                                                 │
+│   8     @module_variable_1 = 1                                               │
+│   9     jard                                                                 │
+│  10     @module_variable_2 = 2                                               │
+│  11     @module_variable_4 = 4                                               │
+│⮕ 12     super_method                                                         │
+│  13   end                                                                    │
+│  14                                                                          │
+│  15   class ClassA < ParentClassA                                            │
+│  16     @class_variable_1 = 1                                                │
+│  17                                                                          │
+│  18     include ModuleY                                                      │
+│  19     prepend ModuleZ                                                      │
+│  20                                                                          │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+[:"C-S-F1"]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/complicated_instance_2_example.rb:7 ──────────────────┐
+│   1 # frozen_string_literal: true                                            │
+│   2                                                                          │
+│   3 module ModuleX                                                           │
+│   4   @module_variable_3 = 3                                                 │
+│   5   @module_variable_4 = 4                                                 │
+│   6   def self.super_method                                                  │
+│⮕  7     @module_variable_5 = 5                                               │
+│   8     jard                                                                 │
+│   9     @module_variable_6 = 6                                               │
+│  10     @module_variable_2 = 2                                               │
+│  11   end                                                                    │
+│  12 end                                                                      │
+│  13                                                                          │
+│  14 module ModuleY                                                           │
+│  15   @class_variable_4 = 4                                                  │
+│  16   @class_variable_5 = 5                                                  │
+│  17 end                                                                      │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+[:"M-o"]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/complicated_instance_2_example.rb:9 ──────────────────┐
+│   1 # frozen_string_literal: true                                            │
+│   2                                                                          │
+│   3 module ModuleX                                                           │
+│   4   @module_variable_3 = 3                                                 │
+│   5   @module_variable_4 = 4                                                 │
+│   6   def self.super_method                                                  │
+│   7     @module_variable_5 = 5                                               │
+│   8     jard                                                                 │
+│⮕  9     @module_variable_6 = 6                                               │
+│  10     @module_variable_2 = 2                                               │
+│  11   end                                                                    │
+│  12 end                                                                      │
+│  13                                                                          │
+│  14 module ModuleY                                                           │
+│  15   @class_variable_4 = 4                                                  │
+│  16   @class_variable_5 = 5                                                  │
+│  17 end                                                                      │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+[:"M-F1"]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/complicated_instance_example.rb:36 ───────────────────┐
+│  28       jard                                                               │
+│  29       @class_variable_3 = 3                                              │
+│  30       hyper_method                                                       │
+│  31     end                                                                  │
+│  32                                                                          │
+│  33     def test_method                                                      │
+│  34       @instance_2 = 2                                                    │
+│  35       jard                                                               │
+│⮕ 36       @instance_4 = 4                                                    │
+│  37       @instance_5 = 5                                                    │
+│  38       parent_method                                                      │
+│  39     end                                                                  │
+│  40   end                                                                    │
+│  41 end                                                                      │
+│  42                                                                          │
+│  43 ModuleX.a_test_method                                                    │
+│  44 ModuleX::ClassA.new.test_method                                          │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+[:"M-S-F1"]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/complicated_instance_2_example.rb:37 ─────────────────┐
+│  29   def initialize                                                         │
+│  30     @instance_3 = 3                                                      │
+│  31     @instance_4 = 3                                                      │
+│  32   end                                                                    │
+│  33                                                                          │
+│  34   def parent_method                                                      │
+│  35     @instance_6 = 6                                                      │
+│  36     jard                                                                 │
+│⮕ 37     @instance_7 = 7                                                      │
+│  38     @instance_2 = 2                                                      │
+│  39   end                                                                    │
+│  40 end                                                                      │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+["hello"]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/complicated_instance_2_example.rb:37 ─────────────────┐
+│  29   def initialize                                                         │
+│  30     @instance_3 = 3                                                      │
+│  31     @instance_4 = 3                                                      │
+│  32   end                                                                    │
+│  33                                                                          │
+│  34   def parent_method                                                      │
+│  35     @instance_6 = 6                                                      │
+│  36     jard                                                                 │
+│⮕ 37     @instance_7 = 7                                                      │
+│  38     @instance_2 = 2                                                      │
+│  39   end                                                                    │
+│  40 end                                                                      │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >> hello       
+### END SCREEN ###
+### START SEND_KEYS ###
+[:"M-l"]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/complicated_instance_2_example.rb:37 ─────────────────┐
+│  29   def initialize                                                         │
+│  30     @instance_3 = 3                                                      │
+│  31     @instance_4 = 3                                                      │
+│  32   end                                                                    │
+│  33                                                                          │
+│  34   def parent_method                                                      │
+│  35     @instance_6 = 6                                                      │
+│  36     jard                                                                 │
+│⮕ 37     @instance_7 = 7                                                      │
+│  38     @instance_2 = 2                                                      │
+│  39   end                                                                    │
+│  40 end                                                                      │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###
+### START SEND_KEYS ###
+[:"C-n"]
+### END SEND_KEYS ###
+### START SCREEN ###
+┌ Source  ../../examples/complicated_instance_2_example.rb:37 ─────────────────┐
+│  29   def initialize                                                         │
+│  30     @instance_3 = 3                                                      │
+│  31     @instance_4 = 3                                                      │
+│  32   end                                                                    │
+│  33                                                                          │
+│  34   def parent_method                                                      │
+│  35     @instance_6 = 6                                                      │
+│  36     jard                                                                 │
+│⮕ 37     @instance_7 = 7                                                      │
+│  38     @instance_2 = 2                                                      │
+│  39   end                                                                    │
+│  40 end                                                                      │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────┤
+│Filter (F2): Gems   Step (F7)   Step Out (Shift+F7)   Next (F8)   Continue ( »│
+└──────────────────────────────────────────────────────────────────────────────┘
+jard >>             
+### END SCREEN ###

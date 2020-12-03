@@ -38,8 +38,8 @@ module RubyJard
       end
     end
 
-    attr_accessor :color_scheme, :alias_to_debugger, :layout, :key_bindings
-    attr_reader :enabled_screens, :filter_version, :filter, :filter_included, :filter_excluded
+    attr_accessor :color_scheme, :alias_to_debugger, :layout
+    attr_reader :enabled_screens, :filter_version, :filter, :filter_included, :filter_excluded, :key_bindings
 
     CONFIG_FILE_NAME = '.jardrc'
     DEFAULTS = [
@@ -99,6 +99,10 @@ module RubyJard
     def filter_included=(input)
       @filter_version += 1
       @filter_included = input.freeze
+    end
+
+    def key_bindings=(sequences)
+      @key_bindings = RubyJard::KeyBindings.new(sequences)
     end
   end
 end

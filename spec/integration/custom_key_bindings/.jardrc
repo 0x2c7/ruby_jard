@@ -1,0 +1,27 @@
+# frozen_string_literal: true
+
+RubyJard::Layouts.add_layout(
+  'source-menu',
+  RubyJard::LayoutTemplate.new(
+      RubyJard::LayoutTemplate.new(
+        RubyJard::ScreenTemplate.new(:source, height_ratio: 100),
+        height_ratio: 80,
+        width_ratio: 100
+      ),
+      RubyJard::ScreenTemplate.new(:menu, height: 2),
+      fill_height: false
+    )
+  )
+config.layout = 'source-menu'
+config.key_bindings = {
+  RubyJard::Keys::CTRL_N        => 'jard filter switch',
+  RubyJard::Keys::META_L        => 'list',
+  RubyJard::Keys::CTRL_F1       => 'up',
+  RubyJard::Keys::CTRL_SHIFT_F1 => 'down',
+  RubyJard::Keys::META_D        => 'step',
+  RubyJard::Keys::META_O  => 'step-out',
+  RubyJard::Keys::CTRL_META_N   => 'next',
+  RubyJard::Keys::META_F1       => 'continue',
+  RubyJard::Keys::META_SHIFT_F1 => 'continue',
+  RubyJard::Keys::CTRL_C        => 'interrupt'
+}
