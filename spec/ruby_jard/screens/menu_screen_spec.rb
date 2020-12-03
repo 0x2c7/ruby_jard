@@ -50,7 +50,7 @@ RSpec.describe RubyJard::Screens::MenuScreen do
 
       menu_screen.build
       expect(menu_screen.rows).to match_rows(<<~SPANS)
-        Filter (Ctrl+Shift+N): Application         Step (Meta+D)   Step Out (Meta+O)   Next (Ctrl+Meta+N)   Continue (Meta+F1)
+        Filter (Ctrl+N): Application               Step (Meta+D)   Step Out (Meta+O)   Next (Ctrl+Meta+N)   Continue (Meta+F1)
       SPANS
     end
   end

@@ -18,9 +18,9 @@
 │  17                                                                          │
 │  18     include ModuleY                                                      │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│Filter (Ctrl+Shift+N): Application   Step (Meta+D)   Step Out (Meta+O)   Nex »│
+│Filter (Ctrl+N): Application   Step (Meta+D)   Step Out (Meta+O)   Next (Ctr »│
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>
+jard >>             
 ### END SCREEN ###
 ### START SEND_KEYS ###
 [:"C-M-n"]
@@ -45,9 +45,9 @@ jard >>
 │  18     include ModuleY                                                      │
 │  19     prepend ModuleZ                                                      │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│Filter (Ctrl+Shift+N): Application   Step (Meta+D)   Step Out (Meta+O)   Nex »│
+│Filter (Ctrl+N): Application   Step (Meta+D)   Step Out (Meta+O)   Next (Ctr »│
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>
+jard >>             
 ### END SCREEN ###
 ### START SEND_KEYS ###
 [:"C-M-n"]
@@ -75,9 +75,9 @@ jard >>
 │  16   @class_variable_5 = 5                                                  │
 │  17 end                                                                      │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│Filter (Ctrl+Shift+N): Application   Step (Meta+D)   Step Out (Meta+O)   Nex »│
+│Filter (Ctrl+N): Application   Step (Meta+D)   Step Out (Meta+O)   Next (Ctr »│
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>
+jard >>             
 ### END SCREEN ###
 ### START SEND_KEYS ###
 [:"C-F1"]
@@ -102,9 +102,9 @@ jard >>
 │  19     prepend ModuleZ                                                      │
 │  20                                                                          │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│Filter (Ctrl+Shift+N): Application   Step (Meta+D)   Step Out (Meta+O)   Nex »│
+│Filter (Ctrl+N): Application   Step (Meta+D)   Step Out (Meta+O)   Next (Ctr »│
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>
+jard >>             
 ### END SCREEN ###
 ### START SEND_KEYS ###
 [:"C-S-F1"]
@@ -129,9 +129,9 @@ jard >>
 │  16   @class_variable_5 = 5                                                  │
 │  17 end                                                                      │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│Filter (Ctrl+Shift+N): Application   Step (Meta+D)   Step Out (Meta+O)   Nex »│
+│Filter (Ctrl+N): Application   Step (Meta+D)   Step Out (Meta+O)   Next (Ctr »│
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>
+jard >>             
 ### END SCREEN ###
 ### START SEND_KEYS ###
 [:"M-o"]
@@ -156,9 +156,9 @@ jard >>
 │  16   @class_variable_5 = 5                                                  │
 │  17 end                                                                      │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│Filter (Ctrl+Shift+N): Application   Step (Meta+D)   Step Out (Meta+O)   Nex »│
+│Filter (Ctrl+N): Application   Step (Meta+D)   Step Out (Meta+O)   Next (Ctr »│
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>
+jard >>             
 ### END SCREEN ###
 ### START SEND_KEYS ###
 [:"M-F1"]
@@ -183,9 +183,9 @@ jard >>
 │  43 ModuleX.a_test_method                                                    │
 │  44 ModuleX::ClassA.new.test_method                                          │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│Filter (Ctrl+Shift+N): Application   Step (Meta+D)   Step Out (Meta+O)   Nex »│
+│Filter (Ctrl+N): Application   Step (Meta+D)   Step Out (Meta+O)   Next (Ctr »│
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>
+jard >>             
 ### END SCREEN ###
 ### START SEND_KEYS ###
 [:"M-S-F1"]
@@ -210,9 +210,9 @@ jard >>
 │                                                                              │
 │                                                                              │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│Filter (Ctrl+Shift+N): Application   Step (Meta+D)   Step Out (Meta+O)   Nex »│
+│Filter (Ctrl+N): Application   Step (Meta+D)   Step Out (Meta+O)   Next (Ctr »│
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>
+jard >>             
 ### END SCREEN ###
 ### START SEND_KEYS ###
 ["hello"]
@@ -237,9 +237,9 @@ jard >>
 │                                                                              │
 │                                                                              │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│Filter (Ctrl+Shift+N): Application   Step (Meta+D)   Step Out (Meta+O)   Nex »│
+│Filter (Ctrl+N): Application   Step (Meta+D)   Step Out (Meta+O)   Next (Ctr »│
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >> hello
+jard >> hello       
 ### END SCREEN ###
 ### START SEND_KEYS ###
 [:"M-l"]
@@ -264,9 +264,9 @@ jard >> hello
 │                                                                              │
 │                                                                              │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│Filter (Ctrl+Shift+N): Application   Step (Meta+D)   Step Out (Meta+O)   Nex »│
+│Filter (Ctrl+N): Application   Step (Meta+D)   Step Out (Meta+O)   Next (Ctr »│
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>
+jard >>             
 ### END SCREEN ###
 ### START SEND_KEYS ###
 [:"C-n"]
@@ -291,7 +291,7 @@ jard >>
 │                                                                              │
 │                                                                              │
 ├──────────────────────────────────────────────────────────────────────────────┤
-│Filter (Ctrl+Shift+N): Gems   Step (Meta+D)   Step Out (Meta+O)   Next (Ctrl »│
+│Filter (Ctrl+N): Gems   Step (Meta+D)   Step Out (Meta+O)   Next (Ctrl+Meta+N)│
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>
+jard >>             
 ### END SCREEN ###
