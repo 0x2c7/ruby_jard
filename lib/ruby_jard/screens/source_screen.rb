@@ -7,8 +7,8 @@ module RubyJard
     class SourceScreen < RubyJard::Screen
       include ::RubyJard::Span::DSL
 
-      def initialize(*args)
-        super
+      def initialize(**args)
+        super(**args)
         @frame_file = @session.current_frame&.frame_file
         @frame_line = @session.current_frame&.frame_line
 

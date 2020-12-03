@@ -9,8 +9,8 @@ require 'benchmark'
 require 'ruby_jard/path_classifier'
 require 'ruby_jard/path_filter'
 require 'ruby_jard/control_flow'
-require 'ruby_jard/config'
 require 'ruby_jard/keys'
+require 'ruby_jard/config'
 require 'ruby_jard/key_binding'
 require 'ruby_jard/key_bindings'
 require 'ruby_jard/repl_processor'
@@ -79,16 +79,6 @@ module RubyJard
     end
   rescue StandardError
     # Ignore
-  end
-
-  def self.global_key_bindings
-    return @global_key_bindings if defined?(@global_key_bindings)
-
-    @global_key_bindings = RubyJard::KeyBindings.new
-    RubyJard::Keys::DEFAULT_KEY_BINDINGS.each do |sequence, action|
-      @global_key_bindings.push(sequence, action)
-    end
-    @global_key_bindings
   end
 
   def self.config

@@ -6,30 +6,15 @@ module RubyJard
   # match a key binding sequence from input.
   # As this class is performant-sensitive, a lookup tree is built
   # and updated whenever a new key is added.
-  # TODO: Write tests for this file
   class KeyBindings
-    attr_reader :indexes
+    attr_reader :indexes, :key_bindings
 
-    def initialize
+    def initialize(sequences = [])
       @key_bindings = []
       @indexes = {}
-    end
-
-    def to_a
-      @key_bindings.dup
-    end
-
-    def push(sequence, action)
-      if sequence.is_a?(Array)
-        sequence.each { |s| push(s, action) }
-        return
+      sequences.each do |sequence, action|
+        push(sequence, action)
       end
-
-      raise RubyJard::Error if sequence.to_s.empty?
-
-      key_binding = RubyJard::KeyBinding.new(sequence, action)
-      reindex(key_binding)
-      @key_bindings << key_binding
     end
 
     def match(&read_key)
@@ -56,8 +41,8 @@ module RubyJard
           elsif node[byte].nil?
             # It's sure that no more bindings to match
             return buffer
-          elsif buffer == node[byte].sequence
-            # Exact match current key binding
+          elsif buffer.start_with?(node[byte].sequence)
+            # Match current key binding. Discard the rest
             return node[byte]
           else
             return buffer
@@ -67,6 +52,19 @@ module RubyJard
     end
 
     private
+
+    def push(sequence, action)
+      if sequence.is_a?(Array)
+        sequence.each { |s| push(s, action) }
+        return
+      end
+
+      raise RubyJard::Error if sequence.to_s.empty?
+
+      key_binding = RubyJard::KeyBinding.new(sequence, action)
+      reindex(key_binding)
+      @key_bindings << key_binding
+    end
 
     def reindex(key_binding)
       parent = nil

@@ -36,8 +36,7 @@ module RubyJard
     def initialize
       @screen_manager = RubyJard::ScreenManager.new
       @repl_manager = RubyJard::ReplManager.new(
-        console: @screen_manager.console,
-        key_bindings: RubyJard.global_key_bindings
+        console: @screen_manager.console
       )
       @path_filter = RubyJard::PathFilter.new
       @started = false

@@ -7,11 +7,12 @@ module RubyJard
     class MenuScreen < RubyJard::Screen
       include ::RubyJard::Span::DSL
 
-      def initialize(*args)
-        super(*args)
-        @filter = RubyJard.config.filter
-        @filter_included = RubyJard.config.filter_included
-        @filter_excluded = RubyJard.config.filter_excluded
+      def initialize(**args)
+        super(**args)
+        @key_bindings = @config.key_bindings
+        @filter = @config.filter
+        @filter_included = @config.filter_included
+        @filter_excluded = @config.filter_excluded
         @selected = 0
       end
 
@@ -35,7 +36,10 @@ module RubyJard
       private
 
       def generate_left_spans
-        filter_mode_span = text_special("Filter (F2): #{@filter.to_s.gsub(/_/, ' ').capitalize}")
+        key = key_binding('jard filter switch')
+        filter_mode_span = text_special(
+          "Filter#{key.nil? ? nil : " (#{key})"}: #{@filter.to_s.gsub(/_/, ' ').capitalize}"
+        )
         filter_details =
           @filter_included.map { |f| "+#{f}" } +
           @filter_excluded.map { |f| "-#{f}" }
@@ -54,13 +58,17 @@ module RubyJard
 
       def generate_right_spans
         [
-          'Step (F7)',
-          'Step Out (Shift+F7)',
-          'Next (F8)',
-          'Continue (F9)'
-        ].map do |menu_item|
+          ['step', 'Step'],
+          ['step-out', 'Step Out'],
+          ['next', 'Next'],
+          ['continue', 'Continue']
+        ].map do |command, command_label|
+          key = key_binding(command)
+          next if key.nil?
+
+          menu_item = "#{command_label} (#{key})"
           text_primary("   #{menu_item}")
-        end
+        end.compact
       end
 
       def align(left_spans, right_spans)
@@ -72,6 +80,15 @@ module RubyJard
           content: ' ' * (alignment < 0 ? 0 : alignment),
           styles: :background
         )
+      end
+
+      def key_binding(command)
+        key_binding = @key_bindings.key_bindings.find do |kb|
+          kb.action == command
+        end
+        return nil if key_binding.nil?
+
+        RubyJard::Keys::REVERSED_KEYS[key_binding.sequence]
       end
     end
   end

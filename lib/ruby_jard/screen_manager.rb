@@ -124,7 +124,7 @@ module RubyJard
     def build_screens(layouts)
       screens = layouts.map do |layout|
         screen_class = fetch_screen(layout.template.screen)
-        screen = screen_class.new(layout)
+        screen = screen_class.new(layout: layout)
         RubyJard.benchmark("build_screen #{screen.class}") do
           screen.build
           render_screen(screen)
@@ -134,7 +134,7 @@ module RubyJard
       RubyJard::ScreenAdjuster.new(screens).adjust
       layouts.map do |layout|
         screen_class = fetch_screen(layout.template.screen)
-        screen = screen_class.new(layout)
+        screen = screen_class.new(layout: layout)
         screen.build
         render_screen(screen)
         screen
