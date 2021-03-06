@@ -8,8 +8,12 @@ if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.5')
 else
   # Faking using another implementation
   module Readline
-    def self.input=(value)
-      super
+    class << self
+      alias_method :original_input=, :input=
+
+      def input=(input)
+        self.original_input = input
+      end
     end
   end
 end

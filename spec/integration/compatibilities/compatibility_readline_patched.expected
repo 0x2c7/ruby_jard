@@ -1,76 +1,76 @@
 ### START SCREEN ###
-┌ Source  ../../examples/readline_patched.rb:11 ───────────────────────────────┐
-│   3 require 'reline'                                                         │
-│   4 require 'ruby_jard'                                                      │
-│   5                                                                          │
-│   6 Readline = Reline                                                        │
-│   7                                                                          │
-│   8 class Calculator                                                         │
-│   9   def calculate(a, b, c)                                                 │
-│  10     jard                                                                 │
-│⮕ 11     d = a + b                                                            │
-│  12     jard                                                                 │
-│  13     e = d + 10                                                           │
-│  14     jard                                                                 │
-│  15     e + c                                                                │
-│  16   end                                                                    │
-│  17 end                                                                      │
-│  18                                                                          │
-│  19 Calculator.new.calculate(1, 2, 3)                                        │
+┌ Source  ../../examples/readline_patched.rb:24 ───────────────────────────────┐
+│  16       end                                                                │
+│  17     end                                                                  │
+│  18   end                                                                    │
+│  19 end                                                                      │
+│  20                                                                          │
+│  21 class Calculator                                                         │
+│  22   def calculate(a, b, c)                                                 │
+│  23     jard                                                                 │
+│⮕ 24     d = a + b                                                            │
+│  25     jard                                                                 │
+│  26     e = d + 10                                                           │
+│  27     jard                                                                 │
+│  28     e + c                                                                │
+│  29   end                                                                    │
+│  30 end                                                                      │
+│  31                                                                          │
+│  32 Calculator.new.calculate(1, 2, 3)                                        │
 ├──────────────────────────────────────────────────────────────────────────────┤
 │Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
 └──────────────────────────────────────────────────────────────────────────────┘
 *Warning*: One of Jard's depedencies (PTY or Readline) is not available or patch
-ed by another gem. Key bindings are disabled. There may be other side effects.  
-jard >>             
+ed by another gem. Key bindings are disabled. There may be other side effects.
+jard >>
 ### END SCREEN ###
 ### START SEND_KEYS ###
 ["continue", :Enter]
 ### END SEND_KEYS ###
 ### START SCREEN ###
-┌ Source  ../../examples/readline_patched.rb:13 ───────────────────────────────┐
-│   5                                                                          │
-│   6 Readline = Reline                                                        │
-│   7                                                                          │
-│   8 class Calculator                                                         │
-│   9   def calculate(a, b, c)                                                 │
-│  10     jard                                                                 │
-│  11     d = a + b                                                            │
-│  12     jard                                                                 │
-│⮕ 13     e = d + 10                                                           │
-│  14     jard                                                                 │
-│  15     e + c                                                                │
-│  16   end                                                                    │
-│  17 end                                                                      │
-│  18                                                                          │
-│  19 Calculator.new.calculate(1, 2, 3)                                        │
+┌ Source  ../../examples/readline_patched.rb:26 ───────────────────────────────┐
+│  18   end                                                                    │
+│  19 end                                                                      │
+│  20                                                                          │
+│  21 class Calculator                                                         │
+│  22   def calculate(a, b, c)                                                 │
+│  23     jard                                                                 │
+│  24     d = a + b                                                            │
+│  25     jard                                                                 │
+│⮕ 26     e = d + 10                                                           │
+│  27     jard                                                                 │
+│  28     e + c                                                                │
+│  29   end                                                                    │
+│  30 end                                                                      │
+│  31                                                                          │
+│  32 Calculator.new.calculate(1, 2, 3)                                        │
 │                                                                              │
 │                                                                              │
 ├──────────────────────────────────────────────────────────────────────────────┤
 │Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
 └──────────────────────────────────────────────────────────────────────────────┘
 *Warning*: One of Jard's depedencies (PTY or Readline) is not available or patch
-ed by another gem. Key bindings are disabled. There may be other side effects.  
-jard >>             
+ed by another gem. Key bindings are disabled. There may be other side effects.
+jard >>
 ### END SCREEN ###
 ### START SEND_KEYS ###
 ["continue", :Enter]
 ### END SEND_KEYS ###
 ### START SCREEN ###
-┌ Source  ../../examples/readline_patched.rb:15 ───────────────────────────────┐
-│   7                                                                          │
-│   8 class Calculator                                                         │
-│   9   def calculate(a, b, c)                                                 │
-│  10     jard                                                                 │
-│  11     d = a + b                                                            │
-│  12     jard                                                                 │
-│  13     e = d + 10                                                           │
-│  14     jard                                                                 │
-│⮕ 15     e + c                                                                │
-│  16   end                                                                    │
-│  17 end                                                                      │
-│  18                                                                          │
-│  19 Calculator.new.calculate(1, 2, 3)                                        │
+┌ Source  ../../examples/readline_patched.rb:28 ───────────────────────────────┐
+│  20                                                                          │
+│  21 class Calculator                                                         │
+│  22   def calculate(a, b, c)                                                 │
+│  23     jard                                                                 │
+│  24     d = a + b                                                            │
+│  25     jard                                                                 │
+│  26     e = d + 10                                                           │
+│  27     jard                                                                 │
+│⮕ 28     e + c                                                                │
+│  29   end                                                                    │
+│  30 end                                                                      │
+│  31                                                                          │
+│  32 Calculator.new.calculate(1, 2, 3)                                        │
 │                                                                              │
 │                                                                              │
 │                                                                              │
@@ -79,6 +79,6 @@ jard >>
 │Filter (F2): Application   Step (F7)   Step Out (Shift+F7)   Next (F8)   Con »│
 └──────────────────────────────────────────────────────────────────────────────┘
 *Warning*: One of Jard's depedencies (PTY or Readline) is not available or patch
-ed by another gem. Key bindings are disabled. There may be other side effects.  
-jard >>             
+ed by another gem. Key bindings are disabled. There may be other side effects.
+jard >>
 ### END SCREEN ###

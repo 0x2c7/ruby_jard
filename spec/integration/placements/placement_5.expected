@@ -12,7 +12,7 @@
 │  10 erb = ERB.new(view)                                                      │
 │  11 erb.filename = __FILE__                                                  │
 │  12 erb.lineno = lineno                                                      │
-│  13 erb.result_with_hash({})                                                 │
+│  13 erb.result                                                               │
 │                                                                              │
 │                                                                              │
 │                                                                              │
@@ -20,7 +20,7 @@
 ├──────────────────────────────────────────────────────────────────────────────┤
 │Filter (F2): Application -../../examples/top_level_example.rb   Step (F7)    »│
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###
@@ -41,7 +41,7 @@ jard >>
 │  10 erb = ERB.new(view)                                                      │
 │  11 erb.filename = __FILE__                                                  │
 │  12 erb.lineno = lineno                                                      │
-│  13 erb.result_with_hash({})                                                 │
+│  13 erb.result                                                               │
 │                                                                              │
 │                                                                              │
 │                                                                              │
@@ -49,7 +49,7 @@ jard >>
 ├──────────────────────────────────────────────────────────────────────────────┤
 │Filter (F2): Application -../../examples/top_level_example.rb   Step (F7)    »│
 └──────────────────────────────────────────────────────────────────────────────┘
-jard >>             
+jard >>
 
 
 ### END SCREEN ###

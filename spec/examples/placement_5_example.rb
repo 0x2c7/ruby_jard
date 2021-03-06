@@ -10,4 +10,4 @@ VIEW
 erb = ERB.new(view)
 erb.filename = __FILE__
 erb.lineno = lineno
-erb.result_with_hash({})
+erb.result
