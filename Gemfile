@@ -20,7 +20,7 @@ gem 'tty-markdown', '~>0.7.0'
 group :test do
   gem 'activerecord'
   gem 'parallel_tests'
-  gem 'rb-readline', require: false
+  gem 'reline', require: false
   gem 'rspec-retry'
   gem 'sqlite3'
 end
