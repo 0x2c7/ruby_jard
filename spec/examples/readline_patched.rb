@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require 'reline'
+require 'readline'
 require 'ruby_jard'
-
-Readline = Reline
 
 class Calculator
   def calculate(a, b, c)
