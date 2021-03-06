@@ -82,8 +82,20 @@ module RubyJard
     def try_classify_stdlib(path)
       lib_dir = RbConfig::CONFIG['rubylibdir'].to_s.strip
 
-      return false if lib_dir.empty?
-      return false unless path.start_with?(lib_dir)
+      # site_ruby is a place where user can override stdlib, we can classify it
+      # as stdlib
+      site_ruby_lib_dir = RbConfig::CONFIG['sitelibdir'].to_s.strip
+
+      return false if lib_dir.empty? && site_ruby_dir.empty?
+
+      lib_dir =
+        if path.start_with?(lib_dir)
+          lib_dir
+        elsif path.start_with?(site_ruby_lib_dir)
+          site_ruby_lib_dir
+        end
+
+      return false unless lib_dir
 
       splitted_path =
         path[lib_dir.length..-1]
