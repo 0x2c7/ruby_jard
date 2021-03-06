@@ -3,6 +3,12 @@
 RSpec.describe RubyJard::Config do
   subject(:config) { described_class.new }
 
+  before do
+    unless Object.const_defined?(:FrozenError)
+      stub_const('FrozenError', RuntimeError)
+    end
+  end
+
   it 'initializes default configurations' do
     expect(config.filter_version).to eq(0)
     expect(config.filter).to eq(:application)
@@ -19,13 +25,13 @@ RSpec.describe RubyJard::Config do
 
   it 'freezes nested data structure' do
     expect do
-      config.filter_included.append(123)
+      config.filter_included.push(123)
     end.to raise_error(FrozenError)
     expect do
-      config.filter_excluded.append(123)
+      config.filter_excluded.push(123)
     end.to raise_error(FrozenError)
     expect do
-      config.enabled_screens.append(123)
+      config.enabled_screens.push(123)
     end.to raise_error(FrozenError)
   end
 
@@ -51,7 +57,7 @@ RSpec.describe RubyJard::Config do
     it 'freezes filter_included afterward' do
       config.filter_included = ['rails']
       expect do
-        config.filter_included.append(123)
+        config.filter_included.push(123)
       end.to raise_error(FrozenError)
     end
   end
@@ -68,7 +74,7 @@ RSpec.describe RubyJard::Config do
     it 'freezes filter_excluded afterward' do
       config.filter_excluded = ['rails']
       expect do
-        config.filter_excluded.append(123)
+        config.filter_excluded.push(123)
       end.to raise_error(FrozenError)
     end
   end
@@ -81,7 +87,7 @@ RSpec.describe RubyJard::Config do
     it 'freezes filter_excluded afterward' do
       config.enabled_screens = ['source']
       expect do
-        config.enabled_screens.append(123)
+        config.enabled_screens.push(123)
       end.to raise_error(FrozenError)
     end
   end

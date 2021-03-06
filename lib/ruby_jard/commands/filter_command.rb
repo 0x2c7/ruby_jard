@@ -72,7 +72,7 @@ module RubyJard
                 "Please type `#{highlight('jard filter --help')}` for more information"
         end
         filters = args.map(&:strip)
-        included = @config.filter_included.dup.append(*filters).uniq
+        included = @config.filter_included.dup.push(*filters).uniq
         excluded = @config.filter_excluded.dup
         filters.each do |filter|
           excluded.delete(filter) if excluded.include?(filter)
@@ -92,7 +92,7 @@ module RubyJard
         filters = args.map(&:strip)
 
         included = @config.filter_included.dup
-        excluded = @config.filter_excluded.dup.append(*filters).uniq
+        excluded = @config.filter_excluded.dup.push(*filters).uniq
 
         filters.each do |filter|
           included.delete(filter) if included.include?(filter)
