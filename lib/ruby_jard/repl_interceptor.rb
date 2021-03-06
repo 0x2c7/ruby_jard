@@ -152,23 +152,25 @@ module RubyJard
 
     def output_bridge
       loop do
-        if @state.exiting?
-          if @output_reader.ready?
-            write_output(@output_reader.read_nonblock(2048))
+        begin
+          if @state.exiting?
+            if @output_reader.ready?
+              write_output(@output_reader.read_nonblock(2048))
+            else
+              @state.exited!
+            end
+          elsif @state.exited?
+            sleep OUTPUT_TICK
           else
-            @state.exited!
+            content = @output_reader.read_nonblock(2048)
+            unless content.nil?
+              write_output(content)
+            end
           end
-        elsif @state.exited?
+        rescue IO::WaitReadable, IO::WaitWritable
+          # Retry
           sleep OUTPUT_TICK
-        else
-          content = @output_reader.read_nonblock(2048)
-          unless content.nil?
-            write_output(content)
-          end
         end
-      rescue IO::WaitReadable, IO::WaitWritable
-        # Retry
-        sleep OUTPUT_TICK
       end
     rescue StandardError
       # This thread shoud never die, or the user may be freezed, and cannot type anything

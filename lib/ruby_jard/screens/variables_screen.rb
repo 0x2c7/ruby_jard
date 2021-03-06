@@ -143,9 +143,11 @@ module RubyJard
           end
         variables -= pry_sticky_locals
         variables.map do |variable|
-          [KIND_LOC, variable, @frame_binding.local_variable_get(variable)]
-        rescue NameError
-          nil
+          begin
+            [KIND_LOC, variable, @frame_binding.local_variable_get(variable)]
+          rescue NameError
+            nil
+          end
         end.compact
       end
 
@@ -158,9 +160,11 @@ module RubyJard
           .select { |v| relevant?(KIND_INS, v) }
 
         instance_variables.map do |variable|
-          [KIND_INS, variable, @reflection.call_instance_variable_get(@frame_self, variable)]
-        rescue NameError
-          nil
+          begin
+            [KIND_INS, variable, @reflection.call_instance_variable_get(@frame_self, variable)]
+          rescue NameError
+            nil
+          end
         end.compact
       end
 
@@ -200,9 +204,11 @@ module RubyJard
           .global_variables
           .select { |v| relevant?(KIND_GLOB, v) }
         variables.map do |variable|
-          [KIND_GLOB, variable, ::Kernel.instance_eval(variable.to_s)]
-        rescue NameError
-          nil
+          begin
+            [KIND_GLOB, variable, ::Kernel.instance_eval(variable.to_s)]
+          rescue NameError
+            nil
+          end
         end.compact
       end
 
