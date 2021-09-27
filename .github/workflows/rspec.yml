@@ -16,8 +16,7 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.5
-    - name: Install dependencies
-      run: bundle install
+        bundler-cache: true # 'bundle install' and caching
     - name: Checking offenses
       run: bundle exec rubocop
 
@@ -29,8 +28,7 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.5
-    - name: Install dependencies
-      run: bundle install
+        bundler-cache: true # 'bundle install' and caching
     - name: Testing docs
       run: bundle exec ruby scripts/command_docs.rb check
 
@@ -42,11 +40,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-    - uses: actions/checkout@v2
       with:
         repository: tmux/tmux
         path: 'tmux'
@@ -57,8 +50,12 @@ jobs:
       run: cd tmux && sh autogen.sh && ./configure && make && sudo make install
     - name: Tmux version
       run: tmux -V
-    - name: Install dependencies
-      run: bundle install
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
     - name: Kill tmux
       run: tmux kill-server || true
     - name: Start tmux
@@ -83,6 +80,7 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
     - name: Install tmux
       run: brew install tmux
     - name: Start tmux
@@ -91,7 +89,5 @@ jobs:
       run: tmux new-session -t dummy -d
     - name: Wait for tmux
       run: ruby spec/wait_for_tmux.rb
-    - name: Install dependencies
-      run: bundle install
     - name: Run tests
       run: bundle exec parallel_rspec -n 2 spec/
