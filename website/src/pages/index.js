@@ -23,7 +23,7 @@ function Home() {
             <div className="col col--7">
               <img className={styles.heroMiniLogo} src={useBaseUrl('/img/logo/logo-full-mid-light.png')}/>
               <p className={clsx('hero__title', styles.heroTitle)}>Just Another Ruby Debugger</p>
-              <p className="hero__subtitle">Ruby Jard provides a rich Terminal UI that visualizes everything your need, navigates your program with pleasure, stops at matter places only, reduces manual and mental efforts. You can now focus on real debugging.</p>
+              <p className="hero__subtitle">Ruby Jard provides a rich Terminal UI that visualizes everything you need, navigates your program with pleasure, stops at matter places only, reduces manual and mental efforts. You can now focus on real debugging.</p>
               <div className={styles.buttons}>
                 <Link
                   className={clsx(
