@@ -33,6 +33,6 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'byebug', '>= 9.1', '< 12.0'
-  spec.add_runtime_dependency 'pry', '~> 0.13.0'
+  spec.add_runtime_dependency 'pry', '~> 0.14.0'
   spec.add_runtime_dependency 'tty-screen', '~> 0.8.1'
 end
