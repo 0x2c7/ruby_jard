@@ -1,4 +1,30 @@
 # Changelog
+## [Unreleased]
+Ruby 4.0 compatibility.
+- Add gems `readline` and `irb` to gemspec. Ruby 4.0 no longer ships them, and byebug requires both
+- Fix every control command (`next`, `step`, `continue`, ...) hanging on Ruby 4.0 because `IO#ready?` was removed
+- Fix backtrace method labels repeating the class name on Ruby 3.4+ (`sort (Sorter#sort)`)
+- Show eval frames as `(eval)` instead of `(eval at /abs/path:LINE)` on Ruby 3.3+
+- Show C and `<internal:...>` frames (e.g. `Integer#times`) at their caller's location instead of `at ???` or hiding them
+- Fix key bindings being disabled on Ruby 3.3 when `readline-ext` is not in the bundle (Readline falls back to Reline)
+- Fix the pager (`less`) ignoring keys and opening at 24 rows: it was attached to Jard's internal PTY instead of the terminal
+
+## [0.3.2-beta2]
+Ruby 3.5 compatibility release.
+- Add gem `benchmark` to gemspec
+- Add gem `ostruct` to gemspec
+- Update dependency `byebug`
+
+## [0.3.2-beta1]
+Ruby 3.4 compatibility release for testing.
+
+### Features
+- Ruby 3.4 support and compatibility
+- Updated CI to test against Ruby 3.0-3.4
+
+### Bug fixes
+- Fix Ruby 3.4.6 Reline interceptor compatibility
+- Fix Ruby 3.4.6 compatibility in path classifier
 
 ## [0.3.1]
 This release fixes bunch of bugs, and performance issues reported by the users after beta launch. No new features are introduced.

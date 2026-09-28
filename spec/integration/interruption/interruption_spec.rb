@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Interruption test', integration: true do
+RSpec.describe 'Interruption test', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/interruption') }
 
   context 'when press Ctrl+C when repl is idle' do

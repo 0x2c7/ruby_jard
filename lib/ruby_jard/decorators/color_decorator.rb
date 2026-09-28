@@ -11,9 +11,9 @@ module RubyJard
     # - #aaa => \e[38;2;170;170;170m
     # - 77 => \e[38;2;170;170;170m
     class ColorDecorator
-      HEX_PATTERN_6 = /^#([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})$/i.freeze
-      HEX_PATTERN_3 = /^#([A-Fa-f0-9]{1})([A-Fa-f0-9]{1})([A-Fa-f0-9]{1})$/i.freeze
-      XTERM_NUMBER_PATTERN = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/i.freeze
+      HEX_PATTERN_6 = /^#([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})$/i
+      HEX_PATTERN_3 = /^#([A-Fa-f0-9]{1})([A-Fa-f0-9]{1})([A-Fa-f0-9]{1})$/i
+      XTERM_NUMBER_PATTERN = /^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/i
 
       CSI_RESET = "\e[0m"
       CSI_FOREGROUND_24BIT = "\e[38;2;%d;%d;%dm"

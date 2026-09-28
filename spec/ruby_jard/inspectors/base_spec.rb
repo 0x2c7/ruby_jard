@@ -31,7 +31,7 @@ RSpec.describe RubyJard::Inspectors::Base do
     }
 
     it {
-      expect(inspector.inline((123 + 0i), line_limit: line_limit)).to match_row(<<~SPANS)
+      expect(inspector.inline(123 + 0i, line_limit: line_limit)).to match_row(<<~SPANS)
         (123+0i)
       SPANS
     }
@@ -535,7 +535,7 @@ RSpec.describe RubyJard::Inspectors::Base do
 
     it {
       expect(
-        inspector.multiline((123 + 0i), line_limit: line_limit, lines: 7)
+        inspector.multiline(123 + 0i, line_limit: line_limit, lines: 7)
       ).to match_rows(<<~SPANS)
         (123+0i)
       SPANS

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Byebug compatibility', integration: true do
+RSpec.describe 'Byebug compatibility', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/compatibilities') }
 
   context 'when attach into program with byebug command' do

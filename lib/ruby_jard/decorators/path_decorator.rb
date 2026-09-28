@@ -32,7 +32,9 @@ module RubyJard
         when RubyJard::PathClassifier::TYPE_INTERNAL
           ["in #{path}", path]
         when RubyJard::PathClassifier::TYPE_EVALUATION
-          ["at #{path}#{lineno}", "#{path}#{lineno}"]
+          # Ruby 3.3+ names eval frames "(eval at FILE:LINE)". The line number
+          # is relative to the evaluated string, so the caller location is noise.
+          ['at (eval)', '(eval)'].map { |label| "#{label}#{lineno}" }
         when RubyJard::PathClassifier::TYPE_RUBY_SCRIPT
           ["at (-e ruby script)#{lineno}", "(-e ruby script)#{lineno}"]
         else
@@ -44,8 +46,8 @@ module RubyJard
       private
 
       def decorate_source_tree(path, lineno)
-        path = path[Dir.pwd.length..-1]
-        path = path[1..-1] if path.start_with?('/')
+        path = path[Dir.pwd.length..]
+        path = path[1..] if path.start_with?('/')
         path = "#{path}#{lineno}"
         ["at #{path}", path]
       end

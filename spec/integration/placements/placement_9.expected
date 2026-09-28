@@ -1,5 +1,5 @@
 ### START SCREEN ###
-irb(main):001:0>    
+irb(main):001>      
 
 
 
@@ -80,5 +80,5 @@ jard >>
 jard >> continue    
 ▸▸ Program resumed ▸▸                   
 => true             
-irb(main):002:0>    
+irb(main):002>      
 ### END SCREEN ###

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Debugging multi-threads', integration: true do
+RSpec.describe 'Debugging multi-threads', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/multithread') }
 
   context 'when two threads are attaching' do

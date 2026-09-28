@@ -10,8 +10,8 @@ RSpec.describe RubyJard::Config do
     expect(config.filter_excluded).to eq([])
 
     expect(config.color_scheme).to eq('256')
-    expect(config.alias_to_debugger).to eq(false)
-    expect(config.layout).to eq(nil)
+    expect(config.alias_to_debugger).to be(false)
+    expect(config.layout).to be_nil
     expect(config.enabled_screens).to match_array(
       %w[source variables backtrace threads menu]
     )

@@ -27,18 +27,21 @@ module RubyJard
     end
 
     def frame_file
-      @context.frame_file(@real_pos)
+      @context.frame_file(located_pos)
     end
 
     def frame_line
-      @context.frame_line(@real_pos)
+      @context.frame_line(located_pos)
     end
 
     def frame_location
-      frame_backtrace = @context.backtrace[@real_pos]
-      return nil if frame_backtrace.nil?
+      location_at(@real_pos)
+    end
 
-      frame_backtrace.first
+    # Location to display for this frame. A native frame has no source file of
+    # its own, so it points at the caller that invoked it.
+    def display_location
+      location_at(located_pos)
     end
 
     def frame_self
@@ -58,11 +61,41 @@ module RubyJard
     end
 
     def c_frame?
-      frame_binding.nil?
+      native_at?(@real_pos)
     end
 
     def thread
       @context.thread
+    end
+
+    private
+
+    def location_at(pos)
+      frame_backtrace = @context.backtrace[pos]
+      return nil if frame_backtrace.nil?
+
+      frame_backtrace.first
+    end
+
+    # C methods, and core methods written in Ruby that report an
+    # "<internal:...>" path (e.g. Integer#times since Ruby 3.3). Neither has
+    # source code Jard can show.
+    def native_at?(pos)
+      @context.frame_binding(pos).nil? ||
+        RubyJard::PathClassifier::INTERNAL_PATTERN.match?(@context.frame_file(pos).to_s)
+    end
+
+    # Ruby 3.4+ gives C frames no location, and internal frames point into
+    # Ruby's own source. Attribute a native frame to its nearest non-native
+    # caller, as Ruby's own caller_locations does and older Rubies did.
+    def located_pos
+      @located_pos ||=
+        begin
+          pos = @real_pos
+          last_pos = @context.backtrace.length - 1
+          pos += 1 while pos < last_pos && native_at?(pos)
+          native_at?(pos) ? @real_pos : pos
+        end
     end
   end
 end

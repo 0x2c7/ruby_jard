@@ -491,7 +491,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Backtrace  10 frames ────────────────────────────────────────────────────────┐
-│⮕  0 Random::Formatter in random_bytes in <stdlib:securerandom>               │
+│⮕  0 Random::Formatter in random_bytes in <stdlib:random>                     │
 │   1 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
 │   2 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                │
 │   3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
@@ -520,7 +520,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Backtrace  10 frames ────────────────────────────────────────────────────────┐
-│⮕  0 Random::Formatter in random_bytes in <stdlib:securerandom>               │
+│⮕  0 Random::Formatter in random_bytes in <stdlib:random>                     │
 │   1 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
 │   2 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                │
 │   3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
@@ -549,7 +549,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Backtrace  10 frames ────────────────────────────────────────────────────────┐
-│   0 Random::Formatter in random_bytes in <stdlib:securerandom>               │
+│   0 Random::Formatter in random_bytes in <stdlib:random>                     │
 │   1 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
 │   2 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                │
 │   3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
@@ -578,7 +578,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Backtrace  10 frames ────────────────────────────────────────────────────────┐
-│   0 Random::Formatter in random_bytes in <stdlib:securerandom>               │
+│   0 Random::Formatter in random_bytes in <stdlib:random>                     │
 │   1 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
 │   2 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                │
 │   3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │
@@ -607,7 +607,7 @@ jard >>
 ### END SEND_KEYS ###
 ### START SCREEN ###
 ┌ Backtrace  10 frames ────────────────────────────────────────────────────────┐
-│   0 Random::Formatter in random_bytes in <stdlib:securerandom>               │
+│   0 Random::Formatter in random_bytes in <stdlib:random>                     │
 │   1 Object in <main> (block) at ../../../examples/sort_example.rb:9          │
 │   2 JardMergeSort::Merger in merge in <jard_merge_sort 0.1.0>                │
 │   3 JardMergeSort::Sorter in do_sort in <jard_merge_sort 0.1.0>              │

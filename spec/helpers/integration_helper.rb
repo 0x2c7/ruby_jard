@@ -20,7 +20,7 @@ class JardIntegrationTest
     @width = width
     @height = height
 
-    @expected_record_file = File.join(@dir, expected_record_file)
+    @expected_record_file = versioned_record_file(File.join(@dir, expected_record_file))
     @expected_record = parse_expected_record(@expected_record_file)
 
     if recording_actual?
@@ -45,6 +45,7 @@ class JardIntegrationTest
       '-c', @dir,
       '-t', @target,
       '-n', 'main',
+      '-e', 'RUBYOPT=-W0',
       @command
     )
     sleep 0.5
@@ -138,7 +139,7 @@ class JardIntegrationTest
     sleep 0.5
   end
 
-  def screen_content(allow_duplication = true)
+  def screen_content(allow_duplication: true)
     sleep 0.5
 
     previous_content = @content
@@ -177,6 +178,20 @@ class JardIntegrationTest
     else
       raise "Fail to call `#{command}`. Status: #{$CHILD_STATUS}. Output: #{output}"
     end
+  end
+
+  # Some screens embed text formatted by Ruby itself, such as backtraces. When
+  # that format changes between Ruby versions, a sibling file named
+  # "name.ruby-X.Y.expected" overrides "name.expected" on Ruby X.Y and later.
+  def versioned_record_file(path)
+    base = path.delete_suffix('.expected')
+    current = Gem::Version.new(RUBY_VERSION)
+    variant =
+      Dir["#{base}.ruby-*.expected"]
+      .map { |file| [Gem::Version.new(file[/\.ruby-([\d.]+)\.expected\z/, 1]), file] }
+      .select { |version, _file| version <= current }
+      .max_by(&:first)
+    variant ? variant.last : path
   end
 
   def recording_actual?

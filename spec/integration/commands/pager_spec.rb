@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Pager tests', integration: true do
+RSpec.describe 'Pager tests', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/commands') }
 
   context 'when output directly into screen' do

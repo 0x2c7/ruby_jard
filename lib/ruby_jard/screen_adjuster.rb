@@ -14,7 +14,7 @@ module RubyJard
 
     def adjust
       groups = @screens.group_by { |screen| screen.layout.parent_template }
-      groups.each do |_, grouped_screens|
+      groups.each_value do |grouped_screens|
         next if grouped_screens.length <= 1
         next unless same_column?(grouped_screens)
 

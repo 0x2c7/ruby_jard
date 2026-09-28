@@ -102,7 +102,7 @@ RSpec.describe RubyJard::Reflection do
   context 'with #call_instance_variable_get' do
     context 'with nil' do
       it 'returns nil' do
-        expect(reflection.call_instance_variable_get(nil, :@something)).to eq(nil)
+        expect(reflection.call_instance_variable_get(nil, :@something)).to be_nil
       end
     end
 
@@ -119,7 +119,7 @@ RSpec.describe RubyJard::Reflection do
       it 'returns desired instance variable' do
         expect(reflection.call_instance_variable_get(klass.new, :@a)).to eq(1)
         expect(reflection.call_instance_variable_get(klass.new, :@b)).to eq(2)
-        expect(reflection.call_instance_variable_get(klass.new, :@c)).to eq(nil)
+        expect(reflection.call_instance_variable_get(klass.new, :@c)).to be_nil
       end
     end
 
@@ -134,7 +134,7 @@ RSpec.describe RubyJard::Reflection do
       it 'returns desired class variable' do
         expect(reflection.call_instance_variable_get(klass, :@a)).to eq(1)
         expect(reflection.call_instance_variable_get(klass, :@b)).to eq(2)
-        expect(reflection.call_instance_variable_get(klass, :@c)).to eq(nil)
+        expect(reflection.call_instance_variable_get(klass, :@c)).to be_nil
       end
     end
 
@@ -156,7 +156,7 @@ RSpec.describe RubyJard::Reflection do
         expect(klass.new.instance_variable_get(:@a)).to eq(:ahihi)
         expect(reflection.call_instance_variable_get(klass.new, :@a)).to eq(1)
         expect(reflection.call_instance_variable_get(klass.new, :@b)).to eq(2)
-        expect(reflection.call_instance_variable_get(klass.new, :@c)).to eq(nil)
+        expect(reflection.call_instance_variable_get(klass.new, :@c)).to be_nil
       end
     end
 
@@ -176,7 +176,7 @@ RSpec.describe RubyJard::Reflection do
         expect(klass.instance_variable_get(:@a)).to eq(:ahihi)
         expect(reflection.call_instance_variable_get(klass, :@a)).to eq(1)
         expect(reflection.call_instance_variable_get(klass, :@b)).to eq(2)
-        expect(reflection.call_instance_variable_get(klass, :@c)).to eq(nil)
+        expect(reflection.call_instance_variable_get(klass, :@c)).to be_nil
       end
     end
 
@@ -194,7 +194,7 @@ RSpec.describe RubyJard::Reflection do
         expect { klass.new.instance_variable_get(:@a) }.to raise_error(NoMethodError)
         expect(reflection.call_instance_variable_get(klass.new, :@a)).to eq(1)
         expect(reflection.call_instance_variable_get(klass.new, :@b)).to eq(2)
-        expect(reflection.call_instance_variable_get(klass.new, :@c)).to eq(nil)
+        expect(reflection.call_instance_variable_get(klass.new, :@c)).to be_nil
       end
     end
   end
@@ -418,24 +418,24 @@ RSpec.describe RubyJard::Reflection do
       end
 
       it 'returns correct answer' do
-        expect(reflection.call_is_a?(klass.new, klass)).to eq(true)
-        expect(reflection.call_is_a?(klass.new, Object)).to eq(true)
-        expect(reflection.call_is_a?(klass.class, Class)).to eq(true)
-        expect(reflection.call_is_a?(klass, klass)).to eq(false)
+        expect(reflection.call_is_a?(klass.new, klass)).to be(true)
+        expect(reflection.call_is_a?(klass.new, Object)).to be(true)
+        expect(reflection.call_is_a?(klass.class, Class)).to be(true)
+        expect(reflection.call_is_a?(klass, klass)).to be(false)
       end
     end
 
     context 'with some built-in classes' do
       it 'returns desired answer' do
-        expect(reflection.call_is_a?(Object, Class)).to eq(true)
-        expect(reflection.call_is_a?(Object, Module)).to eq(true)
-        expect(reflection.call_is_a?(Object, BasicObject)).to eq(true)
-        expect(reflection.call_is_a?(Object, StandardError)).to eq(false)
-        expect(reflection.call_is_a?(nil, NilClass)).to eq(true)
-        expect(reflection.call_is_a?(nil, Class)).to eq(false)
-        expect(reflection.call_is_a?(RubyJard, Module)).to eq(true)
-        expect(reflection.call_is_a?([], Array)).to eq(true)
-        expect(reflection.call_is_a?([], String)).to eq(false)
+        expect(reflection.call_is_a?(Object, Class)).to be(true)
+        expect(reflection.call_is_a?(Object, Module)).to be(true)
+        expect(reflection.call_is_a?(Object, BasicObject)).to be(true)
+        expect(reflection.call_is_a?(Object, StandardError)).to be(false)
+        expect(reflection.call_is_a?(nil, NilClass)).to be(true)
+        expect(reflection.call_is_a?(nil, Class)).to be(false)
+        expect(reflection.call_is_a?(RubyJard, Module)).to be(true)
+        expect(reflection.call_is_a?([], Array)).to be(true)
+        expect(reflection.call_is_a?([], String)).to be(false)
       end
     end
 
@@ -449,11 +449,11 @@ RSpec.describe RubyJard::Reflection do
       end
 
       it 'returns original inspection' do
-        expect(klass.new.is_a?(klass)).to eq(false)
-        expect(reflection.call_is_a?(klass.new, klass)).to eq(true)
-        expect(reflection.call_is_a?(klass.new, Object)).to eq(true)
-        expect(reflection.call_is_a?(klass.class, Class)).to eq(true)
-        expect(reflection.call_is_a?(klass, klass)).to eq(false)
+        expect(klass.new.is_a?(klass)).to be(false)
+        expect(reflection.call_is_a?(klass.new, klass)).to be(true)
+        expect(reflection.call_is_a?(klass.new, Object)).to be(true)
+        expect(reflection.call_is_a?(klass.class, Class)).to be(true)
+        expect(reflection.call_is_a?(klass, klass)).to be(false)
       end
     end
 
@@ -467,11 +467,11 @@ RSpec.describe RubyJard::Reflection do
       end
 
       it 'returns correct instance variable' do
-        expect(klass.is_a?(Class)).to eq(false)
-        expect(reflection.call_is_a?(klass, Object)).to eq(true)
-        expect(reflection.call_is_a?(klass.class, Class)).to eq(true)
-        expect(reflection.call_is_a?(klass, Module)).to eq(true)
-        expect(reflection.call_is_a?(klass, RubyJard)).to eq(false)
+        expect(klass.is_a?(Class)).to be(false)
+        expect(reflection.call_is_a?(klass, Object)).to be(true)
+        expect(reflection.call_is_a?(klass.class, Class)).to be(true)
+        expect(reflection.call_is_a?(klass, Module)).to be(true)
+        expect(reflection.call_is_a?(klass, RubyJard)).to be(false)
       end
     end
 
@@ -483,9 +483,9 @@ RSpec.describe RubyJard::Reflection do
 
       it 'returns correct string' do
         expect { klass.new.is_a?(klass) }.to raise_error(NoMethodError)
-        expect(reflection.call_is_a?(klass.new, klass)).to eq(true)
-        expect(reflection.call_is_a?(klass.new, BasicObject)).to eq(true)
-        expect(reflection.call_is_a?(klass.new, Object)).to eq(false)
+        expect(reflection.call_is_a?(klass.new, klass)).to be(true)
+        expect(reflection.call_is_a?(klass.new, BasicObject)).to be(true)
+        expect(reflection.call_is_a?(klass.new, Object)).to be(false)
       end
     end
   end

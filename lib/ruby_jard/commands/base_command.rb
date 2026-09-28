@@ -7,7 +7,7 @@ module RubyJard
       def self.help_doc(location)
         help_doc = File.read(File.join(File.dirname(__FILE__), location))
         help_doc = help_doc.split("\n").map { |line| "    #{line}" }.join("\n")
-        banner help_doc + "\n"
+        banner "#{help_doc}\n"
       end
 
       def help

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'color-scheme command', integration: true do
+RSpec.describe 'color-scheme command', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/commands') }
 
   context 'when list color schemes' do

@@ -1,0 +1,74 @@
+name: Test suite
+
+# Reusable: runs the full spec suite (unit + tmux integration) on Ubuntu and
+# macOS for each Ruby in `rubies`. Called by rspec.yml and ruby-head.yml.
+on:
+  workflow_call:
+    inputs:
+      rubies:
+        description: JSON array of Ruby versions, e.g. '["3.2", "4.0"]'
+        required: true
+        type: string
+
+jobs:
+  test-ubuntu:
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ${{ fromJSON(inputs.rubies) }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+    - uses: actions/checkout@v4
+      with:
+        repository: tmux/tmux
+        path: 'tmux'
+        ref: '3.1b'
+    - name: Install dependencies for tmux
+      run: sudo apt install -y libevent-dev
+    - name: Install tmux
+      run: cd tmux && sh autogen.sh && ./configure && make && sudo make install
+    - name: Tmux version
+      run: tmux -V
+    - name: Install dependencies
+      run: bundle install
+    - name: Kill tmux
+      run: tmux kill-server || true
+    - name: Start tmux
+      run: tmux start-server
+    - name: Start dummy tmux session
+      run: tmux new-session -t dummy -d
+    - name: Wait for tmux
+      run: ruby spec/wait_for_tmux.rb
+    - name: Run tests
+      run: bundle exec parallel_rspec spec/
+  test-macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ${{ fromJSON(inputs.rubies) }}
+    env:
+      CI_PLATFORM: "macos"
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+    - name: Install tmux
+      run: brew install tmux
+    - name: Start tmux
+      run: tmux start-server
+    - name: start dummy tmux session
+      run: tmux new-session -t dummy -d
+    - name: Wait for tmux
+      run: ruby spec/wait_for_tmux.rb
+    - name: Install dependencies
+      run: bundle install
+    - name: Run tests
+      run: bundle exec parallel_rspec -n 2 spec/

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Menu screen', integration: true do
+RSpec.describe 'Menu screen', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/screens/menu') }
 
   context 'with default menu screen' do

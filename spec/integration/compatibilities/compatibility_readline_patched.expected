@@ -3,7 +3,7 @@
 │   3 require 'reline'                                                         │
 │   4 require 'ruby_jard'                                                      │
 │   5                                                                          │
-│   6 Readline = Reline                                                        │
+│   6 Readline.singleton_class.prepend(Module.new { def input=(i) super end }) │
 │   7                                                                          │
 │   8 class Calculator                                                         │
 │   9   def calculate(a, b, c)                                                 │
@@ -30,7 +30,7 @@ jard >>
 ### START SCREEN ###
 ┌ Source  ../../examples/readline_patched.rb:13 ───────────────────────────────┐
 │   5                                                                          │
-│   6 Readline = Reline                                                        │
+│   6 Readline.singleton_class.prepend(Module.new { def input=(i) super end }) │
 │   7                                                                          │
 │   8 class Calculator                                                         │
 │   9   def calculate(a, b, c)                                                 │

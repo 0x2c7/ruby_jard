@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Custom key bindings', integration: true do
+RSpec.describe 'Custom key bindings', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/custom_key_bindings') }
 
   it 'supports custom key binding in the configuration file' do

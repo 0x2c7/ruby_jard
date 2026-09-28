@@ -33,7 +33,7 @@ module RubyJard
       # rubocop:disable Lint/UnusedMethodArgument
       def inline(variable, line_limit:, depth:)
         inspection = variable.inspect
-        inspection = inspection[0..line_limit - 2] + '…' if inspection.length >= line_limit
+        inspection = "#{inspection[0..line_limit - 2]}…" if inspection.length >= line_limit
         SimpleRow.new(
           RubyJard::Span.new(
             content: inspection,

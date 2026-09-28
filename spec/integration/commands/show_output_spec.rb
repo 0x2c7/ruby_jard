@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Output Integration tests', integration: true do
+RSpec.describe 'Output Integration tests', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/commands') }
 
   context 'when there is no output yet' do

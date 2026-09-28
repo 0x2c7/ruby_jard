@@ -24,12 +24,12 @@ module RubyJard
       end
 
       def inline(variable, line_limit:, depth: 0)
-        inspection = variable.inspect[1..-1].chomp!('"')
+        inspection = variable.inspect[1..].chomp!('"')
         str =
           if inspection.length < line_limit - 2
             inspection
           else
-            inspection[0..line_limit - 4] + '…'
+            "#{inspection[0..line_limit - 4]}…"
           end
         SimpleRow.new(
           text_string('"'),

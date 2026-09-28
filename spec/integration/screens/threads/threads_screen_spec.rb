@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Threads screen', integration: true do
+RSpec.describe 'Threads screen', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/screens/threads') }
 
   context 'when jard stops at top-level binding' do

@@ -42,7 +42,7 @@ RSpec.shared_examples 'command with times' do |command_text, command_flow|
     end
   end
 
-  context "with `#{command_text}       3`" do
+  context "with `#{command_text} 3`" do
     it "dispatches #{command_text} flow with 3" do
       flow = RubyJard::ControlFlow.listen do
         command_object.process_line("#{command_text}       3")
@@ -53,7 +53,7 @@ RSpec.shared_examples 'command with times' do |command_text, command_flow|
     end
   end
 
-  context "with `#{command_text}       +33`" do
+  context "with `#{command_text} +33`" do
     it "dispatches #{command_text} flow with 3" do
       flow = RubyJard::ControlFlow.listen do
         command_object.process_line("#{command_text}       +33")

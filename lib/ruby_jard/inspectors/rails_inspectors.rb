@@ -154,7 +154,7 @@ module RubyJard
         row = SimpleRow.new(text_primary(overview))
         if @reflection.call_respond_to?(variable, :to_sql) && width < line_limit
           detail = variable_sql(variable)
-          detail = detail[0..line_limit - width - 2] + '…' if width + detail.length < line_limit
+          detail = "#{detail[0..line_limit - width - 2]}…" if width + detail.length < line_limit
           row << text_dim(' ')
           row << text_dim(detail)
         end

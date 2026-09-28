@@ -104,11 +104,15 @@ module RubyJard
 
     def interceptable?
       return false unless defined?(PTY)
-      return false if defined?(Reline) && Readline == Reline
-      return false if RubyJard::Reflection.instance.call_method(::Readline, :input=).source_location != nil
-      return false if RubyJard::Reflection.instance.call_method(::Readline, :output=).source_location != nil
 
-      true
+      # ::Readline is either GNU Readline (C methods, no source location) or
+      # Reline, which delegates through forwardable.rb. Reline is what Bundler
+      # provides on Ruby 3.3 (readline-ext became a bundled gem) and the only
+      # option since Ruby 3.4. Anything else has been patched by another gem.
+      %i[input= output=].none? do |method_name|
+        location = RubyJard::Reflection.instance.call_method(::Readline, method_name).source_location
+        location && !location[0].include?('forwardable.rb')
+      end
     end
 
     private
@@ -153,7 +157,7 @@ module RubyJard
     def output_bridge
       loop do
         if @state.exiting?
-          if @output_reader.ready?
+          if @output_reader.wait_readable(0)
             write_output(@output_reader.read_nonblock(2048))
           else
             @state.exited!

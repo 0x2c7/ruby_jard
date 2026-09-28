@@ -1,4 +1,5 @@
-require: rubocop-rspec
+plugins:
+  - rubocop-rspec
 
 Metrics/BlockLength:
   Exclude:
@@ -98,6 +99,28 @@ RSpec/MultipleMemoizedHelpers:
   Enabled: false
 
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 3.2
+  NewCops: disable
+  SuggestExtensions: false
   Exclude:
-      - '**/*_example.rb'
+    # Programs debugged by the integration specs. Their source is captured in
+    # screen fixtures, so reformatting them would shift the recorded screens.
+    - '**/*_example.rb'
+    - 'spec/examples/**/*'
+    - 'spec/integration/scenario_1/heap.rb'
+    - 'spec/integration/scenario_1/list_node.rb'
+    - 'spec/integration/scenario_1/merge_k_sorted_list.rb'
+    - 'vendor/**/*'
+
+# Integration specs assert through JardIntegrationTest#assert_screen, which
+# this cop cannot recognise as an expectation.
+RSpec/NoExpectationExample:
+  Exclude:
+    - 'spec/integration/**/*'
+# Numbered symbols (e.g. `color_not_supported_1:`) are test-data keys.
+Naming/VariableNumber:
+  CheckSymbols: false
+# Numbered lets (layout_1, thread_info_2) are a deliberate convention for
+# specs comparing interchangeable fixtures.
+RSpec/IndexedLet:
+  Enabled: false

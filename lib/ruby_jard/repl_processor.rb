@@ -78,7 +78,7 @@ module RubyJard
       end
     end
 
-    def process_commands(redraw = true)
+    def process_commands(redraw: true)
       @session.sync(@context)
       RubyJard.benchmark(:redraw_screens) do
         @screen_manager.draw_screens if redraw
@@ -146,13 +146,13 @@ module RubyJard
       if next_frame.nil?
         # There must be an error in outer validators
         @screen_manager.console.puts 'Error: Frame not found. There should be an error with Jard.'
-        process_commands(false)
+        process_commands(redraw: false)
       elsif next_frame.c_frame?
         @screen_manager.console.puts "Error: Frame #{next_frame} is a c-frame. Not able to inspect c layer!"
-        process_commands(false)
+        process_commands(redraw: false)
       else
         @session.frame = next_frame.real_pos
-        process_commands(true)
+        process_commands(redraw: true)
       end
     end
 

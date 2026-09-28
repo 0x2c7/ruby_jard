@@ -24,25 +24,25 @@ RSpec.describe RubyJard::ReplSequence do
   describe '#detect' do
     context 'when content is empty' do
       it 'returns nil' do
-        expect(described_class.detect('')).to be(nil)
+        expect(described_class.detect('')).to be_nil
       end
     end
 
     context 'when content is nil' do
       it 'returns nil' do
-        expect(described_class.detect(nil)).to be(nil)
+        expect(described_class.detect(nil)).to be_nil
       end
     end
 
     context 'when content does not contain an escaped sequence' do
       it 'returns nil' do
-        expect(described_class.detect('hello 123')).to be(nil)
+        expect(described_class.detect('hello 123')).to be_nil
       end
     end
 
     context 'when content contains an empty escaped sequence' do
       it 'returns nil' do
-        expect(described_class.detect('\e]711;Command~')).to be(nil)
+        expect(described_class.detect('\e]711;Command~')).to be_nil
       end
     end
 

@@ -11,7 +11,7 @@ module RubyJard
       include NestedHelper
       include ::RubyJard::Span::DSL
 
-      DEFAULT_INSPECTION_PATTERN = /#<(.*:0x[0-9a-z]+)(.*)>/i.freeze
+      DEFAULT_INSPECTION_PATTERN = /#<(.*:0x[0-9a-z]+)(.*)>/i
 
       def initialize(base)
         @base = base
@@ -92,7 +92,7 @@ module RubyJard
         elsif raw_inspection.length <= line_limit
           SimpleRow.new(text_primary(raw_inspection[0..line_limit]))
         else
-          SimpleRow.new(text_primary(raw_inspection[0..line_limit - 3] + '…>'))
+          SimpleRow.new(text_primary("#{raw_inspection[0..line_limit - 3]}…>"))
         end
       end
 
@@ -104,7 +104,7 @@ module RubyJard
             if match[2].length < line_limit - match[1].length - 3
               match[2]
             else
-              match[2][0..line_limit - match[1].length - 4] + '…'
+              "#{match[2][0..line_limit - match[1].length - 4]}…"
             end
           SimpleRow.new(
             text_primary('#<'),
@@ -115,7 +115,7 @@ module RubyJard
         elsif raw_inspection.length <= line_limit
           SimpleRow.new(text_primary(raw_inspection[0..line_limit]))
         else
-          SimpleRow.new(text_primary(raw_inspection[0..line_limit - 3] + '…>'))
+          SimpleRow.new(text_primary("#{raw_inspection[0..line_limit - 3]}…>"))
         end
       end
     end

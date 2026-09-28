@@ -54,7 +54,6 @@ module RubyJard
       @thread&.backtrace_locations || []
     end
 
-    # rubocop:disable Style/CaseLikeIf
     def ==(other)
       if other.is_a?(::Thread)
         @thread == other
@@ -64,6 +63,5 @@ module RubyJard
         raise RubyJard::Error, 'Invalid comparation'
       end
     end
-    # rubocop:enable Style/CaseLikeIf
   end
 end

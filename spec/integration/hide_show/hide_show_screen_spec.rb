@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Hide/show screens', integration: true do
+RSpec.describe 'Hide/show screens', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/hide_show') }
 
   context 'when hiding/showing a screen on the top' do

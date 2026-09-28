@@ -51,7 +51,7 @@ module RubyJard
         jard_commands = visible_commands.values.select { |command| command.group == 'RubyJard' }
         output.puts help_text_with_sub_commands(jard_commands)
         output.puts "\n"
-        output.puts 'To display all commands, please use ' + highlight('help -a')
+        output.puts "To display all commands, please use #{highlight('help -a')}"
       end
 
       def display_banner

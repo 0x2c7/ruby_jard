@@ -65,7 +65,7 @@ module RubyJard
           return false
         end
         drawing_content = line_content[0..column.content_width - @drawing_width - 1]
-        line_content = line_content[column.content_width - @drawing_width..-1]
+        line_content = line_content[column.content_width - @drawing_width..]
         @drawing_width += drawing_content.length
 
         if !@row.line_limit.nil? &&

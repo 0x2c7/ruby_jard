@@ -50,8 +50,10 @@ module RubyJard
         # - If the real pager (less) is triggered, it works on a real tty (fetched
         # from /dev/tty), in which, the same as RubyJard::Console.output
         # - Otherwise, it writes directly into pry's REPL output.
-        # That's why there should be two output here
-        @tty_output = @console.redirected? ? @console.output : @pry_instance.output
+        # That's why there should be two output here. Pry's output may be the
+        # interceptor's PTY, and less (e.g. v704) reads keys from the terminal
+        # it writes to, so it must never be handed that PTY.
+        @tty_output = @console.output
         @window_width, @window_height = @console.screen_size
         @tracker = JardPageTracker.new(@window_height, @window_width)
         @pager = force_open ? open_pager : nil

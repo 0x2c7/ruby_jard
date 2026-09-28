@@ -1,0 +1,18 @@
+name: Ruby head
+
+# Early warning for the next Ruby release. Kept out of push/PR checks so an
+# unreleased Ruby cannot mark commits as failing. A failed scheduled run
+# notifies the repository owner and shows on the Actions tab.
+#
+# Status at the time of writing: byebug 12's C extension does not build on
+# ruby-head (Ruby 4.1 development), so this is expected to fail.
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  test:
+    uses: ./.github/workflows/test-suite.yml
+    with:
+      rubies: '["head"]'

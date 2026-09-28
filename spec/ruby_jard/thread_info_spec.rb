@@ -14,7 +14,7 @@ RSpec.describe RubyJard::ThreadInfo do
       subject(:thread_info) { described_class.new(nil) }
 
       it 'returns nil' do
-        expect(thread_info.id).to eq(nil)
+        expect(thread_info.id).to be_nil
       end
     end
 
@@ -65,7 +65,7 @@ RSpec.describe RubyJard::ThreadInfo do
       subject(:thread_info) { described_class.new(nil) }
 
       it 'returns nil' do
-        expect(thread_info.name).to eq(nil)
+        expect(thread_info.name).to be_nil
       end
     end
 
@@ -75,7 +75,7 @@ RSpec.describe RubyJard::ThreadInfo do
       let(:thread) { Thread.new {} }
 
       it 'returns nil' do
-        expect(thread_info.name).to eq(nil)
+        expect(thread_info.name).to be_nil
       end
     end
 
@@ -99,7 +99,7 @@ RSpec.describe RubyJard::ThreadInfo do
       subject(:thread_info) { described_class.new(nil) }
 
       it 'returns nil' do
-        expect(thread_info.status).to eq(nil)
+        expect(thread_info.status).to be_nil
       end
     end
 
@@ -147,7 +147,7 @@ RSpec.describe RubyJard::ThreadInfo do
       subject(:thread_info) { described_class.new(nil) }
 
       it 'returns false' do
-        expect(thread_info.alive?).to eq(false)
+        expect(thread_info.alive?).to be(false)
       end
     end
 
@@ -155,7 +155,7 @@ RSpec.describe RubyJard::ThreadInfo do
       subject(:thread_info) { described_class.new(Thread.current) }
 
       it 'returns true' do
-        expect(thread_info.alive?).to eq(true)
+        expect(thread_info.alive?).to be(true)
       end
     end
 
@@ -170,7 +170,7 @@ RSpec.describe RubyJard::ThreadInfo do
 
       it 'returns true' do
         sleep 0.5
-        expect(thread_info.alive?).to eq(true)
+        expect(thread_info.alive?).to be(true)
       end
     end
 
@@ -185,7 +185,7 @@ RSpec.describe RubyJard::ThreadInfo do
 
       it 'returns false' do
         sleep 0.5
-        expect(thread_info.alive?).to eq(false)
+        expect(thread_info.alive?).to be(false)
       end
     end
   end
@@ -236,7 +236,8 @@ RSpec.describe RubyJard::ThreadInfo do
       subject(:thread_info) { described_class.new(Thread.current) }
 
       it 'returns true' do
-        expect(thread_info).to eq(thread_info)
+        # Deliberately checks that #== is reflexive.
+        expect(thread_info).to eq(thread_info) # rubocop:disable RSpec/IdenticalEqualityAssertion
       end
     end
 
@@ -245,7 +246,7 @@ RSpec.describe RubyJard::ThreadInfo do
       let(:thread_info_2) { described_class.new(Thread.current) }
 
       it 'returns true' do
-        expect(thread_info_1 == thread_info_2).to eq(true)
+        expect(thread_info_1 == thread_info_2).to be(true)
       end
     end
 
@@ -255,7 +256,7 @@ RSpec.describe RubyJard::ThreadInfo do
       let(:thread_info_2) { described_class.new(thread) }
 
       it 'returns true' do
-        expect(thread_info_1 == thread_info_2).to eq(true)
+        expect(thread_info_1 == thread_info_2).to be(true)
       end
     end
 
@@ -265,7 +266,7 @@ RSpec.describe RubyJard::ThreadInfo do
       let(:thread_info_2) { described_class.new(thread) }
 
       it 'returns false' do
-        expect(thread_info_1 == thread_info_2).to eq(false)
+        expect(thread_info_1 == thread_info_2).to be(false)
       end
     end
 
@@ -273,7 +274,7 @@ RSpec.describe RubyJard::ThreadInfo do
       subject(:thread_info) { described_class.new(Thread.current) }
 
       it 'returns true' do
-        expect(thread_info == Thread.current).to eq(true)
+        expect(thread_info == Thread.current).to be(true)
       end
     end
 
@@ -282,7 +283,7 @@ RSpec.describe RubyJard::ThreadInfo do
 
       it 'returns true' do
         t = Thread.current
-        expect(thread_info == t).to eq(true)
+        expect(thread_info == t).to be(true)
       end
     end
 
@@ -290,7 +291,7 @@ RSpec.describe RubyJard::ThreadInfo do
       subject(:thread_info) { described_class.new(Thread.current) }
 
       it 'returns false' do
-        expect(thread_info == Thread.new {}).to eq(false)
+        expect(thread_info == Thread.new {}).to be(false)
       end
     end
   end

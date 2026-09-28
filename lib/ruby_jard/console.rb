@@ -21,6 +21,9 @@ module RubyJard
       stdout_storage << string
     end
 
+    # The real process streams are required here, not $stdin/$stdout, which
+    # the debugged program may have reassigned.
+    # rubocop:disable Style/GlobalStdStream
     def initialize
       @input =
         if STDIN.tty?
@@ -54,6 +57,7 @@ module RubyJard
         end
       CODE
     end
+    # rubocop:enable Style/GlobalStdStream
 
     def stdout_storage
       self.class.stdout_storage

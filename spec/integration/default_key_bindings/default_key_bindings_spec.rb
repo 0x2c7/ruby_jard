@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Default key bindings', integration: true do
+RSpec.describe 'Default key bindings', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/default_key_bindings') }
 
   context 'with switch filter binding' do

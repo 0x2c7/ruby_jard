@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Scenario 3: Turn on and off filter when debugging gem' do
+RSpec.describe 'Scenario 3: Turn on and off filter when debugging gem', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/scenario_3') }
 
   it 'runs as expected' do

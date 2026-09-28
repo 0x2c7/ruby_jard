@@ -180,6 +180,14 @@ RSpec.describe RubyJard::Decorators::PathDecorator do
         )
       end
     end
+
+    context 'when path includes the eval caller location (Ruby 3.3+)' do
+      it do
+        expect(decorator.decorate('(eval at /app/lib/foo.rb:11)', 2)).to eql(
+          ['at (eval):2', '(eval):2']
+        )
+      end
+    end
   end
 
   context 'when path is ruby script' do
@@ -228,7 +236,7 @@ RSpec.describe RubyJard::Decorators::PathDecorator do
     end
 
     context 'when input line is shorter if keep current one' do
-      let(:path) { File.expand_path(File.join(Dir.pwd, '../' * 30 + '../abc/def.rb')) }
+      let(:path) { File.expand_path(File.join(Dir.pwd, "#{'../' * 30}../abc/def.rb")) }
 
       it do
         expect(decorator.decorate(path)).to eql(

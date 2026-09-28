@@ -9,10 +9,10 @@ module RubyJard
   # Usage
   #   type, *info = PathClassifier.new.class('lib/abc')
   class PathClassifier
-    GEM_PATTERN = /(.*)-(\d+\.\d+[.\d]*[.\d]*[-.\w]*)/i.freeze
-    STDLIB_PATTERN = /(.*)\.rb$/.freeze
-    INTERNAL_PATTERN = /<internal:[^>]+>/.freeze
-    EVALUATION_SIGNATURE = '(eval)'
+    GEM_PATTERN = /(.*)-(\d+\.\d+[.\d]*[.\d]*[-.\w]*)/i
+    STDLIB_PATTERN = /(.*)\.rb$/
+    INTERNAL_PATTERN = /<internal:[^>]+>/
+    EVALUATION_PATTERN = /^\(eval.*\)$/
     RUBY_SCRIPT_SIGNATURE = '-e'
 
     TYPES = [
@@ -56,7 +56,7 @@ module RubyJard
         next unless path.start_with?(gem_path)
 
         splitted_path =
-          path[gem_path.length..-1]
+          path[gem_path.length..]
           .split('/')
           .reject(&:empty?)
         gem_name = splitted_path.shift
@@ -80,27 +80,33 @@ module RubyJard
     end
 
     def try_classify_stdlib(path)
-      lib_dir = RbConfig::CONFIG['rubylibdir'].to_s.strip
+      lib_dirs = [
+        RbConfig::CONFIG['rubylibdir'],
+        RbConfig::CONFIG['sitelibdir']
+      ].compact.map(&:strip).reject(&:empty?)
 
-      return false if lib_dir.empty?
-      return false unless path.start_with?(lib_dir)
+      lib_dirs.each do |lib_dir|
+        next unless path.start_with?(lib_dir)
 
-      splitted_path =
-        path[lib_dir.length..-1]
-        .split('/')
-        .reject(&:empty?)
-      lib_name = splitted_path.first
-      match = STDLIB_PATTERN.match(lib_name)
-      lib_name = match[1] if match
+        splitted_path =
+          path[lib_dir.length..]
+          .split('/')
+          .reject(&:empty?)
+        lib_name = splitted_path.first
+        match = STDLIB_PATTERN.match(lib_name)
+        lib_name = match[1] if match
 
-      [true, lib_name, splitted_path.join('/')]
+        return [true, lib_name, splitted_path.join('/')]
+      end
+
+      false
     rescue NameError
       # RbConfig is not available
       false
     end
 
     def try_classify_evaluation(path)
-      path == EVALUATION_SIGNATURE
+      path =~ EVALUATION_PATTERN
     end
 
     def try_classify_ruby_script(path)

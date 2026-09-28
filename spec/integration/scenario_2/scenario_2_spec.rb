@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Scenario 2: Debug a simple gem' do
+RSpec.describe 'Scenario 2: Debug a simple gem', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/scenario_2') }
 
   it 'runs as expected' do

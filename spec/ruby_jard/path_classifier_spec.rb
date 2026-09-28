@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'uri'
+require 'unicode_normalize/normalize'
 
 RSpec.describe RubyJard::PathClassifier do
   subject(:classifier) { described_class.new }
@@ -28,7 +28,7 @@ RSpec.describe RubyJard::PathClassifier do
   end
 
   context 'when input path is in current dir which is also gem path' do
-    let(:dir) { Gem.path.first }
+    let(:dir) { Gem.path.find { |path| Dir.exist?(path) } }
 
     it 'returns source tree' do
       Dir.chdir(dir) do
@@ -99,8 +99,8 @@ RSpec.describe RubyJard::PathClassifier do
 
   context 'when input path is a standard lib sub folder' do
     it 'returns stdlib, and relative path' do
-      expect(classifier.classify(URI::HTTP.method(:build).source_location.first)).to eq(
-        [:stdlib, 'uri', 'uri/http.rb']
+      expect(classifier.classify(UnicodeNormalize.method(:normalize).source_location.first)).to eq(
+        [:stdlib, 'unicode_normalize', 'unicode_normalize/normalize.rb']
       )
     end
   end

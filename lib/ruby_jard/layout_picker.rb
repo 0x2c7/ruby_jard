@@ -16,16 +16,13 @@ module RubyJard
         return @layouts[@config.layout] || @layouts.fallback_layout
       end
 
-      @layouts.each do |_name, template|
+      # RubyJard::Layouts is not a Hash and only implements #each.
+      @layouts.each do |_name, template| # rubocop:disable Style/HashEachMethods
         matched = true
-        matched &&= (
-          template.min_width.nil? ||
-          @width > template.min_width
-        )
-        matched &&= (
-          template.min_height.nil? ||
-          @height > template.min_height
-        )
+        matched &&= template.min_width.nil? ||
+                    @width > template.min_width
+        matched &&= template.min_height.nil? ||
+                    @height > template.min_height
         return template if matched
       end
       @layouts.fallback_layout

@@ -3,7 +3,7 @@
 require 'reline'
 require 'ruby_jard'
 
-Readline = Reline
+Readline.singleton_class.prepend(Module.new { def input=(i) super end })
 
 class Calculator
   def calculate(a, b, c)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Test skip' do
+RSpec.describe 'Test skip', :integration do
   let(:work_dir) { File.join(RSPEC_ROOT, '/integration/skip') }
 
   context 'when place jard in a nested loop' do

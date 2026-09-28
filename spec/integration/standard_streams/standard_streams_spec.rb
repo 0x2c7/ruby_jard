@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Test standard_streams', integration: true do
+RSpec.describe 'Test standard_streams', :integration do
   let(:shell) do
     shell = `which zsh`.strip
     shell.empty? ? `echo $SHELL` : 'zsh'

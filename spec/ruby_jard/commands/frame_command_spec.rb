@@ -46,7 +46,7 @@ RSpec.describe RubyJard::Commands::FrameCommand do
     end
   end
 
-  context 'with `frame       3`' do
+  context 'with `frame 3`' do
     it 'dispatches frame flow with 3' do
       flow = RubyJard::ControlFlow.listen do
         command_object.process_line('frame       3')
@@ -57,7 +57,7 @@ RSpec.describe RubyJard::Commands::FrameCommand do
     end
   end
 
-  context 'with `frame       +27`' do
+  context 'with `frame +27`' do
     it 'dispatches frame flow with 3' do
       flow = RubyJard::ControlFlow.listen do
         command_object.process_line('frame       +27')

@@ -137,14 +137,12 @@ module RubyJard
       @current_context.step_over(times, current_frame.real_pos)
     end
 
-    def lock
+    def lock(&block)
       raise RubyJard::Error, 'This method requires a block' unless block_given?
 
       # TODO: This doesn't solve anything. However, debugging a multi-threaded process is hard.
       # Let's deal with that later.
-      @session_lock.synchronize do
-        yield
-      end
+      @session_lock.synchronize(&block)
     end
 
     def skip(times)

@@ -7,7 +7,7 @@ module RubyJard
   class ReplSequence
     COMMAND_ESCAPE_SEQUENCE_PREFIX = '\e]711;Command~'
     COMMAND_ESCAPE_SEQUENCE_SUFFIX = ';'
-    COMMAND_ESCAPE_SEQUENCE_REGEXP = /\\e\]711;Command~([a-z\-\ ]*);/.freeze
+    COMMAND_ESCAPE_SEQUENCE_REGEXP = /\\e\]711;Command~([a-z\-\ ]*);/
 
     def self.encode(command)
       if command.nil? || command.empty?

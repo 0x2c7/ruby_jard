@@ -139,8 +139,8 @@ module RubyJard
           parent_height * child_template.height_ratio / 100
         end
 
-      unless child_template.min_height.nil?
-        height = child_template.min_height if height < child_template.min_height
+      if !child_template.min_height.nil? && (height < child_template.min_height)
+        height = child_template.min_height
       end
 
       height
@@ -156,8 +156,8 @@ module RubyJard
           parent_width * child_template.width_ratio / 100
         end
 
-      unless child_template.min_width.nil?
-        width = child_template.min_width if width < child_template.min_width
+      if !child_template.min_width.nil? && (width < child_template.min_width)
+        width = child_template.min_width
       end
 
       width
